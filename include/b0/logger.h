@@ -109,6 +109,9 @@ public:
         std::cout << output << std::endl;
     }
 
+    /*!
+     * \brief Return a string for this level
+     */
     virtual std::string levelString(b0::logger_msgs::LogLevel level)
     {
         switch(level)
@@ -123,6 +126,14 @@ public:
         return "?????";
     }
 
+    /*!
+     * \brief Return a dword for the style of this level
+     *
+     * The dword's most significant byte is not used.
+     * The next byte is used for the attribute.
+     * The next byte is used for the foreground color.
+     * The next byte is used for the background color.
+     */
     virtual int levelStyle(b0::logger_msgs::LogLevel level)
     {
         switch(level)
