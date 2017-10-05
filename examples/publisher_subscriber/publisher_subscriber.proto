@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package example_msgs;
+
+message TestMessage {
+  required uint32 data = 1;
+}
+
+message TestMessage2 {
+  required string data = 1;
+}

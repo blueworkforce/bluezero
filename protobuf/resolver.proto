@@ -1,0 +1,67 @@
+syntax = "proto2";
+
+package b0.resolver_msgs;
+
+message NodeID {
+  required bytes host_id = 1;
+  required uint32 process_id = 2;
+  required string thread_id = 3;
+}
+
+message AnnounceNodeRequest {
+  required NodeID node_id = 1;
+  optional string node_name = 8;
+}
+
+message AnnounceNodeResponse {
+  required bool ok = 1;
+  optional string node_name = 2;
+  required string xsub_sock_addr = 3;
+  required string xpub_sock_addr = 4;
+}
+
+message AnnounceServiceRequest {
+  required NodeID node_id = 1;
+  required string service_name = 2;
+  required string sock_addr = 3;
+}
+
+message AnnounceServiceResponse {
+  required bool ok = 1;
+}
+
+message ResolveServiceRequest {
+  required string service_name = 1;
+}
+
+message ResolveServiceResponse {
+  required bool ok = 1;
+  required string sock_addr = 2;
+}
+
+message HeartBeatRequest {
+  required NodeID node_id = 1;
+}
+
+message HeartBeatResponse {
+  required bool ok = 1;
+}
+
+message Request {
+  oneof req {
+    AnnounceNodeRequest announce_node = 20;
+    AnnounceServiceRequest announce_service = 30;
+    ResolveServiceRequest resolve = 50;
+    HeartBeatRequest heartbeat = 1;
+  }
+}
+
+message Response {
+  oneof resp {
+    AnnounceNodeResponse announce_node = 21;
+    AnnounceServiceResponse announce_service = 31;
+    ResolveServiceResponse resolve = 51;
+    HeartBeatResponse heartbeat = 2;
+  }
+}
+

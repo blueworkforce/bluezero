@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+package b0.logger_msgs;
+
+enum LogLevel {
+  TRACE = 0;
+  DEBUG = 10;
+  INFO = 20;
+  WARN = 30;
+  ERROR = 40;
+  FATAL = 50;
+}
+
+message LogEntry {
+  required string node_name = 1;
+  required LogLevel level = 2;
+  required string msg = 3;
+}
+
