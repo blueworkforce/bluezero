@@ -3,7 +3,7 @@
 
 #include "resolver.pb.h"
 #include <b0/protobufhelpers.hpp>
-#include <b0/logger.h>
+#include <b0/logger/logger.h>
 
 #include <string>
 #include <boost/thread.hpp>

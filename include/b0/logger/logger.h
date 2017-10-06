@@ -5,6 +5,7 @@
 #include <b0/protobufhelpers.hpp>
 
 #include <string>
+#include <sstream>
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
 
@@ -17,7 +18,27 @@ namespace b0
 class LogInterface
 {
 public:
-    //! Log a message to the logger (will publish a message)
+    /*!
+     * \brief Log a message to the remote logger, with the default level (INFO)
+     */
+    virtual void log(std::string message)
+    {
+        log(INFO, message);
+    }
+
+    /*!
+     * \brief Log a message to the remote logger, at default level, using a format string
+     */
+    template<typename... Arguments>
+    void log(std::string const &fmt, Arguments&&... args)
+    {
+        boost::format format(fmt);
+        log_helper(INFO, format, std::forward<Arguments>(args)...);
+    }
+
+    /*!
+     * \brief Log a message to the remote logger, with a specified level
+     */
     virtual void log(b0::logger_msgs::LogLevel level, std::string message) = 0;
 
     /*!
@@ -46,6 +67,7 @@ protected:
 
     //! \endcond
 
+public:
     //! \brief The most verbose level
     const b0::logger_msgs::LogLevel TRACE = b0::logger_msgs::LogLevel::TRACE;
 
@@ -93,60 +115,48 @@ public:
 
     virtual void log(b0::logger_msgs::LogLevel level, std::string message) override
     {
-        int style = levelStyle(level);
-        std::string colStart = "", colEnd = "";
-        if(true)
-        {
-            int attr = (style & 0x00ff0000) >> 16;
-            int col = (style & 0x0000ff00) >> 8;
-            colStart = (boost::format("\x1b[%d;%dm") % attr % col).str();
-            colEnd = "\x1b[0m";
-        }
-
+        LevelInfo info = levelInfo(level);
         std::string name = named_object_.getName();
-        static boost::format fmt("%s%s[%s] %s%s");
         if(name != "") name = "[" + name + "] ";
-        std::string output = (fmt % colStart % name % levelString(level) % message % colEnd).str();
-        std::cout << output << std::endl;
+        std::stringstream ss;
+        ss << info.ansiEscape() << name << info.levelStr << ": " << message << info.ansiReset() << std::endl;
+        std::cout << ss.str();
     }
 
+    struct LevelInfo
+    {
+        std::string levelStr;
+        int attr;
+        int fg;
+        int bg;
+
+        std::string ansiEscape()
+        {
+            static boost::format fmt("\x1b[%d;%dm");
+            return (fmt % attr % fg).str();
+        }
+
+        std::string ansiReset()
+        {
+            return "\x1b[0m";
+        }
+    };
+
     /*!
-     * \brief Return a string for this level
+     * \brief Return meta-information for the specified level
      */
-    virtual std::string levelString(b0::logger_msgs::LogLevel level)
+    virtual LevelInfo levelInfo(b0::logger_msgs::LogLevel level)
     {
         switch(level)
         {
-            case b0::logger_msgs::LogLevel::TRACE: return "TRACE"; break;
-            case b0::logger_msgs::LogLevel::DEBUG: return "DEBUG"; break;
-            case b0::logger_msgs::LogLevel::INFO:  return "INFO";  break;
-            case b0::logger_msgs::LogLevel::WARN:  return "WARN";  break;
-            case b0::logger_msgs::LogLevel::ERROR: return "ERROR"; break;
-            case b0::logger_msgs::LogLevel::FATAL: return "FATAL"; break;
+            case b0::logger_msgs::LogLevel::TRACE: return {"TRACE", 0, 0x1e, 0}; break;
+            case b0::logger_msgs::LogLevel::DEBUG: return {"DEBUG", 1, 0x1e, 0}; break;
+            case b0::logger_msgs::LogLevel::INFO:  return {"INFO",  1, 0x25, 0}; break;
+            case b0::logger_msgs::LogLevel::WARN:  return {"WARN",  0, 0x21, 0}; break;
+            case b0::logger_msgs::LogLevel::ERROR: return {"ERROR", 0, 0x1f, 0}; break;
+            case b0::logger_msgs::LogLevel::FATAL: return {"FATAL", 7, 0x1f, 0}; break;
         }
-        return "?????";
-    }
-
-    /*!
-     * \brief Return a dword for the style of this level
-     *
-     * The dword's most significant byte is not used.
-     * The next byte is used for the attribute.
-     * The next byte is used for the foreground color.
-     * The next byte is used for the background color.
-     */
-    virtual int levelStyle(b0::logger_msgs::LogLevel level)
-    {
-        switch(level)
-        {
-            case b0::logger_msgs::LogLevel::TRACE: return 0x00001e00; break;
-            case b0::logger_msgs::LogLevel::DEBUG: return 0x00011e00; break;
-            case b0::logger_msgs::LogLevel::INFO:  return 0x00012500; break;
-            case b0::logger_msgs::LogLevel::WARN:  return 0x00002100; break;
-            case b0::logger_msgs::LogLevel::ERROR: return 0x00001f00; break;
-            case b0::logger_msgs::LogLevel::FATAL: return 0x00071f00; break;
-        }
-        return 0;
+        return {"?????", 1, 0x1e, 0};
     }
 
 protected:
