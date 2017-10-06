@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['named_5fobject_5f',['named_object_',['../classb0_1_1_local_logger.html#a4f3d774704b4111d07ad1f77255d309e',1,'b0::LocalLogger']]],
-  ['node',['Node',['../classb0_1_1_node.html',1,'b0::Node'],['../classb0_1_1_node.html#aaa9a54ec9f6d86f334966c9725690abc',1,'b0::Node::Node()']]],
-  ['nodebyid',['nodeByID',['../classb0_1_1_resolver.html#a83123933f3cf4eb7d3c08c30c60ac448',1,'b0::Resolver']]],
-  ['nodebyname',['nodeByName',['../classb0_1_1_resolver.html#a8a5d340c1f62a5cc71310280f18ed0c1',1,'b0::Resolver']]],
-  ['nodekey',['nodeKey',['../classb0_1_1_resolver.html#abcbb9c27fd277d6117b18176cee97f82',1,'b0::Resolver::nodeKey(std::string host_id, int process_id, std::string thread_id)'],['../classb0_1_1_resolver.html#a57232831edcda15f90b8d6f750db734e',1,'b0::Resolver::nodeKey(const b0::resolver_msgs::NodeID &amp;node_id)'],['../classb0_1_1_resolver.html#a17bf1b887742787e0c696bf811faaee6',1,'b0::Resolver::nodeKey(const resolver::NodeEntry *node_entry)']]],
-  ['nodenameexists',['nodeNameExists',['../classb0_1_1_resolver.html#a61aa5948f7a4cb3b07e6474f7e440446',1,'b0::Resolver']]],
-  ['nodes_5fby_5fkey_5f',['nodes_by_key_',['../classb0_1_1_resolver.html#a5c0858bb5f7da8376961e4f5a40bf059',1,'b0::Resolver']]],
-  ['nodes_5fby_5fname_5f',['nodes_by_name_',['../classb0_1_1_resolver.html#aeab290620da6eca5dbd74d411aa700dd',1,'b0::Resolver']]]
+  ['serviceclient',['ServiceClient',['../classb0_1_1_service_client.html',1,'b0::ServiceClient&lt; TReq, TRep &gt;'],['../classb0_1_1_service_client.html#abc754af08e4678234d09cccffbd61ea1',1,'b0::ServiceClient::ServiceClient()']]],
+  ['serviceserver',['ServiceServer',['../classb0_1_1_service_server.html',1,'b0::ServiceServer&lt; TReq, TRep &gt;'],['../classb0_1_1_service_server.html#adbf0159a4cdacfea663c05085e305c4d',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, boost::function&lt; void(const TReq &amp;, TRep &amp;)&gt; callback=0)'],['../classb0_1_1_service_server.html#abce4f0f5260580cad1611ca2d36daf20',1,'b0::ServiceServer::ServiceServer(TNode *node, std::string service_name, void(TNode::*callbackMethod)(const TReq &amp;, TRep &amp;))']]],
+  ['spin',['spin',['../classb0_1_1_node.html#aeddd3883b623a132cd96851b1ad2e316',1,'b0::Node']]],
+  ['spinonce',['spinOnce',['../classb0_1_1_node.html#a6f2efc603713755b7c5e0234529023f4',1,'b0::Node::spinOnce()'],['../classb0_1_1_service_server.html#ad94275696a4191e24354a47c9a594409',1,'b0::ServiceServer::spinOnce()'],['../classb0_1_1_subscriber.html#ad1528a49c43f1c0d896eb0cfd217f1a2',1,'b0::Subscriber::spinOnce()']]],
+  ['startheartbeatthread',['startHeartbeatThread',['../classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44',1,'b0::Node']]],
+  ['subscriber',['Subscriber',['../classb0_1_1_subscriber.html',1,'b0::Subscriber&lt; T &gt;'],['../classb0_1_1_subscriber.html#a925b20466f27e622b68764cf739c2d7f',1,'b0::Subscriber::Subscriber(Node *node, std::string topic, boost::function&lt; void(std::string, const T &amp;)&gt; callback=0)'],['../classb0_1_1_subscriber.html#ab002395ba5a2201d443c46cf37db68c1',1,'b0::Subscriber::Subscriber(TNode *node, std::string topic, void(TNode::*callbackMethod)(std::string, const T &amp;))']]]
 ];
