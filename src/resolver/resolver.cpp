@@ -8,7 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <b0/protobufhelpers.hpp>
-#include "resolver/resolver.h"
+#include <b0/resolver/resolver.h>
 #include "resolver.pb.h"
 
 namespace b0
@@ -341,12 +341,4 @@ void Resolver::heartBeatSweeper()
 }
 
 } // namespace b0
-
-int main(int argc, char **argv)
-{
-    b0::Resolver node;
-    node.init();
-    node.spin();
-    return 0;
-}
 
