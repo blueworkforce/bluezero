@@ -5,6 +5,7 @@
 #include <b0/service_server.h>
 
 #include <string>
+#include <vector>
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
 
@@ -16,6 +17,8 @@ namespace b0
 namespace resolver
 {
 
+struct ServiceEntry;
+
 struct NodeEntry
 {
     std::string host_id;
@@ -23,11 +26,12 @@ struct NodeEntry
     std::string thread_id;
     std::string name;
     boost::posix_time::ptime last_heartbeat;
+    std::vector<ServiceEntry*> services;
 };
 
 struct ServiceEntry
 {
-    NodeEntry *node_entry;
+    NodeEntry *node;
     std::string name;
     std::string addr;
 };

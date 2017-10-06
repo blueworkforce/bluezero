@@ -252,10 +252,11 @@ void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceReq
         return;
     }
     resolver::ServiceEntry *se = new resolver::ServiceEntry;
-    se->node_entry = ne;
+    se->node = ne;
     se->name = rq.service_name();
     se->addr = rq.sock_addr();
     services_by_name_[se->name] = se;
+    ne->services.push_back(se);
     onNodeGraphChanged();
     rsp.set_ok(true);
     log(INFO, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name(), rq.sock_addr());
@@ -290,10 +291,16 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
             if(!is_alive)
             {
                 log(INFO, "Node '%s' disconnected.", e->name);
+
+                for(resolver::ServiceEntry *s : e->services)
+                    services_by_name_.erase(s->name);
                 nodes_by_key_.erase(nodeKey(e));
                 i = nodes_by_name_.erase(i);
+
                 delete e;
+
                 changed = true;
+                log(DEBUG, "There are now %d alive nodes.", nodes_by_name_.size());
             }
             else ++i;
         }
