@@ -114,11 +114,12 @@ public:
     /*!
      * \brief Write a request message to the underlying ZeroMQ REQ socket
      */
-    virtual void write(const TReq &req)
+    virtual bool write(const TReq &req)
     {
         std::string payload;
-        req.SerializeToString(&payload);
+        bool ret = req.SerializeToString(&payload);
         ::s_send(req_socket_, payload);
+        return ret;
     }
 
     /*!
@@ -138,10 +139,10 @@ public:
     /*!
      * \brief Read a reply message from the underlying ZeroMQ REQ socket
      */
-    virtual void read(TRep &rep)
+    virtual bool read(TRep &rep)
     {
         std::string payload = ::s_recv(req_socket_);
-        rep.ParseFromString(payload);
+        return rep.ParseFromString(payload);
     }
 };
 
