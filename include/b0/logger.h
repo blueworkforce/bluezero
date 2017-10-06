@@ -20,20 +20,6 @@ public:
     //! Log a message to the logger (will publish a message)
     virtual void log(b0::logger_msgs::LogLevel level, std::string message) = 0;
 
-    //! \cond HIDDEN_SYMBOLS
-
-    virtual void log_helper(b0::logger_msgs::LogLevel level, boost::format &format)
-    {
-        return log(level, format.str());
-    }
-
-    template<class T, class... Args>
-    void log_helper(b0::logger_msgs::LogLevel level, boost::format &format, T &&t, Args&&... args){
-        return log_helper(level, format % std::forward<T>(t), std::forward<Args>(args)...);
-    }
-
-    //! \endcond
-
     /*!
      * \brief Log a message using a format string
      */
@@ -45,6 +31,21 @@ public:
     }
 
 protected:
+    //! \cond HIDDEN_SYMBOLS
+
+    virtual void log_helper(b0::logger_msgs::LogLevel level, boost::format &format)
+    {
+        return log(level, format.str());
+    }
+
+    template<class T, class... Args>
+    void log_helper(b0::logger_msgs::LogLevel level, boost::format &format, T &&t, Args&&... args)
+    {
+        return log_helper(level, format % std::forward<T>(t), std::forward<Args>(args)...);
+    }
+
+    //! \endcond
+
     //! \brief The most verbose level
     const b0::logger_msgs::LogLevel TRACE = b0::logger_msgs::LogLevel::TRACE;
 
