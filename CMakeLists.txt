@@ -50,7 +50,7 @@ protobuf_generate_cpp(
 add_library(b0 SHARED src/b0/node.cpp ${B0_MSG_SOURCES})
 target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
 
-add_executable(resolver src/resolver/resolver.cpp src/resolver/resolver_node.cpp)
+add_executable(resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_node.cpp)
 target_link_libraries(resolver b0)
 
 if(BUILD_EXAMPLES)
