@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 project(bluezero)
 
 option(BUILD_EXAMPLES "Build the examples" ON)
+option(BUILD_TESTS "Build the testcases" ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR 1)
@@ -54,5 +55,9 @@ target_link_libraries(resolver b0)
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
+endif()
+
+if(BUILD_TESTS)
+    add_subdirectory(tests)
 endif()
 
