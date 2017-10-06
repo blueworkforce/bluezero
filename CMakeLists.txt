@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(bluevision-rpi)
+project(bluezero)
 
 option(BUILD_EXAMPLES "Build the examples" ON)
 
