@@ -6,3 +6,12 @@ message Msg1 {
   required uint32 data = 1;
 }
 
+message Req {
+  required uint32 a = 1;
+  required uint32 b = 2;
+}
+
+message Resp {
+  required uint32 c = 3;
+}
+
