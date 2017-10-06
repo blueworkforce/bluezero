@@ -1,19 +1,18 @@
-BlueZero git repository
-=======================
+# BlueZero git repository
 
 Middleware for the BlueWorkforce projects
 
+## Documentation
+
 See the generated [`doc/html/index.html`](https://blueworkforce.github.io/bluezero/) in the `build` dir for the documentation.
 
-Required Libraries
-==================
+## Required Libraries
 
  - ZeroMQ v4.1+ (ubuntu package libzmq3-dev)
  - Protocol Buffers v2.6+
  - Boost v1.54+
 
-Ubuntu 16
----------
+### Ubuntu 16
 
 Install the following apt packages:
 
@@ -22,8 +21,7 @@ Install the following apt packages:
  - libzmq-dev
  - libboost-all-dev
 
-Ubuntu 14
----------
+### Ubuntu 14
 
 Install the following apt packages:
 
@@ -35,8 +33,7 @@ The apt packages for Protobuf and ZeroMQ from apt repository are too old. Compil
  - https://github.com/zeromq/libzmq
  - https://github.com/zeromq/cppzmq
 
-macOS (homebrew)
-----------------
+### macOS (homebrew)
 
 Install the following:
 
@@ -44,8 +41,7 @@ Install the following:
  - protobuf
  - boost
 
-Compiling
-=========
+## Compiling
 
 ```bash
 git clone https://github.com/BlueWorkforce/bluezero
