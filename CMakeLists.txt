@@ -58,6 +58,7 @@ if(BUILD_EXAMPLES)
 endif()
 
 if(BUILD_TESTS)
+    enable_testing()
     add_subdirectory(tests)
 endif()
 
