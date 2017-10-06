@@ -12,3 +12,7 @@ add_executable(clisrv clisrv.cpp ../src/resolver/resolver.cpp ${TEST_MSGS})
 target_link_libraries(clisrv b0)
 add_test(clisrv clisrv)
 
+add_executable(clisrv2 clisrv2.cpp ../src/resolver/resolver.cpp ${TEST_MSGS})
+target_link_libraries(clisrv2 b0)
+add_test(clisrv2 clisrv2)
+
