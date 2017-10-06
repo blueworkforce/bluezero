@@ -2,6 +2,7 @@ syntax = "proto2";
 
 package b0.logger_msgs;
 
+// The level of logging, from most verbose to less verbose
 enum LogLevel {
   TRACE = 0;
   DEBUG = 10;
@@ -11,6 +12,7 @@ enum LogLevel {
   FATAL = 50;
 }
 
+// A log message sent by node to resolver
 message LogEntry {
   required string node_name = 1;
   required LogLevel level = 2;

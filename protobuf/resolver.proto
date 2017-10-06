@@ -2,17 +2,22 @@ syntax = "proto2";
 
 package b0.resolver_msgs;
 
+// Data structure to contain identification of a node
 message NodeID {
   required bytes host_id = 1;
   required uint32 process_id = 2;
   required string thread_id = 3;
 }
 
+// Sent by node to resolver, to announce its presence
+// and try to self-assign a name
 message AnnounceNodeRequest {
   required NodeID node_id = 1;
   optional string node_name = 8;
 }
 
+// Sent by resolver in reply to AnnounceNodeRequest message, to assign final name
+// and give some connection information
 message AnnounceNodeResponse {
   required bool ok = 1;
   optional string node_name = 2;
@@ -20,33 +25,41 @@ message AnnounceNodeResponse {
   required string xpub_sock_addr = 4;
 }
 
+// Sent by ServiceServer to announce a service by some name
+// The name must be unique
 message AnnounceServiceRequest {
   required NodeID node_id = 1;
   required string service_name = 2;
   required string sock_addr = 3;
 }
 
+// Response to AnnounceServiceRequest message
 message AnnounceServiceResponse {
   required bool ok = 1;
 }
 
+// Sent by a ServiceClient to resolve a service name to a ZeroMQ address
 message ResolveServiceRequest {
   required string service_name = 1;
 }
 
+// Response to ResolveServiceRequest message
 message ResolveServiceResponse {
   required bool ok = 1;
   required string sock_addr = 2;
 }
 
+// Heartbeat sent by node to resolver
 message HeartBeatRequest {
   required NodeID node_id = 1;
 }
 
+// Response to HeartBeatRequest message
 message HeartBeatResponse {
   required bool ok = 1;
 }
 
+// This is the message accepted by the resolver service
 message Request {
   oneof req {
     AnnounceNodeRequest announce_node = 20;
@@ -56,6 +69,7 @@ message Request {
   }
 }
 
+// This is the response returned by the resolver service
 message Response {
   oneof resp {
     AnnounceNodeResponse announce_node = 21;
