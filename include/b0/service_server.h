@@ -185,15 +185,9 @@ public:
     virtual bool write(const TRep &rep)
     {
         std::string payload;
-        if(rep.SerializeToString(&payload))
-        {
-            ::s_send(rep_socket_, payload);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        bool ret = rep.SerializeToString(&payload);
+        ::s_send(rep_socket_, payload);
+        return ret;
     }
 
 protected:
