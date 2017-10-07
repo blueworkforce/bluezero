@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logger_5f',['logger_',['../classb0_1_1_node.html#a190877169377c06f52bcd6d563960818',1,'b0::Node']]]
+  ['heartbeat_5fsweeper_5fthread_5f',['heartbeat_sweeper_thread_',['../classb0_1_1_resolver.html#a46e76e6584b16e13e16e1024bd325abe',1,'b0::Resolver']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resolv_5fsocket_5f',['resolv_socket_',['../classb0_1_1_node.html#ad3993b7ca9b66e713a4c7dd6638404ef',1,'b0::Node']]]
+  ['logger_5f',['logger_',['../classb0_1_1_node.html#a190877169377c06f52bcd6d563960818',1,'b0::Node']]]
 ];

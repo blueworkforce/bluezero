@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['named_5fobject_5f',['named_object_',['../classb0_1_1_local_logger.html#a4f3d774704b4111d07ad1f77255d309e',1,'b0::LocalLogger']]]
+  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1_resolver.html#a00c004e27537891eebad896b90cf2fc3',1,'b0::Resolver']]]
 ];
