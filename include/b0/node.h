@@ -92,12 +92,12 @@ public:
     /*!
      * \brief Retrieve address of the proxy's XPUB socket
      */
-    std::string getXPUBSocketAddress() const;
+    virtual std::string getXPUBSocketAddress() const;
 
     /*!
      * \brief Retrieve address of the proxy's XSUB socket
      */
-    std::string getXSUBSocketAddress() const;
+    virtual std::string getXSUBSocketAddress() const;
 
 private:
     /*!
@@ -170,7 +170,7 @@ protected:
      * The current way of guessing it is to simply return "tcp://localhost:22000", which
      * is only suitable for running everything on the same machine.
      */
-    virtual std::string resolverAddress();
+    virtual std::string resolverAddress() const;
 
     /*!
      * \brief Announce this node to resolver
