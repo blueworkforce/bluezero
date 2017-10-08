@@ -2,6 +2,7 @@
 #define PUBLISHER_H_INCLUDED
 
 #include <b0/node.h>
+#include <b0/graph.h>
 
 namespace b0
 {
@@ -53,7 +54,7 @@ protected:
  *
  * \sa b0::Subscriber
  */
-template<typename T>
+template<typename TMsg, bool notifyGraph = true>
 class Publisher : public AbstractPublisher
 {
 public:
@@ -68,10 +69,18 @@ public:
     /*!
      * \brief Publish the message on the publisher's topic
      */
-    virtual void publish(const T &msg)
+    virtual void publish(const TMsg &msg)
     {
         ::s_sendmore(pub_socket_, topic_);
         ::s_send(pub_socket_, msg);
+    }
+
+    void init() override
+    {
+        AbstractPublisher::init();
+
+        if(notifyGraph)
+            b0::graph::notifyTopic(node_, topic_, false, true);
     }
 };
 

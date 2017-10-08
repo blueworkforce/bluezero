@@ -15,7 +15,7 @@ namespace b0
 {
 
 ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
-    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(resolver, "resolver", &Resolver::handle),
+    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>(resolver, "resolver", &Resolver::handle),
       resolver_(resolver)
 {
 }
@@ -32,7 +32,8 @@ void ResolverServiceServer::announce()
 
 Resolver::Resolver()
     : Node("resolver"),
-      resolv_server_(this)
+      resolv_server_(this),
+      graph_pub_(this, "graph")
 {
 }
 
@@ -63,15 +64,22 @@ void Resolver::init()
     // run heartbeat sweeper (to detect when nodes go offline):
     heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartBeatSweeper, this);
 
-    // trigger the initial change event in the node graph
-    onNodeGraphChanged();
-
     log(INFO, "Ready.");
 }
 
-std::string Resolver::resolverAddress()
+std::string Resolver::resolverAddress() const
 {
     return "inproc://resolv";
+}
+
+std::string Resolver::getXPUBSocketAddress() const
+{
+    return "inproc://xpub_proxy";
+}
+
+std::string Resolver::getXSUBSocketAddress() const
+{
+    return "inproc://xsub_proxy";
 }
 
 void Resolver::announceNode()
@@ -86,8 +94,36 @@ void Resolver::announceNode()
     logger_.connect("inproc://xsub_proxy");
 }
 
-void Resolver::onNodeGraphChanged()
+void Resolver::onNodeConnected(std::string name)
 {
+}
+
+void Resolver::onNodeDisconnected(std::string name)
+{
+    bool changed = false;
+
+    for(auto it = node_topic_.begin(); it != node_topic_.end(); )
+    {
+        if(it->first.first == name)
+        {
+            it = node_topic_.erase(it);
+            changed = true;
+        }
+        else ++it;
+    }
+
+    for(auto it = node_service_.begin(); it != node_service_.end(); )
+    {
+        if(it->first.first == name)
+        {
+            it = node_service_.erase(it);
+            changed = true;
+        }
+        else ++it;
+    }
+
+    if(changed)
+        onGraphChanged();
 }
 
 void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
@@ -102,6 +138,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     std::string xpub_proxy_addr = address(xpub_proxy_port);
     log(DEBUG, "Binding XPUB socket to %s", xpub_proxy_addr);
     proxy_out_sock_.bind(xpub_proxy_addr);
+    proxy_out_sock_.bind("inproc://xpub_proxy");
 
     log(TRACE, "Running XSUB/XPUB proxy...");
 #ifdef __GNUC__
@@ -192,6 +229,12 @@ void Resolver::handle(const b0::resolver_msgs::Request &req, b0::resolver_msgs::
         handleResolveService(req.resolve(), *resp.mutable_resolve());
     else if(req.has_heartbeat())
         handleHeartBeat(req.heartbeat(), *resp.mutable_heartbeat());
+    else if(req.has_node_topic())
+        handleNodeTopic(req.node_topic(), *resp.mutable_node_topic());
+    else if(req.has_node_service())
+        handleNodeService(req.node_service(), *resp.mutable_node_service());
+    else if(req.has_get_graph())
+        handleGetGraph(req.get_graph(), *resp.mutable_get_graph());
     else
         std::cerr << "resolver: received an unrecognized request" << std::endl;
 }
@@ -228,7 +271,7 @@ void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &
     nodes_by_name_[nodeName] = e;
     std::string key = nodeKey(e);
     nodes_by_key_[key] = e;
-    onNodeGraphChanged();
+    onNodeConnected(nodeName);
     rsp.set_node_name(e->name);
     rsp.set_xsub_sock_addr(xsub_proxy_addr_);
     rsp.set_xpub_sock_addr(xpub_proxy_addr_);
@@ -257,7 +300,7 @@ void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceReq
     se->addr = rq.sock_addr();
     services_by_name_[se->name] = se;
     ne->services.push_back(se);
-    onNodeGraphChanged();
+    //onNodeNewService(...);
     rsp.set_ok(true);
     log(INFO, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name(), rq.sock_addr());
 }
@@ -283,7 +326,6 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
     {
         // a HeartBeatRequest from "self" pid=0 thread="self" means to actually perform
         // the detection and purging of dead nodes
-        bool changed = false;
         for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); )
         {
             resolver::NodeEntry *e = i->second;
@@ -292,6 +334,8 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
             {
                 log(INFO, "Node '%s' disconnected.", e->name);
 
+                onNodeDisconnected(e->name);
+
                 for(resolver::ServiceEntry *s : e->services)
                     services_by_name_.erase(s->name);
                 nodes_by_key_.erase(nodeKey(e));
@@ -299,14 +343,10 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
 
                 delete e;
 
-                changed = true;
                 log(DEBUG, "There are now %d alive nodes.", nodes_by_name_.size());
             }
             else ++i;
         }
-
-        if(changed)
-            onNodeGraphChanged();
     }
     else
     {
@@ -320,6 +360,58 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         heartBeat(ne);
     }
     rsp.set_ok(true);
+}
+
+void Resolver::handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp)
+{
+    log(INFO, "Graph: node '%s' %s topic '%s'", req.node_name(), req.reverse() ? "subscribes to" : "publishes", req.topic_name());
+    auto k = std::make_pair(req.node_name(), req.topic_name());
+    size_t old_sz = node_topic_.size();
+    if(req.active()) node_topic_[k] = req.reverse();
+    else node_topic_.erase(k);
+    if(old_sz != node_topic_.size())
+        onGraphChanged();
+}
+
+void Resolver::handleNodeService(const b0::resolver_msgs::NodeServiceRequest &req, b0::resolver_msgs::NodeServiceResponse &resp)
+{
+    log(INFO, "Graph: node '%s' %s service '%s'", req.node_name(), req.reverse() ? "connects to" : "offers", req.service_name());
+    auto k = std::make_pair(req.node_name(), req.service_name());
+    size_t old_sz = node_service_.size();
+    if(req.active()) node_service_[k] = req.reverse();
+    else node_service_.erase(k);
+    if(old_sz != node_service_.size())
+        onGraphChanged();
+}
+
+void Resolver::handleGetGraph(const b0::resolver_msgs::GetGraphRequest &req, b0::resolver_msgs::GetGraphResponse &resp)
+{
+    getGraph(*resp.mutable_graph());
+}
+
+void Resolver::getGraph(b0::resolver_msgs::Graph &graph)
+{
+    for(auto x : node_topic_)
+    {
+        b0::resolver_msgs::GraphLink *l = graph.add_node_topic();
+        l->set_a(x.first.first);
+        l->set_b(x.first.second);
+        l->set_reversed(x.second);
+    }
+    for(auto x : node_service_)
+    {
+        b0::resolver_msgs::GraphLink *l = graph.add_node_service();
+        l->set_a(x.first.first);
+        l->set_b(x.first.second);
+        l->set_reversed(x.second);
+    }
+}
+
+void Resolver::onGraphChanged()
+{
+    b0::resolver_msgs::Graph g;
+    getGraph(g);
+    graph_pub_.publish(g);
 }
 
 void Resolver::heartBeatSweeper()

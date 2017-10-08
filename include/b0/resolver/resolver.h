@@ -3,6 +3,7 @@
 
 #include <b0/node.h>
 #include <b0/service_server.h>
+#include <b0/publisher.h>
 
 #include <string>
 #include <vector>
@@ -40,7 +41,7 @@ struct ServiceEntry
 
 class Resolver;
 
-class ResolverServiceServer : public ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
+class ResolverServiceServer : public ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -81,7 +82,17 @@ public:
     /*!
      * \brief Provide the (inproc) resolver address
      */
-    std::string resolverAddress() override;
+    std::string resolverAddress() const override;
+
+    /*!
+     * \brief Retrieve address of the proxy's XPUB socket
+     */
+    virtual std::string getXPUBSocketAddress() const override;
+
+    /*!
+     * \brief Retrieve address of the proxy's XSUB socket
+     */
+    virtual std::string getXSUBSocketAddress() const override;
 
     /*!
      * \brief Hijack announceNode step
@@ -89,9 +100,14 @@ public:
     virtual void announceNode() override;
 
     /*!
-     * Called when the list of connected nodes changes
+     * Called when a new node has connected
      */
-    void onNodeGraphChanged();
+    void onNodeConnected(std::string name);
+
+    /*!
+     * Called when a node disconnects (detected with heartbeat timeout)
+     */
+    void onNodeDisconnected(std::string name);
 
     /*!
      * \brief The XSUB/XPUB proxy (will be started in a separate thread)
@@ -189,6 +205,34 @@ public:
     virtual void handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0::resolver_msgs::HeartBeatResponse &rsp);
 
     /*!
+     * \brief Handle the NodeTopic request
+     */
+    void handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp);
+
+    /*!
+     * \brief Handle the NodeService request
+     */
+    void handleNodeService(const b0::resolver_msgs::NodeServiceRequest &req, b0::resolver_msgs::NodeServiceResponse &resp);
+
+    /*!
+     * \brief Handle the GetGraph request
+     */
+    void handleGetGraph(const b0::resolver_msgs::GetGraphRequest &req, b0::resolver_msgs::GetGraphResponse &resp);
+
+    /*!
+     * Retrieve the current Graph
+     */
+    void getGraph(b0::resolver_msgs::Graph &graph);
+
+    /*!
+     * \brief Called when the global graph changes
+     *
+     * Due to a node publishing or subscribing a topic, or offering or using a service.
+     *
+     */
+    void onGraphChanged();
+
+    /*!
      * \brief Code to run in the heartbeat sweeper thread
      */
     void heartBeatSweeper();
@@ -217,6 +261,15 @@ protected:
 
     //! Map of services by name
     std::map<std::string, resolver::ServiceEntry*> services_by_name_;
+
+    //! Graph edges node <--> topic
+    std::map<std::pair<std::string, std::string>, bool> node_topic_;
+    //
+    //! Graph edges node <--> service
+    std::map<std::pair<std::string, std::string>, bool> node_service_;
+
+    //! Publisher of the Graph message
+    b0::Publisher<b0::resolver_msgs::Graph, false> graph_pub_;
 };
 
 } // namespace b0

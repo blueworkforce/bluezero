@@ -2,6 +2,7 @@
 #define SERVICE_CLIENT_H_INCLUDED
 
 #include <b0/node.h>
+#include <b0/graph.h>
 
 namespace b0
 {
@@ -89,7 +90,7 @@ protected:
  *
  * \sa ServiceServer
  */
-template<typename TReq, typename TRep>
+template<typename TReq, typename TRep, bool notifyGraph = true>
 class ServiceClient : public AbstractServiceClient
 {
 public:
@@ -143,6 +144,14 @@ public:
     {
         std::string payload = ::s_recv(req_socket_);
         return rep.ParseFromString(payload);
+    }
+
+    void init() override
+    {
+        AbstractServiceClient::init();
+
+        if(notifyGraph)
+            b0::graph::notifyService(node_, service_name_, true, true);
     }
 };
 

@@ -2,6 +2,7 @@
 #define SUBSCRIBER_H_INCLUDED
 
 #include <b0/node.h>
+#include <b0/graph.h>
 
 namespace b0
 {
@@ -74,14 +75,14 @@ protected:
  *
  * \sa b0::Publisher
  */
-template<typename T>
+template<typename TMsg, bool notifyGraph = true>
 class Subscriber : public AbstractSubscriber
 {
 public:
     /*!
      * \brief Construct a Subscriber child of a specified Node, with a boost::function as callback
      */
-    Subscriber(Node *node, std::string topic, boost::function<void(std::string, const T&)> callback = 0)
+    Subscriber(Node *node, std::string topic, boost::function<void(std::string, const TMsg&)> callback = 0)
         : AbstractSubscriber(node, topic),
           callback_(callback)
     {
@@ -91,8 +92,18 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method (of the Node subclass) as a callback
      */
     template<class TNode>
-    Subscriber(TNode *node, std::string topic, void (TNode::*callbackMethod)(std::string, const T&))
+    Subscriber(TNode *node, std::string topic, void (TNode::*callbackMethod)(std::string, const TMsg&))
         : Subscriber(node, topic, boost::bind(callbackMethod, node, _1, _2))
+    {
+        // delegate constructor. leave empty
+    }
+
+    /*!
+     * \brief Construct a Subscriber child of a specified Node, with a method as a callback
+     */
+    template<class T>
+    Subscriber(Node *node, std::string topic, void (T::*callbackMethod)(std::string, const TMsg&), T *callbackObject)
+        : Subscriber(node, topic, boost::bind(callbackMethod, callbackObject, _1, _2))
     {
         // delegate constructor. leave empty
     }
@@ -107,7 +118,7 @@ public:
         while(poll())
         {
             std::string topic;
-            T msg;
+            TMsg msg;
             read(topic, msg);
             callback_(topic, msg);
         }
@@ -130,18 +141,26 @@ public:
     /*!
      * \brief Read a message from the underlying ZeroMQ SUB socket
      */
-    virtual bool read(std::string &topic, T &msg)
+    virtual bool read(std::string &topic, TMsg &msg)
     {
         topic = ::s_recv(sub_socket_);
         std::string payload = ::s_recv(sub_socket_);
         return msg.ParseFromString(payload);
     }
 
+    void init() override
+    {
+        AbstractSubscriber::init();
+
+        if(notifyGraph)
+            b0::graph::notifyTopic(node_, topic_, true, true);
+    }
+
 protected:
     /*!
      * \brief Callback which will be called when a new message is read from the socket
      */
-    boost::function<void(std::string, T&)> callback_;
+    boost::function<void(std::string, TMsg&)> callback_;
 };
 
 } // namespace b0

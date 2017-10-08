@@ -42,12 +42,16 @@ void Node::init()
 
     startHeartbeatThread();
 
+    log(DEBUG, "Initializing publishers...");
     for(auto it = publishers_.begin(); it != publishers_.end(); ++it)
         (*it)->init();
+    log(DEBUG, "Initializing service clients...");
     for(auto it = service_clients_.begin(); it != service_clients_.end(); ++it)
         (*it)->init();
+    log(DEBUG, "Initializing service servers...");
     for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
         (*it)->init();
+    log(DEBUG, "Initializing subscribers...");
     for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
         (*it)->init();
 
@@ -163,7 +167,7 @@ std::string Node::freeTCPAddress()
     return (fmt % hostname() % freeTCPPort()).str();
 }
 
-std::string Node::resolverAddress()
+std::string Node::resolverAddress() const
 {
     const char *resolver_addr = std::getenv("BWF_RESOLVER");
     if(resolver_addr) return resolver_addr;
