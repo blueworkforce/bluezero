@@ -2,6 +2,7 @@
 #define SERVICE_SERVER_H_INCLUDED
 
 #include <b0/node.h>
+#include <b0/graph.h>
 
 namespace b0
 {
@@ -104,7 +105,7 @@ protected:
  *
  * \sa ServiceClient
  */
-template<typename TReq, typename TRep>
+template<typename TReq, typename TRep, bool notifyGraph = true>
 class ServiceServer : public AbstractServiceServer
 {
 public:
@@ -123,6 +124,16 @@ public:
     template<class TNode>
     ServiceServer(TNode *node, std::string service_name, void (TNode::*callbackMethod)(const TReq&, TRep&))
         : ServiceServer(node, service_name, boost::bind(callbackMethod, node, _1, _2))
+    {
+        // delegate constructor. leave empty
+    }
+
+    /*!
+     * \brief Construct a ServiceServer child of a specific Node, using a method as callback
+     */
+    template<class T>
+    ServiceServer(Node *node, std::string service_name, void (T::*callbackMethod)(const TReq&, TRep&), T *callbackObject)
+        : ServiceServer(node, service_name, boost::bind(callbackMethod, callbackObject, _1, _2))
     {
         // delegate constructor. leave empty
     }
@@ -188,6 +199,14 @@ public:
         bool ret = rep.SerializeToString(&payload);
         ::s_send(rep_socket_, payload);
         return ret;
+    }
+
+    void init() override
+    {
+        AbstractServiceServer::init();
+
+        if(notifyGraph)
+            b0::graph::notifyService(node_, service_name_, false, true);
     }
 
 protected:
