@@ -51,7 +51,7 @@ add_library(
     b0
     SHARED
     src/b0/node.cpp
-    src/b0/graph.cpp
+    src/b0/graph/graph.cpp
     src/b0/resolver/resolver.cpp
     ${B0_MSG_SOURCES}
 )
@@ -62,6 +62,9 @@ target_link_libraries(resolver b0)
 
 add_executable(logger_console src/b0/logger/console.cpp)
 target_link_libraries(logger_console b0)
+
+add_executable(graph_console src/b0/graph/console.cpp)
+target_link_libraries(graph_console b0)
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
