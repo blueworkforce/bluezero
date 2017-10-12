@@ -32,8 +32,17 @@ public:
     template<typename... Arguments>
     void log(std::string const &fmt, Arguments&&... args)
     {
-        boost::format format(fmt);
-        log_helper(INFO, format, std::forward<Arguments>(args)...);
+        try
+        {
+            boost::format format(fmt);
+            log_helper(INFO, format, std::forward<Arguments>(args)...);
+        }
+        catch(boost::io::too_many_args &ex)
+        {
+            std::string s = fmt;
+            s += " (error during formatting)";
+            log(s);
+        }
     }
 
     /*!
@@ -47,8 +56,17 @@ public:
     template<typename... Arguments>
     void log(b0::logger_msgs::LogLevel level, std::string const &fmt, Arguments&&... args)
     {
-        boost::format format(fmt);
-        log_helper(level, format, std::forward<Arguments>(args)...);
+        try
+        {
+            boost::format format(fmt);
+            log_helper(level, format, std::forward<Arguments>(args)...);
+        }
+        catch(boost::io::too_many_args &ex)
+        {
+            std::string s = fmt;
+            s += " (error during formatting)";
+            log(s);
+        }
     }
 
 protected:

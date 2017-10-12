@@ -24,7 +24,7 @@ public:
     void run()
     {
         int i = 0;
-        while(true)
+        while(!shutdownRequested())
         {
             spinOnce();
 

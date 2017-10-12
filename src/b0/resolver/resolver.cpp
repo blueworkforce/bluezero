@@ -40,7 +40,7 @@ Resolver::Resolver()
 Resolver::~Resolver()
 {
     pub_proxy_thread_.interrupt();
-    pub_proxy_thread_.join();
+    pub_proxy_thread_.join(); // FIXME: this makes the process hang on quit
 }
 
 void Resolver::init()
@@ -65,6 +65,14 @@ void Resolver::init()
     heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartBeatSweeper, this);
 
     log(INFO, "Ready.");
+}
+
+void Resolver::shutdown()
+{
+    Node::shutdown();
+
+    pub_proxy_thread_.interrupt();
+    pub_proxy_thread_.join();
 }
 
 std::string Resolver::resolverAddress() const
@@ -100,6 +108,13 @@ void Resolver::onNodeConnected(std::string name)
 
 void Resolver::onNodeDisconnected(std::string name)
 {
+    resolver::NodeEntry *e = nodeByName(name);
+
+    for(resolver::ServiceEntry *s : e->services)
+        services_by_name_.erase(s->name);
+    nodes_by_key_.erase(nodeKey(e));
+    nodes_by_name_.erase(name);
+
     std::set<std::pair<std::string, std::string> > npt, nst, nos, nus;
 
     for(auto x : node_publishes_topic_)
@@ -272,6 +287,8 @@ void Resolver::handle(const b0::resolver_msgs::Request &req, b0::resolver_msgs::
 {
     if(req.has_announce_node())
         handleAnnounceNode(req.announce_node(), *resp.mutable_announce_node());
+    else if(req.has_shutdown_node())
+        handleShutdownNode(req.shutdown_node(), *resp.mutable_shutdown_node());
     else if(req.has_announce_service())
         handleAnnounceService(req.announce_service(), *resp.mutable_announce_service());
     else if(req.has_resolve())
@@ -328,6 +345,22 @@ void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &
     log(INFO, "New node has joined: '%s' (key=%s)", e->name, key);
 }
 
+void Resolver::handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &rq, b0::resolver_msgs::ShutdownNodeResponse &rsp)
+{
+    resolver::NodeEntry *ne = nodeByID(rq.node_id());
+    if(!ne)
+    {
+        rsp.set_ok(false);
+        log(ERROR, "Invalid node id: %s", nodeKey(rq.node_id()));
+        return;
+    }
+    std::string node_name = ne->name;
+    onNodeDisconnected(node_name);
+    delete ne;
+    rsp.set_ok(true);
+    log(INFO, "Node '%s' has left", node_name);
+}
+
 void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceRequest &rq, b0::resolver_msgs::AnnounceServiceResponse &rsp)
 {
     resolver::NodeEntry *ne = nodeByID(rq.node_id());
@@ -375,26 +408,20 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
     {
         // a HeartBeatRequest from "self" pid=0 thread="self" means to actually perform
         // the detection and purging of dead nodes
-        for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); )
+        std::set<std::string> nodes_shutdown;
+        for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); ++i)
         {
             resolver::NodeEntry *e = i->second;
             bool is_alive = (boost::posix_time::second_clock::local_time() - e->last_heartbeat) < boost::posix_time::seconds{5};
             if(!is_alive && e->name != this->getName())
-            {
-                log(INFO, "Node '%s' disconnected.", e->name);
-
-                onNodeDisconnected(e->name);
-
-                for(resolver::ServiceEntry *s : e->services)
-                    services_by_name_.erase(s->name);
-                nodes_by_key_.erase(nodeKey(e));
-                i = nodes_by_name_.erase(i);
-
-                delete e;
-
-                log(DEBUG, "There are now %d alive nodes.", nodes_by_name_.size());
-            }
-            else ++i;
+                nodes_shutdown.insert(e->name);
+        }
+        for(auto node_name : nodes_shutdown)
+        {
+            log(INFO, "Node '%s' disconnected.", node_name);
+            resolver::NodeEntry *e = nodeByName(node_name);
+            onNodeDisconnected(node_name);
+            delete e;
         }
     }
     else
@@ -502,7 +529,7 @@ void Resolver::heartBeatSweeper()
     zmq::socket_t socket(context_, ZMQ_REQ);
     socket.connect("inproc://resolv");
 
-    while(true)
+    while(!shutdownRequested())
     {
         // send a special heartbeat to resolv itself trigger the sweeping:
 
@@ -520,6 +547,9 @@ void Resolver::heartBeatSweeper()
 
         boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
     }
+
+    // don't call log() from another thread! leave the following commented out:
+    //log(INFO, "Heartbeat sweeper thread terminates.");
 }
 
 } // namespace b0
