@@ -25,6 +25,18 @@ message AnnounceNodeResponse {
   required string xpub_sock_addr = 4;
 }
 
+// Sent by node to resolver when shutting down
+// (it's not really a request buit rather a notification)
+message ShutdownNodeRequest {
+  required NodeID node_id = 1;
+}
+
+// Sent by resolver to node in reply to ShutdownNodeRequest
+// (but probably will not be received)
+message ShutdownNodeResponse {
+  required bool ok = 1;
+}
+
 // Sent by ServiceServer to announce a service by some name
 // The name must be unique
 message AnnounceServiceRequest {
@@ -108,6 +120,7 @@ message GetGraphResponse {
 message Request {
   oneof req {
     AnnounceNodeRequest announce_node = 20;
+    ShutdownNodeRequest shutdown_node = 25;
     AnnounceServiceRequest announce_service = 30;
     ResolveServiceRequest resolve = 50;
     HeartBeatRequest heartbeat = 1;
@@ -121,6 +134,7 @@ message Request {
 message Response {
   oneof resp {
     AnnounceNodeResponse announce_node = 21;
+    ShutdownNodeResponse shutdown_node = 26;
     AnnounceServiceResponse announce_service = 31;
     ResolveServiceResponse resolve = 51;
     HeartBeatResponse heartbeat = 2;

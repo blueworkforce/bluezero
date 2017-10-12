@@ -81,6 +81,11 @@ public:
     void init() override;
 
     /*!
+     * \brief Shutdown this node (stop all threads, send a shutdown notification, ...)
+     */
+    void shutdown() override;
+
+    /*!
      * \brief Provide the (inproc) resolver address
      */
     std::string resolverAddress() const override;
@@ -229,6 +234,11 @@ public:
      * \brief Handle the AnnounceNode request
      */
     virtual void handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &rq, b0::resolver_msgs::AnnounceNodeResponse &rsp);
+
+    /*!
+     * \brief Handle the ShutdownNode request
+     */
+    virtual void handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &rq, b0::resolver_msgs::ShutdownNodeResponse &rsp);
 
     /*!
      * \brief Handle the AnnounceService request

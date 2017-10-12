@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     node.init();
 
     int i = 0;
-    while(true)
+    while(!node.shutdownRequested())
     {
         /*
          * Process messages from node's sockets

@@ -21,7 +21,7 @@ public:
 
     void run()
     {
-        while(true)
+        while(!shutdownRequested())
         {
             /*
              * In this example we don't call Node::spinOnce() to process

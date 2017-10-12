@@ -54,10 +54,43 @@ public:
     /*!
      * \brief Initialize the node (connect to resolve, start heartbeat, announce node name)
      *
-     * If you need to extend the init phase, when overriding it in your subclass, remember to
-     * first call this Node::init() (unless you know what you are doing).
+     * If you need to extend the init phase, when overriding it in your
+     * subclass, remember to first call this Node::init() (unless you know what
+     * you are doing).
      */
     virtual void init();
+
+    /*!
+     * \brief Shutdown the node (stop all running threads, send shutdown notification)
+     *
+     * If you need to perform additional cleanup, when overriding this method
+     * in your subclass, remember to first call this Node::shutdown() (unless you know
+     * what you are doing).
+     */
+    virtual void shutdown();
+
+    /*!
+     * \brief Return wether shutdown has requested (by Node::shutdown() method or by pressing CTRL-C)
+     */
+    bool shutdownRequested() const;
+
+    /*!
+     * \brief Read all available messages from the various ZeroMQ sockets, and
+     * dispatch them to callbacks.
+     *
+     * This method will call b0::Subscriber::spinOnce() and b0::ServiceServer::spinOnce()
+     * on the subscribers and service servers that belong to this node.
+     *
+     * Warning: every message sent on a topic which has no registered callback will be discarded.
+     */
+    void spinOnce();
+
+    /*!
+     * \brief Run the spin loop (continuously call spinOnce(), at the specified rate)
+     *
+     * \param spinRate the approximate frequency (in Hz) at which spinOnce() will be called
+     */
+    void spin(double spinRate = 10.0);
 
 protected:
     /*!
@@ -178,29 +211,16 @@ protected:
     virtual void announceNode();
 
     /*!
+     * \brief Notify resolver of this node shutdown
+     */
+    virtual void notifyShutdown();
+
+    /*!
      * \brief The heartbeat message loop (run in its own thread)
      */
     virtual void heartbeatLoop();
 
 public:
-    /*!
-     * \brief Read all available messages from the various ZeroMQ sockets, and
-     * dispatch them to callbacks.
-     *
-     * This method will call b0::Subscriber::spinOnce() and b0::ServiceServer::spinOnce()
-     * on the subscribers and service servers that belong to this node.
-     *
-     * Warning: every message sent on a topic which has no registered callback will be discarded.
-     */
-    void spinOnce();
-
-    /*!
-     * \brief Run the spin loop (continuously call spinOnce(), at the specified rate)
-     *
-     * \param spinRate the approximate frequency (in Hz) at which spinOnce() will be called
-     */
-    void spin(double spinRate = 10.0);
-
     /*!
      * \brief Get the socket connected to resolver service
      */
@@ -244,6 +264,17 @@ private:
     //! Address of the proxy's XPUB socket
     std::string xpub_sock_addr_;
 
+    static std::atomic<bool> quit_flag_;
+
+    bool shutdown_flag_;
+
+    static bool sigint_handler_setup_;
+
+    static void signalHandler(int s);
+
+    static void setupSIGINTHandler();
+
+public:
     friend class AbstractPublisher;
     friend class AbstractSubscriber;
     friend class AbstractServiceClient;

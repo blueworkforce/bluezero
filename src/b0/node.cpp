@@ -15,13 +15,19 @@
 namespace b0
 {
 
+std::atomic<bool> Node::quit_flag_(false);
+
+bool Node::sigint_handler_setup_ = false;
+
 Node::Node(std::string nodeName)
     : context_(1),
       resolv_socket_(context_, ZMQ_REQ),
       name_(nodeName),
       thread_id_(boost::this_thread::get_id()),
-      logger_(this)
+      logger_(this),
+      shutdown_flag_(false)
 {
+    setupSIGINTHandler();
 }
 
 Node::~Node()
@@ -30,11 +36,14 @@ Node::~Node()
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
     heartbeat_thread_.interrupt();
     heartbeat_thread_.join();
+
+    // inform resolver that we are shutting down
+    notifyShutdown();
 }
 
 void Node::init()
 {
-    log(DEBUG, "Initialization.");
+    log(DEBUG, "Initialization...");
 
     connectToResolver();
 
@@ -55,7 +64,51 @@ void Node::init()
     for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
         (*it)->init();
 
-    log(DEBUG, "Initialization finished.");
+    log(DEBUG, "Initialization complete.");
+}
+
+void Node::shutdown()
+{
+    log(DEBUG, "Shutting down...");
+
+    shutdown_flag_ = true;
+
+    log(DEBUG, "Shutting complete.");
+}
+
+bool Node::shutdownRequested() const
+{
+    return shutdown_flag_ || quit_flag_.load();
+}
+
+void Node::spinOnce()
+{
+    // publishers don't need to spin
+
+    // spin subscribers
+    for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
+    {
+        (*it)->spinOnce();
+    }
+
+    // service clients don't need to spin
+
+    // spin service servers
+    for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
+    {
+        (*it)->spinOnce();
+    }
+}
+
+void Node::spin(double spinRate)
+{
+    while(!shutdownRequested())
+    {
+        spinOnce();
+        boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
+    }
+
+    log(INFO, "Node shutdown requested");
 }
 
 void Node::log(b0::logger_msgs::LogLevel level, std::string message)
@@ -203,11 +256,28 @@ void Node::announceNode()
     logger_.connect(xsub_sock_addr_);
 }
 
+void Node::notifyShutdown()
+{
+    log(TRACE, "Notifying node shutdown to resolver...", name_);
+    b0::resolver_msgs::Request rq0;
+    b0::resolver_msgs::ShutdownNodeRequest &rq = *rq0.mutable_shutdown_node();
+    getNodeID(*rq.mutable_node_id());
+    s_send(resolv_socket_, rq0);
+
+    b0::resolver_msgs::Response rsp0;
+    log(TRACE, "Waiting for response from resolver...");
+    s_recv(resolv_socket_, rsp0);
+    const b0::resolver_msgs::ShutdownNodeResponse &rsp = rsp0.shutdown_node();
+
+    if(!rsp.ok())
+        log(WARN, "resolver has some problem with our shutdown... alas");
+}
+
 void Node::heartbeatLoop()
 {
     zmq::socket_t socket(context_, ZMQ_REQ);
     socket.connect(resolverAddress());
-    while(true)
+    while(!shutdownRequested())
     {
         b0::resolver_msgs::Request rq0;
         b0::resolver_msgs::HeartBeatRequest &rq = *rq0.mutable_heartbeat();
@@ -220,34 +290,26 @@ void Node::heartbeatLoop()
         if(!rsp.ok()) break;
         boost::this_thread::sleep_for(boost::chrono::seconds{1});
     }
+
+    log(INFO, "Heartbeat thread terminating.");
 }
 
-void Node::spinOnce()
+void Node::signalHandler(int s)
 {
-    // publishers don't need to spin
-
-    // spin subscribers
-    for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
-    {
-        (*it)->spinOnce();
-    }
-
-    // service clients don't need to spin
-
-    // spin service servers
-    for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
-    {
-        (*it)->spinOnce();
-    }
+    quit_flag_.store(true);
 }
 
-void Node::spin(double spinRate)
+void Node::setupSIGINTHandler()
 {
-    while(true)
-    {
-        spinOnce();
-        boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
-    }
+    if(sigint_handler_setup_) return;
+
+    struct sigaction sa;
+    memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = &Node::signalHandler;
+    sigfillset(&sa.sa_mask);
+    sigaction(SIGINT, &sa, NULL);
+
+    sigint_handler_setup_ = true;
 }
 
 } // namespace b0
