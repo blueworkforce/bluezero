@@ -57,6 +57,12 @@ int main(int argc, char **argv)
          */
         boost::this_thread::sleep_for(boost::chrono::milliseconds(500));
     }
+
+    /*
+     * Perform cleanup (stop threads, notify resolver that this node has quit, ...)
+     */
+    node.cleanup();
+
     return 0;
 }
 

@@ -46,6 +46,7 @@ int main(int argc, char **argv)
     TestPublisherNode node(argc > 1 ? argv[1] : "A");
     node.init();
     node.run();
+    node.cleanup();
     return 0;
 }
 

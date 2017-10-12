@@ -46,6 +46,11 @@ int main(int argc, char **argv)
     cli.call(req, resp);
     std::cout << "Received:" << std::endl << resp.DebugString() << std::endl;
 
+    /*
+     * Perform cleanup (stop threads, notify resolver that this node has quit, ...)
+     */
+    node.cleanup();
+
     return 0;
 }
 

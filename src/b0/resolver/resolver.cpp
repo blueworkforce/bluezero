@@ -40,7 +40,7 @@ Resolver::Resolver()
 Resolver::~Resolver()
 {
     pub_proxy_thread_.interrupt();
-    pub_proxy_thread_.join(); // FIXME: this makes the process hang on quit
+    //pub_proxy_thread_.join(); // FIXME: this makes the process hang on quit
 }
 
 void Resolver::init()
@@ -100,6 +100,19 @@ void Resolver::announceNode()
     handleAnnounceNode(rq, rsp);
 
     logger_.connect("inproc://xsub_proxy");
+}
+
+void Resolver::notifyShutdown()
+{
+    // directly route this call to the handler, otherwise it will cause a deadlock
+#if 0
+    b0::resolver_msgs::ShutdownNodeRequest rq;
+    getNodeID(*rq.mutable_node_id());
+    b0::resolver_msgs::ShutdownNodeResponse rsp;
+    handleShutdownNode(rq, rsp);
+#else
+    // nothing to do really
+#endif
 }
 
 void Resolver::onNodeConnected(std::string name)
@@ -204,14 +217,19 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     proxy_out_sock_.bind(xpub_proxy_addr);
     proxy_out_sock_.bind("inproc://xpub_proxy");
 
-    log(TRACE, "Running XSUB/XPUB proxy...");
+    try
+    {
+        log(TRACE, "Running XSUB/XPUB proxy...");
 #ifdef __GNUC__
-    zmq::proxy(static_cast<void*>(proxy_in_sock_), static_cast<void*>(proxy_out_sock_), nullptr);
+        zmq::proxy(static_cast<void*>(proxy_in_sock_), static_cast<void*>(proxy_out_sock_), nullptr);
 #else
-    zmq::proxy(proxy_in_sock_, proxy_out_sock_, nullptr);
+        zmq::proxy(proxy_in_sock_, proxy_out_sock_, nullptr);
 #endif
-
-    log(INFO, "XSUB/XPUB proxy has terminated");
+        log(INFO, "XSUB/XPUB proxy has terminated");
+    }
+    catch(zmq::error_t &ex)
+    {
+    }
 }
 
 bool Resolver::nodeNameExists(std::string name)

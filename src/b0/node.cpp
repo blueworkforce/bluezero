@@ -32,13 +32,6 @@ Node::Node(std::string nodeName)
 
 Node::~Node()
 {
-    // stop the heartbeat_thread so that the last zmq socket will be destroyed
-    // and we avoid an unclean exit (zmq::error_t: Context was terminated)
-    heartbeat_thread_.interrupt();
-    heartbeat_thread_.join();
-
-    // inform resolver that we are shutting down
-    notifyShutdown();
 }
 
 void Node::init()
@@ -109,6 +102,19 @@ void Node::spin(double spinRate)
     }
 
     log(INFO, "Node shutdown requested");
+
+    cleanup();
+}
+
+void Node::cleanup()
+{
+    // stop the heartbeat_thread so that the last zmq socket will be destroyed
+    // and we avoid an unclean exit (zmq::error_t: Context was terminated)
+    heartbeat_thread_.interrupt();
+    heartbeat_thread_.join();
+
+    // inform resolver that we are shutting down
+    notifyShutdown();
 }
 
 void Node::log(b0::logger_msgs::LogLevel level, std::string message)
@@ -258,7 +264,7 @@ void Node::announceNode()
 
 void Node::notifyShutdown()
 {
-    log(TRACE, "Notifying node shutdown to resolver...", name_);
+    log(TRACE, "Notifying node shutdown to resolver...");
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::ShutdownNodeRequest &rq = *rq0.mutable_shutdown_node();
     getNodeID(*rq.mutable_node_id());

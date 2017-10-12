@@ -83,14 +83,19 @@ public:
      *
      * Warning: every message sent on a topic which has no registered callback will be discarded.
      */
-    void spinOnce();
+    virtual void spinOnce();
 
     /*!
-     * \brief Run the spin loop (continuously call spinOnce(), at the specified rate)
+     * \brief Run the spin loop (continuously call spinOnce(), at the specified rate, and call cleanup() at the end)
      *
      * \param spinRate the approximate frequency (in Hz) at which spinOnce() will be called
      */
-    void spin(double spinRate = 10.0);
+    virtual void spin(double spinRate = 10.0);
+
+    /*!
+     * \brief Node cleanup: stop all threads, send a shutdown notification to resolver, and so on...
+     */
+    virtual void cleanup();
 
 protected:
     /*!
