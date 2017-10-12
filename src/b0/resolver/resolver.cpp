@@ -100,30 +100,79 @@ void Resolver::onNodeConnected(std::string name)
 
 void Resolver::onNodeDisconnected(std::string name)
 {
-    bool changed = false;
+    std::set<std::pair<std::string, std::string> > npt, nst, nos, nus;
 
-    for(auto it = node_topic_.begin(); it != node_topic_.end(); )
-    {
-        if(it->first.first == name)
-        {
-            it = node_topic_.erase(it);
-            changed = true;
-        }
-        else ++it;
-    }
+    for(auto x : node_publishes_topic_)
+        if(x.first == name)
+            npt.insert(x);
 
-    for(auto it = node_service_.begin(); it != node_service_.end(); )
-    {
-        if(it->first.first == name)
-        {
-            it = node_service_.erase(it);
-            changed = true;
-        }
-        else ++it;
-    }
+    for(auto x : node_subscribes_topic_)
+        if(x.first == name)
+            nst.insert(x);
 
-    if(changed)
+    for(auto x : node_offers_service_)
+        if(x.first == name)
+            nos.insert(x);
+
+    for(auto x : node_uses_service_)
+        if(x.first == name)
+            nus.insert(x);
+
+    for(auto x : npt) onNodeTopicPublishStop(x.first, x.second);
+    for(auto x : nst) onNodeTopicSubscribeStop(x.first, x.second);
+    for(auto x : nos) onNodeServiceOfferStop(x.first, x.second);
+    for(auto x : nus) onNodeServiceUseStop(x.first, x.second);
+
+    if(npt.size() > 0 || nst.size() > 0 || nos.size() > 0 || nus.size() > 0)
         onGraphChanged();
+}
+
+void Resolver::onNodeTopicPublishStart(std::string node_name, std::string topic_name)
+{
+    log(INFO, "Graph: node '%s' publishes on topic '%s'", node_name, topic_name);
+    node_publishes_topic_.insert(std::make_pair(node_name, topic_name));
+}
+
+void Resolver::onNodeTopicPublishStop(std::string node_name, std::string topic_name)
+{
+    log(INFO, "Graph: node '%s' stops publishing on topic '%s'", node_name, topic_name);
+    node_publishes_topic_.erase(std::make_pair(node_name, topic_name));
+}
+
+void Resolver::onNodeTopicSubscribeStart(std::string node_name, std::string topic_name)
+{
+    log(INFO, "Graph: node '%s' subscribes to topic '%s'", node_name, topic_name);
+    node_subscribes_topic_.insert(std::make_pair(node_name, topic_name));
+}
+
+void Resolver::onNodeTopicSubscribeStop(std::string node_name, std::string topic_name)
+{
+    log(INFO, "Graph: node '%s' stops subscribing to topic '%s'", node_name, topic_name);
+    node_subscribes_topic_.erase(std::make_pair(node_name, topic_name));
+}
+
+void Resolver::onNodeServiceOfferStart(std::string node_name, std::string service_name)
+{
+    log(INFO, "Graph: node '%s' offers service '%s'", node_name, service_name);
+    node_offers_service_.insert(std::make_pair(node_name, service_name));
+}
+
+void Resolver::onNodeServiceOfferStop(std::string node_name, std::string service_name)
+{
+    log(INFO, "Graph: node '%s' stops offering service '%s'", node_name, service_name);
+    node_offers_service_.erase(std::make_pair(node_name, service_name));
+}
+
+void Resolver::onNodeServiceUseStart(std::string node_name, std::string service_name)
+{
+    log(INFO, "Graph: node '%s' connects to service '%s'", node_name, service_name);
+    node_uses_service_.insert(std::make_pair(node_name, service_name));
+}
+
+void Resolver::onNodeServiceUseStop(std::string node_name, std::string service_name)
+{
+    log(INFO, "Graph: node '%s' disconnects from service '%s'", node_name, service_name);
+    node_uses_service_.erase(std::make_pair(node_name, service_name));
 }
 
 void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
@@ -364,25 +413,43 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
 
 void Resolver::handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp)
 {
-    static const char *predicate[2][2] = {{"stops publishing", "publishes"}, {"stops subscribing to", "subscribes to"}};
-    log(INFO, "Graph: node '%s' %s topic '%s'", req.node_name(), predicate[req.reverse()][req.active()], req.topic_name());
-    auto k = std::make_pair(req.node_name(), req.topic_name());
-    size_t old_sz = node_topic_.size();
-    if(req.active()) node_topic_[k] = req.reverse();
-    else node_topic_.erase(k);
-    if(old_sz != node_topic_.size())
+    size_t old_sz1 = node_publishes_topic_.size(), old_sz2 = node_subscribes_topic_.size();
+    if(req.reverse())
+    {
+        if(req.active())
+            onNodeTopicSubscribeStart(req.node_name(), req.topic_name());
+        else
+            onNodeTopicSubscribeStop(req.node_name(), req.topic_name());
+    }
+    else
+    {
+        if(req.active())
+            onNodeTopicPublishStart(req.node_name(), req.topic_name());
+        else
+            onNodeTopicPublishStop(req.node_name(), req.topic_name());
+    }
+    if(old_sz1 != node_publishes_topic_.size() || old_sz2 != node_subscribes_topic_.size())
         onGraphChanged();
 }
 
 void Resolver::handleNodeService(const b0::resolver_msgs::NodeServiceRequest &req, b0::resolver_msgs::NodeServiceResponse &resp)
 {
-    static const char *predicate[2][2] = {{"stops offering", "offers"}, {"disconnects from", "connects to"}};
-    log(INFO, "Graph: node '%s' %s service '%s'", req.node_name(), predicate[req.reverse()][req.active()], req.service_name());
-    auto k = std::make_pair(req.node_name(), req.service_name());
-    size_t old_sz = node_service_.size();
-    if(req.active()) node_service_[k] = req.reverse();
-    else node_service_.erase(k);
-    if(old_sz != node_service_.size())
+    size_t old_sz1 = node_offers_service_.size(), old_sz2 = node_uses_service_.size();
+    if(req.reverse())
+    {
+        if(req.active())
+            onNodeServiceUseStart(req.node_name(), req.service_name());
+        else
+            onNodeServiceUseStop(req.node_name(), req.service_name());
+    }
+    else
+    {
+        if(req.active())
+            onNodeServiceOfferStart(req.node_name(), req.service_name());
+        else
+            onNodeServiceOfferStop(req.node_name(), req.service_name());
+    }
+    if(old_sz1 != node_offers_service_.size() || old_sz2 != node_uses_service_.size())
         onGraphChanged();
 }
 
@@ -393,19 +460,33 @@ void Resolver::handleGetGraph(const b0::resolver_msgs::GetGraphRequest &req, b0:
 
 void Resolver::getGraph(b0::resolver_msgs::Graph &graph)
 {
-    for(auto x : node_topic_)
+    for(auto x : node_publishes_topic_)
     {
         b0::resolver_msgs::GraphLink *l = graph.add_node_topic();
-        l->set_a(x.first.first);
-        l->set_b(x.first.second);
-        l->set_reversed(x.second);
+        l->set_a(x.first);
+        l->set_b(x.second);
+        l->set_reversed(false);
     }
-    for(auto x : node_service_)
+    for(auto x : node_subscribes_topic_)
+    {
+        b0::resolver_msgs::GraphLink *l = graph.add_node_topic();
+        l->set_a(x.first);
+        l->set_b(x.second);
+        l->set_reversed(true);
+    }
+    for(auto x : node_offers_service_)
     {
         b0::resolver_msgs::GraphLink *l = graph.add_node_service();
-        l->set_a(x.first.first);
-        l->set_b(x.first.second);
-        l->set_reversed(x.second);
+        l->set_a(x.first);
+        l->set_b(x.second);
+        l->set_reversed(false);
+    }
+    for(auto x : node_uses_service_)
+    {
+        b0::resolver_msgs::GraphLink *l = graph.add_node_service();
+        l->set_a(x.first);
+        l->set_b(x.second);
+        l->set_reversed(true);
     }
 }
 
