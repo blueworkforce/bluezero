@@ -113,6 +113,19 @@ void Node::cleanup()
     heartbeat_thread_.interrupt();
     heartbeat_thread_.join();
 
+    log(DEBUG, "Cleanup publishers...");
+    for(auto it = publishers_.begin(); it != publishers_.end(); ++it)
+        (*it)->cleanup();
+    log(DEBUG, "Cleanup service clients...");
+    for(auto it = service_clients_.begin(); it != service_clients_.end(); ++it)
+        (*it)->cleanup();
+    log(DEBUG, "Cleanup service servers...");
+    for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
+        (*it)->cleanup();
+    log(DEBUG, "Cleanup subscribers...");
+    for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
+        (*it)->cleanup();
+
     // inform resolver that we are shutting down
     notifyShutdown();
 }

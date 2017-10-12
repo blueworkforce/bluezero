@@ -38,6 +38,15 @@ public:
     }
 
     /*!
+     * \brief Perform cleanup (disconnect from XPUB)
+     */
+    virtual void cleanup()
+    {
+        sub_socket_.setsockopt(ZMQ_UNSUBSCRIBE, topic_.data(), topic_.size());
+        sub_socket_.disconnect(node_.getXPUBSocketAddress());
+    }
+
+    /*!
      * \brief Poll and read incoming messages, and dispatch them
      */
     virtual void spinOnce() = 0;
@@ -148,12 +157,26 @@ public:
         return msg.ParseFromString(payload);
     }
 
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     void init() override
     {
         AbstractSubscriber::init();
 
         if(notifyGraph)
             b0::graph::notifyTopic(node_, topic_, true, true);
+    }
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
+    void cleanup() override
+    {
+        AbstractSubscriber::init();
+
+        if(notifyGraph)
+            b0::graph::notifyTopic(node_, topic_, true, false);
     }
 
 protected:

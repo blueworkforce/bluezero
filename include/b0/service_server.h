@@ -33,6 +33,11 @@ public:
         announce();
     }
 
+    virtual void cleanup()
+    {
+        unbind();
+    }
+
     /*!
      * \brief Poll and read incoming messages, and dispatch them
      */
@@ -51,6 +56,11 @@ protected:
         remote_addr_ = (fmt % host % port).str();
         rep_socket_.bind(bind_addr_);
         node_.log(node_.DEBUG, "Bound service '%s' to %s", service_name_, bind_addr_);
+    }
+
+    virtual void unbind()
+    {
+        rep_socket_.unbind(bind_addr_);
     }
 
     /*!
@@ -201,12 +211,26 @@ public:
         return ret;
     }
 
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     void init() override
     {
         AbstractServiceServer::init();
 
         if(notifyGraph)
             b0::graph::notifyService(node_, service_name_, false, true);
+    }
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
+    void cleanup() override
+    {
+        AbstractServiceServer::cleanup();
+
+        if(notifyGraph)
+            b0::graph::notifyService(node_, service_name_, false, false);
     }
 
 protected:

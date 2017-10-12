@@ -33,6 +33,14 @@ public:
         pub_socket_.connect(node_.getXSUBSocketAddress());
     }
 
+    /*!
+     * \brief Perform cleanup (disconnect from XSUB)
+     */
+    virtual void cleanup()
+    {
+        pub_socket_.disconnect(node_.getXSUBSocketAddress());
+    }
+
 protected:
     //! The Node owning this Publisher
     Node &node_;
@@ -75,12 +83,26 @@ public:
         ::s_send(pub_socket_, msg);
     }
 
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     void init() override
     {
         AbstractPublisher::init();
 
         if(notifyGraph)
             b0::graph::notifyTopic(node_, topic_, false, true);
+    }
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
+    void cleanup() override
+    {
+        AbstractPublisher::cleanup();
+
+        if(notifyGraph)
+            b0::graph::notifyTopic(node_, topic_, false, false);
     }
 };
 
