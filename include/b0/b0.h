@@ -17,7 +17,7 @@
  * resolver node, and it will initialize each of its publishers, subscribers,
  * clients and servers.
  *
- * b0::Node::spin() will run the message loop (see also b0::Node::spinOnce())
+ * b0::Node::spin() will run the message loop (see also b0::Node::spinOnce() and b0::Node::cleanup())
  *
  * NOTE: In a thread there should be at most one b0::Node.
  *
