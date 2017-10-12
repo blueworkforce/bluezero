@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['servicebyname',['serviceByName',['../classb0_1_1_resolver.html#a09de15b22b0d8d02b6293504a10e61a4',1,'b0::Resolver']]],
+  ['servicebyname',['serviceByName',['../classb0_1_1resolver_1_1_resolver.html#a8a413c7216f15d7f01c97a1b9413cd74',1,'b0::resolver::Resolver']]],
   ['serviceclient',['ServiceClient',['../classb0_1_1_service_client.html',1,'b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;'],['../classb0_1_1_service_client.html#a08f3367cabad54e2be18db7fda6fa4bf',1,'b0::ServiceClient::ServiceClient()']]],
-  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1_resolver.html#a00c004e27537891eebad896b90cf2fc3',1,'b0::Resolver']]],
+  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1resolver_1_1_resolver.html#aba1b6605c215f6b868a456e1278d7fc0',1,'b0::resolver::Resolver']]],
   ['serviceserver',['ServiceServer',['../classb0_1_1_service_server.html',1,'b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;'],['../classb0_1_1_service_server.html#a0386a7bb6576a3099f9f32bf1737d4fa',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, boost::function&lt; void(const TReq &amp;, TRep &amp;)&gt; callback=0)'],['../classb0_1_1_service_server.html#a57adc41e0b6ba9a9a30fe6386e705787',1,'b0::ServiceServer::ServiceServer(TNode *node, std::string service_name, void(TNode::*callbackMethod)(const TReq &amp;, TRep &amp;))'],['../classb0_1_1_service_server.html#ac6787d40ddcfee89b49d2b4dbdfe7c5d',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, void(T::*callbackMethod)(const TReq &amp;, TRep &amp;), T *callbackObject)']]],
-  ['shutdown',['shutdown',['../classb0_1_1_node.html#ad25d81d5e85aa26aeb04421c85eb5557',1,'b0::Node::shutdown()'],['../classb0_1_1_resolver.html#a4ac1c468eeb855df3d757b92b9f4d82b',1,'b0::Resolver::shutdown()']]],
+  ['shutdown',['shutdown',['../classb0_1_1_node.html#ad25d81d5e85aa26aeb04421c85eb5557',1,'b0::Node::shutdown()'],['../classb0_1_1resolver_1_1_resolver.html#aff494b724ebbef6af0bb65259427a083',1,'b0::resolver::Resolver::shutdown()']]],
   ['shutdownrequested',['shutdownRequested',['../classb0_1_1_node.html#a74ad0853f37382fb39df1b00922c802a',1,'b0::Node']]],
   ['spin',['spin',['../classb0_1_1_node.html#a82dd059231755c8a229144748b18ec79',1,'b0::Node']]],
   ['spinonce',['spinOnce',['../classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5',1,'b0::Node::spinOnce()'],['../classb0_1_1_service_server.html#af88c56ec6da48a0b36c4dce30173a21c',1,'b0::ServiceServer::spinOnce()'],['../classb0_1_1_subscriber.html#a964e8866dbc073aceba801f2acfd06da',1,'b0::Subscriber::spinOnce()']]],

@@ -14,10 +14,10 @@
 namespace b0
 {
 
-//! \cond HIDDEN_SYMBOLS
-
 namespace resolver
 {
+
+//! \cond HIDDEN_SYMBOLS
 
 struct ServiceEntry;
 
@@ -37,8 +37,6 @@ struct ServiceEntry
     std::string name;
     std::string addr;
 };
-
-} // namespace resolver
 
 class Resolver;
 
@@ -333,6 +331,8 @@ protected:
     //! Publisher of the Graph message
     b0::Publisher<b0::resolver_msgs::Graph, false> graph_pub_;
 };
+
+} // namespace resolver
 
 } // namespace b0
 

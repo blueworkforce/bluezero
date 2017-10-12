@@ -82,8 +82,8 @@ Inheritance diagram for b0::Resolver:</div>
  <div class="center">
   <img src="classb0_1_1_resolver.png" usemap="#b0::Resolver_map" alt=""/>
   <map id="b0::Resolver_map" name="b0::Resolver_map">
-<area href="classb0_1_1_node.html" title="The abstraction for a node in the network. " alt="b0::Node" shape="rect" coords="0,56,103,80"/>
-<area href="classb0_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::LogInterface" shape="rect" coords="0,0,103,24"/>
+<area href="classb0_1_1_node.html" title="The abstraction for a node in the network. " alt="b0::Node" shape="rect" coords="0,56,145,80"/>
+<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="0,0,145,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -291,21 +291,21 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 zmq::socket_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#abde40d38d14ced3beccb33f2fd753109">resolverSocket</a> ()</td></tr>
 <tr class="memdesc:abde40d38d14ced3beccb33f2fd753109 inherit pub_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the socket connected to resolver service. <br /></td></tr>
 <tr class="separator:abde40d38d14ced3beccb33f2fd753109 inherit pub_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classb0_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1_log_interface.html">b0::LogInterface</a></td></tr>
-<tr class="memitem:ab3a3349c5cb8186ad6397a3e1d768490 inherit pub_methods_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="ab3a3349c5cb8186ad6397a3e1d768490"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#ab3a3349c5cb8186ad6397a3e1d768490">log</a> (std::string message)</td></tr>
-<tr class="memdesc:ab3a3349c5cb8186ad6397a3e1d768490 inherit pub_methods_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, with the default level (INFO) <br /></td></tr>
-<tr class="separator:ab3a3349c5cb8186ad6397a3e1d768490 inherit pub_methods_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16aef9ca3db209dba88a7211bc44625a inherit pub_methods_classb0_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="a16aef9ca3db209dba88a7211bc44625a"></a>
+<tr class="inherit_header pub_methods_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
+<tr class="memitem:a21a97baceb92f3817a219a0705ec116e inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a21a97baceb92f3817a219a0705ec116e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a21a97baceb92f3817a219a0705ec116e">log</a> (std::string message)</td></tr>
+<tr class="memdesc:a21a97baceb92f3817a219a0705ec116e inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, with the default level (INFO) <br /></td></tr>
+<tr class="separator:a21a97baceb92f3817a219a0705ec116e inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac496160e24c4b1dd93ffc9c2670388c1 inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="ac496160e24c4b1dd93ffc9c2670388c1"></a>
 template&lt;typename... Arguments&gt; </td></tr>
-<tr class="memitem:a16aef9ca3db209dba88a7211bc44625a inherit pub_methods_classb0_1_1_log_interface"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a16aef9ca3db209dba88a7211bc44625a">log</a> (std::string const &amp;fmt, Arguments &amp;&amp;... args)</td></tr>
-<tr class="memdesc:a16aef9ca3db209dba88a7211bc44625a inherit pub_methods_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, at default level, using a format string. <br /></td></tr>
-<tr class="separator:a16aef9ca3db209dba88a7211bc44625a inherit pub_methods_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f94f3886e6d523821c1f8c058eec24 inherit pub_methods_classb0_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="ae6f94f3886e6d523821c1f8c058eec24"></a>
+<tr class="memitem:ac496160e24c4b1dd93ffc9c2670388c1 inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#ac496160e24c4b1dd93ffc9c2670388c1">log</a> (std::string const &amp;fmt, Arguments &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ac496160e24c4b1dd93ffc9c2670388c1 inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, at default level, using a format string. <br /></td></tr>
+<tr class="separator:ac496160e24c4b1dd93ffc9c2670388c1 inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a5667d34d07f8f502f6d5502b0c0bab inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="a0a5667d34d07f8f502f6d5502b0c0bab"></a>
 template&lt;typename... Arguments&gt; </td></tr>
-<tr class="memitem:ae6f94f3886e6d523821c1f8c058eec24 inherit pub_methods_classb0_1_1_log_interface"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#ae6f94f3886e6d523821c1f8c058eec24">log</a> (b0::logger_msgs::LogLevel level, std::string const &amp;fmt, Arguments &amp;&amp;... args)</td></tr>
-<tr class="memdesc:ae6f94f3886e6d523821c1f8c058eec24 inherit pub_methods_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message using a format string. <br /></td></tr>
-<tr class="separator:ae6f94f3886e6d523821c1f8c058eec24 inherit pub_methods_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a5667d34d07f8f502f6d5502b0c0bab inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a0a5667d34d07f8f502f6d5502b0c0bab">log</a> (b0::logger_msgs::LogLevel level, std::string const &amp;fmt, Arguments &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a0a5667d34d07f8f502f6d5502b0c0bab inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message using a format string. <br /></td></tr>
+<tr class="separator:a0a5667d34d07f8f502f6d5502b0c0bab inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -370,38 +370,38 @@ zmq::context_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 zmq::socket_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#ad3993b7ca9b66e713a4c7dd6638404ef">resolv_socket_</a></td></tr>
 <tr class="memdesc:ad3993b7ca9b66e713a4c7dd6638404ef inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">ZeroMQ REQ socket used to talk with resolver (announce, resolve, heartbeat) <br /></td></tr>
 <tr class="separator:ad3993b7ca9b66e713a4c7dd6638404ef inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a190877169377c06f52bcd6d563960818 inherit pro_attribs_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a190877169377c06f52bcd6d563960818"></a>
-<a class="el" href="classb0_1_1_logger.html">Logger</a>&lt; <a class="el" href="classb0_1_1_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a190877169377c06f52bcd6d563960818">logger_</a></td></tr>
-<tr class="memdesc:a190877169377c06f52bcd6d563960818 inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logger of this node. <br /></td></tr>
-<tr class="separator:a190877169377c06f52bcd6d563960818 inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81ca23a2291620b895e846442e01a744 inherit pro_attribs_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a81ca23a2291620b895e846442e01a744"></a>
+<a class="el" href="classb0_1_1logger_1_1_logger.html">logger::Logger</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a81ca23a2291620b895e846442e01a744">logger_</a></td></tr>
+<tr class="memdesc:a81ca23a2291620b895e846442e01a744 inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logger of this node. <br /></td></tr>
+<tr class="separator:a81ca23a2291620b895e846442e01a744 inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_attribs_classb0_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classb0_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classb0_1_1_log_interface.html">b0::LogInterface</a></td></tr>
-<tr class="memitem:a90210989228e48233b51dd3759213c72 inherit pub_attribs_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a90210989228e48233b51dd3759213c72"></a>
-const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a90210989228e48233b51dd3759213c72">TRACE</a> = b0::logger_msgs::LogLevel::TRACE</td></tr>
-<tr class="memdesc:a90210989228e48233b51dd3759213c72 inherit pub_attribs_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most verbose level. <br /></td></tr>
-<tr class="separator:a90210989228e48233b51dd3759213c72 inherit pub_attribs_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41bdc7938dbcf1741f08544d9b26306e inherit pub_attribs_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a41bdc7938dbcf1741f08544d9b26306e"></a>
-const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a41bdc7938dbcf1741f08544d9b26306e">DEBUG</a> = b0::logger_msgs::LogLevel::DEBUG</td></tr>
-<tr class="memdesc:a41bdc7938dbcf1741f08544d9b26306e inherit pub_attribs_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slightly less verbose. <br /></td></tr>
-<tr class="separator:a41bdc7938dbcf1741f08544d9b26306e inherit pub_attribs_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bc6c12f340c3e9806e004a9c92429b4 inherit pub_attribs_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a7bc6c12f340c3e9806e004a9c92429b4"></a>
-const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a7bc6c12f340c3e9806e004a9c92429b4">INFO</a> = b0::logger_msgs::LogLevel::INFO</td></tr>
-<tr class="memdesc:a7bc6c12f340c3e9806e004a9c92429b4 inherit pub_attribs_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For information messages. <br /></td></tr>
-<tr class="separator:a7bc6c12f340c3e9806e004a9c92429b4 inherit pub_attribs_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e6c22f9909a212aad988b2e25f5bcfe inherit pub_attribs_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a7e6c22f9909a212aad988b2e25f5bcfe"></a>
-const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a7e6c22f9909a212aad988b2e25f5bcfe">WARN</a> = b0::logger_msgs::LogLevel::WARN</td></tr>
-<tr class="memdesc:a7e6c22f9909a212aad988b2e25f5bcfe inherit pub_attribs_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For warning messages. <br /></td></tr>
-<tr class="separator:a7e6c22f9909a212aad988b2e25f5bcfe inherit pub_attribs_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaada8b873a7a75ffc5be2740aadc3123 inherit pub_attribs_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="aaada8b873a7a75ffc5be2740aadc3123"></a>
-const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#aaada8b873a7a75ffc5be2740aadc3123">ERROR</a> = b0::logger_msgs::LogLevel::ERROR</td></tr>
-<tr class="memdesc:aaada8b873a7a75ffc5be2740aadc3123 inherit pub_attribs_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For error messages. <br /></td></tr>
-<tr class="separator:aaada8b873a7a75ffc5be2740aadc3123 inherit pub_attribs_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a641dfef8c405b4126d1a00f90b7b23e8 inherit pub_attribs_classb0_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a641dfef8c405b4126d1a00f90b7b23e8"></a>
-const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a641dfef8c405b4126d1a00f90b7b23e8">FATAL</a> = b0::logger_msgs::LogLevel::FATAL</td></tr>
-<tr class="memdesc:a641dfef8c405b4126d1a00f90b7b23e8 inherit pub_attribs_classb0_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For fatal messages (i.e. node should quit after that) <br /></td></tr>
-<tr class="separator:a641dfef8c405b4126d1a00f90b7b23e8 inherit pub_attribs_classb0_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
+<tr class="memitem:a777547b599012546faf37f5585ba600d inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a777547b599012546faf37f5585ba600d"></a>
+const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a777547b599012546faf37f5585ba600d">TRACE</a> = b0::logger_msgs::LogLevel::TRACE</td></tr>
+<tr class="memdesc:a777547b599012546faf37f5585ba600d inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most verbose level. <br /></td></tr>
+<tr class="separator:a777547b599012546faf37f5585ba600d inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60400b32c450d00c436b1bbe12dc6960 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a60400b32c450d00c436b1bbe12dc6960"></a>
+const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a60400b32c450d00c436b1bbe12dc6960">DEBUG</a> = b0::logger_msgs::LogLevel::DEBUG</td></tr>
+<tr class="memdesc:a60400b32c450d00c436b1bbe12dc6960 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slightly less verbose. <br /></td></tr>
+<tr class="separator:a60400b32c450d00c436b1bbe12dc6960 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a471fef1169ec260336ebf83ff9e66f89 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a471fef1169ec260336ebf83ff9e66f89"></a>
+const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a471fef1169ec260336ebf83ff9e66f89">INFO</a> = b0::logger_msgs::LogLevel::INFO</td></tr>
+<tr class="memdesc:a471fef1169ec260336ebf83ff9e66f89 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For information messages. <br /></td></tr>
+<tr class="separator:a471fef1169ec260336ebf83ff9e66f89 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d887ac2fcc7897d9b51555b809c87f8 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a5d887ac2fcc7897d9b51555b809c87f8"></a>
+const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a5d887ac2fcc7897d9b51555b809c87f8">WARN</a> = b0::logger_msgs::LogLevel::WARN</td></tr>
+<tr class="memdesc:a5d887ac2fcc7897d9b51555b809c87f8 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For warning messages. <br /></td></tr>
+<tr class="separator:a5d887ac2fcc7897d9b51555b809c87f8 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed85865aa94efda80a9ca250b8213845 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="aed85865aa94efda80a9ca250b8213845"></a>
+const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#aed85865aa94efda80a9ca250b8213845">ERROR</a> = b0::logger_msgs::LogLevel::ERROR</td></tr>
+<tr class="memdesc:aed85865aa94efda80a9ca250b8213845 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For error messages. <br /></td></tr>
+<tr class="separator:aed85865aa94efda80a9ca250b8213845 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf99d15db630d3f465c5c9deea31d7d9 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="aaf99d15db630d3f465c5c9deea31d7d9"></a>
+const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#aaf99d15db630d3f465c5c9deea31d7d9">FATAL</a> = b0::logger_msgs::LogLevel::FATAL</td></tr>
+<tr class="memdesc:aaf99d15db630d3f465c5c9deea31d7d9 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">For fatal messages (i.e. node should quit after that) <br /></td></tr>
+<tr class="separator:aaf99d15db630d3f465c5c9deea31d7d9 inherit pub_attribs_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classb0_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classb0_1_1_node')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classb0_1_1_node.html">b0::Node</a></td></tr>
 <tr class="memitem:a4e4a548e46e6734252c72f8bed5a0d9a inherit pro_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a4e4a548e46e6734252c72f8bed5a0d9a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a4e4a548e46e6734252c72f8bed5a0d9a">connectToResolver</a> ()</td></tr>

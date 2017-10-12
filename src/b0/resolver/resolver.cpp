@@ -14,6 +14,9 @@
 namespace b0
 {
 
+namespace resolver
+{
+
 ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
     : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>(resolver, "resolver", &Resolver::handle),
       resolver_(resolver)
@@ -578,6 +581,8 @@ void Resolver::heartBeatSweeper()
     // don't call log() from another thread! leave the following commented out:
     //log(INFO, "Heartbeat sweeper thread terminates.");
 }
+
+} // namespace resolver
 
 } // namespace b0
 

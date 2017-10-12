@@ -9,7 +9,7 @@
 
 void resolver_thread()
 {
-    b0::Resolver node;
+    b0::resolver::Resolver node;
     node.init();
     node.spin();
 }
