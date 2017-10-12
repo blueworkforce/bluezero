@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['node',['Node',['../classb0_1_1_node.html',1,'b0::Node'],['../classb0_1_1_node.html#aaa9a54ec9f6d86f334966c9725690abc',1,'b0::Node::Node()']]],
-  ['nodebyid',['nodeByID',['../classb0_1_1_resolver.html#a83123933f3cf4eb7d3c08c30c60ac448',1,'b0::Resolver']]],
-  ['nodebyname',['nodeByName',['../classb0_1_1_resolver.html#a8a5d340c1f62a5cc71310280f18ed0c1',1,'b0::Resolver']]],
-  ['nodekey',['nodeKey',['../classb0_1_1_resolver.html#abcbb9c27fd277d6117b18176cee97f82',1,'b0::Resolver::nodeKey(std::string host_id, int process_id, std::string thread_id)'],['../classb0_1_1_resolver.html#a57232831edcda15f90b8d6f750db734e',1,'b0::Resolver::nodeKey(const b0::resolver_msgs::NodeID &amp;node_id)'],['../classb0_1_1_resolver.html#a17bf1b887742787e0c696bf811faaee6',1,'b0::Resolver::nodeKey(const resolver::NodeEntry *node_entry)']]],
-  ['nodenameexists',['nodeNameExists',['../classb0_1_1_resolver.html#a61aa5948f7a4cb3b07e6474f7e440446',1,'b0::Resolver']]],
-  ['nodes_5fby_5fkey_5f',['nodes_by_key_',['../classb0_1_1_resolver.html#a5c0858bb5f7da8376961e4f5a40bf059',1,'b0::Resolver']]],
-  ['nodes_5fby_5fname_5f',['nodes_by_name_',['../classb0_1_1_resolver.html#aeab290620da6eca5dbd74d411aa700dd',1,'b0::Resolver']]]
+  ['levelinfo',['LevelInfo',['../structb0_1_1_local_logger_1_1_level_info.html',1,'b0::LocalLogger&lt; T &gt;::LevelInfo'],['../classb0_1_1_local_logger.html#a2bf4ef51ef507572c352780dccb69c3c',1,'b0::LocalLogger::levelInfo(b0::logger_msgs::LogLevel level)']]],
+  ['locallogger',['LocalLogger',['../classb0_1_1_local_logger.html',1,'b0::LocalLogger&lt; T &gt;'],['../classb0_1_1_local_logger.html#ab9b9c0060764c8ee8e02f73fe6504ae0',1,'b0::LocalLogger::LocalLogger()']]],
+  ['locallogger_3c_20b0_3a_3alogger_3a_3aconsole_20_3e',['LocalLogger&lt; b0::logger::Console &gt;',['../classb0_1_1_local_logger.html',1,'b0']]],
+  ['locallogger_3c_20b0_3a_3anode_20_3e',['LocalLogger&lt; b0::Node &gt;',['../classb0_1_1_local_logger.html',1,'b0']]],
+  ['log',['log',['../classb0_1_1_node.html#a8f496bbd91b85dc98b3b86cd1b3569fe',1,'b0::Node::log()'],['../classb0_1_1_log_interface.html#ab3a3349c5cb8186ad6397a3e1d768490',1,'b0::LogInterface::log(std::string message)'],['../classb0_1_1_log_interface.html#a16aef9ca3db209dba88a7211bc44625a',1,'b0::LogInterface::log(std::string const &amp;fmt, Arguments &amp;&amp;... args)'],['../classb0_1_1_log_interface.html#a053f5ce582ea02aee28cdd95c4421b03',1,'b0::LogInterface::log(b0::logger_msgs::LogLevel level, std::string message)=0'],['../classb0_1_1_log_interface.html#ae6f94f3886e6d523821c1f8c058eec24',1,'b0::LogInterface::log(b0::logger_msgs::LogLevel level, std::string const &amp;fmt, Arguments &amp;&amp;... args)'],['../classb0_1_1_local_logger.html#a4352ad07267672cd5805ceeb3fff215d',1,'b0::LocalLogger::log()'],['../classb0_1_1_logger.html#ab921f8e3cc3972d908e1604896d1845b',1,'b0::Logger::log()']]],
+  ['logger',['Logger',['../classb0_1_1_logger.html',1,'b0::Logger&lt; T &gt;'],['../classb0_1_1_logger.html#a6a1355c83b61ce2410b6dca04ebfac6b',1,'b0::Logger::Logger()']]],
+  ['logger_3c_20b0_3a_3anode_20_3e',['Logger&lt; b0::Node &gt;',['../classb0_1_1_logger.html',1,'b0']]],
+  ['logger_5f',['logger_',['../classb0_1_1_node.html#a190877169377c06f52bcd6d563960818',1,'b0::Node']]],
+  ['loginterface',['LogInterface',['../classb0_1_1_log_interface.html',1,'b0']]]
 ];

@@ -792,6 +792,7 @@ WARN_LOGFILE           =
 
 INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include/b0 \
                          @CMAKE_CURRENT_SOURCE_DIR@/include/b0/resolver \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/logger \
                          @CMAKE_CURRENT_SOURCE_DIR@/docs \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber \

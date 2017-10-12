@@ -61,17 +61,47 @@ $(function() {
 <div class="contents">
 &#160;<ul>
 <li>callback_
-: <a class="el" href="classb0_1_1_service_server.html#ae6571d18addabe98393c0e5591605251">b0::ServiceServer&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#a614876f60a7895997f8c2f7f3a4184b9">b0::Subscriber&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_service_server.html#a163279646ec78075bf6117cddf37be35">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#af0d8ac459107fe21815fff5bdba6b757">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>context_
 : <a class="el" href="classb0_1_1_node.html#aa0e6c480231c908dc7c4ed35712307c0">b0::Node</a>
 </li>
+<li>DEBUG
+: <a class="el" href="classb0_1_1_log_interface.html#a41bdc7938dbcf1741f08544d9b26306e">b0::LogInterface</a>
+</li>
+<li>ERROR
+: <a class="el" href="classb0_1_1_log_interface.html#aaada8b873a7a75ffc5be2740aadc3123">b0::LogInterface</a>
+</li>
+<li>FATAL
+: <a class="el" href="classb0_1_1_log_interface.html#a641dfef8c405b4126d1a00f90b7b23e8">b0::LogInterface</a>
+</li>
+<li>graph_pub_
+: <a class="el" href="classb0_1_1_resolver.html#a747b8ecd3f208bfd96daef52924206df">b0::Resolver</a>
+</li>
 <li>heartbeat_sweeper_thread_
 : <a class="el" href="classb0_1_1_resolver.html#a46e76e6584b16e13e16e1024bd325abe">b0::Resolver</a>
 </li>
+<li>INFO
+: <a class="el" href="classb0_1_1_log_interface.html#a7bc6c12f340c3e9806e004a9c92429b4">b0::LogInterface</a>
+</li>
 <li>logger_
 : <a class="el" href="classb0_1_1_node.html#a190877169377c06f52bcd6d563960818">b0::Node</a>
+</li>
+<li>named_object_
+: <a class="el" href="classb0_1_1_local_logger.html#a4f3d774704b4111d07ad1f77255d309e">b0::LocalLogger&lt; T &gt;</a>
+</li>
+<li>node_offers_service_
+: <a class="el" href="classb0_1_1_resolver.html#a271f47ed3b4503a4642b2ee4498a6ece">b0::Resolver</a>
+</li>
+<li>node_publishes_topic_
+: <a class="el" href="classb0_1_1_resolver.html#a1120fba7994d3fc2e8544a892c07d6f0">b0::Resolver</a>
+</li>
+<li>node_subscribes_topic_
+: <a class="el" href="classb0_1_1_resolver.html#a6a59d3f7bf277dd481c8b345968feeb3">b0::Resolver</a>
+</li>
+<li>node_uses_service_
+: <a class="el" href="classb0_1_1_resolver.html#af3471a144ab0ba78ebc5a6e4157487e5">b0::Resolver</a>
 </li>
 <li>nodes_by_key_
 : <a class="el" href="classb0_1_1_resolver.html#a5c0858bb5f7da8376961e4f5a40bf059">b0::Resolver</a>
@@ -82,6 +112,9 @@ $(function() {
 <li>pub_proxy_thread_
 : <a class="el" href="classb0_1_1_resolver.html#a67716afa5bcc560e2f9c654c07dba54b">b0::Resolver</a>
 </li>
+<li>pub_socket_
+: <a class="el" href="classb0_1_1_logger.html#aa9a4f36d940c0314579198870f484cef">b0::Logger&lt; T &gt;</a>
+</li>
 <li>resolv_server_
 : <a class="el" href="classb0_1_1_resolver.html#a9f8f9aa731132398831a476fb1ce4e7a">b0::Resolver</a>
 </li>
@@ -90,6 +123,15 @@ $(function() {
 </li>
 <li>services_by_name_
 : <a class="el" href="classb0_1_1_resolver.html#a00c004e27537891eebad896b90cf2fc3">b0::Resolver</a>
+</li>
+<li>sub_
+: <a class="el" href="classb0_1_1logger_1_1_console.html#a2c42ead89c27fa65a5a08edfe6e3f54f">b0::logger::Console</a>
+</li>
+<li>TRACE
+: <a class="el" href="classb0_1_1_log_interface.html#a90210989228e48233b51dd3759213c72">b0::LogInterface</a>
+</li>
+<li>WARN
+: <a class="el" href="classb0_1_1_log_interface.html#a7e6c22f9909a212aad988b2e25f5bcfe">b0::LogInterface</a>
 </li>
 <li>xpub_proxy_addr_
 : <a class="el" href="classb0_1_1_resolver.html#ae09c869c5f53e344772efdd32c7ff3af">b0::Resolver</a>

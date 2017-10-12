@@ -74,21 +74,34 @@ $(function() {
 
 <h3><a id="index_b"></a>- b -</h3><ul>
 <li>bind()
-: <a class="el" href="classb0_1_1_service_server.html#a9d231125fb4d684bf11f2476d80bc2d9">b0::ServiceServer&lt; TReq, TRep &gt;</a>
+: <a class="el" href="classb0_1_1_service_server.html#a1aa51671f48d299e49ba480b975d00bf">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
 </li>
 </ul>
 
 
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>call()
-: <a class="el" href="classb0_1_1_service_client.html#acd4d1f8416ffa68fad4f8d10b5ae82ed">b0::ServiceClient&lt; TReq, TRep &gt;</a>
+: <a class="el" href="classb0_1_1_service_client.html#a3e8b4b359d8a3e94ed4362ba9a9872c4">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
 </li>
 <li>callback_
-: <a class="el" href="classb0_1_1_service_server.html#ae6571d18addabe98393c0e5591605251">b0::ServiceServer&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#a614876f60a7895997f8c2f7f3a4184b9">b0::Subscriber&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_service_server.html#a163279646ec78075bf6117cddf37be35">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#af0d8ac459107fe21815fff5bdba6b757">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
+</li>
+<li>cleanup()
+: <a class="el" href="classb0_1_1_node.html#a8b0fc9e81f907e0542657d7b591baa61">b0::Node</a>
+, <a class="el" href="classb0_1_1_publisher.html#ab5ea0591e2ca505eee083f467bbe3b7d">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_service_client.html#a9307284415210abcf4e9864da10e2300">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_service_server.html#a005cd7d9d4137384d971e3e7d4a3c703">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#ad181866e15e81d14a4755017f883faba">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
+</li>
+<li>connect()
+: <a class="el" href="classb0_1_1_logger.html#abd02630fe72d883f45faffc29f60b97d">b0::Logger&lt; T &gt;</a>
 </li>
 <li>connectToResolver()
 : <a class="el" href="classb0_1_1_node.html#a4e4a548e46e6734252c72f8bed5a0d9a">b0::Node</a>
+</li>
+<li>Console()
+: <a class="el" href="classb0_1_1logger_1_1_console.html#a26b4f597a33609b930b7f1da6d6964d2">b0::logger::Console</a>
 </li>
 <li>context_
 : <a class="el" href="classb0_1_1_node.html#aa0e6c480231c908dc7c4ed35712307c0">b0::Node</a>
@@ -96,7 +109,24 @@ $(function() {
 </ul>
 
 
+<h3><a id="index_d"></a>- d -</h3><ul>
+<li>DEBUG
+: <a class="el" href="classb0_1_1_log_interface.html#a41bdc7938dbcf1741f08544d9b26306e">b0::LogInterface</a>
+</li>
+</ul>
+
+
+<h3><a id="index_e"></a>- e -</h3><ul>
+<li>ERROR
+: <a class="el" href="classb0_1_1_log_interface.html#aaada8b873a7a75ffc5be2740aadc3123">b0::LogInterface</a>
+</li>
+</ul>
+
+
 <h3><a id="index_f"></a>- f -</h3><ul>
+<li>FATAL
+: <a class="el" href="classb0_1_1_log_interface.html#a641dfef8c405b4126d1a00f90b7b23e8">b0::LogInterface</a>
+</li>
 <li>freeTCPAddress()
 : <a class="el" href="classb0_1_1_node.html#a860b6a9c2802f0e2627d2eed42d89115">b0::Node</a>
 </li>
@@ -107,20 +137,29 @@ $(function() {
 
 
 <h3><a id="index_g"></a>- g -</h3><ul>
+<li>getGraph()
+: <a class="el" href="classb0_1_1_resolver.html#acf897f866dab39f0a6e944b4f5619309">b0::Resolver</a>
+</li>
 <li>getName()
-: <a class="el" href="classb0_1_1_node.html#a621c09d8e40a3907288ef73935b8d547">b0::Node</a>
+: <a class="el" href="classb0_1_1_local_logger.html#ada879b8a29e3bb43d5965e99dd8ccfe2">b0::LocalLogger&lt; T &gt;</a>
+, <a class="el" href="classb0_1_1_node.html#a621c09d8e40a3907288ef73935b8d547">b0::Node</a>
 </li>
 <li>getNodeID()
 : <a class="el" href="classb0_1_1_node.html#a70f5632d7476b12ad9eade467118c4fd">b0::Node</a>
 </li>
 <li>getXPUBSocketAddress()
-: <a class="el" href="classb0_1_1_node.html#ab2f8e0061fcfea23fc4c64efd062e8e3">b0::Node</a>
+: <a class="el" href="classb0_1_1_node.html#ab28aeb2a6b7f3d4187eede80fd55c01b">b0::Node</a>
+, <a class="el" href="classb0_1_1_resolver.html#a39bbbe1bc3d3079ef159476e91361570">b0::Resolver</a>
 </li>
 <li>getXSUBSocketAddress()
-: <a class="el" href="classb0_1_1_node.html#a827a7ed6f7f2d52f6d3ca92d43e837e7">b0::Node</a>
+: <a class="el" href="classb0_1_1_node.html#a7245bac1e4000aacead04707552e7e56">b0::Node</a>
+, <a class="el" href="classb0_1_1_resolver.html#a6ca94639776418c882e3874f8092b7bd">b0::Resolver</a>
 </li>
 <li>getZMQContext()
 : <a class="el" href="classb0_1_1_node.html#a6da4a7c64fcd1d50c87d3171054752af">b0::Node</a>
+</li>
+<li>graph_pub_
+: <a class="el" href="classb0_1_1_resolver.html#a747b8ecd3f208bfd96daef52924206df">b0::Resolver</a>
 </li>
 </ul>
 
@@ -135,11 +174,23 @@ $(function() {
 <li>handleAnnounceService()
 : <a class="el" href="classb0_1_1_resolver.html#a92f5137ab511b7d6d22137efe794ab55">b0::Resolver</a>
 </li>
+<li>handleGetGraph()
+: <a class="el" href="classb0_1_1_resolver.html#a131aa55fa8cce155b7199fb964cc02d6">b0::Resolver</a>
+</li>
 <li>handleHeartBeat()
 : <a class="el" href="classb0_1_1_resolver.html#add72e92655a1734b0c68b61e4bbb187e">b0::Resolver</a>
 </li>
+<li>handleNodeService()
+: <a class="el" href="classb0_1_1_resolver.html#a73e3b755776b39c5d28642dd0c381e89">b0::Resolver</a>
+</li>
+<li>handleNodeTopic()
+: <a class="el" href="classb0_1_1_resolver.html#af88a37dba731724aa029c45d75f88201">b0::Resolver</a>
+</li>
 <li>handleResolveService()
 : <a class="el" href="classb0_1_1_resolver.html#afd548f412cc2ae5efe85026404c91c58">b0::Resolver</a>
+</li>
+<li>handleShutdownNode()
+: <a class="el" href="classb0_1_1_resolver.html#a4f3b434f143cea354cb9106d179cf9d2">b0::Resolver</a>
 </li>
 <li>heartBeat()
 : <a class="el" href="classb0_1_1_resolver.html#ac975520bc3e947012729059d444ff240">b0::Resolver</a>
@@ -163,16 +214,35 @@ $(function() {
 
 
 <h3><a id="index_i"></a>- i -</h3><ul>
+<li>INFO
+: <a class="el" href="classb0_1_1_log_interface.html#a7bc6c12f340c3e9806e004a9c92429b4">b0::LogInterface</a>
+</li>
 <li>init()
 : <a class="el" href="classb0_1_1_node.html#a22299ab013b471c19f5935e3a0bede2b">b0::Node</a>
+, <a class="el" href="classb0_1_1_publisher.html#a5dc4920ea6332de71eae2b123a6f8c73">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
 , <a class="el" href="classb0_1_1_resolver.html#a9cdb5147bd975706a5935e5eee45e098">b0::Resolver</a>
+, <a class="el" href="classb0_1_1_service_client.html#a51e06a5febfb33614630d56aba26a4a8">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_service_server.html#a9f77b83862b757a6a2574cb4c22cbeb9">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#a7ad34c93c21626ec6c39b3c74c900972">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 </ul>
 
 
 <h3><a id="index_l"></a>- l -</h3><ul>
+<li>levelInfo()
+: <a class="el" href="classb0_1_1_local_logger.html#a2bf4ef51ef507572c352780dccb69c3c">b0::LocalLogger&lt; T &gt;</a>
+</li>
+<li>LocalLogger()
+: <a class="el" href="classb0_1_1_local_logger.html#ab9b9c0060764c8ee8e02f73fe6504ae0">b0::LocalLogger&lt; T &gt;</a>
+</li>
 <li>log()
-: <a class="el" href="classb0_1_1_node.html#a8f496bbd91b85dc98b3b86cd1b3569fe">b0::Node</a>
+: <a class="el" href="classb0_1_1_local_logger.html#a4352ad07267672cd5805ceeb3fff215d">b0::LocalLogger&lt; T &gt;</a>
+, <a class="el" href="classb0_1_1_logger.html#ab921f8e3cc3972d908e1604896d1845b">b0::Logger&lt; T &gt;</a>
+, <a class="el" href="classb0_1_1_log_interface.html#a16aef9ca3db209dba88a7211bc44625a">b0::LogInterface</a>
+, <a class="el" href="classb0_1_1_node.html#a8f496bbd91b85dc98b3b86cd1b3569fe">b0::Node</a>
+</li>
+<li>Logger()
+: <a class="el" href="classb0_1_1_logger.html#a6a1355c83b61ce2410b6dca04ebfac6b">b0::Logger&lt; T &gt;</a>
 </li>
 <li>logger_
 : <a class="el" href="classb0_1_1_node.html#a190877169377c06f52bcd6d563960818">b0::Node</a>
@@ -188,8 +258,23 @@ $(function() {
 
 
 <h3><a id="index_n"></a>- n -</h3><ul>
+<li>named_object_
+: <a class="el" href="classb0_1_1_local_logger.html#a4f3d774704b4111d07ad1f77255d309e">b0::LocalLogger&lt; T &gt;</a>
+</li>
 <li>Node()
 : <a class="el" href="classb0_1_1_node.html#aaa9a54ec9f6d86f334966c9725690abc">b0::Node</a>
+</li>
+<li>node_offers_service_
+: <a class="el" href="classb0_1_1_resolver.html#a271f47ed3b4503a4642b2ee4498a6ece">b0::Resolver</a>
+</li>
+<li>node_publishes_topic_
+: <a class="el" href="classb0_1_1_resolver.html#a1120fba7994d3fc2e8544a892c07d6f0">b0::Resolver</a>
+</li>
+<li>node_subscribes_topic_
+: <a class="el" href="classb0_1_1_resolver.html#a6a59d3f7bf277dd481c8b345968feeb3">b0::Resolver</a>
+</li>
+<li>node_uses_service_
+: <a class="el" href="classb0_1_1_resolver.html#af3471a144ab0ba78ebc5a6e4157487e5">b0::Resolver</a>
 </li>
 <li>nodeByID()
 : <a class="el" href="classb0_1_1_resolver.html#a83123933f3cf4eb7d3c08c30c60ac448">b0::Resolver</a>
@@ -209,30 +294,67 @@ $(function() {
 <li>nodes_by_name_
 : <a class="el" href="classb0_1_1_resolver.html#aeab290620da6eca5dbd74d411aa700dd">b0::Resolver</a>
 </li>
+<li>notifyShutdown()
+: <a class="el" href="classb0_1_1_node.html#a1b3c80da95c5e3a2e5a548e727c6c320">b0::Node</a>
+, <a class="el" href="classb0_1_1_resolver.html#a5111733df2f577fec2368cdd55f5a6ea">b0::Resolver</a>
+</li>
 </ul>
 
 
 <h3><a id="index_o"></a>- o -</h3><ul>
-<li>onNodeGraphChanged()
-: <a class="el" href="classb0_1_1_resolver.html#ae33ab0378fb799d9219b13b3e7c50df7">b0::Resolver</a>
+<li>onGraphChanged()
+: <a class="el" href="classb0_1_1_resolver.html#a9c3f161c294709da37639efb4f5f299e">b0::Resolver</a>
+</li>
+<li>onNodeConnected()
+: <a class="el" href="classb0_1_1_resolver.html#a32f0b2a694243a4ac7d1fd3ae2625aca">b0::Resolver</a>
+</li>
+<li>onNodeDisconnected()
+: <a class="el" href="classb0_1_1_resolver.html#a6a9fd3e7bdc221462cd1cf7cb112096b">b0::Resolver</a>
+</li>
+<li>onNodeServiceOfferStart()
+: <a class="el" href="classb0_1_1_resolver.html#a7a3809e2fa2eaef537954e95b704c772">b0::Resolver</a>
+</li>
+<li>onNodeServiceOfferStop()
+: <a class="el" href="classb0_1_1_resolver.html#a6409ba9cf55d17c0be70e466dad29a2d">b0::Resolver</a>
+</li>
+<li>onNodeServiceUseStart()
+: <a class="el" href="classb0_1_1_resolver.html#ade09cb4b90fdf9a2e4df7e105bc7a966">b0::Resolver</a>
+</li>
+<li>onNodeServiceUseStop()
+: <a class="el" href="classb0_1_1_resolver.html#a8022763b983dfaa8dad0416808902e31">b0::Resolver</a>
+</li>
+<li>onNodeTopicPublishStart()
+: <a class="el" href="classb0_1_1_resolver.html#a8294739f09285176702bdd3d8673a651">b0::Resolver</a>
+</li>
+<li>onNodeTopicPublishStop()
+: <a class="el" href="classb0_1_1_resolver.html#a478b4187a0a8d2e6b8def613e7f877ea">b0::Resolver</a>
+</li>
+<li>onNodeTopicSubscribeStart()
+: <a class="el" href="classb0_1_1_resolver.html#adad6ffd525d7db82f464e699b8faba8c">b0::Resolver</a>
+</li>
+<li>onNodeTopicSubscribeStop()
+: <a class="el" href="classb0_1_1_resolver.html#aa60b07d1e64479c6858bceed58c357fe">b0::Resolver</a>
 </li>
 </ul>
 
 
 <h3><a id="index_p"></a>- p -</h3><ul>
 <li>poll()
-: <a class="el" href="classb0_1_1_service_client.html#a61834cf06b6895056e9ba6336ffae198">b0::ServiceClient&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_service_server.html#a94338f35f6c2c477379152aaa911652d">b0::ServiceServer&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#a892898f587346da76ffecb5fde78bfbc">b0::Subscriber&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_service_client.html#a5ce37838269cb8c0a4a16a0c8ad5b101">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_service_server.html#a2eba5deccd80149b493a8993eada6fdd">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#acea49072548a292aa06d12cd5a6b3340">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>pub_proxy_thread_
 : <a class="el" href="classb0_1_1_resolver.html#a67716afa5bcc560e2f9c654c07dba54b">b0::Resolver</a>
 </li>
+<li>pub_socket_
+: <a class="el" href="classb0_1_1_logger.html#aa9a4f36d940c0314579198870f484cef">b0::Logger&lt; T &gt;</a>
+</li>
 <li>publish()
-: <a class="el" href="classb0_1_1_publisher.html#a1befbe4aa1672e42745d25c8dd82d3f6">b0::Publisher&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>Publisher()
-: <a class="el" href="classb0_1_1_publisher.html#aac2cf3b26d79124712cfc96653976cbb">b0::Publisher&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_publisher.html#a14273d1c23f293586f9d834b659f76c4">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>pubProxy()
 : <a class="el" href="classb0_1_1_resolver.html#a87d82c252a6eae4e6a0cee79f8e5b5aa">b0::Resolver</a>
@@ -242,9 +364,9 @@ $(function() {
 
 <h3><a id="index_r"></a>- r -</h3><ul>
 <li>read()
-: <a class="el" href="classb0_1_1_service_client.html#a4ebb9cf20ff454da2a3cb32d319e52c6">b0::ServiceClient&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_service_server.html#a19d669fd7bd8a3eb01eb8c825e36531a">b0::ServiceServer&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#a9662923b9205c1d4524cdcfbc4b43bc3">b0::Subscriber&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_service_client.html#ae0dc6fce4baac5e1e66f3ddd36b833e6">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_service_server.html#a1be8f221278f2aa96345879787db73e3">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#aefb9b2bb90d719a6be315e05e432b7d0">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>resolv_server_
 : <a class="el" href="classb0_1_1_resolver.html#a9f8f9aa731132398831a476fb1ce4e7a">b0::Resolver</a>
@@ -256,8 +378,8 @@ $(function() {
 : <a class="el" href="classb0_1_1_resolver.html#a82b12e206bae9e5fee849f1cba2e7a56">b0::Resolver</a>
 </li>
 <li>resolverAddress()
-: <a class="el" href="classb0_1_1_node.html#a91906d17436fc0e5b6ccd86aaa11d210">b0::Node</a>
-, <a class="el" href="classb0_1_1_resolver.html#ab7c83d5be053144bf76aa82e71e95ee4">b0::Resolver</a>
+: <a class="el" href="classb0_1_1_node.html#a445a71d663f5509047099e35fad0246a">b0::Node</a>
+, <a class="el" href="classb0_1_1_resolver.html#a681890ca20bcd27a82f03690f619a6dd">b0::Resolver</a>
 </li>
 <li>resolverPort()
 : <a class="el" href="classb0_1_1_resolver.html#a477d86cee54198fede99cf055f9965c5">b0::Resolver</a>
@@ -273,35 +395,55 @@ $(function() {
 : <a class="el" href="classb0_1_1_resolver.html#a09de15b22b0d8d02b6293504a10e61a4">b0::Resolver</a>
 </li>
 <li>ServiceClient()
-: <a class="el" href="classb0_1_1_service_client.html#abc754af08e4678234d09cccffbd61ea1">b0::ServiceClient&lt; TReq, TRep &gt;</a>
+: <a class="el" href="classb0_1_1_service_client.html#a08f3367cabad54e2be18db7fda6fa4bf">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
 </li>
 <li>services_by_name_
 : <a class="el" href="classb0_1_1_resolver.html#a00c004e27537891eebad896b90cf2fc3">b0::Resolver</a>
 </li>
 <li>ServiceServer()
-: <a class="el" href="classb0_1_1_service_server.html#adbf0159a4cdacfea663c05085e305c4d">b0::ServiceServer&lt; TReq, TRep &gt;</a>
+: <a class="el" href="classb0_1_1_service_server.html#a0386a7bb6576a3099f9f32bf1737d4fa">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+</li>
+<li>shutdown()
+: <a class="el" href="classb0_1_1_node.html#ad25d81d5e85aa26aeb04421c85eb5557">b0::Node</a>
+, <a class="el" href="classb0_1_1_resolver.html#a4ac1c468eeb855df3d757b92b9f4d82b">b0::Resolver</a>
+</li>
+<li>shutdownRequested()
+: <a class="el" href="classb0_1_1_node.html#a74ad0853f37382fb39df1b00922c802a">b0::Node</a>
 </li>
 <li>spin()
-: <a class="el" href="classb0_1_1_node.html#aeddd3883b623a132cd96851b1ad2e316">b0::Node</a>
+: <a class="el" href="classb0_1_1_node.html#a82dd059231755c8a229144748b18ec79">b0::Node</a>
 </li>
 <li>spinOnce()
-: <a class="el" href="classb0_1_1_node.html#a6f2efc603713755b7c5e0234529023f4">b0::Node</a>
-, <a class="el" href="classb0_1_1_service_server.html#ad94275696a4191e24354a47c9a594409">b0::ServiceServer&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#ad1528a49c43f1c0d896eb0cfd217f1a2">b0::Subscriber&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5">b0::Node</a>
+, <a class="el" href="classb0_1_1_service_server.html#af88c56ec6da48a0b36c4dce30173a21c">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#a964e8866dbc073aceba801f2acfd06da">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>startHeartbeatThread()
 : <a class="el" href="classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44">b0::Node</a>
 </li>
+<li>sub_
+: <a class="el" href="classb0_1_1logger_1_1_console.html#a2c42ead89c27fa65a5a08edfe6e3f54f">b0::logger::Console</a>
+</li>
 <li>Subscriber()
-: <a class="el" href="classb0_1_1_subscriber.html#ab002395ba5a2201d443c46cf37db68c1">b0::Subscriber&lt; T &gt;</a>
+: <a class="el" href="classb0_1_1_subscriber.html#aa1468b05b0e24768e8fa036f3d90c546">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
+</li>
+</ul>
+
+
+<h3><a id="index_t"></a>- t -</h3><ul>
+<li>TRACE
+: <a class="el" href="classb0_1_1_log_interface.html#a90210989228e48233b51dd3759213c72">b0::LogInterface</a>
 </li>
 </ul>
 
 
 <h3><a id="index_w"></a>- w -</h3><ul>
+<li>WARN
+: <a class="el" href="classb0_1_1_log_interface.html#a7e6c22f9909a212aad988b2e25f5bcfe">b0::LogInterface</a>
+</li>
 <li>write()
-: <a class="el" href="classb0_1_1_service_client.html#afe0ff2bba77634b49f5301f53cab9d35">b0::ServiceClient&lt; TReq, TRep &gt;</a>
-, <a class="el" href="classb0_1_1_service_server.html#ae97a0179686bdcc60a44e897c9a1cc80">b0::ServiceServer&lt; TReq, TRep &gt;</a>
+: <a class="el" href="classb0_1_1_service_client.html#acc075cab16980f3c7d1ef75bbda44d1a">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_service_server.html#a06d44fb972de35941ea7e48e0737d0ed">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
 </li>
 </ul>
 
@@ -317,6 +459,12 @@ $(function() {
 
 
 <h3><a id="index_0x7e"></a>- ~ -</h3><ul>
+<li>~Console()
+: <a class="el" href="classb0_1_1logger_1_1_console.html#af95cbc21c941c7bfd9a5b6362a57ec47">b0::logger::Console</a>
+</li>
+<li>~LocalLogger()
+: <a class="el" href="classb0_1_1_local_logger.html#adb047175d178433d44db05bdbe2e949b">b0::LocalLogger&lt; T &gt;</a>
+</li>
 <li>~Node()
 : <a class="el" href="classb0_1_1_node.html#a2aa2c822381e7898a23147d96a0a33ed">b0::Node</a>
 </li>

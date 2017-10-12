@@ -65,7 +65,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classb0_1_1_log_interface-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">b0::LogInterface Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -75,26 +75,38 @@ $(function() {
 <p>Base class to add logging functionalities to nodes.  
  <a href="classb0_1_1_log_interface.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="logger_8h_source.html">logger.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="logger_8h_source.html">b0/logger/logger.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for b0::LogInterface:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classb0_1_1_log_interface.png" usemap="#b0::LogInterface_map" alt=""/>
   <map id="b0::LogInterface_map" name="b0::LogInterface_map">
-<area href="classb0_1_1_local_logger.html" title="A logger which prints messages to local console. " alt="b0::LocalLogger&lt; T &gt;" shape="rect" coords="0,56,177,80"/>
-<area href="classb0_1_1_node.html" title="The abstraction for a node in the network. " alt="b0::Node" shape="rect" coords="187,56,364,80"/>
-<area href="classb0_1_1_local_logger.html" alt="b0::LocalLogger&lt; b0::Node &gt;" shape="rect" coords="374,56,551,80"/>
-<area href="classb0_1_1_logger.html" title="A subclass LocalLogger&lt;T&gt; which also sends log messages remotely, via a ZeroMQ PUB socket..." alt="b0::Logger&lt; T &gt;" shape="rect" coords="0,112,177,136"/>
-<area href="classb0_1_1_logger.html" alt="b0::Logger&lt; b0::Node &gt;" shape="rect" coords="374,112,551,136"/>
+<area href="classb0_1_1_local_logger.html" title="A logger which prints messages to local console. " alt="b0::LocalLogger&lt; T &gt;" shape="rect" coords="0,56,235,80"/>
+<area href="classb0_1_1_node.html" title="The abstraction for a node in the network. " alt="b0::Node" shape="rect" coords="367,56,602,80"/>
+<area href="classb0_1_1_local_logger.html" alt="b0::LocalLogger&lt; b0::logger::Console &gt;" shape="rect" coords="612,56,847,80"/>
+<area href="classb0_1_1_local_logger.html" alt="b0::LocalLogger&lt; b0::Node &gt;" shape="rect" coords="857,56,1092,80"/>
+<area href="classb0_1_1_logger.html" title="A subclass LocalLogger&lt;T&gt; which also sends log messages remotely, via a ZeroMQ PUB socket..." alt="b0::Logger&lt; T &gt;" shape="rect" coords="0,112,235,136"/>
+<area href="classb0_1_1logger_1_1_console.html" title="The logger console node. " alt="b0::logger::Console" shape="rect" coords="245,112,480,136"/>
+<area href="classb0_1_1_resolver.html" title="The resolver node. " alt="b0::Resolver" shape="rect" coords="490,112,725,136"/>
+<area href="classb0_1_1_logger.html" alt="b0::Logger&lt; b0::Node &gt;" shape="rect" coords="857,112,1092,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ab3a3349c5cb8186ad6397a3e1d768490"><td class="memItemLeft" align="right" valign="top"><a id="ab3a3349c5cb8186ad6397a3e1d768490"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#ab3a3349c5cb8186ad6397a3e1d768490">log</a> (std::string message)</td></tr>
+<tr class="memdesc:ab3a3349c5cb8186ad6397a3e1d768490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, with the default level (INFO) <br /></td></tr>
+<tr class="separator:ab3a3349c5cb8186ad6397a3e1d768490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16aef9ca3db209dba88a7211bc44625a"><td class="memTemplParams" colspan="2"><a id="a16aef9ca3db209dba88a7211bc44625a"></a>
+template&lt;typename... Arguments&gt; </td></tr>
+<tr class="memitem:a16aef9ca3db209dba88a7211bc44625a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a16aef9ca3db209dba88a7211bc44625a">log</a> (std::string const &amp;fmt, Arguments &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a16aef9ca3db209dba88a7211bc44625a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, at default level, using a format string. <br /></td></tr>
+<tr class="separator:a16aef9ca3db209dba88a7211bc44625a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a053f5ce582ea02aee28cdd95c4421b03"><td class="memItemLeft" align="right" valign="top"><a id="a053f5ce582ea02aee28cdd95c4421b03"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a053f5ce582ea02aee28cdd95c4421b03">log</a> (b0::logger_msgs::LogLevel level, std::string message)=0</td></tr>
-<tr class="memdesc:a053f5ce582ea02aee28cdd95c4421b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the logger (will publish a message) <br /></td></tr>
+<tr class="memdesc:a053f5ce582ea02aee28cdd95c4421b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, with a specified level. <br /></td></tr>
 <tr class="separator:a053f5ce582ea02aee28cdd95c4421b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f94f3886e6d523821c1f8c058eec24"><td class="memTemplParams" colspan="2"><a id="ae6f94f3886e6d523821c1f8c058eec24"></a>
 template&lt;typename... Arguments&gt; </td></tr>
@@ -102,8 +114,8 @@ template&lt;typename... Arguments&gt; </td></tr>
 <tr class="memdesc:ae6f94f3886e6d523821c1f8c058eec24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message using a format string. <br /></td></tr>
 <tr class="separator:ae6f94f3886e6d523821c1f8c058eec24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
 <tr class="memitem:a90210989228e48233b51dd3759213c72"><td class="memItemLeft" align="right" valign="top"><a id="a90210989228e48233b51dd3759213c72"></a>
 const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_log_interface.html#a90210989228e48233b51dd3759213c72">TRACE</a> = b0::logger_msgs::LogLevel::TRACE</td></tr>
 <tr class="memdesc:a90210989228e48233b51dd3759213c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most verbose level. <br /></td></tr>
@@ -132,7 +144,7 @@ const b0::logger_msgs::LogLevel&#160;</td><td class="memItemRight" valign="botto
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class to add logging functionalities to nodes. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/me/Development/BWF/bluezero/include/b0/<a class="el" href="logger_8h_source.html">logger.h</a></li>
+<li>/Users/me/Development/BWF/bluezero/include/b0/logger/<a class="el" href="logger_8h_source.html">logger.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resolver',['Resolver',['../classb0_1_1_resolver.html',1,'b0']]]
+  ['node',['Node',['../classb0_1_1_node.html',1,'b0']]]
 ];

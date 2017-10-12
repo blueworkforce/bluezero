@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1_resolver.html#a00c004e27537891eebad896b90cf2fc3',1,'b0::Resolver']]]
+  ['info',['INFO',['../classb0_1_1_log_interface.html#a7bc6c12f340c3e9806e004a9c92429b4',1,'b0::LogInterface']]]
 ];

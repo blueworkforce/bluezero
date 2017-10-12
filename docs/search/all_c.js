@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['read',['read',['../classb0_1_1_service_client.html#a4ebb9cf20ff454da2a3cb32d319e52c6',1,'b0::ServiceClient::read()'],['../classb0_1_1_service_server.html#a19d669fd7bd8a3eb01eb8c825e36531a',1,'b0::ServiceServer::read()'],['../classb0_1_1_subscriber.html#a9662923b9205c1d4524cdcfbc4b43bc3',1,'b0::Subscriber::read()']]],
-  ['resolv_5fserver_5f',['resolv_server_',['../classb0_1_1_resolver.html#a9f8f9aa731132398831a476fb1ce4e7a',1,'b0::Resolver']]],
-  ['resolv_5fsocket_5f',['resolv_socket_',['../classb0_1_1_node.html#ad3993b7ca9b66e713a4c7dd6638404ef',1,'b0::Node']]],
-  ['resolver',['Resolver',['../classb0_1_1_resolver.html',1,'b0::Resolver'],['../classb0_1_1_resolver.html#a82b12e206bae9e5fee849f1cba2e7a56',1,'b0::Resolver::Resolver()']]],
-  ['resolveraddress',['resolverAddress',['../classb0_1_1_node.html#a91906d17436fc0e5b6ccd86aaa11d210',1,'b0::Node::resolverAddress()'],['../classb0_1_1_resolver.html#ab7c83d5be053144bf76aa82e71e95ee4',1,'b0::Resolver::resolverAddress()']]],
-  ['resolverport',['resolverPort',['../classb0_1_1_resolver.html#a477d86cee54198fede99cf055f9965c5',1,'b0::Resolver']]],
-  ['resolversocket',['resolverSocket',['../classb0_1_1_node.html#abde40d38d14ced3beccb33f2fd753109',1,'b0::Node']]]
+  ['ongraphchanged',['onGraphChanged',['../classb0_1_1_resolver.html#a9c3f161c294709da37639efb4f5f299e',1,'b0::Resolver']]],
+  ['onnodeconnected',['onNodeConnected',['../classb0_1_1_resolver.html#a32f0b2a694243a4ac7d1fd3ae2625aca',1,'b0::Resolver']]],
+  ['onnodedisconnected',['onNodeDisconnected',['../classb0_1_1_resolver.html#a6a9fd3e7bdc221462cd1cf7cb112096b',1,'b0::Resolver']]],
+  ['onnodeserviceofferstart',['onNodeServiceOfferStart',['../classb0_1_1_resolver.html#a7a3809e2fa2eaef537954e95b704c772',1,'b0::Resolver']]],
+  ['onnodeserviceofferstop',['onNodeServiceOfferStop',['../classb0_1_1_resolver.html#a6409ba9cf55d17c0be70e466dad29a2d',1,'b0::Resolver']]],
+  ['onnodeserviceusestart',['onNodeServiceUseStart',['../classb0_1_1_resolver.html#ade09cb4b90fdf9a2e4df7e105bc7a966',1,'b0::Resolver']]],
+  ['onnodeserviceusestop',['onNodeServiceUseStop',['../classb0_1_1_resolver.html#a8022763b983dfaa8dad0416808902e31',1,'b0::Resolver']]],
+  ['onnodetopicpublishstart',['onNodeTopicPublishStart',['../classb0_1_1_resolver.html#a8294739f09285176702bdd3d8673a651',1,'b0::Resolver']]],
+  ['onnodetopicpublishstop',['onNodeTopicPublishStop',['../classb0_1_1_resolver.html#a478b4187a0a8d2e6b8def613e7f877ea',1,'b0::Resolver']]],
+  ['onnodetopicsubscribestart',['onNodeTopicSubscribeStart',['../classb0_1_1_resolver.html#adad6ffd525d7db82f464e699b8faba8c',1,'b0::Resolver']]],
+  ['onnodetopicsubscribestop',['onNodeTopicSubscribeStop',['../classb0_1_1_resolver.html#aa60b07d1e64479c6858bceed58c357fe',1,'b0::Resolver']]]
 ];

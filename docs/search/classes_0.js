@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node',['Node',['../classb0_1_1_node.html',1,'b0']]]
+  ['console',['Console',['../classb0_1_1logger_1_1_console.html',1,'b0::logger']]]
 ];
