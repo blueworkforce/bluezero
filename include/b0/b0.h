@@ -29,7 +29,7 @@
  * \section resolver_intro Resolver node
  *
  * The most important part of the network is the resolver node.
- * It is implemented in b0::Resolver and will provide following services to other nodes:
+ * It is implemented in b0::resolver::Resolver and will provide following services to other nodes:
  *
  * - node name resolution
  * - socket name resolution
