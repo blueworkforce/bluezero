@@ -23,10 +23,10 @@ class AbstractServiceServer;
  * You must create at most one node per thread.
  * You can have many nodes in one process by creating several threads.
  */
-class Node : public LogInterface
+class Node : public logger::LogInterface
 {
 public:
-    using LogInterface::log;
+    using logger::LogInterface::log;
 
     /*!
      * \brief Create a node with a given name.
@@ -239,7 +239,7 @@ protected:
     zmq::socket_t resolv_socket_;
 
     //! The logger of this node
-    Logger<Node> logger_;
+    logger::Logger logger_;
 
 private:
     //! Name of this node as it has been assigned by resolver
