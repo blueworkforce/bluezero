@@ -31,12 +31,22 @@ public:
     {
         Node::init();
 
-        b0::resolver_msgs::Request req;
-        b0::resolver_msgs::GetGraphRequest &gg = *req.mutable_get_graph();
-        b0::resolver_msgs::Response resp;
-        log(INFO, "Requesting graph");
-        cli_.call(req, resp);
-        printOrDisplayGraph("Current graph", resp.get_graph().graph());
+        if(false)
+        {
+            /*
+             * requesting the initial graph is not really needed, as the
+             * initialization of this node will cause a change in the graph
+             *
+             * FIXME: it would be anyway better to have a timeout, and if a graph
+             *        is not received in the first 2 seconds, send an explicit request
+             */
+            b0::resolver_msgs::Request req;
+            b0::resolver_msgs::GetGraphRequest &gg = *req.mutable_get_graph();
+            b0::resolver_msgs::Response resp;
+            log(INFO, "Requesting graph");
+            cli_.call(req, resp);
+            printOrDisplayGraph("Current graph", resp.get_graph().graph());
+        }
     }
 
     std::string id(std::string t, std::string name)
