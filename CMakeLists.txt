@@ -51,6 +51,7 @@ add_library(
     b0
     SHARED
     src/b0/node.cpp
+    src/b0/logger/logger.cpp
     src/b0/graph/graph.cpp
     src/b0/resolver/resolver.cpp
     ${B0_MSG_SOURCES}

@@ -41,7 +41,7 @@ protected:
 
 private:
     //! A dummy logger to get formatting information from
-    b0::LocalLogger<Console> dummy_logger_;
+    b0::logger::LocalLogger dummy_logger_;
 };
 
 } // namespace logger
