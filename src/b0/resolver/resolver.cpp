@@ -364,7 +364,8 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
 
 void Resolver::handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp)
 {
-    log(INFO, "Graph: node '%s' %s topic '%s'", req.node_name(), req.reverse() ? "subscribes to" : "publishes", req.topic_name());
+    static const char *predicate[2][2] = {{"stops publishing", "publishes"}, {"stops subscribing to", "subscribes to"}};
+    log(INFO, "Graph: node '%s' %s topic '%s'", req.node_name(), predicate[req.reverse()][req.active()], req.topic_name());
     auto k = std::make_pair(req.node_name(), req.topic_name());
     size_t old_sz = node_topic_.size();
     if(req.active()) node_topic_[k] = req.reverse();
@@ -375,7 +376,8 @@ void Resolver::handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b
 
 void Resolver::handleNodeService(const b0::resolver_msgs::NodeServiceRequest &req, b0::resolver_msgs::NodeServiceResponse &resp)
 {
-    log(INFO, "Graph: node '%s' %s service '%s'", req.node_name(), req.reverse() ? "connects to" : "offers", req.service_name());
+    static const char *predicate[2][2] = {{"stops offering", "offers"}, {"disconnects from", "connects to"}};
+    log(INFO, "Graph: node '%s' %s service '%s'", req.node_name(), predicate[req.reverse()][req.active()], req.service_name());
     auto k = std::make_pair(req.node_name(), req.service_name());
     size_t old_sz = node_service_.size();
     if(req.active()) node_service_[k] = req.reverse();
