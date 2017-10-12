@@ -330,7 +330,7 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         {
             resolver::NodeEntry *e = i->second;
             bool is_alive = (boost::posix_time::second_clock::local_time() - e->last_heartbeat) < boost::posix_time::seconds{5};
-            if(!is_alive)
+            if(!is_alive && e->name != this->getName())
             {
                 log(INFO, "Node '%s' disconnected.", e->name);
 
@@ -354,7 +354,7 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         if(!ne)
         {
             rsp.set_ok(false);
-            log(ERROR, "Invalid node id: %s", nodeKey(rq.node_id()));
+            log(ERROR, "Received a heartbeat from an invalid node id: %s", nodeKey(rq.node_id()));
             return;
         }
         heartBeat(ne);
