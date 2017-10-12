@@ -42,6 +42,7 @@ int main(int argc, char **argv)
     TestClientNode node;
     node.init();
     node.run();
+    node.cleanup();
     return 0;
 }
 

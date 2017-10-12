@@ -81,7 +81,7 @@ public:
     void init() override;
 
     /*!
-     * \brief Shutdown this node (stop all threads, send a shutdown notification, ...)
+     * \brief Shutdown this node (set a flag such that Node::shutdownRequested() returns true)
      */
     void shutdown() override;
 
@@ -104,6 +104,11 @@ public:
      * \brief Hijack announceNode step
      */
     virtual void announceNode() override;
+
+    /*!
+     * \brief Hijack notifyShutdown step
+     */
+    virtual void notifyShutdown() override;
 
     /*!
      * Called when a new node has connected
