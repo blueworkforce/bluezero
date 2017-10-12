@@ -31,6 +31,11 @@ public:
         connect();
     }
 
+    virtual void cleanup()
+    {
+        disconnect();
+    }
+
 protected:
     /*!
      * \brief Resolve the name of a service to a ZeroMQ address
@@ -58,6 +63,12 @@ protected:
     {
         node_.log(node_.TRACE, "Connecting to service '%s' (%s)...", service_name_, remote_addr_);
         req_socket_.connect(remote_addr_);
+    }
+
+    void disconnect()
+    {
+        node_.log(node_.TRACE, "Disconnecting from service '%s' (%s)...", service_name_, remote_addr_);
+        req_socket_.disconnect(remote_addr_);
     }
 
     //! The Node owning this ServiceClient
@@ -146,12 +157,26 @@ public:
         return rep.ParseFromString(payload);
     }
 
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     void init() override
     {
         AbstractServiceClient::init();
 
         if(notifyGraph)
             b0::graph::notifyService(node_, service_name_, true, true);
+    }
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
+    void cleanup() override
+    {
+        AbstractServiceClient::cleanup();
+
+        if(notifyGraph)
+            b0::graph::notifyService(node_, service_name_, true, false);
     }
 };
 
