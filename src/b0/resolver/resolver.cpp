@@ -28,6 +28,7 @@ void ResolverServiceServer::announce()
     rq.set_sock_addr(remote_addr_);
     b0::resolver_msgs::AnnounceServiceResponse rsp;
     resolver_->handleAnnounceService(rq, rsp);
+    resolver_->onNodeServiceOfferStart(resolver_->getName(), service_name_);
 }
 
 Resolver::Resolver()
@@ -63,6 +64,10 @@ void Resolver::init()
 
     // run heartbeat sweeper (to detect when nodes go offline):
     heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartBeatSweeper, this);
+
+    // we have to manually call this because graph_pub_ doesn't send graph notify:
+    // (has to be disabled because resolver is a special kind of node)
+    onNodeTopicPublishStart(getName(), graph_pub_.getTopicName());
 
     log(INFO, "Ready.");
 }
@@ -151,8 +156,7 @@ void Resolver::onNodeDisconnected(std::string name)
     for(auto x : nos) onNodeServiceOfferStop(x.first, x.second);
     for(auto x : nus) onNodeServiceUseStop(x.first, x.second);
 
-    if(npt.size() > 0 || nst.size() > 0 || nos.size() > 0 || nus.size() > 0)
-        onGraphChanged();
+    onGraphChanged();
 }
 
 void Resolver::onNodeTopicPublishStart(std::string node_name, std::string topic_name)
@@ -356,6 +360,7 @@ void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &
     std::string key = nodeKey(e);
     nodes_by_key_[key] = e;
     onNodeConnected(nodeName);
+    onGraphChanged();
     rsp.set_node_name(e->name);
     rsp.set_xsub_sock_addr(xsub_proxy_addr_);
     rsp.set_xpub_sock_addr(xpub_proxy_addr_);
@@ -505,6 +510,10 @@ void Resolver::handleGetGraph(const b0::resolver_msgs::GetGraphRequest &req, b0:
 
 void Resolver::getGraph(b0::resolver_msgs::Graph &graph)
 {
+    for(auto x : nodes_by_name_)
+    {
+        graph.add_nodes(x.first);
+    }
     for(auto x : node_publishes_topic_)
     {
         b0::resolver_msgs::GraphLink *l = graph.add_node_topic();

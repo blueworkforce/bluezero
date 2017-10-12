@@ -36,6 +36,14 @@ public:
         disconnect();
     }
 
+    /*!
+     * \brief Return the name of the service
+     */
+    std::string getServiceName()
+    {
+        return service_name_;
+    }
+
 protected:
     /*!
      * \brief Resolve the name of a service to a ZeroMQ address

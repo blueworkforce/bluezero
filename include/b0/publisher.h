@@ -15,7 +15,7 @@ public:
     AbstractPublisher(Node *node, std::string topic)
         : node_(*node),
           pub_socket_(node_.getZMQContext(), ZMQ_PUB),
-          topic_(topic)
+          topic_name_(topic)
     {
         node_.addPublisher(this);
     }
@@ -41,6 +41,14 @@ public:
         pub_socket_.disconnect(node_.getXSUBSocketAddress());
     }
 
+    /*!
+     * \brief Return the name of the topic
+     */
+    std::string getTopicName()
+    {
+        return topic_name_;
+    }
+
 protected:
     //! The Node owning this Publisher
     Node &node_;
@@ -49,7 +57,7 @@ protected:
     zmq::socket_t pub_socket_;
 
     //! The ZeroMQ envelope address (also known as the topic)
-    std::string topic_;
+    std::string topic_name_;
 };
 
 //! \endcond
@@ -79,7 +87,7 @@ public:
      */
     virtual void publish(const TMsg &msg)
     {
-        ::s_sendmore(pub_socket_, topic_);
+        ::s_sendmore(pub_socket_, topic_name_);
         ::s_send(pub_socket_, msg);
     }
 
@@ -91,7 +99,7 @@ public:
         AbstractPublisher::init();
 
         if(notifyGraph)
-            b0::graph::notifyTopic(node_, topic_, false, true);
+            b0::graph::notifyTopic(node_, topic_name_, false, true);
     }
 
     /*!
@@ -102,7 +110,7 @@ public:
         AbstractPublisher::cleanup();
 
         if(notifyGraph)
-            b0::graph::notifyTopic(node_, topic_, false, false);
+            b0::graph::notifyTopic(node_, topic_name_, false, false);
     }
 };
 

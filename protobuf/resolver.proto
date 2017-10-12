@@ -96,15 +96,16 @@ message NodeServiceResponse {
 }
 
 message GraphLink {
-  required string a = 1;
-  required string b = 2;
-  required bool reversed = 3;
+  required string a = 1; // node name
+  required string b = 2; // topic or service name
+  required bool reversed = 3; // direction of link: a->b if false, b->a if true
 }
 
 // Graph
 message Graph {
-  repeated GraphLink node_topic = 1;
-  repeated GraphLink node_service = 2;
+  repeated string nodes = 1;
+  repeated GraphLink node_topic = 2;
+  repeated GraphLink node_service = 3;
 }
 
 // Sent by node to get the full graph
