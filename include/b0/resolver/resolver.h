@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
 
@@ -108,6 +109,46 @@ public:
      * Called when a node disconnects (detected with heartbeat timeout)
      */
     void onNodeDisconnected(std::string name);
+
+    /*!
+     * Called when a node starts publishing to a topic
+     */
+    void onNodeTopicPublishStart(std::string node_name, std::string topic_name);
+
+    /*!
+     * Called when a node stops publishing to a topic
+     */
+    void onNodeTopicPublishStop(std::string node_name, std::string topic_name);
+
+    /*!
+     * Called when a node starts subscribing to a topic
+     */
+    void onNodeTopicSubscribeStart(std::string node_name, std::string topic_name);
+
+    /*!
+     * Called when a node stops subscribing to a topic
+     */
+    void onNodeTopicSubscribeStop(std::string node_name, std::string topic_name);
+
+    /*!
+     * Called when a node starts offering a service
+     */
+    void onNodeServiceOfferStart(std::string node_name, std::string service_name);
+
+    /*!
+     * Called when a node stops offering a service
+     */
+    void onNodeServiceOfferStop(std::string node_name, std::string service_name);
+
+    /*!
+     * Called when a node starts using a service
+     */
+    void onNodeServiceUseStart(std::string node_name, std::string service_name);
+
+    /*!
+     * Called when a node stops using a service
+     */
+    void onNodeServiceUseStop(std::string node_name, std::string service_name);
 
     /*!
      * \brief The XSUB/XPUB proxy (will be started in a separate thread)
@@ -262,11 +303,17 @@ protected:
     //! Map of services by name
     std::map<std::string, resolver::ServiceEntry*> services_by_name_;
 
-    //! Graph edges node <--> topic
-    std::map<std::pair<std::string, std::string>, bool> node_topic_;
-    //
-    //! Graph edges node <--> service
-    std::map<std::pair<std::string, std::string>, bool> node_service_;
+    //! Graph edges node --> topic
+    std::set<std::pair<std::string, std::string> > node_publishes_topic_;
+
+    //! Graph edges node <-- topic
+    std::set<std::pair<std::string, std::string> > node_subscribes_topic_;
+
+    //! Graph edges node --> service
+    std::set<std::pair<std::string, std::string> > node_offers_service_;
+
+    //! Graph edges node <-- service
+    std::set<std::pair<std::string, std::string> > node_uses_service_;
 
     //! Publisher of the Graph message
     b0::Publisher<b0::resolver_msgs::Graph, false> graph_pub_;
