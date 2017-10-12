@@ -18,7 +18,7 @@ public:
     AbstractSubscriber(Node *node, std::string topic)
         : node_(*node),
           sub_socket_(node_.getZMQContext(), ZMQ_SUB),
-          topic_(topic)
+          topic_name_(topic)
     {
         node_.addSubscriber(this);
     }
@@ -34,7 +34,7 @@ public:
     virtual void init()
     {
         sub_socket_.connect(node_.getXPUBSocketAddress());
-        sub_socket_.setsockopt(ZMQ_SUBSCRIBE, topic_.data(), topic_.size());
+        sub_socket_.setsockopt(ZMQ_SUBSCRIBE, topic_name_.data(), topic_name_.size());
     }
 
     /*!
@@ -42,7 +42,7 @@ public:
      */
     virtual void cleanup()
     {
-        sub_socket_.setsockopt(ZMQ_UNSUBSCRIBE, topic_.data(), topic_.size());
+        sub_socket_.setsockopt(ZMQ_UNSUBSCRIBE, topic_name_.data(), topic_name_.size());
         sub_socket_.disconnect(node_.getXPUBSocketAddress());
     }
 
@@ -50,6 +50,14 @@ public:
      * \brief Poll and read incoming messages, and dispatch them
      */
     virtual void spinOnce() = 0;
+
+    /*!
+     * \brief Return the name of the topic
+     */
+    std::string getTopicName()
+    {
+        return topic_name_;
+    }
 
 protected:
     //! The Node owning this Subscriber
@@ -59,7 +67,7 @@ protected:
     zmq::socket_t sub_socket_;
 
     //! The ZeroMQ topic name to set the subscription
-    std::string topic_;
+    std::string topic_name_;
 };
 
 //! \endcond
@@ -165,7 +173,7 @@ public:
         AbstractSubscriber::init();
 
         if(notifyGraph)
-            b0::graph::notifyTopic(node_, topic_, true, true);
+            b0::graph::notifyTopic(node_, topic_name_, true, true);
     }
 
     /*!
@@ -176,7 +184,7 @@ public:
         AbstractSubscriber::init();
 
         if(notifyGraph)
-            b0::graph::notifyTopic(node_, topic_, true, false);
+            b0::graph::notifyTopic(node_, topic_name_, true, false);
     }
 
 protected:

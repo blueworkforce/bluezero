@@ -43,6 +43,14 @@ public:
      */
     virtual void spinOnce() = 0;
 
+    /*!
+     * \brief Return the name of the service
+     */
+    std::string getServiceName()
+    {
+        return service_name_;
+    }
+
 protected:
     /*!
      * \brief Bind this service socket

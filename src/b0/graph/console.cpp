@@ -86,6 +86,10 @@ public:
         std::set<std::string> nodes;
         std::set<std::string> topics;
         std::set<std::string> services;
+        for(auto x : graph.nodes())
+        {
+            nodes.insert(x);
+        }
         for(auto x : graph.node_topic())
         {
             nodes.insert(x.a());
