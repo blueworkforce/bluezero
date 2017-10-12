@@ -60,7 +60,7 @@ protected:
 
     virtual void unbind()
     {
-        rep_socket_.unbind(bind_addr_);
+        //rep_socket_.unbind(bind_addr_); // FIXME: causes a zmq error on node shutdown
     }
 
     /*!
