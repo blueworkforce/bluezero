@@ -39,10 +39,6 @@
  *
  * \b Important: you must have the resolver node running prior to running any node.
  *
- * The resolver's protocol messages are defined in the b0::resolver namespace.
- * The protocol is handled transparently by Node when using methods such as
- * b0::Node::bindSocket(), b0::Node::connectSocket().
- *
  * \section examples Examples
  *
  * \subsection example_pubsub Topics (Publisher/Subscriber)

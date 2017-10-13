@@ -112,13 +112,13 @@ protected:
 /*!
  * \brief Service server
  *
- * This class wraps a ZeroMQ REP socket. It will use Node::bindSocket() to automatically
+ * This class wraps a ZeroMQ REP socket. It will automatically
  * announce the socket name to resolver.
  *
  * If using a callback, when a request is received, it will be handed to the callback, as long as
  * a spin method is called (e.g. Node::spin(), Node::spinOnce() or ServiceServer::spinOnce()).
  *
- * You can directly read requests and write replies to the underlying socket, by using
+ * You can directly read requests and write replies from the underlying socket, by using
  * ServiceServer::poll(), ServiceServer::read() and ServiceServer::write().
  *
  * \sa ServiceClient

@@ -97,9 +97,9 @@ protected:
 /*!
  * \brief Service client
  *
- * This class wraps a ZeroMQ REQ socket. It will use Node::connectSocket() to
- * automatically resolve the node of the target socket (identified by node_name and service_name
- * passed to the constructor ServiceClient::ServiceClient()).
+ * This class wraps a ZeroMQ REQ socket. It will automatically resolve the address
+ * of the target socket (identified by the service_name argument passed to the
+ * constructor ServiceClient::ServiceClient()).
  *
  * The remote service is invoked with ServiceClient::call() and the call is blocking.
  * It will unblock as soon as the server sends out a reply.
@@ -123,7 +123,7 @@ public:
 
     /*!
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
-     * \sa read(const TReq&), write(TRep&)
+     * \sa ServiceServer::read(), ServiceServer::write()
      */
     virtual void call(const TReq &req, TRep &rep)
     {
