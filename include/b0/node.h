@@ -2,7 +2,7 @@
 #define NODE_H_INCLUDED
 
 #include "resolver.pb.h"
-#include <b0/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.hpp>
 #include <b0/logger/logger.h>
 
 #include <string>

@@ -2,7 +2,7 @@
 #define LOGGER_H_INCLUDED
 
 #include "logger.pb.h"
-#include <b0/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.hpp>
 
 #include <string>
 #include <sstream>

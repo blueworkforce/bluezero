@@ -1,7 +1,7 @@
 #ifndef PROTOBUFHELPERS_HPP_INCLUDED
 #define PROTOBUFHELPERS_HPP_INCLUDED
 
-#include "zhelpers.hpp"
+#include <b0/utils/zhelpers.hpp>
 
 template<typename T>
 static bool
