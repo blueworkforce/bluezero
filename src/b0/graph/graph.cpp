@@ -1,4 +1,4 @@
-#include <b0/graph.h>
+#include <b0/graph/graph.h>
 
 namespace b0
 {

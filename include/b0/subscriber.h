@@ -2,7 +2,7 @@
 #define SUBSCRIBER_H_INCLUDED
 
 #include <b0/node.h>
-#include <b0/graph.h>
+#include <b0/graph/graph.h>
 
 namespace b0
 {
