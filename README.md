@@ -50,6 +50,10 @@ mkdir build
 cd build
 cmake ..
 make
+```
+
+Optionally, generate the documentation (requires [Doxygen](http://www.doxygen.org) and [Graphviz](http://www.graphviz.org) installed):
+```
 make doc
 ```
 
