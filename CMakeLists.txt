@@ -31,6 +31,15 @@ if(DOXYGEN_FOUND)
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM)
+
+    set(DOCS_IN ${CMAKE_CURRENT_BINARY_DIR}/docs/html)
+    set(DOCS_OUT ${CMAKE_CURRENT_SOURCE_DIR}/docs)
+
+    add_custom_command(TARGET doc POST_BUILD
+        COMMAND rm -rf ${DOCS_OUT}
+        COMMAND cp -r ${DOCS_IN} ${DOCS_OUT}
+        COMMENT "Copying HTML docs to docs/ dir"
+        VERBATIM)
 else()
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif()
