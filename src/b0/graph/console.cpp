@@ -1,6 +1,9 @@
+#include "config.h"
 #include <cstdlib>
 #include <iostream>
+#ifdef HAVE_BOOST_PROCESS
 #include <boost/process.hpp>
+#endif
 #include <boost/algorithm/string.hpp>
 #include "resolver.pb.h"
 #include <b0/node.h>
@@ -138,9 +141,14 @@ public:
 
     int renderGraphviz(std::string input, std::string output)
     {
+#ifdef HAVE_BOOST_PROCESS
         boost::process::child c(boost::process::search_path("neato"), "-Tpng", boost::process::std_out > output, boost::process::std_in < input);
         c.wait();
         return c.exit_code();
+#else
+        std::cerr << "boost/process.hpp is needed for executing neato" << std::endl;
+        return 1;
+#endif
     }
 
     bool termHasImageCapability()
@@ -152,9 +160,14 @@ public:
 
     int displayInlineImage(std::string filename)
     {
+#ifdef HAVE_BOOST_PROCESS
         boost::process::child c(boost::process::search_path("bash"), "imgcat", "graph.png");
         c.wait();
         return c.exit_code();
+#else
+        std::cerr << "boost/process.hpp is needed for inline image display" << std::endl;
+        return 1;
+#endif
     }
 
 protected:
