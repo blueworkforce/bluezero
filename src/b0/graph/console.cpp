@@ -162,7 +162,7 @@ public:
     int displayInlineImage(std::string filename)
     {
 #ifdef HAVE_BOOST_PROCESS
-        boost::process::child c(boost::process::search_path("bash"), "imgcat", "graph.png");
+        boost::process::child c(boost::process::search_path("imgcat"), "graph.png");
         c.wait();
         return c.exit_code();
 #else
