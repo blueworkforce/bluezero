@@ -1,5 +1,6 @@
 #include "config.h"
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #ifdef HAVE_BOOST_PROCESS
 #include <boost/process.hpp>
