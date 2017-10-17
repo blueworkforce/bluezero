@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(bluezero)
 
+include(CheckIncludeFileCXX)
+
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
 
@@ -49,6 +51,18 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${ZMQ_INCLUDE_DIRS})
 include_directories(${PROTOBUF_INCLUDE_DIR})
+
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main.cpp "#include <boost/process.hpp>
+int main(){return 0;}")
+try_compile(HAVE_BOOST_PROCESS
+    ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process
+    ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main.cpp
+    CMAKE_FLAGS -DINCLUDE_DIRECTORIES=${Boost_INCLUDE_DIRS}
+    COMPILE_DEFINITIONS "${Boost_DEFINITIONS} -std=c++11"
+    LINK_LIBRARIES ${Boost_LIBRARIES}
+    COPY_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 protobuf_generate_cpp(
     B0_MSG_SOURCES

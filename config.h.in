@@ -1,0 +1,1 @@
+#cmakedefine HAVE_BOOST_PROCESS
