@@ -24,5 +24,18 @@ s_send(zmq::socket_t &socket, const T &msg)
     else return false;
 }
 
+template<typename T>
+static bool
+s_sendmore(zmq::socket_t &socket, const T &msg)
+{
+    std::string msg_str;
+    if(msg.SerializeToString(&msg_str))
+    {
+        s_sendmore(socket, msg_str);
+        return true;
+    }
+    else return false;
+}
+
 #endif // PROTOBUFHELPERS_HPP_INCLUDED
 
