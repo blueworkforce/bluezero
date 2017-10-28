@@ -8,6 +8,7 @@
 #include <string>
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
+#include <boost/thread/mutex.hpp>
 
 namespace b0
 {
@@ -224,6 +225,73 @@ protected:
      * \brief The heartbeat message loop (run in its own thread)
      */
     virtual void heartbeatLoop();
+
+public:
+    /*!
+     * \page timesync Time Synchronization
+     *
+     * This page describes how time synchronization works.
+     *
+     * There is one master clock node, which usualy coincides with the resolver node,
+     * and every other node instance will try to synchronize its clock to the master clock,
+     * while maintaining a guarrantee on some properties:
+     *
+     *  - time must not do arbitrarily big jumps
+     *  - time must always increase monotonically, i.e. if we read time into variable T1, and after some time we read again time into variable T2, it must always be that T2 >= T1
+     *  - locally, adjusted time must change at a constant speed, that is, the adjustment must happen at a constant rate
+     *  - the adjustment must be a continuous function of time, such that even if the time is adjusted at a low rate (typically 1Hz) we get a consistent behavior for sub-second reads
+     *
+     *  Time synchronization never changes the computer's hardware clock.
+     *  It rather computes an offset to add to the hardware clock.
+     *
+     *  The method Node::timeUSec() returns the value of the hardware clock corrected by the required offset, while the method Node::hardwareTimeUSec() will return the hardware clock actual value.
+     *
+     *  Each time a new time is received from master clock (tipically in the heartbeat message) the method Node::updateTime() is called, and a new offset is computed.
+     *
+     *  If we look at the offset as a function of time we see that is discontinuous.
+     *  This is bad because just adding the offset to the hardware clock would cause
+     *  arbitrarily big jumps and even jump backwards in time, thus violating the
+     *  two properties stated before.
+     *
+     *  To fix this, the offset function is smoothed so that it is continuous, and
+     *  limited in its rate of change (max slope).
+     *
+     *  TODO: add plots to show the difference between smoothed and unsmoothed offset func
+     *
+     */
+
+    /*!
+     * \brief Return this computer's clock time in microseconds
+     */
+    int64_t hardwareTimeUSec() const;
+
+    /*!
+     * \brief Return the adjusted time in microseconds. See \ref timesync for details.
+     */
+    int64_t timeUSec();
+
+protected:
+    /*!
+     * Compute a smoothed offset with a linear velocity profile
+     * with a slope never greater (in absolute value) than max_slope
+     */
+    int64_t constantRateAdjustedOffset();
+
+    /*!
+     * Update the time offset with a time from remote server (in microseconds)
+     */
+    void updateTime(int64_t remoteTime);
+
+    /*!
+     * State variables related to time synchronization
+     */
+    struct timesync {
+        int64_t target_offset_;
+        int64_t last_offset_time_;
+        int64_t last_offset_value_;
+        double max_slope_;
+        boost::mutex mutex_;
+    } timesync_;
 
 public:
     /*!
