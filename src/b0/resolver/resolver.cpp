@@ -6,6 +6,7 @@
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <b0/utils/protobufhelpers.hpp>
 #include <b0/resolver/resolver.h>
@@ -462,6 +463,8 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         heartBeat(ne);
     }
     rsp.set_ok(true);
+    static boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
+    rsp.set_time_usec((boost::posix_time::microsec_clock::local_time() - epoch).total_microseconds());
 }
 
 void Resolver::handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp)
