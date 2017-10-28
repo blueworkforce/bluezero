@@ -263,6 +263,7 @@ public:
      *
      *  To fix this, the offset function is smoothed so that it is continuous, and
      *  limited in its rate of change (max slope).
+     *  It is important that the max slope is always greater than zero, so as to produce an actual change, and strictly less than 1, so as to not cause time to stop or go backwards.
      *
      * \image html timesync_plot4.png "The smoothed offset. In this example we used a max slope of 0.5, such that the time adjustment is at most half second per second." width=500pt
      *

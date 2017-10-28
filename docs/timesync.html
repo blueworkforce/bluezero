@@ -88,7 +88,7 @@ Example time series of the offset, which is computed as the difference between l
 <img src="timesync_plot3.png" alt="timesync_plot3.png" width="500pt"/>
 <div class="caption">
 The adjusted time obtained by adding the offset to local time</div></div>
-<p>To fix this, the offset function is smoothed so that it is continuous, and limited in its rate of change (max slope).</p>
+<p>To fix this, the offset function is smoothed so that it is continuous, and limited in its rate of change (max slope). It is important that the max slope is always greater than zero, so as to produce an actual change, and strictly less than 1, so as to not cause time to stop or go backwards.</p>
 <div class="image">
 <img src="timesync_plot4.png" alt="timesync_plot4.png" width="500pt"/>
 <div class="caption">
