@@ -30,6 +30,12 @@ Node::Node(std::string nodeName)
       shutdown_flag_(false)
 {
     setupSIGINTHandler();
+
+    // initialize time sync state variables:
+    timesync_.target_offset_ = 0;
+    timesync_.last_offset_time_ = hardwareTimeUSec();
+    timesync_.last_offset_value_ = 0;
+    timesync_.max_slope_ = 0.5;
 }
 
 Node::~Node()
