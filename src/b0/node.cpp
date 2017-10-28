@@ -11,6 +11,8 @@
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace b0
 {
@@ -301,16 +303,59 @@ void Node::heartbeatLoop()
         b0::resolver_msgs::Request rq0;
         b0::resolver_msgs::HeartBeatRequest &rq = *rq0.mutable_heartbeat();
         getNodeID(*rq.mutable_node_id());
+        int64_t sendTime = hardwareTimeUSec();
         s_send(socket, rq0);
 
         b0::resolver_msgs::Response rsp0;
         s_recv(socket, rsp0);
+        int64_t recvTime = hardwareTimeUSec();
+        int64_t rtt = recvTime - sendTime;
         const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
         if(!rsp.ok()) break;
+        updateTime(rsp.time_usec() + rtt / 2);
         boost::this_thread::sleep_for(boost::chrono::seconds{1});
     }
 
     log(INFO, "Heartbeat thread terminating.");
+}
+
+int64_t Node::hardwareTimeUSec() const
+{
+    static boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
+    boost::posix_time::ptime t = boost::posix_time::microsec_clock::local_time();
+    return (t - epoch).total_microseconds();
+}
+
+int64_t Node::timeUSec()
+{
+    return hardwareTimeUSec() + constantRateAdjustedOffset();
+}
+
+int64_t Node::constantRateAdjustedOffset()
+{
+    boost::mutex::scoped_lock lock(timesync_.mutex_);
+
+    int64_t offset_delta = timesync_.target_offset_ - timesync_.last_offset_value_;
+    int64_t slope_time = abs(offset_delta) / timesync_.max_slope_;
+    int64_t t = hardwareTimeUSec() - timesync_.last_offset_time_;
+    if(t > slope_time)
+        return timesync_.target_offset_;
+    else
+        return timesync_.last_offset_value_ + offset_delta * t / slope_time;
+}
+
+void Node::updateTime(int64_t remoteTime)
+{
+    int64_t last_offset_value = constantRateAdjustedOffset();
+    int64_t local_time = hardwareTimeUSec();
+
+    {
+        boost::mutex::scoped_lock lock(timesync_.mutex_);
+
+        timesync_.last_offset_value_ = last_offset_value;
+        timesync_.last_offset_time_ = local_time;
+        timesync_.target_offset_ = remoteTime - local_time;
+    }
 }
 
 void Node::signalHandler(int s)
