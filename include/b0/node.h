@@ -232,6 +232,10 @@ public:
      *
      * This page describes how time synchronization works.
      *
+     * The objective of time synchronization is to coordinate otherwise independent clocks. Even when initially set accurately, real clocks will differ after some amount of time due to clock drift, caused by clocks counting time at slightly different rates.
+     *
+     * \image html timesync_plot1.png "Example of two drifting clocks" width=500pt
+     *
      * There is one master clock node, which usualy coincides with the resolver node,
      * and every other node instance will try to synchronize its clock to the master clock,
      * while maintaining a guarrantee on some properties:
@@ -248,15 +252,21 @@ public:
      *
      *  Each time a new time is received from master clock (tipically in the heartbeat message) the method Node::updateTime() is called, and a new offset is computed.
      *
+     * \image html timesync_plot2.png "Example time series of the offset, which is computed as the difference between local time and remote time. Note that is not required that the offset is received at fixed intervals, and in fact in this example it is not the case." width=500pt
+     *
      *  If we look at the offset as a function of time we see that is discontinuous.
      *  This is bad because just adding the offset to the hardware clock would cause
      *  arbitrarily big jumps and even jump backwards in time, thus violating the
      *  two properties stated before.
      *
+     * \image html timesync_plot3.png "The adjusted time obtained by adding the offset to local time" width=500pt
+     *
      *  To fix this, the offset function is smoothed so that it is continuous, and
      *  limited in its rate of change (max slope).
      *
-     *  TODO: add plots to show the difference between smoothed and unsmoothed offset func
+     * \image html timesync_plot4.png "The smoothed offset. In this example we used a max slope of 0.5, such that the time adjustment is at most half second per second." width=500pt
+     *
+     * \image html timesync_plot5.png "The resulting adjusted time" width=500pt
      *
      */
 
