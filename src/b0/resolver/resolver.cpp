@@ -444,7 +444,7 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         }
         for(auto node_name : nodes_shutdown)
         {
-            log(INFO, "Node '%s' disconnected.", node_name);
+            log(INFO, "Node '%s' disconnected due to timeout.", node_name);
             resolver::NodeEntry *e = nodeByName(node_name);
             onNodeDisconnected(node_name);
             delete e;
