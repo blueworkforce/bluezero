@@ -69,6 +69,7 @@ message HeartBeatRequest {
 // Response to HeartBeatRequest message
 message HeartBeatResponse {
   required bool ok = 1;
+  required int64 time_usec = 2;
 }
 
 // Sent by node to tell a topic it is publishing onto/subscribing to
