@@ -2,6 +2,8 @@
 #include <boost/format.hpp>
 #include <stdexcept>
 
+#include "config.h"
+
 #ifdef ZLIB_FOUND
 
 #include <zlib.h>
