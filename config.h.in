@@ -1,1 +1,2 @@
 #cmakedefine HAVE_BOOST_PROCESS
+#cmakedefine ZLIB_FOUND

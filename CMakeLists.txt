@@ -18,6 +18,7 @@ find_package(Doxygen)
 find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization)
 find_package(ZMQ 4.1.4 REQUIRED)
 find_package(Protobuf 2.6 REQUIRED)
+find_package(ZLIB)
 
 if(DOXYGEN_FOUND)
     # set input and output files
@@ -77,9 +78,15 @@ add_library(
     src/b0/logger/logger.cpp
     src/b0/graph/graph.cpp
     src/b0/resolver/resolver.cpp
+    src/b0/utils/compress.cpp
     ${B0_MSG_SOURCES}
 )
 target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
+
+if(ZLIB_FOUND)
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    target_link_libraries(b0 ${ZLIB_LIBRARIES})
+endif()
 
 add_executable(resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_main.cpp)
 target_link_libraries(resolver b0)
