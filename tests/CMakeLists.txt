@@ -16,3 +16,7 @@ add_executable(clisrv2 clisrv2.cpp ${TEST_MSGS})
 target_link_libraries(clisrv2 b0)
 add_test(clisrv2 clisrv2)
 
+add_executable(compress compress.cpp ${TEST_MSGS})
+target_link_libraries(compress b0)
+add_test(compress compress)
+
