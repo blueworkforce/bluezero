@@ -14,6 +14,8 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "resolver.pb.h"
+
 namespace b0
 {
 
@@ -138,7 +140,7 @@ void Node::cleanup()
     notifyShutdown();
 }
 
-void Node::log(b0::logger_msgs::LogLevel level, std::string message)
+void Node::log(LogLevel level, std::string message)
 {
     logger_.log(level, message);
 }
@@ -218,18 +220,21 @@ void Node::removeServiceServer(AbstractServiceServer *srv)
     service_servers_.erase(srv);
 }
 
-void Node::getNodeID(b0::resolver_msgs::NodeID &node_id)
-{
-    node_id.set_host_id(hostname());
-    node_id.set_process_id(::getpid());
-    node_id.set_thread_id(boost::lexical_cast<std::string>(thread_id_));
-}
-
 std::string Node::hostname()
 {
     const char *host_addr = std::getenv("BWF_HOST_ID");
     if(host_addr) return host_addr;
     else return boost::asio::ip::host_name();
+}
+
+int Node::pid()
+{
+    return ::getpid();
+}
+
+std::string Node::threadID()
+{
+    return boost::lexical_cast<std::string>(thread_id_);
 }
 
 int Node::freeTCPPort()
@@ -259,7 +264,10 @@ void Node::announceNode()
     log(TRACE, "Announcing node '%s' to resolver...", name_);
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::AnnounceNodeRequest &rq = *rq0.mutable_announce_node();
-    getNodeID(*rq.mutable_node_id());
+    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
+    node_id.set_host_id(hostname());
+    node_id.set_process_id(pid());
+    node_id.set_thread_id(threadID());
     rq.set_node_name(name_);
     s_send(resolv_socket_, rq0);
 
@@ -288,7 +296,10 @@ void Node::notifyShutdown()
     log(TRACE, "Notifying node shutdown to resolver...");
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::ShutdownNodeRequest &rq = *rq0.mutable_shutdown_node();
-    getNodeID(*rq.mutable_node_id());
+    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
+    node_id.set_host_id(hostname());
+    node_id.set_process_id(pid());
+    node_id.set_thread_id(threadID());
     s_send(resolv_socket_, rq0);
 
     b0::resolver_msgs::Response rsp0;
@@ -308,7 +319,10 @@ void Node::heartbeatLoop()
     {
         b0::resolver_msgs::Request rq0;
         b0::resolver_msgs::HeartBeatRequest &rq = *rq0.mutable_heartbeat();
-        getNodeID(*rq.mutable_node_id());
+        b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
+        node_id.set_host_id(hostname());
+        node_id.set_process_id(pid());
+        node_id.set_thread_id(threadID());
         int64_t sendTime = hardwareTimeUSec();
         s_send(socket, rq0);
 

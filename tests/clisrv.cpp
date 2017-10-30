@@ -1,7 +1,7 @@
 #include <boost/thread.hpp>
 
 #include "test_msgs.pb.h"
-
+#include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/service_client.h>
@@ -24,7 +24,7 @@ void cli_thread()
     req.set_a(123456);
     req.set_b(1);
     cli.call(req, resp);
-    node.log(b0::logger_msgs::INFO, "server response: %s", resp.DebugString());
+    node.log(b0::Node::LogLevel::INFO, "server response: %s", resp.DebugString());
     exit(resp.c() == 123457 ? 0 : 1);
 }
 

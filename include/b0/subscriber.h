@@ -12,52 +12,12 @@ namespace b0
 class AbstractSubscriber
 {
 public:
-    /*!
-     * \brief Constructor
-     */
-    AbstractSubscriber(Node *node, std::string topic)
-        : node_(*node),
-          sub_socket_(node_.getZMQContext(), ZMQ_SUB),
-          topic_name_(topic)
-    {
-        node_.addSubscriber(this);
-    }
-
-    virtual ~AbstractSubscriber()
-    {
-        node_.removeSubscriber(this);
-    }
-
-    /*!
-     * \brief Perform initialization (connect to XPUB)
-     */
-    virtual void init()
-    {
-        sub_socket_.connect(node_.getXPUBSocketAddress());
-        sub_socket_.setsockopt(ZMQ_SUBSCRIBE, topic_name_.data(), topic_name_.size());
-    }
-
-    /*!
-     * \brief Perform cleanup (disconnect from XPUB)
-     */
-    virtual void cleanup()
-    {
-        sub_socket_.setsockopt(ZMQ_UNSUBSCRIBE, topic_name_.data(), topic_name_.size());
-        sub_socket_.disconnect(node_.getXPUBSocketAddress());
-    }
-
-    /*!
-     * \brief Poll and read incoming messages, and dispatch them
-     */
+    AbstractSubscriber(Node *node, std::string topic);
+    virtual ~AbstractSubscriber();
+    virtual void init();
+    virtual void cleanup();
     virtual void spinOnce() = 0;
-
-    /*!
-     * \brief Return the name of the topic
-     */
-    std::string getTopicName()
-    {
-        return topic_name_;
-    }
+    std::string getTopicName();
 
 protected:
     //! The Node owning this Subscriber

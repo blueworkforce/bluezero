@@ -1,6 +1,8 @@
 #include <b0/logger/logger.h>
 #include <b0/node.h>
 
+#include "logger.pb.h"
+
 namespace b0
 {
 
@@ -12,7 +14,7 @@ void LogInterface::log(std::string message)
     log(INFO, message);
 }
 
-void LogInterface::log_helper(b0::logger_msgs::LogLevel level, boost::format &format)
+void LogInterface::log_helper(LogLevel level, boost::format &format)
 {
     return log(level, format.str());
 }
@@ -26,7 +28,7 @@ LocalLogger::~LocalLogger()
 {
 }
 
-void LocalLogger::log(b0::logger_msgs::LogLevel level, std::string message)
+void LocalLogger::log(LogLevel level, std::string message)
 {
     LevelInfo info = levelInfo(level);
     std::string name = node_.getName();
@@ -47,16 +49,16 @@ std::string LocalLogger::LevelInfo::ansiReset()
     return "\x1b[0m";
 }
 
-LocalLogger::LevelInfo LocalLogger::levelInfo(b0::logger_msgs::LogLevel level)
+LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level)
 {
     switch(level)
     {
-        case b0::logger_msgs::LogLevel::TRACE: return {"TRACE", 0, 0x1e, 0}; break;
-        case b0::logger_msgs::LogLevel::DEBUG: return {"DEBUG", 1, 0x1e, 0}; break;
-        case b0::logger_msgs::LogLevel::INFO:  return {"INFO",  1, 0x25, 0}; break;
-        case b0::logger_msgs::LogLevel::WARN:  return {"WARN",  0, 0x21, 0}; break;
-        case b0::logger_msgs::LogLevel::ERROR: return {"ERROR", 0, 0x1f, 0}; break;
-        case b0::logger_msgs::LogLevel::FATAL: return {"FATAL", 7, 0x1f, 0}; break;
+        case LogLevel::TRACE: return {"TRACE", 0, 0x1e, 0}; break;
+        case LogLevel::DEBUG: return {"DEBUG", 1, 0x1e, 0}; break;
+        case LogLevel::INFO:  return {"INFO",  1, 0x25, 0}; break;
+        case LogLevel::WARN:  return {"WARN",  0, 0x21, 0}; break;
+        case LogLevel::ERROR: return {"ERROR", 0, 0x1f, 0}; break;
+        case LogLevel::FATAL: return {"FATAL", 7, 0x1f, 0}; break;
     }
     return {"?????", 1, 0x1e, 0};
 }
@@ -76,7 +78,7 @@ void Logger::connect(std::string addr)
     pub_socket_.connect(addr);
 }
 
-void Logger::log(b0::logger_msgs::LogLevel level, std::string message)
+void Logger::log(LogLevel level, std::string message)
 {
     std::string name = node_.getName();
 
@@ -84,7 +86,15 @@ void Logger::log(b0::logger_msgs::LogLevel level, std::string message)
 
     b0::logger_msgs::LogEntry e;
     e.set_node_name(name);
-    e.set_level(level);
+    switch(level)
+    {
+        case LogLevel::TRACE: e.set_level(b0::logger_msgs::TRACE); break;
+        case LogLevel::DEBUG: e.set_level(b0::logger_msgs::DEBUG); break;
+        case LogLevel::INFO:  e.set_level(b0::logger_msgs::INFO);  break;
+        case LogLevel::WARN:  e.set_level(b0::logger_msgs::WARN);  break;
+        case LogLevel::ERROR: e.set_level(b0::logger_msgs::ERROR); break;
+        case LogLevel::FATAL: e.set_level(b0::logger_msgs::FATAL); break;
+    }
     e.set_msg(message);
     ::s_sendmore(pub_socket_, std::string("log"));
     ::s_send(pub_socket_, e);

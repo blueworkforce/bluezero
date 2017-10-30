@@ -12,72 +12,16 @@ namespace b0
 class AbstractServiceClient
 {
 public:
-    AbstractServiceClient(Node *node, std::string service_name)
-        : node_(*node),
-          service_name_(service_name),
-          req_socket_(node_.getZMQContext(), ZMQ_REQ)
-    {
-        node_.addServiceClient(this);
-    }
-
-    virtual ~AbstractServiceClient()
-    {
-        node_.removeServiceClient(this);
-    }
-
-    virtual void init()
-    {
-        resolve();
-        connect();
-    }
-
-    virtual void cleanup()
-    {
-        disconnect();
-    }
-
-    /*!
-     * \brief Return the name of the service
-     */
-    std::string getServiceName()
-    {
-        return service_name_;
-    }
+    AbstractServiceClient(Node *node, std::string service_name);
+    virtual ~AbstractServiceClient();
+    virtual void init();
+    virtual void cleanup();
+    std::string getServiceName();
 
 protected:
-    /*!
-     * \brief Resolve the name of a service to a ZeroMQ address
-     */
-    void resolve()
-    {
-        zmq::socket_t &resolv_socket = node_.resolverSocket();
-
-        b0::resolver_msgs::Request rq0;
-        b0::resolver_msgs::ResolveServiceRequest &rq = *rq0.mutable_resolve();
-        rq.set_service_name(service_name_);
-        s_send(resolv_socket, rq0);
-
-        b0::resolver_msgs::Response rsp0;
-        s_recv(resolv_socket, rsp0);
-        const b0::resolver_msgs::ResolveServiceResponse &rsp = rsp0.resolve();
-        remote_addr_ = rsp.sock_addr();
-        node_.log(node_.TRACE, "Resolve %s -> %s", service_name_, remote_addr_);
-    }
-
-    /*!
-     * \brief Connect to the specified service
-     */
-    void connect()
-    {
-        node_.log(node_.TRACE, "Connecting to service '%s' (%s)...", service_name_, remote_addr_);
-        req_socket_.connect(remote_addr_);
-    }
-
-    void disconnect()
-    {
-        node_.log(node_.TRACE, "Disconnecting from service '%s' (%s)...", service_name_, remote_addr_);
-        req_socket_.disconnect(remote_addr_);
-    }
+    void resolve();
+    void connect();
+    void disconnect();
 
     //! The Node owning this ServiceClient
     Node &node_;

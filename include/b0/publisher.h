@@ -12,42 +12,11 @@ namespace b0
 class AbstractPublisher
 {
 public:
-    AbstractPublisher(Node *node, std::string topic)
-        : node_(*node),
-          pub_socket_(node_.getZMQContext(), ZMQ_PUB),
-          topic_name_(topic)
-    {
-        node_.addPublisher(this);
-    }
-
-    virtual ~AbstractPublisher()
-    {
-        node_.removePublisher(this);
-    }
-
-    /*!
-     * \brief Perform initialization (connect to XSUB)
-     */
-    virtual void init()
-    {
-        pub_socket_.connect(node_.getXSUBSocketAddress());
-    }
-
-    /*!
-     * \brief Perform cleanup (disconnect from XSUB)
-     */
-    virtual void cleanup()
-    {
-        pub_socket_.disconnect(node_.getXSUBSocketAddress());
-    }
-
-    /*!
-     * \brief Return the name of the topic
-     */
-    std::string getTopicName()
-    {
-        return topic_name_;
-    }
+    AbstractPublisher(Node *node, std::string topic);
+    virtual ~AbstractPublisher();
+    virtual void init();
+    virtual void cleanup();
+    std::string getTopicName();
 
 protected:
     //! The Node owning this Publisher

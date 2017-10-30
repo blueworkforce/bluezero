@@ -76,6 +76,10 @@ add_library(
     b0
     SHARED
     src/b0/node.cpp
+    src/b0/publisher.cpp
+    src/b0/subscriber.cpp
+    src/b0/service_client.cpp
+    src/b0/service_server.cpp
     src/b0/logger/logger.cpp
     src/b0/graph/graph.cpp
     src/b0/resolver/resolver.cpp

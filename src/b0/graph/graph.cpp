@@ -1,5 +1,7 @@
 #include <b0/graph/graph.h>
 
+#include "resolver.pb.h"
+
 namespace b0
 {
 
