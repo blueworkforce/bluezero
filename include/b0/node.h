@@ -1,7 +1,6 @@
 #ifndef NODE_H_INCLUDED
 #define NODE_H_INCLUDED
 
-#include "resolver.pb.h"
 #include <b0/utils/protobufhelpers.hpp>
 #include <b0/logger/logger.h>
 
@@ -115,7 +114,7 @@ protected:
     /*!
      * \brief Log a message to the default logger of this node
      */
-    void log(b0::logger_msgs::LogLevel level, std::string message) override;
+    void log(LogLevel level, std::string message) override;
 
 public:
     /*!
@@ -181,14 +180,19 @@ private:
 
 public:
     /*!
-     * \brief Fills the NodeID message with info on how tu uniquely identify this node in the network.
-     */
-    virtual void getNodeID(b0::resolver_msgs::NodeID &node_id);
-
-    /*!
      * \brief Return the public address (IP or hostname) to reach this node on the network
      */
     virtual std::string hostname();
+
+    /*!
+     * \brief Return the process id of this node
+     */
+    virtual int pid();
+
+    /*!
+     * \brief Return the thread identifier of this node.
+     */
+    virtual std::string threadID();
 
     /*!
      * \brief Find and return an available TCP port
@@ -293,6 +297,8 @@ protected:
      */
     void updateTime(int64_t remoteTime);
 
+    // \cond HIDDEN_SYMBOLS
+
     /*!
      * State variables related to time synchronization
      */
@@ -303,6 +309,8 @@ protected:
         double max_slope_;
         boost::mutex mutex_;
     } timesync_;
+
+    // \endcond
 
 public:
     /*!

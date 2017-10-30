@@ -1,7 +1,6 @@
 #ifndef LOGGER_H_INCLUDED
 #define LOGGER_H_INCLUDED
 
-#include "logger.pb.h"
 #include <b0/utils/protobufhelpers.hpp>
 
 #include <string>
@@ -23,6 +22,8 @@ namespace logger
 class LogInterface
 {
 public:
+    enum LogLevel { TRACE, DEBUG, INFO, WARN, ERROR, FATAL };
+
     /*!
      * \brief Log a message to the remote logger, with the default level (INFO)
      */
@@ -50,13 +51,13 @@ public:
     /*!
      * \brief Log a message to the remote logger, with a specified level
      */
-    virtual void log(b0::logger_msgs::LogLevel level, std::string message) = 0;
+    virtual void log(LogLevel level, std::string message) = 0;
 
     /*!
      * \brief Log a message using a format string
      */
     template<typename... Arguments>
-    void log(b0::logger_msgs::LogLevel level, std::string const &fmt, Arguments&&... args)
+    void log(LogLevel level, std::string const &fmt, Arguments&&... args)
     {
         try
         {
@@ -74,34 +75,15 @@ public:
 protected:
     //! \cond HIDDEN_SYMBOLS
 
-    virtual void log_helper(b0::logger_msgs::LogLevel level, boost::format &format);
+    virtual void log_helper(LogLevel level, boost::format &format);
 
     template<class T, class... Args>
-    void log_helper(b0::logger_msgs::LogLevel level, boost::format &format, T &&t, Args&&... args)
+    void log_helper(LogLevel level, boost::format &format, T &&t, Args&&... args)
     {
         return log_helper(level, format % std::forward<T>(t), std::forward<Args>(args)...);
     }
 
     //! \endcond
-
-public:
-    //! \brief The most verbose level
-    const b0::logger_msgs::LogLevel TRACE = b0::logger_msgs::LogLevel::TRACE;
-
-    //! \brief Slightly less verbose
-    const b0::logger_msgs::LogLevel DEBUG = b0::logger_msgs::LogLevel::DEBUG;
-
-    //! \brief For information messages
-    const b0::logger_msgs::LogLevel INFO  = b0::logger_msgs::LogLevel::INFO;
-
-    //! \brief For warning messages
-    const b0::logger_msgs::LogLevel WARN  = b0::logger_msgs::LogLevel::WARN;
-
-    //! \brief For error messages
-    const b0::logger_msgs::LogLevel ERROR = b0::logger_msgs::LogLevel::ERROR;
-
-    //! \brief For fatal messages (i.e. node should quit after that)
-    const b0::logger_msgs::LogLevel FATAL = b0::logger_msgs::LogLevel::FATAL;
 };
 
 /*!
@@ -118,7 +100,7 @@ public:
     //! Destructor
     virtual ~LocalLogger();
 
-    virtual void log(b0::logger_msgs::LogLevel level, std::string message) override;
+    virtual void log(LogLevel level, std::string message) override;
 
     struct LevelInfo
     {
@@ -135,7 +117,7 @@ public:
     /*!
      * \brief Return meta-information for the specified level
      */
-    virtual LevelInfo levelInfo(b0::logger_msgs::LogLevel level);
+    virtual LevelInfo levelInfo(LogLevel level);
 
 protected:
     //! The node
@@ -158,7 +140,7 @@ public:
     //! Connect the underlying ZeroMQ PUB socket to the given address
     void connect(std::string addr);
 
-    void log(b0::logger_msgs::LogLevel level, std::string message) override;
+    void log(LogLevel level, std::string message) override;
 
 protected:
     //! The ZeroMQ PUB socket where LogEntry es will be published

@@ -8,8 +8,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <b0/utils/protobufhelpers.hpp>
-#include <b0/resolver/resolver.h>
 #include "resolver.pb.h"
+#include <b0/resolver/resolver.h>
 
 namespace b0
 {
@@ -26,7 +26,10 @@ ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
 void ResolverServiceServer::announce()
 {
     b0::resolver_msgs::AnnounceServiceRequest rq;
-    node_.getNodeID(*rq.mutable_node_id());
+    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
+    node_id.set_host_id(node_.hostname());
+    node_id.set_process_id(node_.pid());
+    node_id.set_thread_id(node_.threadID());
     rq.set_service_name(service_name_);
     rq.set_sock_addr(remote_addr_);
     b0::resolver_msgs::AnnounceServiceResponse rsp;
@@ -102,7 +105,11 @@ void Resolver::announceNode()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
     b0::resolver_msgs::AnnounceNodeRequest rq;
-    getNodeID(*rq.mutable_node_id());
+    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
+    b0::Node &node_ = *this;
+    node_id.set_host_id(node_.hostname());
+    node_id.set_process_id(node_.pid());
+    node_id.set_thread_id(node_.threadID());
     rq.set_node_name(getName());
     b0::resolver_msgs::AnnounceNodeResponse rsp;
     handleAnnounceNode(rq, rsp);

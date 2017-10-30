@@ -30,7 +30,17 @@ Console::~Console()
 
 void Console::onLogMessage(std::string topic, const b0::logger_msgs::LogEntry &entry)
 {
-    LocalLogger::LevelInfo info = dummy_logger_.levelInfo(entry.level());
+    LogLevel level = LogLevel::INFO;
+    switch(entry.level())
+    {
+    case b0::logger_msgs::TRACE: level = LogLevel::TRACE; break;
+    case b0::logger_msgs::DEBUG: level = LogLevel::DEBUG; break;
+    case b0::logger_msgs::INFO:  level = LogLevel::INFO;  break;
+    case b0::logger_msgs::WARN:  level = LogLevel::WARN;  break;
+    case b0::logger_msgs::ERROR: level = LogLevel::ERROR; break;
+    case b0::logger_msgs::FATAL: level = LogLevel::FATAL; break;
+    }
+    LocalLogger::LevelInfo info = dummy_logger_.levelInfo(level);
     std::cout << info.ansiEscape() << "[" << entry.node_name() << "] " << info.levelStr << ": " << entry.msg() << info.ansiReset() << std::endl;
 }
 

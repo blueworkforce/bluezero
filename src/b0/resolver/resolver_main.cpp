@@ -1,3 +1,4 @@
+#include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 
 int main(int argc, char **argv)
