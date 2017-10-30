@@ -48,6 +48,7 @@ else()
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${ZMQ_INCLUDE_DIRS})
@@ -63,7 +64,7 @@ try_compile(HAVE_BOOST_PROCESS
     LINK_LIBRARIES ${Boost_LIBRARIES}
     COPY_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/b0/config.h)
 
 protobuf_generate_cpp(
     B0_MSG_SOURCES

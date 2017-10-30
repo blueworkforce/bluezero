@@ -1,15 +1,15 @@
-#include "config.h"
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#ifdef HAVE_BOOST_PROCESS
-#include <boost/process.hpp>
-#endif
 #include <boost/algorithm/string.hpp>
 #include "resolver.pb.h"
 #include <b0/node.h>
 #include <b0/service_client.h>
 #include <b0/subscriber.h>
+#include <b0/config.h>
+#ifdef HAVE_BOOST_PROCESS
+#include <boost/process.hpp>
+#endif
 
 namespace b0
 {
