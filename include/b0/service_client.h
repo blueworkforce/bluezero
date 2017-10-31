@@ -132,6 +132,12 @@ public:
     }
 };
 
+template<>
+bool ServiceClient<std::string, std::string, true>::write(const std::string &req);
+
+template<>
+bool ServiceClient<std::string, std::string, true>::read(std::string &rep);
+
 } // namespace b0
 
 #endif // SERVICE_CLIENT_H_INCLUDED

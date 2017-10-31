@@ -154,6 +154,9 @@ protected:
     boost::function<void(std::string, TMsg&)> callback_;
 };
 
+template<>
+bool Subscriber<std::string, true>::read(std::string &topic, std::string &msg);
+
 } // namespace b0
 
 #endif // SUBSCRIBER_H_INCLUDED

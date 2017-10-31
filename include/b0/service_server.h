@@ -181,6 +181,12 @@ protected:
     boost::function<void(const TReq&, TRep&)> callback_;
 };
 
+template<>
+bool ServiceServer<std::string, std::string, true>::read(std::string &req);
+
+template<>
+bool ServiceServer<std::string, std::string, true>::write(const std::string &rep);
+
 } // namespace b0
 
 #endif // SERVICE_SERVER_H_INCLUDED

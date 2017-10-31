@@ -62,5 +62,19 @@ void AbstractServiceClient::disconnect()
     req_socket_.disconnect(remote_addr_);
 }
 
+template<>
+bool ServiceClient<std::string, std::string, true>::write(const std::string &req)
+{
+    ::s_send(req_socket_, req);
+    return true;
+}
+
+template<>
+bool ServiceClient<std::string, std::string, true>::read(std::string &rep)
+{
+    rep = ::s_recv(req_socket_);
+    return true;
+}
+
 } // namespace b0
 
