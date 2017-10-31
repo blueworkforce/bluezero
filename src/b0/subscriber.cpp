@@ -33,5 +33,13 @@ std::string AbstractSubscriber::getTopicName()
     return topic_name_;
 }
 
+template<>
+bool Subscriber<std::string, true>::read(std::string &topic, std::string &msg)
+{
+    topic = ::s_recv(sub_socket_);
+    msg = ::s_recv(sub_socket_);
+    return true;
+}
+
 } // namespace b0
 

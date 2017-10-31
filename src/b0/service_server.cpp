@@ -72,5 +72,19 @@ void AbstractServiceServer::announce()
     const b0::resolver_msgs::AnnounceServiceResponse &rsp = rsp0.announce_service();
 }
 
+template<>
+bool ServiceServer<std::string, std::string, true>::read(std::string &req)
+{
+    req = ::s_recv(rep_socket_);
+    return true;
+}
+
+template<>
+bool ServiceServer<std::string, std::string, true>::write(const std::string &rep)
+{
+    ::s_send(rep_socket_, rep);
+    return true;
+}
+
 } // namespace b0
 
