@@ -28,6 +28,13 @@ class Node : public logger::LogInterface
 public:
     using logger::LogInterface::log;
 
+    enum State
+    {
+        Created,
+        Ready,
+        Terminated
+    };
+
     /*!
      * \brief Create a node with a given name.
      * \param nodeName the name of the node
@@ -121,6 +128,11 @@ public:
      * \brief Get the name assigned by resolver to this node
      */
     std::string getName() const;
+
+    /*!
+     * \brief Get the state of this node
+     */
+    State getState() const;
 
     /*!
      * \brief Get the ZeroMQ Context
@@ -331,6 +343,9 @@ protected:
 private:
     //! Name of this node as it has been assigned by resolver
     std::string name_;
+
+    //! State of this node
+    State state_;
 
     //! Id of the thread in which this node has been created
     boost::thread::id thread_id_;
