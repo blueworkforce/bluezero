@@ -1,10 +1,15 @@
 var searchData=
 [
-  ['poll',['poll',['../classb0_1_1_service_client.html#a5ce37838269cb8c0a4a16a0c8ad5b101',1,'b0::ServiceClient::poll()'],['../classb0_1_1_service_server.html#a2eba5deccd80149b493a8993eada6fdd',1,'b0::ServiceServer::poll()'],['../classb0_1_1_subscriber.html#acea49072548a292aa06d12cd5a6b3340',1,'b0::Subscriber::poll()']]],
-  ['pub_5fproxy_5fthread_5f',['pub_proxy_thread_',['../classb0_1_1resolver_1_1_resolver.html#aedab62fe925101f5edbe8a332abe1b60',1,'b0::resolver::Resolver']]],
-  ['pub_5fsocket_5f',['pub_socket_',['../classb0_1_1logger_1_1_logger.html#afa157d610534f1418b509847e153f9b5',1,'b0::logger::Logger']]],
-  ['publish',['publish',['../classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1',1,'b0::Publisher']]],
-  ['publisher',['Publisher',['../classb0_1_1_publisher.html',1,'b0::Publisher&lt; TMsg, notifyGraph &gt;'],['../classb0_1_1_publisher.html#a14273d1c23f293586f9d834b659f76c4',1,'b0::Publisher::Publisher()']]],
-  ['publisher_3c_20b0_3a_3aresolver_5fmsgs_3a_3agraph_2c_20false_20_3e',['Publisher&lt; b0::resolver_msgs::Graph, false &gt;',['../classb0_1_1_publisher.html',1,'b0']]],
-  ['pubproxy',['pubProxy',['../classb0_1_1resolver_1_1_resolver.html#a9e74f9f2c7827c44766f450be0a1bfc1',1,'b0::resolver::Resolver']]]
+  ['servicebyname',['serviceByName',['../classb0_1_1resolver_1_1_resolver.html#a8a413c7216f15d7f01c97a1b9413cd74',1,'b0::resolver::Resolver']]],
+  ['serviceclient',['ServiceClient',['../classb0_1_1_service_client.html',1,'b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;'],['../classb0_1_1_service_client.html#a08f3367cabad54e2be18db7fda6fa4bf',1,'b0::ServiceClient::ServiceClient()']]],
+  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1resolver_1_1_resolver.html#aba1b6605c215f6b868a456e1278d7fc0',1,'b0::resolver::Resolver']]],
+  ['serviceserver',['ServiceServer',['../classb0_1_1_service_server.html',1,'b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;'],['../classb0_1_1_service_server.html#a0386a7bb6576a3099f9f32bf1737d4fa',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, boost::function&lt; void(const TReq &amp;, TRep &amp;)&gt; callback=0)'],['../classb0_1_1_service_server.html#a57adc41e0b6ba9a9a30fe6386e705787',1,'b0::ServiceServer::ServiceServer(TNode *node, std::string service_name, void(TNode::*callbackMethod)(const TReq &amp;, TRep &amp;))'],['../classb0_1_1_service_server.html#ac6787d40ddcfee89b49d2b4dbdfe7c5d',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, void(T::*callbackMethod)(const TReq &amp;, TRep &amp;), T *callbackObject)']]],
+  ['shutdown',['shutdown',['../classb0_1_1_node.html#ad25d81d5e85aa26aeb04421c85eb5557',1,'b0::Node::shutdown()'],['../classb0_1_1resolver_1_1_resolver.html#aff494b724ebbef6af0bb65259427a083',1,'b0::resolver::Resolver::shutdown()']]],
+  ['shutdownrequested',['shutdownRequested',['../classb0_1_1_node.html#a74ad0853f37382fb39df1b00922c802a',1,'b0::Node']]],
+  ['spin',['spin',['../classb0_1_1_node.html#a82dd059231755c8a229144748b18ec79',1,'b0::Node']]],
+  ['spinonce',['spinOnce',['../classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5',1,'b0::Node::spinOnce()'],['../classb0_1_1_service_server.html#af88c56ec6da48a0b36c4dce30173a21c',1,'b0::ServiceServer::spinOnce()'],['../classb0_1_1_subscriber.html#a964e8866dbc073aceba801f2acfd06da',1,'b0::Subscriber::spinOnce()']]],
+  ['startheartbeatthread',['startHeartbeatThread',['../classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44',1,'b0::Node']]],
+  ['sub_5f',['sub_',['../classb0_1_1logger_1_1_console.html#a2c42ead89c27fa65a5a08edfe6e3f54f',1,'b0::logger::Console']]],
+  ['subscriber',['Subscriber',['../classb0_1_1_subscriber.html',1,'b0::Subscriber&lt; TMsg, notifyGraph &gt;'],['../classb0_1_1_subscriber.html#a9898e814729b8ea9abc15fccb17d242e',1,'b0::Subscriber::Subscriber(Node *node, std::string topic, boost::function&lt; void(std::string, const TMsg &amp;)&gt; callback=0)'],['../classb0_1_1_subscriber.html#a3c5af5b2dfbc93291427c6bed5ea5df5',1,'b0::Subscriber::Subscriber(TNode *node, std::string topic, void(TNode::*callbackMethod)(std::string, const TMsg &amp;))'],['../classb0_1_1_subscriber.html#aa1468b05b0e24768e8fa036f3d90c546',1,'b0::Subscriber::Subscriber(Node *node, std::string topic, void(T::*callbackMethod)(std::string, const TMsg &amp;), T *callbackObject)']]],
+  ['subscriber_3c_20b0_3a_3alogger_5fmsgs_3a_3alogentry_20_3e',['Subscriber&lt; b0::logger_msgs::LogEntry &gt;',['../classb0_1_1_subscriber.html',1,'b0']]]
 ];

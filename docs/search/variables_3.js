@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fatal',['FATAL',['../classb0_1_1logger_1_1_log_interface.html#aaf99d15db630d3f465c5c9deea31d7d9',1,'b0::logger::LogInterface']]]
+  ['logger_5f',['logger_',['../classb0_1_1_node.html#a81ca23a2291620b895e846442e01a744',1,'b0::Node']]]
 ];

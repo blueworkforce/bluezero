@@ -1,19 +1,9 @@
 var searchData=
 [
-  ['handle',['handle',['../classb0_1_1resolver_1_1_resolver.html#a5691c20facb865f55d772fd334e4dedd',1,'b0::resolver::Resolver']]],
-  ['handleannouncenode',['handleAnnounceNode',['../classb0_1_1resolver_1_1_resolver.html#a9657974e3d72c6e7c6be030573fb59e0',1,'b0::resolver::Resolver']]],
-  ['handleannounceservice',['handleAnnounceService',['../classb0_1_1resolver_1_1_resolver.html#a47f1eb7a0d472164c42b53111855f784',1,'b0::resolver::Resolver']]],
-  ['handlegetgraph',['handleGetGraph',['../classb0_1_1resolver_1_1_resolver.html#a190cbc71196821c2e88c42cf64a7e68f',1,'b0::resolver::Resolver']]],
-  ['handleheartbeat',['handleHeartBeat',['../classb0_1_1resolver_1_1_resolver.html#ac5db594fefd79ab3ede18da3e9521533',1,'b0::resolver::Resolver']]],
-  ['handlenodeservice',['handleNodeService',['../classb0_1_1resolver_1_1_resolver.html#a4257e951fe6eb58605fa8c3f461878d6',1,'b0::resolver::Resolver']]],
-  ['handlenodetopic',['handleNodeTopic',['../classb0_1_1resolver_1_1_resolver.html#afb71025de4315e0699926cac7e385f76',1,'b0::resolver::Resolver']]],
-  ['handleresolveservice',['handleResolveService',['../classb0_1_1resolver_1_1_resolver.html#a8b47b18fb70f4b9c8310a35bdbbd5a8d',1,'b0::resolver::Resolver']]],
-  ['handleshutdownnode',['handleShutdownNode',['../classb0_1_1resolver_1_1_resolver.html#a307e1132a23bcde20eb6f4d54cb728ea',1,'b0::resolver::Resolver']]],
-  ['hardwaretimeusec',['hardwareTimeUSec',['../classb0_1_1_node.html#ac0e0d2edb969938115ac73ec7842b745',1,'b0::Node']]],
-  ['heartbeat',['heartBeat',['../classb0_1_1resolver_1_1_resolver.html#a0098df6897d19f90d196d69adf00aa5b',1,'b0::resolver::Resolver']]],
-  ['heartbeat_5fsweeper_5fthread_5f',['heartbeat_sweeper_thread_',['../classb0_1_1resolver_1_1_resolver.html#a6299bd3671b49232062e32cec28aac1d',1,'b0::resolver::Resolver']]],
-  ['heartbeatloop',['heartbeatLoop',['../classb0_1_1_node.html#abbf95d1524c495534d74428d75998094',1,'b0::Node']]],
-  ['heartbeatsweeper',['heartBeatSweeper',['../classb0_1_1resolver_1_1_resolver.html#a3e87428d3dd13d217925eb673546338d',1,'b0::resolver::Resolver']]],
-  ['hostaddress',['hostAddress',['../classb0_1_1resolver_1_1_resolver.html#a5154da0c9476e5fdcb018b692f68e114',1,'b0::resolver::Resolver']]],
-  ['hostname',['hostname',['../classb0_1_1_node.html#a51286acbaebec7062cde0cab79771c3e',1,'b0::Node']]]
+  ['levelinfo',['LevelInfo',['../structb0_1_1logger_1_1_local_logger_1_1_level_info.html',1,'b0::logger::LocalLogger::LevelInfo'],['../classb0_1_1logger_1_1_local_logger.html#a0472ca6e5ffd30656c51aa10bae7d18a',1,'b0::logger::LocalLogger::levelInfo(LogLevel level)']]],
+  ['locallogger',['LocalLogger',['../classb0_1_1logger_1_1_local_logger.html',1,'b0::logger::LocalLogger'],['../classb0_1_1logger_1_1_local_logger.html#aac667c41d698c983e59a6efec3d26c34',1,'b0::logger::LocalLogger::LocalLogger()']]],
+  ['log',['log',['../classb0_1_1_node.html#a02ab4a8d79ec8cedaa1b170b60d6cd0e',1,'b0::Node::log()'],['../classb0_1_1logger_1_1_log_interface.html#a21a97baceb92f3817a219a0705ec116e',1,'b0::logger::LogInterface::log(std::string message)'],['../classb0_1_1logger_1_1_log_interface.html#ac496160e24c4b1dd93ffc9c2670388c1',1,'b0::logger::LogInterface::log(std::string const &amp;fmt, Arguments &amp;&amp;... args)'],['../classb0_1_1logger_1_1_log_interface.html#a353b0fbd6d28f135560c0a299632e077',1,'b0::logger::LogInterface::log(LogLevel level, std::string message)=0'],['../classb0_1_1logger_1_1_log_interface.html#a4ad5d35d1b5aa7ee876f3524cb2cb076',1,'b0::logger::LogInterface::log(LogLevel level, std::string const &amp;fmt, Arguments &amp;&amp;... args)'],['../classb0_1_1logger_1_1_local_logger.html#a59cbd8cd358d6ec321ac3c11e85ea588',1,'b0::logger::LocalLogger::log()'],['../classb0_1_1logger_1_1_logger.html#adaf72fa025d7904c6183d2b2a0830a70',1,'b0::logger::Logger::log()']]],
+  ['logger',['Logger',['../classb0_1_1logger_1_1_logger.html',1,'b0::logger::Logger'],['../classb0_1_1logger_1_1_logger.html#a15813e4e43c61a0e78a7b73d13b7efa7',1,'b0::logger::Logger::Logger()']]],
+  ['logger_5f',['logger_',['../classb0_1_1_node.html#a81ca23a2291620b895e846442e01a744',1,'b0::Node']]],
+  ['loginterface',['LogInterface',['../classb0_1_1logger_1_1_log_interface.html',1,'b0::logger']]]
 ];

@@ -9,15 +9,17 @@
  *
  * \section api API Design
  *
- * The main class used to create a node is b0::Node.
+ * The main class used to create a node is b0::Node. Node uses two-phase initialization, so you must call b0::Node::init() after the constructor, and b0::Node::cleanup() before the destructor.
  *
- * The two main methods of a node are b0::Node::init() and b0::Node::spin().
+ * Also, b0::Node::spinOnce() must be called periodically to process incoming messages (or just call b0::Node::spin() once).
+ *
+ * \image html node-state-machine.png Node state transtion diagram.
  *
  * b0::Node::init() will initialize the node and announce its name to the
  * resolver node, and it will initialize each of its publishers, subscribers,
  * clients and servers.
  *
- * b0::Node::spin() will run the message loop (see also b0::Node::spinOnce() and b0::Node::cleanup())
+ * Any publishers, subscribers, service client and servers must be constructed prior to calling b0::Node::init().
  *
  * NOTE: In a thread there should be at most one b0::Node.
  *
