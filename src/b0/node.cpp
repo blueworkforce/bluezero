@@ -27,6 +27,7 @@ Node::Node(std::string nodeName)
     : context_(1),
       resolv_socket_(context_, ZMQ_REQ),
       name_(nodeName),
+      state_(State::Created),
       thread_id_(boost::this_thread::get_id()),
       logger_(this),
       shutdown_flag_(false)
@@ -46,6 +47,9 @@ Node::~Node()
 
 void Node::init()
 {
+    if(state_ != State::Created)
+        throw std::runtime_error("Cannot call init() in current state");
+
     log(DEBUG, "Initialization...");
 
     connectToResolver();
@@ -67,11 +71,16 @@ void Node::init()
     for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
         (*it)->init();
 
+    state_ = State::Ready;
+
     log(DEBUG, "Initialization complete.");
 }
 
 void Node::shutdown()
 {
+    if(state_ != State::Ready)
+        throw std::runtime_error("Cannot call shutdown() in current state");
+
     log(DEBUG, "Shutting down...");
 
     shutdown_flag_ = true;
@@ -86,6 +95,9 @@ bool Node::shutdownRequested() const
 
 void Node::spinOnce()
 {
+    if(state_ != State::Ready)
+        throw std::runtime_error("Cannot call spinOnce() in current state");
+
     // publishers don't need to spin
 
     // spin subscribers
@@ -105,6 +117,9 @@ void Node::spinOnce()
 
 void Node::spin(double spinRate)
 {
+    if(state_ != State::Ready)
+        throw std::runtime_error("Cannot call spin() in current state");
+
     while(!shutdownRequested())
     {
         spinOnce();
@@ -118,6 +133,9 @@ void Node::spin(double spinRate)
 
 void Node::cleanup()
 {
+    if(state_ != State::Ready)
+        throw std::runtime_error("Cannot call cleanup() in current state");
+
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
     heartbeat_thread_.interrupt();
@@ -138,6 +156,8 @@ void Node::cleanup()
 
     // inform resolver that we are shutting down
     notifyShutdown();
+
+    state_ = State::Terminated;
 }
 
 void Node::log(LogLevel level, std::string message)
@@ -165,6 +185,11 @@ std::string Node::getName() const
     return name_;
 }
 
+Node::State Node::getState() const
+{
+    return state_;
+}
+
 zmq::context_t& Node::getZMQContext()
 {
     return context_;
@@ -182,6 +207,9 @@ std::string Node::getXSUBSocketAddress() const
 
 void Node::addPublisher(AbstractPublisher *pub)
 {
+    if(state_ != State::Created)
+        throw std::runtime_error("Cannot create a publisher with an already initialized node");
+
     publishers_.insert(pub);
 }
 
@@ -192,6 +220,9 @@ void Node::removePublisher(AbstractPublisher *pub)
 
 void Node::addSubscriber(AbstractSubscriber *sub)
 {
+    if(state_ != State::Created)
+        throw std::runtime_error("Cannot create a subscriber with an already initialized node");
+
     subscribers_.insert(sub);
 }
 
@@ -202,6 +233,9 @@ void Node::removeSubscriber(AbstractSubscriber *sub)
 
 void Node::addServiceClient(AbstractServiceClient *cli)
 {
+    if(state_ != State::Created)
+        throw std::runtime_error("Cannot create a service client with an already initialized node");
+
     service_clients_.insert(cli);
 }
 
@@ -212,6 +246,9 @@ void Node::removeServiceClient(AbstractServiceClient *cli)
 
 void Node::addServiceServer(AbstractServiceServer *srv)
 {
+    if(state_ != State::Created)
+        throw std::runtime_error("Cannot create a service server with an already initialized node");
+
     service_servers_.insert(srv);
 }
 
