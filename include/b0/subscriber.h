@@ -121,8 +121,8 @@ public:
     virtual bool read(std::string &topic, TMsg &msg)
     {
         topic = ::s_recv(sub_socket_);
-        std::string payload = ::s_recv(sub_socket_);
-        return msg.ParseFromString(payload);
+        bool ret = ::s_recv(sub_socket_, msg);
+        return ret;
     }
 
     /*!
