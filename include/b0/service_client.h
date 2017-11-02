@@ -80,9 +80,7 @@ public:
      */
     virtual bool write(const TReq &req)
     {
-        std::string payload;
-        bool ret = req.SerializeToString(&payload);
-        ::s_send(req_socket_, payload);
+        bool ret = ::s_send(req_socket_, req);
         return ret;
     }
 
@@ -105,8 +103,8 @@ public:
      */
     virtual bool read(TRep &rep)
     {
-        std::string payload = ::s_recv(req_socket_);
-        return rep.ParseFromString(payload);
+        bool ret = ::s_recv(req_socket_, rep);
+        return ret;
     }
 
     /*!

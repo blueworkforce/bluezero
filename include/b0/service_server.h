@@ -137,8 +137,8 @@ public:
      */
     virtual bool read(TReq &req)
     {
-        std::string payload = ::s_recv(rep_socket_);
-        return req.ParseFromString(payload);
+        bool ret = ::s_recv(rep_socket_, req);
+        return ret;
     }
 
     /*!
@@ -146,9 +146,7 @@ public:
      */
     virtual bool write(const TRep &rep)
     {
-        std::string payload;
-        bool ret = rep.SerializeToString(&payload);
-        ::s_send(rep_socket_, payload);
+        bool ret = ::s_send(rep_socket_, rep);
         return ret;
     }
 
