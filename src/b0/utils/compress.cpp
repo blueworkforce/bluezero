@@ -19,7 +19,7 @@ static std::string zlib_wrapper(const std::string &str, bool compress, int level
     zs.next_in = (Bytef*)(str.data());
     zs.avail_in = str.size();
     int ret;
-    static char outbuf[2 << 24];
+    char *outbuf = new char[2 << 24];
     std::string outstr;
     do
     {
@@ -31,6 +31,7 @@ static std::string zlib_wrapper(const std::string &str, bool compress, int level
     }
     while(ret == Z_OK);
     if(compress) deflateEnd(&zs); else inflateEnd(&zs);
+    delete[] outbuf;
     if(ret != Z_STREAM_END)
         throw std::runtime_error((boost::format("zlib %s error %d: %s") % method % ret % zs.msg).str());
     return outstr;
