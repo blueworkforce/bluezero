@@ -2,6 +2,7 @@
 #include <b0/config.h>
 #include <boost/format.hpp>
 #include <stdexcept>
+#include <cstring>
 
 #ifdef ZLIB_FOUND
 
