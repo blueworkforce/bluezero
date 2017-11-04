@@ -12,13 +12,14 @@ static std::string zlib_wrapper(const std::string &str, bool compress, int level
 {
     if(level == -1) level = Z_BEST_COMPRESSION;
     const char *method = compress ? "deflate" : "inflate";
+    int ret;
     z_stream zs;
     memset(&zs, 0, sizeof(zs));
-    if((compress ? deflateInit(&zs, level) : inflateInit(&zs)) != Z_OK)
+    if(compress) ret = deflateInit(&zs, level); else ret = inflateInit(&zs);
+    if(ret != Z_OK)
         throw std::runtime_error((boost::format("%sInit failed") % method).str());;
     zs.next_in = (Bytef*)(str.data());
     zs.avail_in = str.size();
-    int ret;
     char *outbuf = new char[2 << 24];
     std::string outstr;
     do
