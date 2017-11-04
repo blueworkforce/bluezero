@@ -18,6 +18,10 @@ public:
     virtual void cleanup();
     virtual void spinOnce() = 0;
     std::string getServiceName();
+    virtual void bind(std::string address);
+    virtual bool poll(long timeout = 0);
+    virtual bool readRaw(std::string &msg);
+    virtual bool writeRaw(const std::string &msg);
 
 protected:
     virtual void bind();
@@ -109,36 +113,13 @@ public:
     }
 
     /*!
-     * \brief Bind the underlying ZeroMQ REP socket to an additional address
-     *
-     * Useful for adding an inproc:// address.
-     */
-    virtual void bind(std::string address)
-    {
-        rep_socket_.bind(address);
-    }
-
-    /*!
-     * \brief Poll the underlying ZeroMQ REP socket
-     */
-    virtual bool poll(long timeout = 0)
-    {
-#ifdef __GNUC__
-        zmq::pollitem_t items[] = {{static_cast<void*>(rep_socket_), 0, ZMQ_POLLIN, 0}};
-#else
-        zmq::pollitem_t items[] = {{rep_socket_, 0, ZMQ_POLLIN, 0}};
-#endif
-        zmq::poll(&items[0], sizeof(items) / sizeof(items[0]), timeout);
-        return items[0].revents & ZMQ_POLLIN;
-    }
-
-    /*!
      * \brief Read a request message from the underlying ZeroMQ REP socket
      */
     virtual bool read(TReq &req)
     {
-        bool ret = ::s_recv(rep_socket_, req);
-        return ret;
+        std::string payload;
+        return AbstractServiceServer::readRaw(payload) &&
+            req.ParseFromString(payload);
     }
 
     /*!
@@ -146,8 +127,9 @@ public:
      */
     virtual bool write(const TRep &rep)
     {
-        bool ret = ::s_send(rep_socket_, rep);
-        return ret;
+        std::string payload;
+        return rep.SerializeToString(&payload) &&
+            AbstractServiceServer::writeRaw(payload);
     }
 
     /*!

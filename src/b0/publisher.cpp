@@ -31,5 +31,18 @@ std::string AbstractPublisher::getTopicName()
     return topic_name_;
 }
 
+bool AbstractPublisher::writeRaw(const std::string &topic, const std::string &msg)
+{
+    ::s_sendmore(pub_socket_, topic);
+    ::s_send(pub_socket_, msg);
+    return true;
+}
+
+template<>
+bool Publisher<std::string, true>::write(const std::string &topic, const std::string &msg)
+{
+    return AbstractPublisher::writeRaw(topic, msg);
+}
+
 } // namespace b0
 

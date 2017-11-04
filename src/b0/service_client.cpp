@@ -62,18 +62,39 @@ void AbstractServiceClient::disconnect()
     req_socket_.disconnect(remote_addr_);
 }
 
+bool AbstractServiceClient::writeRaw(const std::string &msg)
+{
+    ::s_send(req_socket_, msg);
+    return true;
+}
+
+bool AbstractServiceClient::poll(long timeout)
+{
+#ifdef __GNUC__
+    zmq::pollitem_t items[] = {{static_cast<void*>(req_socket_), 0, ZMQ_POLLIN, 0}};
+#else
+    zmq::pollitem_t items[] = {{req_socket_, 0, ZMQ_POLLIN, 0}};
+#endif
+    zmq::poll(&items[0], sizeof(items) / sizeof(items[0]), timeout);
+    return items[0].revents & ZMQ_POLLIN;
+}
+
+bool AbstractServiceClient::readRaw(std::string &msg)
+{
+    msg = ::s_recv(req_socket_);
+    return true;
+}
+
 template<>
 bool ServiceClient<std::string, std::string, true>::write(const std::string &req)
 {
-    ::s_send(req_socket_, req);
-    return true;
+    return AbstractServiceClient::writeRaw(req);
 }
 
 template<>
 bool ServiceClient<std::string, std::string, true>::read(std::string &rep)
 {
-    rep = ::s_recv(req_socket_);
-    return true;
+    return AbstractServiceClient::readRaw(rep);
 }
 
 } // namespace b0

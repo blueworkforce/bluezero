@@ -17,6 +17,9 @@ public:
     virtual void init();
     virtual void cleanup();
     std::string getServiceName();
+    virtual bool writeRaw(const std::string &msg);
+    virtual bool poll(long timeout = 0);
+    virtual bool readRaw(std::string &msg);
 
 protected:
     void resolve();
@@ -80,22 +83,9 @@ public:
      */
     virtual bool write(const TReq &req)
     {
-        bool ret = ::s_send(req_socket_, req);
-        return ret;
-    }
-
-    /*!
-     * \brief Poll the underlying ZeroMQ REQ socket
-     */
-    virtual bool poll(long timeout = 0)
-    {
-#ifdef __GNUC__
-        zmq::pollitem_t items[] = {{static_cast<void*>(req_socket_), 0, ZMQ_POLLIN, 0}};
-#else
-        zmq::pollitem_t items[] = {{req_socket_, 0, ZMQ_POLLIN, 0}};
-#endif
-        zmq::poll(&items[0], sizeof(items) / sizeof(items[0]), timeout);
-        return items[0].revents & ZMQ_POLLIN;
+        std::string payload;
+        return req.SerializeToString(&payload) &&
+            AbstractServiceClient::writeRaw(payload);
     }
 
     /*!
@@ -103,8 +93,9 @@ public:
      */
     virtual bool read(TRep &rep)
     {
-        bool ret = ::s_recv(req_socket_, rep);
-        return ret;
+        std::string payload;
+        return AbstractServiceClient::readRaw(payload) &&
+            rep.ParseFromString(payload);
     }
 
     /*!
