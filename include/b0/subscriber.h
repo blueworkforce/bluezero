@@ -18,6 +18,8 @@ public:
     virtual void cleanup();
     virtual void spinOnce() = 0;
     std::string getTopicName();
+    virtual bool poll(long timeout = 0);
+    virtual bool readRaw(std::string &topic, std::string &msg);
 
 protected:
     //! The Node owning this Subscriber
@@ -102,27 +104,13 @@ public:
     }
 
     /*!
-     * \brief Poll the underlying ZeroMQ SUB socket
-     */
-    virtual bool poll(long timeout = 0)
-    {
-#ifdef __GNUC__
-        zmq::pollitem_t items[] = {{static_cast<void*>(sub_socket_), 0, ZMQ_POLLIN, 0}};
-#else
-        zmq::pollitem_t items[] = {{sub_socket_, 0, ZMQ_POLLIN, 0}};
-#endif
-        zmq::poll(&items[0], sizeof(items) / sizeof(items[0]), timeout);
-        return items[0].revents & ZMQ_POLLIN;
-    }
-
-    /*!
      * \brief Read a message from the underlying ZeroMQ SUB socket
      */
     virtual bool read(std::string &topic, TMsg &msg)
     {
-        topic = ::s_recv(sub_socket_);
-        bool ret = ::s_recv(sub_socket_, msg);
-        return ret;
+        std::string payload;
+        return AbstractSubscriber::readRaw(topic, payload) &&
+            msg.ParseFromString(payload);
     }
 
     /*!

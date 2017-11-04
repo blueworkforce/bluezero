@@ -17,6 +17,7 @@ public:
     virtual void init();
     virtual void cleanup();
     std::string getTopicName();
+    virtual bool writeRaw(const std::string &topic, const std::string &msg);
 
 protected:
     //! The Node owning this Publisher
@@ -52,12 +53,21 @@ public:
     }
 
     /*!
+     * \brief Publish the message on the specified topic (don't use this, use Publisher::publish() instead)
+     */
+    virtual bool write(const std::string &topic, const TMsg &msg)
+    {
+        std::string payload;
+        return msg.SerializeToString(&payload) &&
+            AbstractPublisher::writeRaw(topic_name_, payload);
+    }
+
+    /*!
      * \brief Publish the message on the publisher's topic
      */
     virtual void publish(const TMsg &msg)
     {
-        ::s_sendmore(pub_socket_, topic_name_);
-        ::s_send(pub_socket_, msg);
+        write(topic_name_, msg);
     }
 
     /*!
@@ -82,6 +92,9 @@ public:
             b0::graph::notifyTopic(node_, topic_name_, false, false);
     }
 };
+
+template<>
+bool Publisher<std::string, true>::write(const std::string &topic, const std::string &msg);
 
 } // namespace b0
 

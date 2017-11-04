@@ -72,18 +72,44 @@ void AbstractServiceServer::announce()
     const b0::resolver_msgs::AnnounceServiceResponse &rsp = rsp0.announce_service();
 }
 
+void AbstractServiceServer::bind(std::string address)
+{
+    rep_socket_.bind(address);
+}
+
+bool AbstractServiceServer::poll(long timeout)
+{
+#ifdef __GNUC__
+    zmq::pollitem_t items[] = {{static_cast<void*>(rep_socket_), 0, ZMQ_POLLIN, 0}};
+#else
+    zmq::pollitem_t items[] = {{rep_socket_, 0, ZMQ_POLLIN, 0}};
+#endif
+    zmq::poll(&items[0], sizeof(items) / sizeof(items[0]), timeout);
+    return items[0].revents & ZMQ_POLLIN;
+}
+
+bool AbstractServiceServer::readRaw(std::string &msg)
+{
+    msg = ::s_recv(rep_socket_);
+    return true;
+}
+
+bool AbstractServiceServer::writeRaw(const std::string &msg)
+{
+    ::s_send(rep_socket_, msg);
+    return true;
+}
+
 template<>
 bool ServiceServer<std::string, std::string, true>::read(std::string &req)
 {
-    req = ::s_recv(rep_socket_);
-    return true;
+    return AbstractServiceServer::readRaw(req);
 }
 
 template<>
 bool ServiceServer<std::string, std::string, true>::write(const std::string &rep)
 {
-    ::s_send(rep_socket_, rep);
-    return true;
+    return AbstractServiceServer::writeRaw(rep);
 }
 
 } // namespace b0
