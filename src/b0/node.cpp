@@ -3,6 +3,7 @@
 #include <b0/subscriber.h>
 #include <b0/service_client.h>
 #include <b0/service_server.h>
+#include <b0/logger/logger.h>
 
 #include <iostream>
 #include <cstdlib>
@@ -25,11 +26,11 @@ bool Node::sigint_handler_setup_ = false;
 
 Node::Node(std::string nodeName)
     : context_(1),
-      resolv_socket_(context_, ZMQ_REQ),
+      resolv_cli_(this, "resolv", false),
       name_(nodeName),
       state_(State::Created),
       thread_id_(boost::this_thread::get_id()),
-      logger_(this),
+      p_logger_(new logger::Logger(this)),
       shutdown_flag_(false)
 {
     setupSIGINTHandler();
@@ -43,6 +44,8 @@ Node::Node(std::string nodeName)
 
 Node::~Node()
 {
+    if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
+        delete p_logger;
 }
 
 void Node::init()
@@ -52,7 +55,8 @@ void Node::init()
 
     log(DEBUG, "Initialization...");
 
-    connectToResolver();
+    resolv_cli_.setRemoteAddress(resolverAddress());
+    resolv_cli_.init(); // resolv_cli_ is not managed
 
     announceNode();
 
@@ -157,19 +161,14 @@ void Node::cleanup()
     // inform resolver that we are shutting down
     notifyShutdown();
 
+    resolv_cli_.cleanup(); // resolv_cli_ is not managed
+
     state_ = State::Terminated;
 }
 
 void Node::log(LogLevel level, std::string message)
 {
-    logger_.log(level, message);
-}
-
-void Node::connectToResolver()
-{
-    std::string resolv_addr = resolverAddress();
-    log(INFO, "Connecting to resolver at %s...", resolv_addr);
-    resolv_socket_.connect(resolv_addr);
+    p_logger_->log(level, message);
 }
 
 void Node::startHeartbeatThread()
@@ -306,11 +305,10 @@ void Node::announceNode()
     node_id.set_process_id(pid());
     node_id.set_thread_id(threadID());
     rq.set_node_name(name_);
-    s_send(resolv_socket_, rq0);
 
     b0::resolver_msgs::Response rsp0;
     log(TRACE, "Waiting for response from resolver...");
-    s_recv(resolv_socket_, rsp0);
+    resolv_cli_.call(rq0, rsp0);
     const b0::resolver_msgs::AnnounceNodeResponse &rsp = rsp0.announce_node();
 
     if(name_ != rsp.node_name())
@@ -325,7 +323,8 @@ void Node::announceNode()
     xsub_sock_addr_ = rsp.xsub_sock_addr();
     log(TRACE, "Proxy's XSUB socket address: %s", xsub_sock_addr_);
 
-    logger_.connect(xsub_sock_addr_);
+    if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
+        p_logger->connect(xsub_sock_addr_);
 }
 
 void Node::notifyShutdown()
@@ -337,11 +336,10 @@ void Node::notifyShutdown()
     node_id.set_host_id(hostname());
     node_id.set_process_id(pid());
     node_id.set_thread_id(threadID());
-    s_send(resolv_socket_, rq0);
 
     b0::resolver_msgs::Response rsp0;
     log(TRACE, "Waiting for response from resolver...");
-    s_recv(resolv_socket_, rsp0);
+    resolv_cli_.call(rq0, rsp0);
     const b0::resolver_msgs::ShutdownNodeResponse &rsp = rsp0.shutdown_node();
 
     if(!rsp.ok())
@@ -350,8 +348,9 @@ void Node::notifyShutdown()
 
 void Node::heartbeatLoop()
 {
-    zmq::socket_t socket(context_, ZMQ_REQ);
-    socket.connect(resolverAddress());
+    ResolverServiceClient resolv_cli(this, "resolv", false);
+    resolv_cli.setRemoteAddress(resolverAddress());
+    resolv_cli.init();
     while(!shutdownRequested())
     {
         b0::resolver_msgs::Request rq0;
@@ -361,10 +360,9 @@ void Node::heartbeatLoop()
         node_id.set_process_id(pid());
         node_id.set_thread_id(threadID());
         int64_t sendTime = hardwareTimeUSec();
-        s_send(socket, rq0);
 
         b0::resolver_msgs::Response rsp0;
-        s_recv(socket, rsp0);
+        resolv_cli.call(rq0, rsp0);
         int64_t recvTime = hardwareTimeUSec();
         int64_t rtt = recvTime - sendTime;
         const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
@@ -372,6 +370,7 @@ void Node::heartbeatLoop()
         updateTime(rsp.time_usec() + rtt / 2);
         boost::this_thread::sleep_for(boost::chrono::seconds{1});
     }
+    resolv_cli.cleanup();
 
     log(INFO, "Heartbeat thread terminating.");
 }

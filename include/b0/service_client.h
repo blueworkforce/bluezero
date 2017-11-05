@@ -1,19 +1,24 @@
 #ifndef SERVICE_CLIENT_H_INCLUDED
 #define SERVICE_CLIENT_H_INCLUDED
 
-#include <b0/node.h>
+#include <string>
+
+#include <b0/utils/protobufhelpers.hpp>
 #include <b0/graph/graph.h>
 
 namespace b0
 {
+
+class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
 class AbstractServiceClient
 {
 public:
-    AbstractServiceClient(Node *node, std::string service_name);
+    AbstractServiceClient(Node *node, std::string service_name, bool managed = true);
     virtual ~AbstractServiceClient();
+    void setRemoteAddress(std::string addr);
     virtual void init();
     virtual void cleanup();
     std::string getServiceName();
@@ -37,6 +42,9 @@ protected:
 
     //! The address of the ZeroMQ socket in the server
     std::string remote_addr_;
+
+    //! True if this service client is managed (init(), cleanup()) by the Node
+    const bool managed_;
 };
 
 //! \endcond
@@ -63,8 +71,8 @@ public:
     /*!
      * \brief Construct a ServiceClient child of a specific Node, which will connect to the specified socket in the specified node
      */
-    ServiceClient(Node *node, std::string service_name)
-        : AbstractServiceClient(node, service_name)
+    ServiceClient(Node *node, std::string service_name, bool managed = true)
+        : AbstractServiceClient(node, service_name, managed)
     {
     }
 

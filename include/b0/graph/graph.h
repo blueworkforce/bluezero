@@ -1,10 +1,12 @@
 #ifndef GRAPH_H_INCLUDED
 #define GRAPH_H_INCLUDED
 
-#include <b0/node.h>
+#include <string>
 
 namespace b0
 {
+
+class Node;
 
 namespace graph
 {

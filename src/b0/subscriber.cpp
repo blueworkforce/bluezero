@@ -1,31 +1,42 @@
 #include <b0/subscriber.h>
+#include <b0/node.h>
 
 namespace b0
 {
 
-AbstractSubscriber::AbstractSubscriber(Node *node, std::string topic)
+AbstractSubscriber::AbstractSubscriber(Node *node, std::string topic, bool managed)
     : node_(*node),
-      sub_socket_(node_.getZMQContext(), ZMQ_SUB),
-      topic_name_(topic)
+      topic_name_(topic),
+      managed_(managed),
+      sub_socket_(node_.getZMQContext(), ZMQ_SUB)
 {
-    node_.addSubscriber(this);
+    if(managed_)
+        node_.addSubscriber(this);
 }
 
 AbstractSubscriber::~AbstractSubscriber()
 {
-    node_.removeSubscriber(this);
+    if(managed_)
+        node_.removeSubscriber(this);
+}
+
+void AbstractSubscriber::setRemoteAddress(std::string addr)
+{
+    remote_addr_ = addr;
 }
 
 void AbstractSubscriber::init()
 {
-    sub_socket_.connect(node_.getXPUBSocketAddress());
+    if(remote_addr_.empty())
+        remote_addr_ = node_.getXPUBSocketAddress();
+    sub_socket_.connect(remote_addr_);
     sub_socket_.setsockopt(ZMQ_SUBSCRIBE, topic_name_.data(), topic_name_.size());
 }
 
 void AbstractSubscriber::cleanup()
 {
     sub_socket_.setsockopt(ZMQ_UNSUBSCRIBE, topic_name_.data(), topic_name_.size());
-    sub_socket_.disconnect(node_.getXPUBSocketAddress());
+    sub_socket_.disconnect(remote_addr_);
 }
 
 std::string AbstractSubscriber::getTopicName()

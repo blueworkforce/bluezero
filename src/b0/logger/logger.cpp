@@ -1,3 +1,4 @@
+#include <b0/publisher.h>
 #include <b0/logger/logger.h>
 #include <b0/node.h>
 
@@ -65,7 +66,7 @@ LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level)
 
 Logger::Logger(b0::Node *node)
     : LocalLogger(node),
-      pub_socket_(node->getZMQContext(), ZMQ_PUB)
+      pub_(node, "log", false)
 {
 }
 
@@ -75,7 +76,8 @@ Logger::~Logger()
 
 void Logger::connect(std::string addr)
 {
-    pub_socket_.connect(addr);
+    pub_.setRemoteAddress(addr);
+    pub_.init();
 }
 
 void Logger::log(LogLevel level, std::string message)
@@ -96,8 +98,7 @@ void Logger::log(LogLevel level, std::string message)
         case LogLevel::FATAL: e.set_level(b0::logger_msgs::FATAL); break;
     }
     e.set_msg(message);
-    ::s_sendmore(pub_socket_, std::string("log"));
-    ::s_send(pub_socket_, e);
+    pub_.publish(e);
 }
 
 } // namespace logger

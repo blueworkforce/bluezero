@@ -8,6 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <b0/utils/protobufhelpers.hpp>
+#include <b0/publisher.h>
 #include <b0/logger/logger.h>
 #include <b0/logger/console.h>
 

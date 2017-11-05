@@ -1,18 +1,25 @@
 #ifndef SERVICE_SERVER_H_INCLUDED
 #define SERVICE_SERVER_H_INCLUDED
 
-#include <b0/node.h>
+#include <string>
+
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
+
+#include <b0/utils/protobufhelpers.hpp>
 #include <b0/graph/graph.h>
 
 namespace b0
 {
+
+class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
 class AbstractServiceServer
 {
 public:
-    AbstractServiceServer(Node *node, std::string service_name);
+    AbstractServiceServer(Node *node, std::string service_name, bool managed = true);
     virtual ~AbstractServiceServer();
     virtual void init();
     virtual void cleanup();
@@ -42,6 +49,9 @@ protected:
 
     //! The remote ZeroMQ address to connect to this service socket
     std::string remote_addr_;
+
+    //! True if this service server is managed (init(), cleanup()) by the Node
+    const bool managed_;
 };
 
 //! \endcond
@@ -67,8 +77,8 @@ public:
     /*!
      * \brief Construct a ServiceServer child of a specific Node, using a boost::function as callback
      */
-    ServiceServer(Node *node, std::string service_name, boost::function<void(const TReq&, TRep&)> callback = 0)
-        : AbstractServiceServer(node, service_name),
+    ServiceServer(Node *node, std::string service_name, boost::function<void(const TReq&, TRep&)> callback = 0, bool managed = true)
+        : AbstractServiceServer(node, service_name, managed),
           callback_(callback)
     {
     }
@@ -77,8 +87,8 @@ public:
      * \brief Construct a ServiceServer child of a specific Node, using a method (of the Node subclass) as callback
      */
     template<class TNode>
-    ServiceServer(TNode *node, std::string service_name, void (TNode::*callbackMethod)(const TReq&, TRep&))
-        : ServiceServer(node, service_name, boost::bind(callbackMethod, node, _1, _2))
+    ServiceServer(TNode *node, std::string service_name, void (TNode::*callbackMethod)(const TReq&, TRep&), bool managed = true)
+        : ServiceServer(node, service_name, boost::bind(callbackMethod, node, _1, _2), managed)
     {
         // delegate constructor. leave empty
     }
@@ -87,8 +97,8 @@ public:
      * \brief Construct a ServiceServer child of a specific Node, using a method as callback
      */
     template<class T>
-    ServiceServer(Node *node, std::string service_name, void (T::*callbackMethod)(const TReq&, TRep&), T *callbackObject)
-        : ServiceServer(node, service_name, boost::bind(callbackMethod, callbackObject, _1, _2))
+    ServiceServer(Node *node, std::string service_name, void (T::*callbackMethod)(const TReq&, TRep&), T *callbackObject, bool managed = true)
+        : ServiceServer(node, service_name, boost::bind(callbackMethod, callbackObject, _1, _2), managed)
     {
         // delegate constructor. leave empty
     }

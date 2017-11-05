@@ -1,19 +1,24 @@
 #ifndef PUBLISHER_H_INCLUDED
 #define PUBLISHER_H_INCLUDED
 
-#include <b0/node.h>
+#include <string>
+
+#include <b0/utils/protobufhelpers.hpp>
 #include <b0/graph/graph.h>
 
 namespace b0
 {
+
+class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
 class AbstractPublisher
 {
 public:
-    AbstractPublisher(Node *node, std::string topic);
+    AbstractPublisher(Node *node, std::string topic, bool managed = true);
     virtual ~AbstractPublisher();
+    void setRemoteAddress(std::string addr);
     virtual void init();
     virtual void cleanup();
     std::string getTopicName();
@@ -28,6 +33,11 @@ protected:
 
     //! The ZeroMQ envelope address (also known as the topic)
     std::string topic_name_;
+
+    //! True if this publisher is managed (init(), cleanup()) by the Node 
+    const bool managed_;
+
+    std::string remote_addr_;
 };
 
 //! \endcond
@@ -47,8 +57,8 @@ public:
     /*!
      * \brief Construct a Publisher child of the specified Node
      */
-    Publisher(Node *node, std::string topic)
-        : AbstractPublisher(node, topic)
+    Publisher(Node *node, std::string topic, bool managed = true)
+        : AbstractPublisher(node, topic, managed)
     {
     }
 

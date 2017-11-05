@@ -1,19 +1,27 @@
 #ifndef SUBSCRIBER_H_INCLUDED
 #define SUBSCRIBER_H_INCLUDED
 
-#include <b0/node.h>
+#include <string>
+
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
+
+#include <b0/utils/protobufhelpers.hpp>
 #include <b0/graph/graph.h>
 
 namespace b0
 {
+
+class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
 class AbstractSubscriber
 {
 public:
-    AbstractSubscriber(Node *node, std::string topic);
+    AbstractSubscriber(Node *node, std::string topic, bool managed = true);
     virtual ~AbstractSubscriber();
+    void setRemoteAddress(std::string addr);
     virtual void init();
     virtual void cleanup();
     virtual void spinOnce() = 0;
@@ -30,6 +38,11 @@ protected:
 
     //! The ZeroMQ topic name to set the subscription
     std::string topic_name_;
+
+    //! True if this subscriber is managed (init(), cleanup()) by the Node
+    const bool managed_;
+
+    std::string remote_addr_;
 };
 
 //! \endcond
@@ -61,8 +74,8 @@ public:
     /*!
      * \brief Construct a Subscriber child of a specified Node, with a boost::function as callback
      */
-    Subscriber(Node *node, std::string topic, boost::function<void(std::string, const TMsg&)> callback = 0)
-        : AbstractSubscriber(node, topic),
+    Subscriber(Node *node, std::string topic, boost::function<void(std::string, const TMsg&)> callback = 0, bool managed = true)
+        : AbstractSubscriber(node, topic, managed),
           callback_(callback)
     {
     }
@@ -71,8 +84,8 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method (of the Node subclass) as a callback
      */
     template<class TNode>
-    Subscriber(TNode *node, std::string topic, void (TNode::*callbackMethod)(std::string, const TMsg&))
-        : Subscriber(node, topic, boost::bind(callbackMethod, node, _1, _2))
+    Subscriber(TNode *node, std::string topic, void (TNode::*callbackMethod)(std::string, const TMsg&), bool managed = true)
+        : Subscriber(node, topic, boost::bind(callbackMethod, node, _1, _2), managed)
     {
         // delegate constructor. leave empty
     }
@@ -81,8 +94,8 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method as a callback
      */
     template<class T>
-    Subscriber(Node *node, std::string topic, void (T::*callbackMethod)(std::string, const TMsg&), T *callbackObject)
-        : Subscriber(node, topic, boost::bind(callbackMethod, callbackObject, _1, _2))
+    Subscriber(Node *node, std::string topic, void (T::*callbackMethod)(std::string, const TMsg&), T *callbackObject, bool managed = true)
+        : Subscriber(node, topic, boost::bind(callbackMethod, callbackObject, _1, _2), managed)
     {
         // delegate constructor. leave empty
     }
