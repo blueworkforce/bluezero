@@ -1,16 +1,32 @@
 #ifndef NODE_H_INCLUDED
 #define NODE_H_INCLUDED
 
+#include <b0/service_client.h>
 #include <b0/utils/protobufhelpers.hpp>
-#include <b0/logger/logger.h>
+#include <b0/logger/interface.h>
 
 #include <string>
+
 #include <boost/thread.hpp>
-#include <boost/format.hpp>
 #include <boost/thread/mutex.hpp>
 
 namespace b0
 {
+
+namespace logger
+{
+
+class Logger;
+
+} // namespace logger
+
+namespace resolver_msgs
+{
+
+class Request;
+class Response;
+
+} // namespace resolver_msgs
 
 class AbstractPublisher;
 class AbstractSubscriber;
@@ -105,11 +121,6 @@ public:
     virtual void cleanup();
 
 protected:
-    /*!
-     * \brief Connect to resolver node
-     */
-    virtual void connectToResolver();
-
     /*!
      * \brief Start the heartbeat thread
      *
@@ -325,20 +336,19 @@ protected:
     // \endcond
 
 public:
-    /*!
-     * \brief Get the socket connected to resolver service
-     */
-    zmq::socket_t & resolverSocket() {return resolv_socket_;}
+    using ResolverServiceClient = ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>;
+
+    ResolverServiceClient & resolverClient() {return resolv_cli_;}
 
 protected:
     //! ZeroMQ Context used by all sockets of this node
     zmq::context_t context_;
 
-    //! ZeroMQ REQ socket used to talk with resolver (announce, resolve, heartbeat)
-    zmq::socket_t resolv_socket_;
+    //! Service client used to talk with resolver (announce, resolve, heartbeat)
+    ResolverServiceClient resolv_cli_;
 
     //! The logger of this node
-    logger::Logger logger_;
+    logger::LogInterface *p_logger_;
 
 private:
     //! Name of this node as it has been assigned by resolver

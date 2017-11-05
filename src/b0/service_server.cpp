@@ -1,23 +1,27 @@
 #include <b0/service_server.h>
+#include <b0/node.h>
 
 #include "resolver.pb.h"
 
 namespace b0
 {
 
-AbstractServiceServer::AbstractServiceServer(Node *node, std::string service_name)
+AbstractServiceServer::AbstractServiceServer(Node *node, std::string service_name, bool managed)
     : node_(*node),
       service_name_(service_name),
+      managed_(managed),
       rep_socket_(node_.getZMQContext(), ZMQ_REP),
       bind_addr_(""),
       remote_addr_("")
 {
-    node_.addServiceServer(this);
+    if(managed_)
+        node_.addServiceServer(this);
 }
 
 AbstractServiceServer::~AbstractServiceServer()
 {
-    node_.removeServiceServer(this);
+    if(managed_)
+        node_.removeServiceServer(this);
 }
 
 void AbstractServiceServer::init()
@@ -54,7 +58,7 @@ void AbstractServiceServer::unbind()
 
 void AbstractServiceServer::announce()
 {
-    zmq::socket_t &resolv_socket = node_.resolverSocket();
+    Node::ResolverServiceClient &resolv_cli = node_.resolverClient();
 
     node_.log(node_.TRACE, "Announcing service '%s' (%s) to resolver...", service_name_, remote_addr_);
     b0::resolver_msgs::Request rq0;
@@ -65,10 +69,9 @@ void AbstractServiceServer::announce()
     node_id.set_thread_id(node_.threadID());
     rq.set_service_name(service_name_);
     rq.set_sock_addr(remote_addr_);
-    s_send(resolv_socket, rq0);
 
     b0::resolver_msgs::Response rsp0;
-    s_recv(resolv_socket, rsp0);
+    resolv_cli.call(rq0, rsp0);
     const b0::resolver_msgs::AnnounceServiceResponse &rsp = rsp0.announce_service();
 }
 

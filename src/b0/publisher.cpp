@@ -1,29 +1,40 @@
 #include <b0/publisher.h>
+#include <b0/node.h>
 
 namespace b0
 {
 
-AbstractPublisher::AbstractPublisher(Node *node, std::string topic)
+AbstractPublisher::AbstractPublisher(Node *node, std::string topic, bool managed)
     : node_(*node),
-      pub_socket_(node_.getZMQContext(), ZMQ_PUB),
-      topic_name_(topic)
+      topic_name_(topic),
+      managed_(managed),
+      pub_socket_(node_.getZMQContext(), ZMQ_PUB)
 {
-    node_.addPublisher(this);
+    if(managed_)
+        node_.addPublisher(this);
 }
 
 AbstractPublisher::~AbstractPublisher()
 {
-    node_.removePublisher(this);
+    if(managed_)
+        node_.removePublisher(this);
+}
+
+void AbstractPublisher::setRemoteAddress(std::string addr)
+{
+    remote_addr_ = addr;
 }
 
 void AbstractPublisher::init()
 {
-    pub_socket_.connect(node_.getXSUBSocketAddress());
+    if(remote_addr_.empty())
+        remote_addr_ = node_.getXSUBSocketAddress();
+    pub_socket_.connect(remote_addr_);
 }
 
 void AbstractPublisher::cleanup()
 {
-    pub_socket_.disconnect(node_.getXSUBSocketAddress());
+    pub_socket_.disconnect(remote_addr_);
 }
 
 std::string AbstractPublisher::getTopicName()

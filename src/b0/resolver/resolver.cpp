@@ -10,6 +10,7 @@
 #include <b0/utils/protobufhelpers.hpp>
 #include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
+#include <b0/logger/logger.h>
 
 namespace b0
 {
@@ -114,7 +115,8 @@ void Resolver::announceNode()
     b0::resolver_msgs::AnnounceNodeResponse rsp;
     handleAnnounceNode(rq, rsp);
 
-    logger_.connect("inproc://xsub_proxy");
+    if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
+        p_logger->connect("inproc://xsub_proxy");
 }
 
 void Resolver::notifyShutdown()
@@ -564,8 +566,9 @@ void Resolver::onGraphChanged()
 
 void Resolver::heartBeatSweeper()
 {
-    zmq::socket_t socket(context_, ZMQ_REQ);
-    socket.connect("inproc://resolv");
+    Node::ResolverServiceClient resolv_cli(this, "resolv", false);
+    resolv_cli.setRemoteAddress("inproc://resolv");
+    resolv_cli.init();
 
     while(!shutdownRequested())
     {
@@ -576,15 +579,16 @@ void Resolver::heartBeatSweeper()
         rq.mutable_node_id()->set_host_id("self");
         rq.mutable_node_id()->set_process_id(0);
         rq.mutable_node_id()->set_thread_id("self");
-        s_send(socket, rq0);
 
         b0::resolver_msgs::Response rsp0;
-        s_recv(socket, rsp0);
+        resolv_cli.call(rq0, rsp0);
         const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
         if(!rsp.ok()) break;
 
         boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
     }
+
+    resolv_cli.cleanup();
 
     // don't call log() from another thread! leave the following commented out:
     //log(INFO, "Heartbeat sweeper thread terminates.");
