@@ -18,6 +18,7 @@ void pub_thread()
 {
     b0::Node node("pub");
     b0::Publisher<test_msgs::Msg1> pub(&node, "topic1");
+    pub.setCompression("zlib", 9);
     node.init();
     test_msgs::Msg1 m;
     m.set_data(123456);

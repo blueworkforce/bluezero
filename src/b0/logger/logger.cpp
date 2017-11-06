@@ -41,7 +41,7 @@ void LocalLogger::log(LogLevel level, std::string message)
 
 std::string LocalLogger::LevelInfo::ansiEscape()
 {
-    static boost::format fmt("\x1b[%d;%dm");
+    boost::format fmt("\x1b[%d;%dm");
     return (fmt % attr % fg).str();
 }
 

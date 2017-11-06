@@ -18,6 +18,7 @@ class AbstractPublisher
 public:
     AbstractPublisher(Node *node, std::string topic, bool managed = true);
     virtual ~AbstractPublisher();
+    void setCompression(std::string algorithm, int level = -1);
     void setRemoteAddress(std::string addr);
     virtual void init();
     virtual void cleanup();
@@ -38,6 +39,10 @@ protected:
     const bool managed_;
 
     std::string remote_addr_;
+
+    std::string compression_algorithm_;
+
+    int compression_level_;
 };
 
 //! \endcond

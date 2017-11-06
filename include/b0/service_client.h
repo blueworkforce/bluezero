@@ -18,6 +18,7 @@ class AbstractServiceClient
 public:
     AbstractServiceClient(Node *node, std::string service_name, bool managed = true);
     virtual ~AbstractServiceClient();
+    void setCompression(std::string algorithm, int level = -1);
     void setRemoteAddress(std::string addr);
     virtual void init();
     virtual void cleanup();
@@ -45,6 +46,10 @@ protected:
 
     //! True if this service client is managed (init(), cleanup()) by the Node
     const bool managed_;
+
+    std::string compression_algorithm_;
+
+    int compression_level_;
 };
 
 //! \endcond

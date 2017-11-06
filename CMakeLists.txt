@@ -75,6 +75,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DI
 protobuf_generate_cpp(
     B0_MSG_SOURCES
     B0_MSG_HEADERS
+    protobuf/envelope.proto
     protobuf/resolver.proto
     protobuf/logger.proto
 )
@@ -82,6 +83,7 @@ add_library(
     b0
     SHARED
     src/b0/node.cpp
+    src/b0/envelope.cpp
     src/b0/publisher.cpp
     src/b0/subscriber.cpp
     src/b0/service_client.cpp
