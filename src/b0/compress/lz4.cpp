@@ -18,35 +18,23 @@ namespace compress
 
 std::string lz4_compress(const std::string &str, int level)
 {
-    int sourceSize = str.size();
-    int maxDestSize = LZ4_compressBound(sourceSize);
-    const char *source = str.data();
-    char *dest = new char[maxDestSize];
-    int bytesWritten = LZ4_compress_default(source, dest, sourceSize, maxDestSize);
+    std::string ret;
+    ret.reserve(LZ4_compressBound(str.size()));
+    int bytesWritten = LZ4_compress_default(str.data(), (char*)ret.data(), str.size(), ret.capacity());
     if(!bytesWritten)
-    {
-        delete[] dest;
         throw std::runtime_error("lz4 compress failed");
-    }
-    std::string ret(dest, bytesWritten);
-    delete[] dest;
+    ret.assign(ret.data(), bytesWritten);
     return ret;
 }
 
 std::string lz4_decompress(const std::string &str, size_t size)
 {
-    int compressedSize = str.size();
-    int maxDecompressedSize = size ? size : compressedSize * 10;
-    const char *source = str.data();
-    char *dest = new char[size];
-    int bytesWritten = LZ4_decompress_safe(source, dest, compressedSize, maxDecompressedSize);
+    std::string ret;
+    ret.reserve(size ? size : str.size() * 10);
+    int bytesWritten = LZ4_decompress_safe(str.data(), (char*)ret.data(), str.size(), ret.capacity());
     if(bytesWritten < 0)
-    {
-        delete[] dest;
         throw std::runtime_error("lz4 decompress failed");
-    }
-    std::string ret(dest, bytesWritten);
-    delete[] dest;
+    ret.assign(ret.data(), bytesWritten);
     return ret;
 }
 
