@@ -34,19 +34,3 @@ ImageFromMat(Image &img, const cv::Mat &mat)
 
 } // namespace camera_msgs
 
-static bool
-s_recv(zmq::socket_t &socket, cv::Mat &mat)
-{
-    camera_msgs::Image img;
-    if(!s_recv(socket, img)) return false;
-    return camera_msgs::ImageToMat(img, mat);
-}
-
-static bool
-s_send(zmq::socket_t &socket, const cv::Mat &mat)
-{
-    camera_msgs::Image img;
-    camera_msgs::ImageFromMat(img, mat);
-    return s_send(socket, img);
-}
-
