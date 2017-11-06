@@ -1,9 +1,9 @@
-#ifndef SERVICE_CLIENT_H_INCLUDED
-#define SERVICE_CLIENT_H_INCLUDED
+#ifndef B0__SERVICE_CLIENT_H__INCLUDED
+#define B0__SERVICE_CLIENT_H__INCLUDED
 
 #include <string>
 
-#include <b0/utils/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -137,4 +137,4 @@ bool ServiceClient<std::string, std::string, true>::read(std::string &rep);
 
 } // namespace b0
 
-#endif // SERVICE_CLIENT_H_INCLUDED
+#endif // B0__SERVICE_CLIENT_H__INCLUDED

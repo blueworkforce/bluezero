@@ -1,9 +1,9 @@
-#ifndef PUBLISHER_H_INCLUDED
-#define PUBLISHER_H_INCLUDED
+#ifndef B0__PUBLISHER_H__INCLUDED
+#define B0__PUBLISHER_H__INCLUDED
 
 #include <string>
 
-#include <b0/utils/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -108,4 +108,4 @@ bool Publisher<std::string, true>::write(const std::string &topic, const std::st
 
 } // namespace b0
 
-#endif // PUBLISHER_H_INCLUDED
+#endif // B0__PUBLISHER_H__INCLUDED

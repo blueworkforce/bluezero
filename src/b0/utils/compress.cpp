@@ -1,8 +1,10 @@
-#include <b0/utils/compress.hpp>
-#include <b0/config.h>
-#include <boost/format.hpp>
 #include <stdexcept>
 #include <cstring>
+
+#include <boost/format.hpp>
+
+#include <b0/utils/compress.h>
+#include <b0/config.h>
 
 #ifdef ZLIB_FOUND
 

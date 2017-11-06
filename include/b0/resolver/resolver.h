@@ -1,5 +1,5 @@
-#ifndef RESOLVER_H_INCLUDED
-#define RESOLVER_H_INCLUDED
+#ifndef B0__RESOLVER__RESOLVER_H__INCLUDED
+#define B0__RESOLVER__RESOLVER_H__INCLUDED
 
 #include <b0/node.h>
 #include <b0/service_server.h>
@@ -336,4 +336,4 @@ protected:
 
 } // namespace b0
 
-#endif // RESOLVER_H_INCLUDED
+#endif // B0__RESOLVER__RESOLVER_H__INCLUDED

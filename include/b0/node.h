@@ -1,8 +1,8 @@
-#ifndef NODE_H_INCLUDED
-#define NODE_H_INCLUDED
+#ifndef B0__NODE_H__INCLUDED
+#define B0__NODE_H__INCLUDED
 
 #include <b0/service_client.h>
-#include <b0/utils/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.h>
 #include <b0/logger/interface.h>
 
 #include <string>
@@ -400,4 +400,4 @@ public:
 
 } // namespace b0
 
-#endif // NODE_H_INCLUDED
+#endif // B0__NODE_H__INCLUDED

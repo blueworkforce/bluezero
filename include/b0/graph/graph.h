@@ -1,5 +1,5 @@
-#ifndef GRAPH_H_INCLUDED
-#define GRAPH_H_INCLUDED
+#ifndef B0__GRAPH__GRAPH_H__INCLUDED
+#define B0__GRAPH__GRAPH_H__INCLUDED
 
 #include <string>
 
@@ -19,4 +19,4 @@ void notifyService(b0::Node &node, std::string service_name, bool reverse, bool 
 
 } // namespace b0
 
-#endif // GRAPH_H_INCLUDED
+#endif // B0__GRAPH__GRAPH_H__INCLUDED
