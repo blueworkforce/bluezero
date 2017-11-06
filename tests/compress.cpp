@@ -25,11 +25,11 @@ int main(int argc, char **argv)
             std::cout << "Testing with compression level of " << level << std::endl;
             std::string in = generatePayload(size[j]);
             std::cout << "in size: " << in.size() << std::endl;
-            std::string out = compress(in);
+            std::string out = b0::utils::compress(in);
             std::cout << std::endl;
             std::cout << "out size: " << out.size() << std::endl;
             if(!(out.size() < in.size())) exit(1);
-            std::string in2 = decompress(out);
+            std::string in2 = b0::utils::decompress(out);
             std::cout << "in2 size: " << in2.size() << std::endl;
             if(in != in2) exit(2);
         }

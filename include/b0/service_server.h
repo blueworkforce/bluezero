@@ -21,6 +21,7 @@ class AbstractServiceServer
 public:
     AbstractServiceServer(Node *node, std::string service_name, bool managed = true);
     virtual ~AbstractServiceServer();
+    void setCompression(std::string algorithm, int level = -1);
     virtual void init();
     virtual void cleanup();
     virtual void spinOnce() = 0;
@@ -52,6 +53,10 @@ protected:
 
     //! True if this service server is managed (init(), cleanup()) by the Node
     const bool managed_;
+
+    std::string compression_algorithm_;
+
+    int compression_level_;
 };
 
 //! \endcond

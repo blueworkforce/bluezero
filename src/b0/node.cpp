@@ -284,7 +284,7 @@ int Node::freeTCPPort()
 
 std::string Node::freeTCPAddress()
 {
-    static boost::format fmt("tcp://%s:%d");
+    boost::format fmt("tcp://%s:%d");
     return (fmt % hostname() % freeTCPPort()).str();
 }
 

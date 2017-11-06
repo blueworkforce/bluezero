@@ -55,7 +55,7 @@ public:
 
     std::string id(std::string t, std::string name)
     {
-        static boost::format fmt("%s_%s");
+        boost::format fmt("%s_%s");
         boost::replace_all(name, "-", "_");
         return (fmt % t % name).str();
     }

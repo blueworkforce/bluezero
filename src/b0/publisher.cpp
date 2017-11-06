@@ -1,5 +1,6 @@
 #include <b0/publisher.h>
 #include <b0/node.h>
+#include <b0/envelope.h>
 
 namespace b0
 {
@@ -18,6 +19,12 @@ AbstractPublisher::~AbstractPublisher()
 {
     if(managed_)
         node_.removePublisher(this);
+}
+
+void AbstractPublisher::setCompression(std::string algorithm, int level)
+{
+    compression_algorithm_ = algorithm;
+    compression_level_ = level;
 }
 
 void AbstractPublisher::setRemoteAddress(std::string addr)
@@ -45,7 +52,7 @@ std::string AbstractPublisher::getTopicName()
 bool AbstractPublisher::writeRaw(const std::string &topic, const std::string &msg)
 {
     ::s_sendmore(pub_socket_, topic);
-    ::s_send(pub_socket_, msg);
+    ::s_send(pub_socket_, wrapEnvelope(msg, compression_algorithm_, compression_level_));
     return true;
 }
 

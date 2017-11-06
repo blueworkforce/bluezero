@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package b0.core_msgs;
+
+// A message envelope. Payload is a serialized protobuf message.
+message MessageEnvelope {
+  required bytes payload = 1;
+  required int32 uncompressed_size = 2;
+  required string compression_algorithm = 3;
+}
+

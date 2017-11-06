@@ -10,7 +10,13 @@
 
 #include <zlib.h>
 
-static std::string zlib_wrapper(const std::string &str, bool compress, int level = 0)
+namespace b0
+{
+
+namespace utils
+{
+
+static std::string zlib_wrapper(const std::string &str, bool compress, int level, size_t size)
 {
     if(level == -1) level = Z_BEST_COMPRESSION;
     const char *method = compress ? "deflate" : "inflate";
@@ -22,7 +28,8 @@ static std::string zlib_wrapper(const std::string &str, bool compress, int level
         throw std::runtime_error((boost::format("%sInit failed") % method).str());;
     zs.next_in = (Bytef*)(str.data());
     zs.avail_in = str.size();
-    char *outbuf = new char[2 << 24];
+    if(size == 0) size = str.size() * (compress ? 2 : 10);
+    char *outbuf = new char[size];
     std::string outstr;
     do
     {
@@ -51,11 +58,15 @@ static std::string zlib_wrapper(const std::string &str, bool compress, int level
 
 std::string compress(const std::string &str, int level)
 {
-    return zlib_wrapper(str, true, level);
+    return zlib_wrapper(str, true, level, 0);
 }
 
-std::string decompress(const std::string &str)
+std::string decompress(const std::string &str, size_t size)
 {
-    return zlib_wrapper(str, false);
+    return zlib_wrapper(str, false, 0, size);
 }
+
+} // namespace utils
+
+} // namespace b0
 

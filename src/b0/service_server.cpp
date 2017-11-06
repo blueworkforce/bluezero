@@ -1,5 +1,6 @@
 #include <b0/service_server.h>
 #include <b0/node.h>
+#include <b0/envelope.h>
 
 #include "resolver.pb.h"
 
@@ -24,6 +25,12 @@ AbstractServiceServer::~AbstractServiceServer()
         node_.removeServiceServer(this);
 }
 
+void AbstractServiceServer::setCompression(std::string algorithm, int level)
+{
+    compression_algorithm_ = algorithm;
+    compression_level_ = level;
+}
+
 void AbstractServiceServer::init()
 {
     bind();
@@ -42,7 +49,7 @@ std::string AbstractServiceServer::getServiceName()
 
 void AbstractServiceServer::bind()
 {
-    static boost::format fmt("tcp://%s:%d");
+    boost::format fmt("tcp://%s:%d");
     std::string host = node_.hostname();
     int port = node_.freeTCPPort();
     bind_addr_ = (fmt % "*" % port).str();
@@ -93,13 +100,13 @@ bool AbstractServiceServer::poll(long timeout)
 
 bool AbstractServiceServer::readRaw(std::string &msg)
 {
-    msg = ::s_recv(rep_socket_);
+    msg = unwrapEnvelope(::s_recv(rep_socket_));
     return true;
 }
 
 bool AbstractServiceServer::writeRaw(const std::string &msg)
 {
-    ::s_send(rep_socket_, msg);
+    ::s_send(rep_socket_, wrapEnvelope(msg, compression_algorithm_, compression_level_));
     return true;
 }
 

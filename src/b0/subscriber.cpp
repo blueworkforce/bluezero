@@ -1,5 +1,6 @@
 #include <b0/subscriber.h>
 #include <b0/node.h>
+#include <b0/envelope.h>
 
 namespace b0
 {
@@ -58,7 +59,7 @@ bool AbstractSubscriber::poll(long timeout)
 bool AbstractSubscriber::readRaw(std::string &topic, std::string &msg)
 {
     topic = ::s_recv(sub_socket_);
-    msg = ::s_recv(sub_socket_);
+    msg = unwrapEnvelope(::s_recv(sub_socket_));
     return true;
 }
 

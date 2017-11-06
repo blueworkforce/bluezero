@@ -271,7 +271,7 @@ int Resolver::resolverPort() const
 
 std::string Resolver::address(std::string host, int port)
 {
-    static boost::format f("tcp://%s:%d");
+    boost::format f("tcp://%s:%d");
     return (f % host % port).str();
 }
 

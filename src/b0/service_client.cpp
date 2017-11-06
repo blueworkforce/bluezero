@@ -1,5 +1,6 @@
 #include <b0/service_client.h>
 #include <b0/node.h>
+#include <b0/envelope.h>
 
 #include "resolver.pb.h"
 
@@ -20,6 +21,12 @@ AbstractServiceClient::~AbstractServiceClient()
 {
     if(managed_)
         node_.removeServiceClient(this);
+}
+
+void AbstractServiceClient::setCompression(std::string algorithm, int level)
+{
+    compression_algorithm_ = algorithm;
+    compression_level_ = level;
 }
 
 void AbstractServiceClient::setRemoteAddress(std::string addr)
@@ -78,7 +85,7 @@ void AbstractServiceClient::disconnect()
 
 bool AbstractServiceClient::writeRaw(const std::string &msg)
 {
-    ::s_send(req_socket_, msg);
+    ::s_send(req_socket_, wrapEnvelope(msg, compression_algorithm_, compression_level_));
     return true;
 }
 
@@ -95,7 +102,7 @@ bool AbstractServiceClient::poll(long timeout)
 
 bool AbstractServiceClient::readRaw(std::string &msg)
 {
-    msg = ::s_recv(req_socket_);
+    msg = unwrapEnvelope(::s_recv(req_socket_));
     return true;
 }
 
