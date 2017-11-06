@@ -26,5 +26,6 @@ add_test(clisrv_raw clisrv_raw)
 
 add_executable(compress compress.cpp ${TEST_MSGS})
 target_link_libraries(compress b0)
-add_test(compress compress)
+add_test(compress-zlib compress zlib)
+add_test(compress-lz4 compress lz4)
 
