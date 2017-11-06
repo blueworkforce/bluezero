@@ -1,12 +1,12 @@
-#ifndef SUBSCRIBER_H_INCLUDED
-#define SUBSCRIBER_H_INCLUDED
+#ifndef B0__SUBSCRIBER_H__INCLUDED
+#define B0__SUBSCRIBER_H__INCLUDED
 
 #include <string>
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include <b0/utils/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -160,4 +160,4 @@ bool Subscriber<std::string, true>::read(std::string &topic, std::string &msg);
 
 } // namespace b0
 
-#endif // SUBSCRIBER_H_INCLUDED
+#endif // B0__SUBSCRIBER_H__INCLUDED

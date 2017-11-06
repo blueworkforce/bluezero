@@ -1,12 +1,12 @@
-#ifndef SERVICE_SERVER_H_INCLUDED
-#define SERVICE_SERVER_H_INCLUDED
+#ifndef B0__SERVICE_SERVER_H__INCLUDED
+#define B0__SERVICE_SERVER_H__INCLUDED
 
 #include <string>
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include <b0/utils/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -179,4 +179,4 @@ bool ServiceServer<std::string, std::string, true>::write(const std::string &rep
 
 } // namespace b0
 
-#endif // SERVICE_SERVER_H_INCLUDED
+#endif // B0__SERVICE_SERVER_H__INCLUDED

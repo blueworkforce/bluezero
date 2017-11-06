@@ -1,7 +1,7 @@
-#ifndef LOGGER_H_INCLUDED
-#define LOGGER_H_INCLUDED
+#ifndef B0__LOGGER__LOGGER_H__INCLUDED
+#define B0__LOGGER__LOGGER_H__INCLUDED
 
-#include <b0/utils/protobufhelpers.hpp>
+#include <b0/utils/protobufhelpers.h>
 #include <b0/logger/interface.h>
 
 #include <string>
@@ -92,4 +92,4 @@ protected:
 
 } // namespace b0
 
-#endif // LOGGER_H_INCLUDED
+#endif // B0__LOGGER__LOGGER_H__INCLUDED

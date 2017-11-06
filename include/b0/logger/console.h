@@ -1,5 +1,5 @@
-#ifndef CONSOLE_H_INCLUDED
-#define CONSOLE_H_INCLUDED
+#ifndef B0__LOGGER__CONSOLE_H__INCLUDED
+#define B0__LOGGER__CONSOLE_H__INCLUDED
 
 #include <b0/node.h>
 #include <b0/subscriber.h>
@@ -48,4 +48,4 @@ private:
 
 } // namespace b0
 
-#endif // CONSOLE_H_INCLUDED
+#endif // B0__LOGGER__CONSOLE_H__INCLUDED

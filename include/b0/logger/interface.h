@@ -1,5 +1,5 @@
-#ifndef LOGGER_INTERFACE_H_INCLUDED
-#define LOGGER_INTERFACE_H_INCLUDED
+#ifndef B0__LOGGER__INTERFACE_H__INCLUDED
+#define B0__LOGGER__INTERFACE_H__INCLUDED
 
 #include <string>
 
@@ -85,4 +85,4 @@ protected:
 
 } // namespace b0
 
-#endif // LOGGER_INTERFACE_H_INCLUDED
+#endif // B0__LOGGER__INTERFACE_H__INCLUDED

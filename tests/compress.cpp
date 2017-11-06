@@ -1,7 +1,8 @@
-#include <b0/utils/compress.hpp>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+
+#include <b0/utils/compress.h>
 
 std::string generatePayload(size_t size)
 {
