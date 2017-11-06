@@ -3,8 +3,8 @@
 
 #include <boost/format.hpp>
 
-#include <b0/utils/compress.h>
 #include <b0/config.h>
+#include <b0/compress/zlib.h>
 
 #ifdef ZLIB_FOUND
 
@@ -13,10 +13,10 @@
 namespace b0
 {
 
-namespace utils
+namespace compress
 {
 
-static std::string zlib_wrapper(const std::string &str, bool compress, int level, size_t size)
+std::string zlib_wrapper(const std::string &str, bool compress, int level, size_t size)
 {
     if(level == -1) level = Z_BEST_COMPRESSION;
     const char *method = compress ? "deflate" : "inflate";
@@ -47,26 +47,19 @@ static std::string zlib_wrapper(const std::string &str, bool compress, int level
     return outstr;
 }
 
-#else
-
-static std::string zlib_wrapper(const std::string &str, bool compress, int level = 0)
-{
-    return std::string(str);
-}
-
-#endif
-
-std::string compress(const std::string &str, int level)
+std::string zlib_compress(const std::string &str, int level)
 {
     return zlib_wrapper(str, true, level, 0);
 }
 
-std::string decompress(const std::string &str, size_t size)
+std::string zlib_decompress(const std::string &str, size_t size)
 {
     return zlib_wrapper(str, false, 0, size);
 }
 
-} // namespace utils
+} // namespace compress
 
 } // namespace b0
+
+#endif // ZLIB_FOUND
 
