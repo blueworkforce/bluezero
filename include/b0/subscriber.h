@@ -39,9 +39,11 @@ protected:
     //! The ZeroMQ topic name to set the subscription
     std::string topic_name_;
 
-    //! True if this subscriber is managed (init(), cleanup()) by the Node
+    //! True if this subscriber is managed (init(), cleanup() are called by the owner Node)
     const bool managed_;
 
+    //! If set, this publisher will connect directly to the given address instead of the XSUB address given by the owner Node
+    //! \sa AbstractSubscriber::setRemoteAddress()
     std::string remote_addr_;
 };
 
@@ -155,6 +157,9 @@ protected:
     boost::function<void(std::string, TMsg&)> callback_;
 };
 
+/*!
+ * \brief Read a raw payload from the underlying ZeroMQ SUB socket
+ */
 template<>
 bool Subscriber<std::string, true>::read(std::string &topic, std::string &msg);
 

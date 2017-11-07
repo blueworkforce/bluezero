@@ -35,13 +35,19 @@ protected:
     //! The ZeroMQ envelope address (also known as the topic)
     std::string topic_name_;
 
-    //! True if this publisher is managed (init(), cleanup()) by the Node 
+    //! True if this publisher is managed (init(), cleanup() are called by the owner Node)
     const bool managed_;
 
+    //! If set, this publisher will connect directly to the given address instead of the XSUB address given by the owner Node
+    //! \sa AbstractPublisher::setRemoteAddress()
     std::string remote_addr_;
 
+    //! If set, payloads will be encoded using the specified compression algorithm
+    //! \sa AbstractPublisher::setCompression()
     std::string compression_algorithm_;
 
+    //! If a compression algorithm is set, payloads will be encoded using the specified compression level
+    //! \sa AbstractPublisher::setCompression()
     int compression_level_;
 };
 
@@ -108,6 +114,9 @@ public:
     }
 };
 
+/*!
+ * \brief Publish a raw payload on the specified topic
+ */
 template<>
 bool Publisher<std::string, true>::write(const std::string &topic, const std::string &msg);
 

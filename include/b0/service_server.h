@@ -51,11 +51,15 @@ protected:
     //! The remote ZeroMQ address to connect to this service socket
     std::string remote_addr_;
 
-    //! True if this service server is managed (init(), cleanup()) by the Node
+    //! True if this service server is managed (init(), cleanup() are called by the owner Node)
     const bool managed_;
 
+    //! If set, payloads will be encoded using the specified compression algorithm
+    //! \sa AbstractServiceServer::setCompression()
     std::string compression_algorithm_;
 
+    //! If a compression algorithm is set, payloads will be encoded using the specified compression level
+    //! \sa AbstractServiceServer::setCompression()
     int compression_level_;
 };
 
@@ -176,9 +180,15 @@ protected:
     boost::function<void(const TReq&, TRep&)> callback_;
 };
 
+/*!
+ * \brief Read a raw request from the underlying ZeroMQ REP socket
+ */
 template<>
 bool ServiceServer<std::string, std::string, true>::read(std::string &req);
 
+/*!
+ * \brief Write a raw reply to the underlying ZeroMQ REP socket
+ */
 template<>
 bool ServiceServer<std::string, std::string, true>::write(const std::string &rep);
 

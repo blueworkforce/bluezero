@@ -38,6 +38,7 @@
  * - a global XPUB/XSUB proxy
  * - liveness monitoring
  * - tracking of connected nodes
+ * - clock synchronization (see \ref timesync)
  *
  * \b Important: you must have the resolver node running prior to running any node.
  *
