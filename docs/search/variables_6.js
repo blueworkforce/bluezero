@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['resolv_5fserver_5f',['resolv_server_',['../classb0_1_1resolver_1_1_resolver.html#ab3e1040fa80f299080fcf35c216384a4',1,'b0::resolver::Resolver']]],
-  ['resolv_5fsocket_5f',['resolv_socket_',['../classb0_1_1_node.html#ad3993b7ca9b66e713a4c7dd6638404ef',1,'b0::Node']]]
+  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1resolver_1_1_resolver.html#aba1b6605c215f6b868a456e1278d7fc0',1,'b0::resolver::Resolver']]],
+  ['sub_5f',['sub_',['../classb0_1_1logger_1_1_console.html#a2c42ead89c27fa65a5a08edfe6e3f54f',1,'b0::logger::Console']]]
 ];

@@ -1,9 +1,14 @@
 var searchData=
 [
-  ['node',['Node',['../classb0_1_1_node.html#aaa9a54ec9f6d86f334966c9725690abc',1,'b0::Node']]],
-  ['nodebyid',['nodeByID',['../classb0_1_1resolver_1_1_resolver.html#a107271440741dbc574f3fba034ff2e2d',1,'b0::resolver::Resolver']]],
-  ['nodebyname',['nodeByName',['../classb0_1_1resolver_1_1_resolver.html#a7e0a8c587e5c87a223f70f60007269eb',1,'b0::resolver::Resolver']]],
-  ['nodekey',['nodeKey',['../classb0_1_1resolver_1_1_resolver.html#a223b63d1c6fdfec6285c78c1f2c7e786',1,'b0::resolver::Resolver::nodeKey(std::string host_id, int process_id, std::string thread_id)'],['../classb0_1_1resolver_1_1_resolver.html#a87b33eb14a5a08948696aa0053d5d3ba',1,'b0::resolver::Resolver::nodeKey(const b0::resolver_msgs::NodeID &amp;node_id)'],['../classb0_1_1resolver_1_1_resolver.html#a9e9b237c884b0e9f1e89fc874fbc5aa5',1,'b0::resolver::Resolver::nodeKey(const resolver::NodeEntry *node_entry)']]],
-  ['nodenameexists',['nodeNameExists',['../classb0_1_1resolver_1_1_resolver.html#a0060c0771358f37b58717619151edd9f',1,'b0::resolver::Resolver']]],
-  ['notifyshutdown',['notifyShutdown',['../classb0_1_1_node.html#a1b3c80da95c5e3a2e5a548e727c6c320',1,'b0::Node::notifyShutdown()'],['../classb0_1_1resolver_1_1_resolver.html#a54b52e891bb8f07ea01b4b8d46a457bc',1,'b0::resolver::Resolver::notifyShutdown()']]]
+  ['ongraphchanged',['onGraphChanged',['../classb0_1_1resolver_1_1_resolver.html#a4ed505e69b5eadc7ad66a370bffd9409',1,'b0::resolver::Resolver']]],
+  ['onnodeconnected',['onNodeConnected',['../classb0_1_1resolver_1_1_resolver.html#ad7654d65284e1e617428f8cf85a241a8',1,'b0::resolver::Resolver']]],
+  ['onnodedisconnected',['onNodeDisconnected',['../classb0_1_1resolver_1_1_resolver.html#a3c9079c869833d84fcee2f94922753f0',1,'b0::resolver::Resolver']]],
+  ['onnodeserviceofferstart',['onNodeServiceOfferStart',['../classb0_1_1resolver_1_1_resolver.html#af6178dc0dc829902631beb9e10009110',1,'b0::resolver::Resolver']]],
+  ['onnodeserviceofferstop',['onNodeServiceOfferStop',['../classb0_1_1resolver_1_1_resolver.html#a6a70ab499e8ce564082d9c96cb952566',1,'b0::resolver::Resolver']]],
+  ['onnodeserviceusestart',['onNodeServiceUseStart',['../classb0_1_1resolver_1_1_resolver.html#aef1b76054c9fc995ce2c4a830105f191',1,'b0::resolver::Resolver']]],
+  ['onnodeserviceusestop',['onNodeServiceUseStop',['../classb0_1_1resolver_1_1_resolver.html#aa70b938128a48de101d60a3c923e9325',1,'b0::resolver::Resolver']]],
+  ['onnodetopicpublishstart',['onNodeTopicPublishStart',['../classb0_1_1resolver_1_1_resolver.html#a2c9f5c078a541ea4a6368d9938176807',1,'b0::resolver::Resolver']]],
+  ['onnodetopicpublishstop',['onNodeTopicPublishStop',['../classb0_1_1resolver_1_1_resolver.html#aa7fcc74db132b66335f1f5416c054dfd',1,'b0::resolver::Resolver']]],
+  ['onnodetopicsubscribestart',['onNodeTopicSubscribeStart',['../classb0_1_1resolver_1_1_resolver.html#a86ad2bfde3a48c4392c78f581a6a0710',1,'b0::resolver::Resolver']]],
+  ['onnodetopicsubscribestop',['onNodeTopicSubscribeStop',['../classb0_1_1resolver_1_1_resolver.html#acb609d51ce8848a655bcdf9eae21521f',1,'b0::resolver::Resolver']]]
 ];

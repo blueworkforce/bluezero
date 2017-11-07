@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['levelinfo',['levelInfo',['../classb0_1_1logger_1_1_local_logger.html#a0472ca6e5ffd30656c51aa10bae7d18a',1,'b0::logger::LocalLogger']]],
-  ['locallogger',['LocalLogger',['../classb0_1_1logger_1_1_local_logger.html#aac667c41d698c983e59a6efec3d26c34',1,'b0::logger::LocalLogger']]],
-  ['log',['log',['../classb0_1_1_node.html#a02ab4a8d79ec8cedaa1b170b60d6cd0e',1,'b0::Node::log()'],['../classb0_1_1logger_1_1_log_interface.html#a21a97baceb92f3817a219a0705ec116e',1,'b0::logger::LogInterface::log(std::string message)'],['../classb0_1_1logger_1_1_log_interface.html#ac496160e24c4b1dd93ffc9c2670388c1',1,'b0::logger::LogInterface::log(std::string const &amp;fmt, Arguments &amp;&amp;... args)'],['../classb0_1_1logger_1_1_log_interface.html#a353b0fbd6d28f135560c0a299632e077',1,'b0::logger::LogInterface::log(LogLevel level, std::string message)=0'],['../classb0_1_1logger_1_1_log_interface.html#a4ad5d35d1b5aa7ee876f3524cb2cb076',1,'b0::logger::LogInterface::log(LogLevel level, std::string const &amp;fmt, Arguments &amp;&amp;... args)'],['../classb0_1_1logger_1_1_local_logger.html#a59cbd8cd358d6ec321ac3c11e85ea588',1,'b0::logger::LocalLogger::log()'],['../classb0_1_1logger_1_1_logger.html#adaf72fa025d7904c6183d2b2a0830a70',1,'b0::logger::Logger::log()']]],
-  ['logger',['Logger',['../classb0_1_1logger_1_1_logger.html#a15813e4e43c61a0e78a7b73d13b7efa7',1,'b0::logger::Logger']]]
+  ['makeuniquenodename',['makeUniqueNodeName',['../classb0_1_1resolver_1_1_resolver.html#acdcf8777bb1e964c51a9518406110101',1,'b0::resolver::Resolver']]]
 ];

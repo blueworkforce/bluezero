@@ -44,11 +44,15 @@ protected:
     //! The address of the ZeroMQ socket in the server
     std::string remote_addr_;
 
-    //! True if this service client is managed (init(), cleanup()) by the Node
+    //! True if this service client is managed (init(), cleanup() are called by the owner Node)
     const bool managed_;
 
+    //! If set, payloads will be encoded using the specified compression algorithm
+    //! \sa AbstractServiceClient::setCompression()
     std::string compression_algorithm_;
 
+    //! If a compression algorithm is set, payloads will be encoded using the specified compression level
+    //! \sa AbstractServiceClient::setCompression()
     int compression_level_;
 };
 
@@ -134,9 +138,15 @@ public:
     }
 };
 
+/*!
+ * \brief Write a raw request to the underlying ZeroMQ REQ socket
+ */
 template<>
 bool ServiceClient<std::string, std::string, true>::write(const std::string &req);
 
+/*!
+ * \brief Read a raw reply from the underlying ZeroMQ REQ socket
+ */
 template<>
 bool ServiceClient<std::string, std::string, true>::read(std::string &rep);
 

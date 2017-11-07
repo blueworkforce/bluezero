@@ -44,10 +44,16 @@ class Node : public logger::LogInterface
 public:
     using logger::LogInterface::log;
 
+    /*!
+     * \brief The state of a Node
+     */
     enum State
     {
+        //! \brief Just after creation, before initialization.
         Created,
+        //! \brief After initialization.
         Ready,
+        //! \brief Just after cleanup.
         Terminated
     };
 
@@ -320,7 +326,7 @@ protected:
      */
     void updateTime(int64_t remoteTime);
 
-    // \cond HIDDEN_SYMBOLS
+    //! \cond HIDDEN_SYMBOLS
 
     /*!
      * State variables related to time synchronization
@@ -333,11 +339,13 @@ protected:
         boost::mutex mutex_;
     } timesync_;
 
-    // \endcond
+    //! \endcond
 
 public:
+    //! An alias for the ServiceClient which talks to the resolver service
     using ResolverServiceClient = ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>;
 
+    //! Return the ServiceClient to talk to resolver
     ResolverServiceClient & resolverClient() {return resolv_cli_;}
 
 protected:
@@ -381,14 +389,19 @@ private:
     //! Address of the proxy's XPUB socket
     std::string xpub_sock_addr_;
 
+    //! Flag set by the signal (SIGINT) handler
     static std::atomic<bool> quit_flag_;
 
+    //! Flag set by Node::shutdown()
     bool shutdown_flag_;
 
+    //! Flag to indicate wether the signal (SIGINT) handler has been set up
     static bool sigint_handler_setup_;
 
+    //! Signal (SIGINT) handler
     static void signalHandler(int s);
 
+    //! Routine to set up the signal (SIGINT) handler
     static void setupSIGINTHandler();
 
 public:

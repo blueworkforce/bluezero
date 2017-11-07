@@ -86,10 +86,10 @@ Inheritance diagram for b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;:</div
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a08f3367cabad54e2be18db7fda6fa4bf"><td class="memItemLeft" align="right" valign="top"><a id="a08f3367cabad54e2be18db7fda6fa4bf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a08f3367cabad54e2be18db7fda6fa4bf">ServiceClient</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string service_name)</td></tr>
-<tr class="memdesc:a08f3367cabad54e2be18db7fda6fa4bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_service_client.html" title="Service client. ">ServiceClient</a> child of a specific <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, which will connect to the specified socket in the specified node. <br /></td></tr>
-<tr class="separator:a08f3367cabad54e2be18db7fda6fa4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881c5779cdfa11bdd128fb09ecafc54e"><td class="memItemLeft" align="right" valign="top"><a id="a881c5779cdfa11bdd128fb09ecafc54e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a881c5779cdfa11bdd128fb09ecafc54e">ServiceClient</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string service_name, bool managed=true)</td></tr>
+<tr class="memdesc:a881c5779cdfa11bdd128fb09ecafc54e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_service_client.html" title="Service client. ">ServiceClient</a> child of a specific <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, which will connect to the specified socket in the specified node. <br /></td></tr>
+<tr class="separator:a881c5779cdfa11bdd128fb09ecafc54e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e8b4b359d8a3e94ed4362ba9a9872c4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a3e8b4b359d8a3e94ed4362ba9a9872c4">call</a> (const TReq &amp;req, TRep &amp;rep)</td></tr>
 <tr class="memdesc:a3e8b4b359d8a3e94ed4362ba9a9872c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a request and read a reply from the underlying ZeroMQ REQ socket.  <a href="#a3e8b4b359d8a3e94ed4362ba9a9872c4">More...</a><br /></td></tr>
 <tr class="separator:a3e8b4b359d8a3e94ed4362ba9a9872c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,10 +97,6 @@ Public Member Functions</h2></td></tr>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#acc075cab16980f3c7d1ef75bbda44d1a">write</a> (const TReq &amp;req)</td></tr>
 <tr class="memdesc:acc075cab16980f3c7d1ef75bbda44d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a request message to the underlying ZeroMQ REQ socket. <br /></td></tr>
 <tr class="separator:acc075cab16980f3c7d1ef75bbda44d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ce37838269cb8c0a4a16a0c8ad5b101"><td class="memItemLeft" align="right" valign="top"><a id="a5ce37838269cb8c0a4a16a0c8ad5b101"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a5ce37838269cb8c0a4a16a0c8ad5b101">poll</a> (long timeout=0)</td></tr>
-<tr class="memdesc:a5ce37838269cb8c0a4a16a0c8ad5b101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll the underlying ZeroMQ REQ socket. <br /></td></tr>
-<tr class="separator:a5ce37838269cb8c0a4a16a0c8ad5b101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0dc6fce4baac5e1e66f3ddd36b833e6"><td class="memItemLeft" align="right" valign="top"><a id="ae0dc6fce4baac5e1e66f3ddd36b833e6"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#ae0dc6fce4baac5e1e66f3ddd36b833e6">read</a> (TRep &amp;rep)</td></tr>
 <tr class="memdesc:ae0dc6fce4baac5e1e66f3ddd36b833e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a reply message from the underlying ZeroMQ REQ socket. <br /></td></tr>
@@ -115,11 +111,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a9307284415210abcf4e9864da10e2300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bc62615964756ebce2652afbe5338fa"><td class="memTemplParams" colspan="2"><a id="a1bc62615964756ebce2652afbe5338fa"></a>
 template&lt;&gt; </td></tr>
-<tr class="memitem:a1bc62615964756ebce2652afbe5338fa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>write</b> (const std::string &amp;req)</td></tr>
+<tr class="memitem:a1bc62615964756ebce2652afbe5338fa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a1bc62615964756ebce2652afbe5338fa">write</a> (const std::string &amp;req)</td></tr>
+<tr class="memdesc:a1bc62615964756ebce2652afbe5338fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a raw request to the underlying ZeroMQ REQ socket. <br /></td></tr>
 <tr class="separator:a1bc62615964756ebce2652afbe5338fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cc66481b90625a6d15e5b2b2afad233"><td class="memTemplParams" colspan="2"><a id="a8cc66481b90625a6d15e5b2b2afad233"></a>
 template&lt;&gt; </td></tr>
-<tr class="memitem:a8cc66481b90625a6d15e5b2b2afad233"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>read</b> (std::string &amp;rep)</td></tr>
+<tr class="memitem:a8cc66481b90625a6d15e5b2b2afad233"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a8cc66481b90625a6d15e5b2b2afad233">read</a> (std::string &amp;rep)</td></tr>
+<tr class="memdesc:a8cc66481b90625a6d15e5b2b2afad233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw reply from the underlying ZeroMQ REQ socket. <br /></td></tr>
 <tr class="separator:a8cc66481b90625a6d15e5b2b2afad233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -127,9 +125,9 @@ template&lt;&gt; </td></tr>
 class b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</h3>
 
 <p>Service client. </p>
-<p>This class wraps a ZeroMQ REQ socket. It will automatically resolve the address of the target socket (identified by the service_name argument passed to the constructor <a class="el" href="classb0_1_1_service_client.html#a08f3367cabad54e2be18db7fda6fa4bf" title="Construct a ServiceClient child of a specific Node, which will connect to the specified socket in the...">ServiceClient::ServiceClient()</a>).</p>
+<p>This class wraps a ZeroMQ REQ socket. It will automatically resolve the address of the target socket (identified by the service_name argument passed to the constructor <a class="el" href="classb0_1_1_service_client.html#a881c5779cdfa11bdd128fb09ecafc54e" title="Construct a ServiceClient child of a specific Node, which will connect to the specified socket in the...">ServiceClient::ServiceClient()</a>).</p>
 <p>The remote service is invoked with <a class="el" href="classb0_1_1_service_client.html#a3e8b4b359d8a3e94ed4362ba9a9872c4" title="Write a request and read a reply from the underlying ZeroMQ REQ socket. ">ServiceClient::call()</a> and the call is blocking. It will unblock as soon as the server sends out a reply.</p>
-<p>You can make it work asynchronously by directly using <a class="el" href="classb0_1_1_service_client.html#acc075cab16980f3c7d1ef75bbda44d1a" title="Write a request message to the underlying ZeroMQ REQ socket. ">ServiceClient::write()</a>, and polling for the reply with <a class="el" href="classb0_1_1_service_client.html#a5ce37838269cb8c0a4a16a0c8ad5b101" title="Poll the underlying ZeroMQ REQ socket. ">ServiceClient::poll()</a>, followed by <a class="el" href="classb0_1_1_service_client.html#ae0dc6fce4baac5e1e66f3ddd36b833e6" title="Read a reply message from the underlying ZeroMQ REQ socket. ">ServiceClient::read()</a>.</p>
+<p>You can make it work asynchronously by directly using <a class="el" href="classb0_1_1_service_client.html#acc075cab16980f3c7d1ef75bbda44d1a" title="Write a request message to the underlying ZeroMQ REQ socket. ">ServiceClient::write()</a>, and polling for the reply with ServiceClient::poll(), followed by <a class="el" href="classb0_1_1_service_client.html#ae0dc6fce4baac5e1e66f3ddd36b833e6" title="Read a reply message from the underlying ZeroMQ REQ socket. ">ServiceClient::read()</a>.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_service_server.html" title="Service server. ">ServiceServer</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="client_node_8cpp-example.html#_a1">client_node.cpp</a>, and <a class="el" href="client_node_object_8cpp-example.html#_a1">client_node_object.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Function Documentation</h2>

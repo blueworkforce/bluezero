@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1resolver_1_1_resolver.html#aba1b6605c215f6b868a456e1278d7fc0',1,'b0::resolver::Resolver']]],
-  ['sub_5f',['sub_',['../classb0_1_1logger_1_1_console.html#a2c42ead89c27fa65a5a08edfe6e3f54f',1,'b0::logger::Console']]]
+  ['xpub_5fproxy_5faddr_5f',['xpub_proxy_addr_',['../classb0_1_1resolver_1_1_resolver.html#aada3f7a820cc8dae6833af7af2161b1a',1,'b0::resolver::Resolver']]],
+  ['xsub_5fproxy_5faddr_5f',['xsub_proxy_addr_',['../classb0_1_1resolver_1_1_resolver.html#a80953c54ab39f75562bd5ece5cab6f0c',1,'b0::resolver::Resolver']]]
 ];

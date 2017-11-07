@@ -271,6 +271,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a621c09d8e40a3907288ef73935b8d547">getName</a> () const</td></tr>
 <tr class="memdesc:a621c09d8e40a3907288ef73935b8d547 inherit pub_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name assigned by resolver to this node. <br /></td></tr>
 <tr class="separator:a621c09d8e40a3907288ef73935b8d547 inherit pub_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1de6f40614c3fca3f96f569b17be8b5 inherit pub_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="ae1de6f40614c3fca3f96f569b17be8b5"></a>
+<a class="el" href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fde">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#ae1de6f40614c3fca3f96f569b17be8b5">getState</a> () const</td></tr>
+<tr class="memdesc:ae1de6f40614c3fca3f96f569b17be8b5 inherit pub_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the state of this node. <br /></td></tr>
+<tr class="separator:ae1de6f40614c3fca3f96f569b17be8b5 inherit pub_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da4a7c64fcd1d50c87d3171054752af inherit pub_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a6da4a7c64fcd1d50c87d3171054752af"></a>
 zmq::context_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a6da4a7c64fcd1d50c87d3171054752af">getZMQContext</a> ()</td></tr>
 <tr class="memdesc:a6da4a7c64fcd1d50c87d3171054752af inherit pub_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the ZeroMQ Context. <br /></td></tr>
@@ -299,6 +303,10 @@ int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#aafb522fc3aab3e93c39f8dbb68c5cb45">timeUSec</a> ()</td></tr>
 <tr class="memdesc:aafb522fc3aab3e93c39f8dbb68c5cb45 inherit pub_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the adjusted time in microseconds. See <a class="el" href="timesync.html">Time Synchronization</a> for details. <br /></td></tr>
 <tr class="separator:aafb522fc3aab3e93c39f8dbb68c5cb45 inherit pub_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a509dc7c41c9164bd65dbf83d8be1288c inherit pub_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a509dc7c41c9164bd65dbf83d8be1288c"></a>
+<a class="el" href="classb0_1_1_node.html#a92b52b0460d472169dd4229eb6bdd666">ResolverServiceClient</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a509dc7c41c9164bd65dbf83d8be1288c">resolverClient</a> ()</td></tr>
+<tr class="memdesc:a509dc7c41c9164bd65dbf83d8be1288c inherit pub_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the <a class="el" href="classb0_1_1_service_client.html" title="Service client. ">ServiceClient</a> to talk to resolver. <br /></td></tr>
+<tr class="separator:a509dc7c41c9164bd65dbf83d8be1288c inherit pub_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
 <tr class="memitem:a21a97baceb92f3817a219a0705ec116e inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a21a97baceb92f3817a219a0705ec116e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a21a97baceb92f3817a219a0705ec116e">log</a> (std::string message)</td></tr>
@@ -374,17 +382,28 @@ std::set&lt; std::pair&lt; std::string, std::string &gt; &gt;&#160;</td><td clas
 zmq::context_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#aa0e6c480231c908dc7c4ed35712307c0">context_</a></td></tr>
 <tr class="memdesc:aa0e6c480231c908dc7c4ed35712307c0 inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">ZeroMQ Context used by all sockets of this node. <br /></td></tr>
 <tr class="separator:aa0e6c480231c908dc7c4ed35712307c0 inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3993b7ca9b66e713a4c7dd6638404ef inherit pro_attribs_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="ad3993b7ca9b66e713a4c7dd6638404ef"></a>
-zmq::socket_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#ad3993b7ca9b66e713a4c7dd6638404ef">resolv_socket_</a></td></tr>
-<tr class="memdesc:ad3993b7ca9b66e713a4c7dd6638404ef inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">ZeroMQ REQ socket used to talk with resolver (announce, resolve, heartbeat) <br /></td></tr>
-<tr class="separator:ad3993b7ca9b66e713a4c7dd6638404ef inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81ca23a2291620b895e846442e01a744 inherit pro_attribs_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a81ca23a2291620b895e846442e01a744"></a>
-<a class="el" href="classb0_1_1logger_1_1_logger.html">logger::Logger</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a81ca23a2291620b895e846442e01a744">logger_</a></td></tr>
-<tr class="memdesc:a81ca23a2291620b895e846442e01a744 inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logger of this node. <br /></td></tr>
-<tr class="separator:a81ca23a2291620b895e846442e01a744 inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83bebcc577e9e7ddfd93e22a5b52384d inherit pro_attribs_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a83bebcc577e9e7ddfd93e22a5b52384d"></a>
+<a class="el" href="classb0_1_1_node.html#a92b52b0460d472169dd4229eb6bdd666">ResolverServiceClient</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a83bebcc577e9e7ddfd93e22a5b52384d">resolv_cli_</a></td></tr>
+<tr class="memdesc:a83bebcc577e9e7ddfd93e22a5b52384d inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service client used to talk with resolver (announce, resolve, heartbeat) <br /></td></tr>
+<tr class="separator:a83bebcc577e9e7ddfd93e22a5b52384d inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a374b9fa9f122a5229d9c1e1099cd915c inherit pro_attribs_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a374b9fa9f122a5229d9c1e1099cd915c"></a>
+<a class="el" href="classb0_1_1logger_1_1_log_interface.html">logger::LogInterface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a374b9fa9f122a5229d9c1e1099cd915c">p_logger_</a></td></tr>
+<tr class="memdesc:a374b9fa9f122a5229d9c1e1099cd915c inherit pro_attribs_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logger of this node. <br /></td></tr>
+<tr class="separator:a374b9fa9f122a5229d9c1e1099cd915c inherit pro_attribs_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classb0_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classb0_1_1_node')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classb0_1_1_node.html">b0::Node</a></td></tr>
+<tr class="memitem:a768b1268d5125e1647c4dfbb8a1d8fde inherit pub_types_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fde">State</a> { <a class="el" href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fdea304ffec727faffeec401b499f840b7d8">Created</a>, 
+<a class="el" href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fdea3102059993096144a3b4653310337b1c">Ready</a>, 
+<a class="el" href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fdea7ce060d80d4198e1ddfbb4b4a5f7bbae">Terminated</a>
+ }<tr class="memdesc:a768b1268d5125e1647c4dfbb8a1d8fde"><td class="mdescLeft">&#160;</td><td class="mdescRight">The state of a <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>.  <a href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fde">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a768b1268d5125e1647c4dfbb8a1d8fde inherit pub_types_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92b52b0460d472169dd4229eb6bdd666 inherit pub_types_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a92b52b0460d472169dd4229eb6bdd666"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a92b52b0460d472169dd4229eb6bdd666">ResolverServiceClient</a> = <a class="el" href="classb0_1_1_service_client.html">ServiceClient</a>&lt; b0::resolver_msgs::Request, b0::resolver_msgs::Response, false &gt;</td></tr>
+<tr class="memdesc:a92b52b0460d472169dd4229eb6bdd666 inherit pub_types_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias for the <a class="el" href="classb0_1_1_service_client.html" title="Service client. ">ServiceClient</a> which talks to the resolver service. <br /></td></tr>
+<tr class="separator:a92b52b0460d472169dd4229eb6bdd666 inherit pub_types_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
 <tr class="memitem:a9e1bba7c917cf21596c47e0e1a291a52 inherit pub_types_classb0_1_1logger_1_1_log_interface"><td class="memItemLeft" align="right" valign="top"><a id="a9e1bba7c917cf21596c47e0e1a291a52"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>LogLevel</b> { <br />
 &#160;&#160;<b>TRACE</b>, 
@@ -398,10 +417,6 @@ Additional Inherited Members</h2></td></tr>
  }</td></tr>
 <tr class="separator:a9e1bba7c917cf21596c47e0e1a291a52 inherit pub_types_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classb0_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classb0_1_1_node')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classb0_1_1_node.html">b0::Node</a></td></tr>
-<tr class="memitem:a4e4a548e46e6734252c72f8bed5a0d9a inherit pro_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top"><a id="a4e4a548e46e6734252c72f8bed5a0d9a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a4e4a548e46e6734252c72f8bed5a0d9a">connectToResolver</a> ()</td></tr>
-<tr class="memdesc:a4e4a548e46e6734252c72f8bed5a0d9a inherit pro_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to resolver node. <br /></td></tr>
-<tr class="separator:a4e4a548e46e6734252c72f8bed5a0d9a inherit pro_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ffa51dc4174f8f25a6c175306af9c44 inherit pro_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44">startHeartbeatThread</a> ()</td></tr>
 <tr class="memdesc:a1ffa51dc4174f8f25a6c175306af9c44 inherit pro_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the heartbeat thread.  <a href="classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44">More...</a><br /></td></tr>
 <tr class="separator:a1ffa51dc4174f8f25a6c175306af9c44 inherit pro_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -421,9 +436,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:a6fa86d86385e653383613c02667cc12f inherit pro_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5301ac2db697110ebccbbcda9977dc49 inherit pro_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a5301ac2db697110ebccbbcda9977dc49">updateTime</a> (int64_t remoteTime)</td></tr>
 <tr class="separator:a5301ac2db697110ebccbbcda9977dc49 inherit pro_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abde40d38d14ced3beccb33f2fd753109 inherit pro_methods_classb0_1_1_node"><td class="memItemLeft" align="right" valign="top">zmq::socket_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#abde40d38d14ced3beccb33f2fd753109">resolverSocket</a> ()</td></tr>
-<tr class="memdesc:abde40d38d14ced3beccb33f2fd753109 inherit pro_methods_classb0_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the socket connected to resolver service.  <a href="classb0_1_1_node.html#abde40d38d14ced3beccb33f2fd753109">More...</a><br /></td></tr>
-<tr class="separator:abde40d38d14ced3beccb33f2fd753109 inherit pro_methods_classb0_1_1_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The resolver node. </p>
