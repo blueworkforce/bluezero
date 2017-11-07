@@ -6,11 +6,19 @@ Middleware for the BlueWorkforce projects
 
 See the generated [`doc/html/index.html`](https://blueworkforce.github.io/bluezero/) in the `build` dir for the documentation.
 
-## Required Libraries
+## Dependencies
 
- - ZeroMQ v4.1+ (ubuntu package libzmq3-dev)
+### Required Libraries
+
+ - ZeroMQ v4.1+
  - Protocol Buffers v2.6+
  - Boost v1.54+
+
+### Optional Libraries
+ - zlib (for compressing payloads)
+ - lz4 (for compressing payloads)
+ - Doxygen (for generating documentation)
+ - Graphviz (for generating documentation)
 
 ### Ubuntu 16
 
@@ -31,7 +39,6 @@ The apt packages for Protobuf and ZeroMQ from apt repository are too old. Compil
 
  - https://github.com/google/protobuf
  - https://github.com/zeromq/libzmq
- - https://github.com/zeromq/cppzmq
 
 ### macOS (homebrew)
 
@@ -40,6 +47,7 @@ Install the following:
  - zeromq
  - protobuf
  - boost
+ - lz4
 
 ## Compiling
 
@@ -55,5 +63,10 @@ make
 Optionally, generate the documentation (requires [Doxygen](http://www.doxygen.org) and [Graphviz](http://www.graphviz.org) installed):
 ```
 make doc
+```
+
+Optionally, run unit tests:
+```
+make test
 ```
 
