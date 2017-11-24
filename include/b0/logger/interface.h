@@ -5,6 +5,30 @@
 
 #include <boost/format.hpp>
 
+#ifdef TRACE
+#undef TRACE
+#endif // TRACE
+
+#ifdef DEBUG
+#undef DEBUG
+#endif // DEBUG
+
+#ifdef INFO
+#undef INFO
+#endif // INFO
+
+#ifdef WARN
+#undef WARN
+#endif // WARN
+
+#ifdef ERROR
+#undef ERROR
+#endif // ERROR
+
+#ifdef FATAL
+#undef FATAL
+#endif // FATAL
+
 namespace b0
 {
 
