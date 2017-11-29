@@ -14,6 +14,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++11-narrowing")
 set(CMAKE_AUTOMOC ON)
 
+if(WIN32)
+    add_definitions(-DBOOST_USE_WINDOWS_H)
+endif()
+
 find_package(Doxygen)
 find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization)
 find_package(ZMQ 4.1.4 REQUIRED)
@@ -98,6 +102,9 @@ add_library(
     ${B0_MSG_SOURCES}
 )
 target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
+if(WIN32)
+    target_link_libraries(b0 wsock32 ws2_32)
+endif()
 
 if(ZLIB_FOUND)
     include_directories(${ZLIB_INCLUDE_DIRS})
