@@ -423,11 +423,13 @@ void Node::setupSIGINTHandler()
 {
     if(sigint_handler_setup_) return;
 
+#ifndef WIN32
     struct sigaction sa;
     memset(&sa, 0, sizeof(sa));
     sa.sa_handler = &Node::signalHandler;
     sigfillset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
+#endif
 
     sigint_handler_setup_ = true;
 }
