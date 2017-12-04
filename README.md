@@ -6,6 +6,10 @@ Middleware for the BlueWorkforce projects
 
 See the generated [`doc/html/index.html`](https://blueworkforce.github.io/bluezero/) in the `build` dir for the documentation.
 
+## License
+
+See [LICENSE.md](LICENSE.md).
+
 ## Dependencies
 
 ### Required Libraries
