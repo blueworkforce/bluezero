@@ -5,6 +5,7 @@
 #include <b0/utils/protobufhelpers.h>
 #include <b0/logger/interface.h>
 
+#include <set>
 #include <string>
 
 #include <boost/thread.hpp>
