@@ -144,7 +144,7 @@ public:
      */
     void cleanup() override
     {
-        AbstractSubscriber::init();
+        AbstractSubscriber::cleanup();
 
         if(notifyGraph)
             b0::graph::notifyTopic(node_, topic_name_, true, false);
