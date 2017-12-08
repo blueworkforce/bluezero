@@ -791,9 +791,12 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include/b0 \
-                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/resolver \
-                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/logger \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/compress \
                          @CMAKE_CURRENT_SOURCE_DIR@/include/b0/graph \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/logger \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/resolver \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/socket \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/utils \
                          @CMAKE_CURRENT_SOURCE_DIR@/docs \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber \
