@@ -10,15 +10,15 @@
 
 //! \cond HIDDEN_SYMBOLS
 
-void callback1(std::string topic, const example_msgs::TestMessage &msg)
+void callback1(const example_msgs::TestMessage &msg)
 {
-    std::cout << "Received (on topic '" << topic << "'):" << std::endl
+    std::cout << "Received:" << std::endl
         << msg.DebugString() << std::endl;
 }
 
-void callback2(std::string topic, const example_msgs::TestMessage2 &msg)
+void callback2(const example_msgs::TestMessage2 &msg)
 {
-    std::cout << "Received (on topic '" << topic << "'):" << std::endl
+    std::cout << "Received:" << std::endl
         << msg.DebugString() << std::endl;
 }
 

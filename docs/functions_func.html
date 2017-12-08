@@ -110,7 +110,8 @@ $(function() {
 : <a class="el" href="classb0_1_1resolver_1_1_resolver.html#a8dc97f0c1891ded7b7a149dcdd171adf">b0::resolver::Resolver</a>
 </li>
 <li>getName()
-: <a class="el" href="classb0_1_1_node.html#a621c09d8e40a3907288ef73935b8d547">b0::Node</a>
+: <a class="el" href="classb0_1_1logger_1_1_console.html#a4b0f4509d99ea5336df46d99c6f6293f">b0::logger::Console</a>
+, <a class="el" href="classb0_1_1_node.html#a621c09d8e40a3907288ef73935b8d547">b0::Node</a>
 </li>
 <li>getState()
 : <a class="el" href="classb0_1_1_node.html#ae1de6f40614c3fca3f96f569b17be8b5">b0::Node</a>
@@ -191,17 +192,14 @@ $(function() {
 
 
 <h3><a id="index_l"></a>- l -</h3><ul>
-<li>levelInfo()
-: <a class="el" href="classb0_1_1logger_1_1_local_logger.html#a0472ca6e5ffd30656c51aa10bae7d18a">b0::logger::LocalLogger</a>
-</li>
 <li>LocalLogger()
 : <a class="el" href="classb0_1_1logger_1_1_local_logger.html#aac667c41d698c983e59a6efec3d26c34">b0::logger::LocalLogger</a>
 </li>
 <li>log()
-: <a class="el" href="classb0_1_1logger_1_1_local_logger.html#a59cbd8cd358d6ec321ac3c11e85ea588">b0::logger::LocalLogger</a>
-, <a class="el" href="classb0_1_1logger_1_1_logger.html#adaf72fa025d7904c6183d2b2a0830a70">b0::logger::Logger</a>
-, <a class="el" href="classb0_1_1logger_1_1_log_interface.html#a4ad5d35d1b5aa7ee876f3524cb2cb076">b0::logger::LogInterface</a>
-, <a class="el" href="classb0_1_1_node.html#a02ab4a8d79ec8cedaa1b170b60d6cd0e">b0::Node</a>
+: <a class="el" href="classb0_1_1logger_1_1_local_logger.html#aa6750022eee67f8c3f2785b29a9c4789">b0::logger::LocalLogger</a>
+, <a class="el" href="classb0_1_1logger_1_1_logger.html#af89c114877a3b55d12d9372c5d83d553">b0::logger::Logger</a>
+, <a class="el" href="classb0_1_1logger_1_1_log_interface.html#a1e232df70ff967b1a49dad8fff2b27d1">b0::logger::LogInterface</a>
+, <a class="el" href="classb0_1_1_node.html#af2850d001ae30f4e6f36250c187503a1">b0::Node</a>
 </li>
 <li>Logger()
 : <a class="el" href="classb0_1_1logger_1_1_logger.html#a15813e4e43c61a0e78a7b73d13b7efa7">b0::logger::Logger</a>
@@ -242,6 +240,9 @@ $(function() {
 <h3><a id="index_o"></a>- o -</h3><ul>
 <li>onGraphChanged()
 : <a class="el" href="classb0_1_1resolver_1_1_resolver.html#a4ed505e69b5eadc7ad66a370bffd9409">b0::resolver::Resolver</a>
+</li>
+<li>onLogMessage()
+: <a class="el" href="classb0_1_1logger_1_1_console.html#a28812fe233565c761bc39a516e3eed8f">b0::logger::Console</a>
 </li>
 <li>onNodeConnected()
 : <a class="el" href="classb0_1_1resolver_1_1_resolver.html#ad7654d65284e1e617428f8cf85a241a8">b0::resolver::Resolver</a>
@@ -284,7 +285,7 @@ $(function() {
 : <a class="el" href="classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>Publisher()
-: <a class="el" href="classb0_1_1_publisher.html#a7b5a9bc19e4aefcdd10c7f25ca397127">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
+: <a class="el" href="classb0_1_1_publisher.html#ae272e0c39457b91be7dde27776ebab69">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>pubProxy()
 : <a class="el" href="classb0_1_1resolver_1_1_resolver.html#a9e74f9f2c7827c44766f450be0a1bfc1">b0::resolver::Resolver</a>
@@ -293,10 +294,8 @@ $(function() {
 
 
 <h3><a id="index_r"></a>- r -</h3><ul>
-<li>read()
-: <a class="el" href="classb0_1_1_service_client.html#ae0dc6fce4baac5e1e66f3ddd36b833e6">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
-, <a class="el" href="classb0_1_1_service_server.html#a1be8f221278f2aa96345879787db73e3">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#aefb9b2bb90d719a6be315e05e432b7d0">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
+<li>remoteLog()
+: <a class="el" href="classb0_1_1logger_1_1_logger.html#a780226ecdb0616b084bb33f2d88ad608">b0::logger::Logger</a>
 </li>
 <li>Resolver()
 : <a class="el" href="classb0_1_1resolver_1_1_resolver.html#a830be731f483db4fd1ee08de3bd07242">b0::resolver::Resolver</a>
@@ -322,7 +321,7 @@ $(function() {
 : <a class="el" href="classb0_1_1_service_client.html#a881c5779cdfa11bdd128fb09ecafc54e">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
 </li>
 <li>ServiceServer()
-: <a class="el" href="classb0_1_1_service_server.html#a5030486e88a57eead2aeae2262855501">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
+: <a class="el" href="classb0_1_1_service_server.html#ad77b249a89d0f14a624dbf8571a21cf9">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
 </li>
 <li>shutdown()
 : <a class="el" href="classb0_1_1_node.html#ad25d81d5e85aa26aeb04421c85eb5557">b0::Node</a>
@@ -337,13 +336,13 @@ $(function() {
 <li>spinOnce()
 : <a class="el" href="classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5">b0::Node</a>
 , <a class="el" href="classb0_1_1_service_server.html#af88c56ec6da48a0b36c4dce30173a21c">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
-, <a class="el" href="classb0_1_1_subscriber.html#a964e8866dbc073aceba801f2acfd06da">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
+, <a class="el" href="classb0_1_1_subscriber.html#a24c06c52deef8400c5000374f11e2a0d">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 <li>startHeartbeatThread()
 : <a class="el" href="classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44">b0::Node</a>
 </li>
 <li>Subscriber()
-: <a class="el" href="classb0_1_1_subscriber.html#a274be51019b6f76c2565b6dd72c567f8">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
+: <a class="el" href="classb0_1_1_subscriber.html#a7ea2cf17c7819c36e0ddba35bc009cbd">b0::Subscriber&lt; TMsg, notifyGraph &gt;</a>
 </li>
 </ul>
 
@@ -365,21 +364,15 @@ $(function() {
 </ul>
 
 
-<h3><a id="index_w"></a>- w -</h3><ul>
-<li>write()
-: <a class="el" href="classb0_1_1_publisher.html#abb13c0c107651370ebf4fb673c949eb3">b0::Publisher&lt; TMsg, notifyGraph &gt;</a>
-, <a class="el" href="classb0_1_1_service_client.html#a1bc62615964756ebce2652afbe5338fa">b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;</a>
-, <a class="el" href="classb0_1_1_service_server.html#a06d44fb972de35941ea7e48e0737d0ed">b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;</a>
-</li>
-</ul>
-
-
 <h3><a id="index_0x7e"></a>- ~ -</h3><ul>
 <li>~Console()
 : <a class="el" href="classb0_1_1logger_1_1_console.html#af95cbc21c941c7bfd9a5b6362a57ec47">b0::logger::Console</a>
 </li>
 <li>~LocalLogger()
 : <a class="el" href="classb0_1_1logger_1_1_local_logger.html#a5c6378afdf88bf6aa370f3db32c971d2">b0::logger::LocalLogger</a>
+</li>
+<li>~Logger()
+: <a class="el" href="classb0_1_1logger_1_1_logger.html#aea7009aa8fca59373614281e463f884e">b0::logger::Logger</a>
 </li>
 <li>~Node()
 : <a class="el" href="classb0_1_1_node.html#a2aa2c822381e7898a23147d96a0a33ed">b0::Node</a>

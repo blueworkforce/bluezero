@@ -26,8 +26,8 @@ void sub_thread()
     b0::Node node("sub");
     b0::Subscriber<std::string> sub(&node, "topic1");
     node.init();
-    std::string topic, payload;
-    sub.read(topic, payload);
+    std::string payload;
+    sub.read(payload);
     exit(payload == "hello" ? 0 : 1);
 }
 

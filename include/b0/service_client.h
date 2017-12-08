@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <b0/utils/protobufhelpers.h>
+#include <b0/socket/socket.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -13,47 +13,23 @@ class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
-class AbstractServiceClient
+class AbstractServiceClient : public socket::Socket
 {
 public:
+    using logger::LogInterface::log;
+
     AbstractServiceClient(Node *node, std::string service_name, bool managed = true);
     virtual ~AbstractServiceClient();
-    void setCompression(std::string algorithm, int level = -1);
-    void setRemoteAddress(std::string addr);
-    virtual void init();
-    virtual void cleanup();
+    void log(LogLevel level, std::string message) const override;
+    virtual void init() override;
+    virtual void cleanup() override;
+    virtual void spinOnce() override {}
     std::string getServiceName();
-    virtual bool writeRaw(const std::string &msg);
-    virtual bool poll(long timeout = 0);
-    virtual bool readRaw(std::string &msg);
 
 protected:
-    void resolve();
-    void connect();
-    void disconnect();
-
-    //! The Node owning this ServiceClient
-    Node &node_;
-
-    //! The name of the service
-    std::string service_name_;
-
-    //! The ZeroMQ REQ socket
-    zmq::socket_t req_socket_;
-
-    //! The address of the ZeroMQ socket in the server
-    std::string remote_addr_;
-
-    //! True if this service client is managed (init(), cleanup() are called by the owner Node)
-    const bool managed_;
-
-    //! If set, payloads will be encoded using the specified compression algorithm
-    //! \sa AbstractServiceClient::setCompression()
-    std::string compression_algorithm_;
-
-    //! If a compression algorithm is set, payloads will be encoded using the specified compression level
-    //! \sa AbstractServiceClient::setCompression()
-    int compression_level_;
+    virtual void resolve();
+    virtual void connect();
+    virtual void disconnect();
 };
 
 //! \endcond
@@ -96,26 +72,6 @@ public:
     }
 
     /*!
-     * \brief Write a request message to the underlying ZeroMQ REQ socket
-     */
-    virtual bool write(const TReq &req)
-    {
-        std::string payload;
-        return req.SerializeToString(&payload) &&
-            AbstractServiceClient::writeRaw(payload);
-    }
-
-    /*!
-     * \brief Read a reply message from the underlying ZeroMQ REQ socket
-     */
-    virtual bool read(TRep &rep)
-    {
-        std::string payload;
-        return AbstractServiceClient::readRaw(payload) &&
-            rep.ParseFromString(payload);
-    }
-
-    /*!
      * \brief Perform initialization and optionally send graph notify
      */
     void init() override
@@ -123,7 +79,7 @@ public:
         AbstractServiceClient::init();
 
         if(notifyGraph)
-            b0::graph::notifyService(node_, service_name_, true, true);
+            b0::graph::notifyService(node_, name_, true, true);
     }
 
     /*!
@@ -134,21 +90,9 @@ public:
         AbstractServiceClient::cleanup();
 
         if(notifyGraph)
-            b0::graph::notifyService(node_, service_name_, true, false);
+            b0::graph::notifyService(node_, name_, true, false);
     }
 };
-
-/*!
- * \brief Write a raw request to the underlying ZeroMQ REQ socket
- */
-template<>
-bool ServiceClient<std::string, std::string, true>::write(const std::string &req);
-
-/*!
- * \brief Read a raw reply from the underlying ZeroMQ REQ socket
- */
-template<>
-bool ServiceClient<std::string, std::string, true>::read(std::string &rep);
 
 } // namespace b0
 

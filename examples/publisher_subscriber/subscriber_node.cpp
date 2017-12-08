@@ -14,9 +14,9 @@
  * This callback will be called whenever a message is received on any
  * of the subscribed topics
  */
-void callback(std::string topic, const example_msgs::TestMessage &msg)
+void callback(const example_msgs::TestMessage &msg)
 {
-    std::cout << "Received (on topic '" << topic << "'):" << std::endl
+    std::cout << "Received:" << std::endl
         << msg.DebugString() << std::endl;
 }
 

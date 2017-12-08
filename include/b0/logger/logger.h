@@ -1,7 +1,6 @@
 #ifndef B0__LOGGER__LOGGER_H__INCLUDED
 #define B0__LOGGER__LOGGER_H__INCLUDED
 
-#include <b0/utils/protobufhelpers.h>
 #include <b0/logger/interface.h>
 
 #include <string>
@@ -41,8 +40,12 @@ public:
     //! Destructor
     virtual ~LocalLogger();
 
-    virtual void log(LogLevel level, std::string message) override;
+    /*!
+     * Log a message to the local console logger (i.e. using std::cout)
+     */
+    virtual void log(LogLevel level, std::string message) const override;
 
+private:
     struct LevelInfo
     {
         std::string levelStr;
@@ -50,15 +53,17 @@ public:
         int fg;
         int bg;
 
-        std::string ansiEscape();
+        std::string ansiEscape() const;
 
-        std::string ansiReset();
+        std::string ansiReset() const;
     };
 
     /*!
      * \brief Return meta-information for the specified level
      */
-    virtual LevelInfo levelInfo(LogLevel level);
+    virtual LevelInfo levelInfo(LogLevel level) const;
+
+    friend class Console;
 
 protected:
     //! The node
@@ -73,19 +78,32 @@ class Logger : public LocalLogger
 public:
     using LocalLogger::log;
 
-    //! Construct a Logger for the given named object
+    /*!
+     * Construct a Logger for the given named object
+     */
     Logger(b0::Node *node);
 
+    /*!
+     * Logger destructor
+     */
     virtual ~Logger();
 
-    //! Connect the underlying ZeroMQ PUB socket to the given address
+    /*!
+     * Connect the underlying ZeroMQ PUB socket to the given address
+     */
     void connect(std::string addr);
 
-    void log(LogLevel level, std::string message) override;
+    void log(LogLevel level, std::string message) const override;
 
 protected:
+    /*!
+     * Log a message to the remote logger (i.e. using the log publisher)
+     */
+    virtual void remoteLog(LogLevel level, std::string message) const;
+
+private:
     //! The publisher where LogEntry es will be published
-    Publisher<b0::logger_msgs::LogEntry, false> pub_;
+    mutable Publisher<b0::logger_msgs::LogEntry, false> pub_;
 };
 
 } // namespace logger

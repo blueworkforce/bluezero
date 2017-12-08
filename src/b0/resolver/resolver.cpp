@@ -10,9 +10,9 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "resolver.pb.h"
-#include <b0/utils/protobufhelpers.h>
 #include <b0/resolver/resolver.h>
 #include <b0/logger/logger.h>
+#include <b0/utils/thread_name.h>
 
 namespace b0
 {
@@ -21,7 +21,7 @@ namespace resolver
 {
 
 ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
-    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>(resolver, "resolver", &Resolver::handle),
+    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>(resolver, "resolv", &Resolver::handle, true),
       resolver_(resolver)
 {
 }
@@ -33,11 +33,11 @@ void ResolverServiceServer::announce()
     node_id.set_host_id(node_.hostname());
     node_id.set_process_id(node_.pid());
     node_id.set_thread_id(node_.threadID());
-    rq.set_service_name(service_name_);
+    rq.set_service_name(name_);
     rq.set_sock_addr(remote_addr_);
     b0::resolver_msgs::AnnounceServiceResponse rsp;
     resolver_->handleAnnounceService(rq, rsp);
-    resolver_->onNodeServiceOfferStart(resolver_->getName(), service_name_);
+    resolver_->onNodeServiceOfferStart(resolver_->getName(), name_);
 }
 
 Resolver::Resolver()
@@ -223,27 +223,25 @@ void Resolver::onNodeServiceUseStop(std::string node_name, std::string service_n
 
 void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 {
+    set_thread_name("XPROXY");
+
     zmq::socket_t proxy_in_sock_(context_, ZMQ_XSUB);
     std::string xsub_proxy_addr = address(xsub_proxy_port);
-    log(DEBUG, "Binding XSUB socket to %s", xsub_proxy_addr);
     proxy_in_sock_.bind(xsub_proxy_addr);
     proxy_in_sock_.bind("inproc://xsub_proxy");
 
     zmq::socket_t proxy_out_sock_(context_, ZMQ_XPUB);
     std::string xpub_proxy_addr = address(xpub_proxy_port);
-    log(DEBUG, "Binding XPUB socket to %s", xpub_proxy_addr);
     proxy_out_sock_.bind(xpub_proxy_addr);
     proxy_out_sock_.bind("inproc://xpub_proxy");
 
     try
     {
-        log(TRACE, "Running XSUB/XPUB proxy...");
 #ifdef __GNUC__
         zmq::proxy(static_cast<void*>(proxy_in_sock_), static_cast<void*>(proxy_out_sock_), nullptr);
 #else
         zmq::proxy(proxy_in_sock_, proxy_out_sock_, nullptr);
 #endif
-        log(INFO, "XSUB/XPUB proxy has terminated");
     }
     catch(zmq::error_t &ex)
     {
@@ -338,7 +336,7 @@ void Resolver::handle(const b0::resolver_msgs::Request &req, b0::resolver_msgs::
     else if(req.has_get_graph())
         handleGetGraph(req.get_graph(), *resp.mutable_get_graph());
     else
-        std::cerr << "resolver: received an unrecognized request" << std::endl;
+        log(ERROR, "received an unrecognized request: %s", req.DebugString());
 }
 
 std::string Resolver::makeUniqueNodeName(std::string nodeName)
@@ -568,6 +566,8 @@ void Resolver::onGraphChanged()
 
 void Resolver::heartBeatSweeper()
 {
+    set_thread_name("HBsweep");
+
     Node::ResolverServiceClient resolv_cli(this, "resolv", false);
     resolv_cli.setRemoteAddress("inproc://resolv");
     resolv_cli.init();
@@ -585,15 +585,15 @@ void Resolver::heartBeatSweeper()
         b0::resolver_msgs::Response rsp0;
         resolv_cli.call(rq0, rsp0);
         const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
-        if(!rsp.ok()) break;
+        if(!rsp.ok())
+        {
+            break;
+        }
 
         boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
     }
 
     resolv_cli.cleanup();
-
-    // don't call log() from another thread! leave the following commented out:
-    //log(INFO, "Heartbeat sweeper thread terminates.");
 }
 
 } // namespace resolver

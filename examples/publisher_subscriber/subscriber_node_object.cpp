@@ -20,9 +20,9 @@ public:
     {
     }
 
-    void on(std::string topic, const example_msgs::TestMessage &msg)
+    void on(const example_msgs::TestMessage &msg)
     {
-        std::cout << "Received (on topic '" << topic << "'):" << std::endl
+        std::cout << "Received:" << std::endl
             << msg.DebugString() << std::endl;
     }
 

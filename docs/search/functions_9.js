@@ -1,6 +1,7 @@
 var searchData=
 [
   ['ongraphchanged',['onGraphChanged',['../classb0_1_1resolver_1_1_resolver.html#a4ed505e69b5eadc7ad66a370bffd9409',1,'b0::resolver::Resolver']]],
+  ['onlogmessage',['onLogMessage',['../classb0_1_1logger_1_1_console.html#a28812fe233565c761bc39a516e3eed8f',1,'b0::logger::Console']]],
   ['onnodeconnected',['onNodeConnected',['../classb0_1_1resolver_1_1_resolver.html#ad7654d65284e1e617428f8cf85a241a8',1,'b0::resolver::Resolver']]],
   ['onnodedisconnected',['onNodeDisconnected',['../classb0_1_1resolver_1_1_resolver.html#a3c9079c869833d84fcee2f94922753f0',1,'b0::resolver::Resolver']]],
   ['onnodeserviceofferstart',['onNodeServiceOfferStart',['../classb0_1_1resolver_1_1_resolver.html#af6178dc0dc829902631beb9e10009110',1,'b0::resolver::Resolver']]],

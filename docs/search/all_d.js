@@ -1,17 +1,11 @@
 var searchData=
 [
-  ['servicebyname',['serviceByName',['../classb0_1_1resolver_1_1_resolver.html#a8a413c7216f15d7f01c97a1b9413cd74',1,'b0::resolver::Resolver']]],
-  ['serviceclient',['ServiceClient',['../classb0_1_1_service_client.html',1,'b0::ServiceClient&lt; TReq, TRep, notifyGraph &gt;'],['../classb0_1_1_service_client.html#a881c5779cdfa11bdd128fb09ecafc54e',1,'b0::ServiceClient::ServiceClient()']]],
-  ['serviceclient_3c_20b0_3a_3aresolver_5fmsgs_3a_3arequest_2c_20b0_3a_3aresolver_5fmsgs_3a_3aresponse_2c_20false_20_3e',['ServiceClient&lt; b0::resolver_msgs::Request, b0::resolver_msgs::Response, false &gt;',['../classb0_1_1_service_client.html',1,'b0']]],
-  ['services_5fby_5fname_5f',['services_by_name_',['../classb0_1_1resolver_1_1_resolver.html#aba1b6605c215f6b868a456e1278d7fc0',1,'b0::resolver::Resolver']]],
-  ['serviceserver',['ServiceServer',['../classb0_1_1_service_server.html',1,'b0::ServiceServer&lt; TReq, TRep, notifyGraph &gt;'],['../classb0_1_1_service_server.html#a6d23d9fb60e491183c1c7f15dcb4604d',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, boost::function&lt; void(const TReq &amp;, TRep &amp;)&gt; callback=0, bool managed=true)'],['../classb0_1_1_service_server.html#ad77b249a89d0f14a624dbf8571a21cf9',1,'b0::ServiceServer::ServiceServer(TNode *node, std::string service_name, void(TNode::*callbackMethod)(const TReq &amp;, TRep &amp;), bool managed=true)'],['../classb0_1_1_service_server.html#a5030486e88a57eead2aeae2262855501',1,'b0::ServiceServer::ServiceServer(Node *node, std::string service_name, void(T::*callbackMethod)(const TReq &amp;, TRep &amp;), T *callbackObject, bool managed=true)']]],
-  ['shutdown',['shutdown',['../classb0_1_1_node.html#ad25d81d5e85aa26aeb04421c85eb5557',1,'b0::Node::shutdown()'],['../classb0_1_1resolver_1_1_resolver.html#aff494b724ebbef6af0bb65259427a083',1,'b0::resolver::Resolver::shutdown()']]],
-  ['shutdownrequested',['shutdownRequested',['../classb0_1_1_node.html#a74ad0853f37382fb39df1b00922c802a',1,'b0::Node']]],
-  ['spin',['spin',['../classb0_1_1_node.html#a82dd059231755c8a229144748b18ec79',1,'b0::Node']]],
-  ['spinonce',['spinOnce',['../classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5',1,'b0::Node::spinOnce()'],['../classb0_1_1_service_server.html#af88c56ec6da48a0b36c4dce30173a21c',1,'b0::ServiceServer::spinOnce()'],['../classb0_1_1_subscriber.html#a964e8866dbc073aceba801f2acfd06da',1,'b0::Subscriber::spinOnce()']]],
-  ['startheartbeatthread',['startHeartbeatThread',['../classb0_1_1_node.html#a1ffa51dc4174f8f25a6c175306af9c44',1,'b0::Node']]],
-  ['state',['State',['../classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fde',1,'b0::Node']]],
-  ['sub_5f',['sub_',['../classb0_1_1logger_1_1_console.html#a2c42ead89c27fa65a5a08edfe6e3f54f',1,'b0::logger::Console']]],
-  ['subscriber',['Subscriber',['../classb0_1_1_subscriber.html',1,'b0::Subscriber&lt; TMsg, notifyGraph &gt;'],['../classb0_1_1_subscriber.html#a381901b941d1cb48d316a0e36f9f7c38',1,'b0::Subscriber::Subscriber(Node *node, std::string topic, boost::function&lt; void(std::string, const TMsg &amp;)&gt; callback=0, bool managed=true)'],['../classb0_1_1_subscriber.html#a274be51019b6f76c2565b6dd72c567f8',1,'b0::Subscriber::Subscriber(TNode *node, std::string topic, void(TNode::*callbackMethod)(std::string, const TMsg &amp;), bool managed=true)'],['../classb0_1_1_subscriber.html#ac76f32d83bf8fa912fd5d00e0f23d1bd',1,'b0::Subscriber::Subscriber(Node *node, std::string topic, void(T::*callbackMethod)(std::string, const TMsg &amp;), T *callbackObject, bool managed=true)']]],
-  ['subscriber_3c_20b0_3a_3alogger_5fmsgs_3a_3alogentry_20_3e',['Subscriber&lt; b0::logger_msgs::LogEntry &gt;',['../classb0_1_1_subscriber.html',1,'b0']]]
+  ['p_5flogger_5f',['p_logger_',['../classb0_1_1_node.html#a374b9fa9f122a5229d9c1e1099cd915c',1,'b0::Node']]],
+  ['pid',['pid',['../classb0_1_1_node.html#acd5d62408e829bb84d1bf099d66d87a6',1,'b0::Node']]],
+  ['pub_5fproxy_5fthread_5f',['pub_proxy_thread_',['../classb0_1_1resolver_1_1_resolver.html#aedab62fe925101f5edbe8a332abe1b60',1,'b0::resolver::Resolver']]],
+  ['publish',['publish',['../classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1',1,'b0::Publisher']]],
+  ['publisher',['Publisher',['../classb0_1_1_publisher.html',1,'b0::Publisher&lt; TMsg, notifyGraph &gt;'],['../classb0_1_1_publisher.html#ae272e0c39457b91be7dde27776ebab69',1,'b0::Publisher::Publisher()']]],
+  ['publisher_3c_20b0_3a_3alogger_5fmsgs_3a_3alogentry_2c_20false_20_3e',['Publisher&lt; b0::logger_msgs::LogEntry, false &gt;',['../classb0_1_1_publisher.html',1,'b0']]],
+  ['publisher_3c_20b0_3a_3aresolver_5fmsgs_3a_3agraph_2c_20false_20_3e',['Publisher&lt; b0::resolver_msgs::Graph, false &gt;',['../classb0_1_1_publisher.html',1,'b0']]],
+  ['pubproxy',['pubProxy',['../classb0_1_1resolver_1_1_resolver.html#a9e74f9f2c7827c44766f450be0a1bfc1',1,'b0::resolver::Resolver']]]
 ];

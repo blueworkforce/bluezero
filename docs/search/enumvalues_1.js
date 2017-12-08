@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ready',['Ready',['../classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fdea3102059993096144a3b4653310337b1c',1,'b0::Node']]]
+  ['debug',['DEBUG',['../classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52adf1e0fdf663cb14e943c8876352d1662',1,'b0::logger::LogInterface']]]
 ];

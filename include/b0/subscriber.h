@@ -6,7 +6,7 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include <b0/utils/protobufhelpers.h>
+#include <b0/socket/socket.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -16,35 +16,21 @@ class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
-class AbstractSubscriber
+class AbstractSubscriber : public socket::Socket
 {
 public:
-    AbstractSubscriber(Node *node, std::string topic, bool managed = true);
+    using logger::LogInterface::log;
+
+    AbstractSubscriber(Node *node, std::string topic_name, bool managed = true);
     virtual ~AbstractSubscriber();
-    void setRemoteAddress(std::string addr);
-    virtual void init();
-    virtual void cleanup();
-    virtual void spinOnce() = 0;
+    void log(LogLevel level, std::string message) const override;
+    virtual void init() override;
+    virtual void cleanup() override;
     std::string getTopicName();
-    virtual bool poll(long timeout = 0);
-    virtual bool readRaw(std::string &topic, std::string &msg);
 
 protected:
-    //! The Node owning this Subscriber
-    Node &node_;
-
-    //! The ZeroMQ SUB socket
-    zmq::socket_t sub_socket_;
-
-    //! The ZeroMQ topic name to set the subscription
-    std::string topic_name_;
-
-    //! True if this subscriber is managed (init(), cleanup() are called by the owner Node)
-    const bool managed_;
-
-    //! If set, this publisher will connect directly to the given address instead of the XSUB address given by the owner Node
-    //! \sa AbstractSubscriber::setRemoteAddress()
-    std::string remote_addr_;
+    virtual void connect();
+    virtual void disconnect();
 };
 
 //! \endcond
@@ -76,8 +62,8 @@ public:
     /*!
      * \brief Construct a Subscriber child of a specified Node, with a boost::function as callback
      */
-    Subscriber(Node *node, std::string topic, boost::function<void(std::string, const TMsg&)> callback = 0, bool managed = true)
-        : AbstractSubscriber(node, topic, managed),
+    Subscriber(Node *node, std::string topic_name, boost::function<void(const TMsg&)> callback = 0, bool managed = true)
+        : AbstractSubscriber(node, topic_name, managed),
           callback_(callback)
     {
     }
@@ -86,8 +72,8 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method (of the Node subclass) as a callback
      */
     template<class TNode>
-    Subscriber(TNode *node, std::string topic, void (TNode::*callbackMethod)(std::string, const TMsg&), bool managed = true)
-        : Subscriber(node, topic, boost::bind(callbackMethod, node, _1, _2), managed)
+    Subscriber(TNode *node, std::string topic_name, void (TNode::*callbackMethod)(const TMsg&), bool managed = true)
+        : Subscriber(node, topic_name, boost::bind(callbackMethod, node, _1), managed)
     {
         // delegate constructor. leave empty
     }
@@ -96,36 +82,10 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method as a callback
      */
     template<class T>
-    Subscriber(Node *node, std::string topic, void (T::*callbackMethod)(std::string, const TMsg&), T *callbackObject, bool managed = true)
-        : Subscriber(node, topic, boost::bind(callbackMethod, callbackObject, _1, _2), managed)
+    Subscriber(Node *node, std::string topic_name, void (T::*callbackMethod)(const TMsg&), T *callbackObject, bool managed = true)
+        : Subscriber(node, topic_name, boost::bind(callbackMethod, callbackObject, _1), managed)
     {
         // delegate constructor. leave empty
-    }
-
-    /*!
-     * \brief Poll and read incoming messages, and dispatch them (called by b0::Node::spinOnce())
-     */
-    virtual void spinOnce() override
-    {
-        if(callback_.empty()) return;
-
-        while(poll())
-        {
-            std::string topic;
-            TMsg msg;
-            read(topic, msg);
-            callback_(topic, msg);
-        }
-    }
-
-    /*!
-     * \brief Read a message from the underlying ZeroMQ SUB socket
-     */
-    virtual bool read(std::string &topic, TMsg &msg)
-    {
-        std::string payload;
-        return AbstractSubscriber::readRaw(topic, payload) &&
-            msg.ParseFromString(payload);
     }
 
     /*!
@@ -136,7 +96,7 @@ public:
         AbstractSubscriber::init();
 
         if(notifyGraph)
-            b0::graph::notifyTopic(node_, topic_name_, true, true);
+            b0::graph::notifyTopic(node_, name_, true, true);
     }
 
     /*!
@@ -147,21 +107,30 @@ public:
         AbstractSubscriber::cleanup();
 
         if(notifyGraph)
-            b0::graph::notifyTopic(node_, topic_name_, true, false);
+            b0::graph::notifyTopic(node_, name_, true, false);
     }
 
+    /*!
+     * \brief Poll and read incoming messages, and dispatch them (called by b0::Node::spinOnce())
+     */
+    void spinOnce() override
+    {
+        if(callback_.empty()) return;
+
+        while(poll())
+        {
+            TMsg msg;
+            if(read(msg))
+                callback_(msg);
+        }
+    }
+ 
 protected:
     /*!
      * \brief Callback which will be called when a new message is read from the socket
      */
-    boost::function<void(std::string, TMsg&)> callback_;
+    boost::function<void(TMsg&)> callback_;
 };
-
-/*!
- * \brief Read a raw payload from the underlying ZeroMQ SUB socket
- */
-template<>
-bool Subscriber<std::string, true>::read(std::string &topic, std::string &msg);
 
 } // namespace b0
 

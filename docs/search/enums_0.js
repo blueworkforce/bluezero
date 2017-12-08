@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['state',['State',['../classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fde',1,'b0::Node']]]
+  ['loglevel',['LogLevel',['../classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52',1,'b0::logger::LogInterface']]]
 ];

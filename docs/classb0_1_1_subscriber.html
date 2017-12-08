@@ -87,28 +87,20 @@ Inheritance diagram for b0::Subscriber&lt; TMsg, notifyGraph &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a381901b941d1cb48d316a0e36f9f7c38"><td class="memItemLeft" align="right" valign="top"><a id="a381901b941d1cb48d316a0e36f9f7c38"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a381901b941d1cb48d316a0e36f9f7c38">Subscriber</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string topic, boost::function&lt; void(std::string, const TMsg &amp;)&gt; callback=0, bool managed=true)</td></tr>
-<tr class="memdesc:a381901b941d1cb48d316a0e36f9f7c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">Subscriber</a> child of a specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, with a boost::function as callback. <br /></td></tr>
-<tr class="separator:a381901b941d1cb48d316a0e36f9f7c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a274be51019b6f76c2565b6dd72c567f8"><td class="memTemplParams" colspan="2"><a id="a274be51019b6f76c2565b6dd72c567f8"></a>
+<tr class="memitem:a7ea2cf17c7819c36e0ddba35bc009cbd"><td class="memItemLeft" align="right" valign="top"><a id="a7ea2cf17c7819c36e0ddba35bc009cbd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a7ea2cf17c7819c36e0ddba35bc009cbd">Subscriber</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string topic_name, boost::function&lt; void(const TMsg &amp;)&gt; callback=0, bool managed=true)</td></tr>
+<tr class="memdesc:a7ea2cf17c7819c36e0ddba35bc009cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">Subscriber</a> child of a specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, with a boost::function as callback. <br /></td></tr>
+<tr class="separator:a7ea2cf17c7819c36e0ddba35bc009cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac3b2686d9aef4586f8dad8d12528d3d"><td class="memTemplParams" colspan="2"><a id="aac3b2686d9aef4586f8dad8d12528d3d"></a>
 template&lt;class TNode &gt; </td></tr>
-<tr class="memitem:a274be51019b6f76c2565b6dd72c567f8"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a274be51019b6f76c2565b6dd72c567f8">Subscriber</a> (TNode *node, std::string topic, void(TNode::*callbackMethod)(std::string, const TMsg &amp;), bool managed=true)</td></tr>
-<tr class="memdesc:a274be51019b6f76c2565b6dd72c567f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">Subscriber</a> child of a specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, with a method (of the <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a> subclass) as a callback. <br /></td></tr>
-<tr class="separator:a274be51019b6f76c2565b6dd72c567f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac76f32d83bf8fa912fd5d00e0f23d1bd"><td class="memTemplParams" colspan="2"><a id="ac76f32d83bf8fa912fd5d00e0f23d1bd"></a>
+<tr class="memitem:aac3b2686d9aef4586f8dad8d12528d3d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#aac3b2686d9aef4586f8dad8d12528d3d">Subscriber</a> (TNode *node, std::string topic_name, void(TNode::*callbackMethod)(const TMsg &amp;), bool managed=true)</td></tr>
+<tr class="memdesc:aac3b2686d9aef4586f8dad8d12528d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">Subscriber</a> child of a specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, with a method (of the <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a> subclass) as a callback. <br /></td></tr>
+<tr class="separator:aac3b2686d9aef4586f8dad8d12528d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac575e4cfb9eb2cfc5d59b56be2aedaf3"><td class="memTemplParams" colspan="2"><a id="ac575e4cfb9eb2cfc5d59b56be2aedaf3"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:ac76f32d83bf8fa912fd5d00e0f23d1bd"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#ac76f32d83bf8fa912fd5d00e0f23d1bd">Subscriber</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string topic, void(T::*callbackMethod)(std::string, const TMsg &amp;), T *callbackObject, bool managed=true)</td></tr>
-<tr class="memdesc:ac76f32d83bf8fa912fd5d00e0f23d1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">Subscriber</a> child of a specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, with a method as a callback. <br /></td></tr>
-<tr class="separator:ac76f32d83bf8fa912fd5d00e0f23d1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a964e8866dbc073aceba801f2acfd06da"><td class="memItemLeft" align="right" valign="top"><a id="a964e8866dbc073aceba801f2acfd06da"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a964e8866dbc073aceba801f2acfd06da">spinOnce</a> () override</td></tr>
-<tr class="memdesc:a964e8866dbc073aceba801f2acfd06da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll and read incoming messages, and dispatch them (called by <a class="el" href="classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5" title="Read all available messages from the various ZeroMQ sockets, and dispatch them to callbacks...">b0::Node::spinOnce()</a>) <br /></td></tr>
-<tr class="separator:a964e8866dbc073aceba801f2acfd06da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefb9b2bb90d719a6be315e05e432b7d0"><td class="memItemLeft" align="right" valign="top"><a id="aefb9b2bb90d719a6be315e05e432b7d0"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#aefb9b2bb90d719a6be315e05e432b7d0">read</a> (std::string &amp;topic, TMsg &amp;msg)</td></tr>
-<tr class="memdesc:aefb9b2bb90d719a6be315e05e432b7d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a message from the underlying ZeroMQ SUB socket. <br /></td></tr>
-<tr class="separator:aefb9b2bb90d719a6be315e05e432b7d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac575e4cfb9eb2cfc5d59b56be2aedaf3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#ac575e4cfb9eb2cfc5d59b56be2aedaf3">Subscriber</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string topic_name, void(T::*callbackMethod)(const TMsg &amp;), T *callbackObject, bool managed=true)</td></tr>
+<tr class="memdesc:ac575e4cfb9eb2cfc5d59b56be2aedaf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">Subscriber</a> child of a specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, with a method as a callback. <br /></td></tr>
+<tr class="separator:ac575e4cfb9eb2cfc5d59b56be2aedaf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ad34c93c21626ec6c39b3c74c900972"><td class="memItemLeft" align="right" valign="top"><a id="a7ad34c93c21626ec6c39b3c74c900972"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a7ad34c93c21626ec6c39b3c74c900972">init</a> () override</td></tr>
 <tr class="memdesc:a7ad34c93c21626ec6c39b3c74c900972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform initialization and optionally send graph notify. <br /></td></tr>
@@ -117,18 +109,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#ad181866e15e81d14a4755017f883faba">cleanup</a> () override</td></tr>
 <tr class="memdesc:ad181866e15e81d14a4755017f883faba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform cleanup and optionally send graph notify. <br /></td></tr>
 <tr class="separator:ad181866e15e81d14a4755017f883faba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f3b46607e36ba96578cfae00dffbd85"><td class="memTemplParams" colspan="2"><a id="a6f3b46607e36ba96578cfae00dffbd85"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a6f3b46607e36ba96578cfae00dffbd85"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a6f3b46607e36ba96578cfae00dffbd85">read</a> (std::string &amp;topic, std::string &amp;msg)</td></tr>
-<tr class="memdesc:a6f3b46607e36ba96578cfae00dffbd85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw payload from the underlying ZeroMQ SUB socket. <br /></td></tr>
-<tr class="separator:a6f3b46607e36ba96578cfae00dffbd85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24c06c52deef8400c5000374f11e2a0d"><td class="memItemLeft" align="right" valign="top"><a id="a24c06c52deef8400c5000374f11e2a0d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#a24c06c52deef8400c5000374f11e2a0d">spinOnce</a> () override</td></tr>
+<tr class="memdesc:a24c06c52deef8400c5000374f11e2a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll and read incoming messages, and dispatch them (called by <a class="el" href="classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5" title="Read all available messages from the various ZeroMQ sockets, and dispatch them to callbacks...">b0::Node::spinOnce()</a>) <br /></td></tr>
+<tr class="separator:a24c06c52deef8400c5000374f11e2a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:af0d8ac459107fe21815fff5bdba6b757"><td class="memItemLeft" align="right" valign="top"><a id="af0d8ac459107fe21815fff5bdba6b757"></a>
-boost::function&lt; void(std::string, TMsg &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#af0d8ac459107fe21815fff5bdba6b757">callback_</a></td></tr>
-<tr class="memdesc:af0d8ac459107fe21815fff5bdba6b757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback which will be called when a new message is read from the socket. <br /></td></tr>
-<tr class="separator:af0d8ac459107fe21815fff5bdba6b757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeb723e17ea7445d694be6f50a95dfb6"><td class="memItemLeft" align="right" valign="top"><a id="afeb723e17ea7445d694be6f50a95dfb6"></a>
+boost::function&lt; void(TMsg &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_subscriber.html#afeb723e17ea7445d694be6f50a95dfb6">callback_</a></td></tr>
+<tr class="memdesc:afeb723e17ea7445d694be6f50a95dfb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback which will be called when a new message is read from the socket. <br /></td></tr>
+<tr class="separator:afeb723e17ea7445d694be6f50a95dfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TMsg, bool notifyGraph = true&gt;<br />
@@ -137,13 +128,13 @@ class b0::Subscriber&lt; TMsg, notifyGraph &gt;</h3>
 <p>The subscriber class. </p>
 <p>This class wraps a ZeroMQ SUB socket. It will automatically connect to the XPUB socket of the proxy (note: the proxy is started by the resolver node).</p>
 <p>Important when using a callback: you must call <a class="el" href="classb0_1_1_node.html#a82dd059231755c8a229144748b18ec79" title="Run the spin loop (continuously call spinOnce(), at the specified rate, and call cleanup() at the end...">b0::Node::spin()</a>, or periodically call <a class="el" href="classb0_1_1_node.html#a12710a77532db0989c1def92c68e74f5" title="Read all available messages from the various ZeroMQ sockets, and dispatch them to callbacks...">b0::Node::spinOnce()</a>, otherwise no message will be delivered.</p>
-<p>Otherwise, you can directly read from the SUB socket, by using <a class="el" href="classb0_1_1_subscriber.html#aefb9b2bb90d719a6be315e05e432b7d0" title="Read a message from the underlying ZeroMQ SUB socket. ">Subscriber::read()</a>. Note: read operation is blocking. If you do not want to block, use Subscriber::poll() first.</p>
+<p>Otherwise, you can directly read from the SUB socket, by using Subscriber::read(). Note: read operation is blocking. If you do not want to block, use Subscriber::poll() first.</p>
 <p>In order to receive some message, you must set a topic subscription with Subscriber::subscribe. You can set multiple subscription, and the incoming messages will match any of those.</p>
 <p>The subscription topics are strings and are matched on a prefix basis. (i.e. if the topic of the incoming message is "AAA", a subscription for "A" will match it)</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_publisher.html" title="The publisher class. ">b0::Publisher</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="multi_subscriber_8cpp-example.html#_a1">multi_subscriber.cpp</a>, <a class="el" href="subscriber_node_8cpp-example.html#_a1">subscriber_node.cpp</a>, <a class="el" href="subscriber_node_object_8cpp-example.html#_a2">subscriber_node_object.cpp</a>, and <a class="el" href="subscriber_node_object_manual_8cpp-example.html#_a3">subscriber_node_object_manual.cpp</a>.</dd>
 </dl></div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/me/Development/BWF/bluezero/include/b0/<a class="el" href="subscriber_8h_source.html">subscriber.h</a></li>
+<li>/Users/me/Dev/BWF/bluezero/include/b0/<a class="el" href="subscriber_8h_source.html">subscriber.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

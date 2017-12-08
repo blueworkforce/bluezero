@@ -41,18 +41,35 @@ namespace logger
 class LogInterface
 {
 public:
-    enum LogLevel { TRACE, DEBUG, INFO, WARN, ERROR, FATAL };
+    /*!
+     * The level of logging
+     */
+    enum LogLevel
+    {
+        //! The most verbose level
+        TRACE,
+        //! Less verbose than TRACE
+        DEBUG,
+        //! The default level, should not cause too much spam on the console
+        INFO,
+        //! Warning level
+        WARN,
+        //! Error level
+        ERROR,
+        //! Fatal error level, after which the node would usually terminate
+        FATAL
+    };
 
     /*!
      * \brief Log a message to the remote logger, with the default level (INFO)
      */
-    virtual void log(std::string message);
+    virtual void log(std::string message) const;
 
     /*!
      * \brief Log a message to the remote logger, at default level, using a format string
      */
     template<typename... Arguments>
-    void log(std::string const &fmt, Arguments&&... args)
+    void log(std::string const &fmt, Arguments&&... args) const
     {
         try
         {
@@ -70,13 +87,13 @@ public:
     /*!
      * \brief Log a message to the remote logger, with a specified level
      */
-    virtual void log(LogLevel level, std::string message) = 0;
+    virtual void log(LogLevel level, std::string message) const = 0;
 
     /*!
      * \brief Log a message using a format string
      */
     template<typename... Arguments>
-    void log(LogLevel level, std::string const &fmt, Arguments&&... args)
+    void log(LogLevel level, std::string const &fmt, Arguments&&... args) const
     {
         try
         {
@@ -94,10 +111,10 @@ public:
 protected:
     //! \cond HIDDEN_SYMBOLS
 
-    virtual void log_helper(LogLevel level, boost::format &format);
+    virtual void log_helper(LogLevel level, boost::format &format) const;
 
     template<class T, class... Args>
-    void log_helper(LogLevel level, boost::format &format, T &&t, Args&&... args)
+    void log_helper(LogLevel level, boost::format &format, T &&t, Args&&... args) const
     {
         return log_helper(level, format % std::forward<T>(t), std::forward<Args>(args)...);
     }

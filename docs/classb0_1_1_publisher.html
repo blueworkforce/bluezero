@@ -86,14 +86,10 @@ Inheritance diagram for b0::Publisher&lt; TMsg, notifyGraph &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7b5a9bc19e4aefcdd10c7f25ca397127"><td class="memItemLeft" align="right" valign="top"><a id="a7b5a9bc19e4aefcdd10c7f25ca397127"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_publisher.html#a7b5a9bc19e4aefcdd10c7f25ca397127">Publisher</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string topic, bool managed=true)</td></tr>
-<tr class="memdesc:a7b5a9bc19e4aefcdd10c7f25ca397127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_publisher.html" title="The publisher class. ">Publisher</a> child of the specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>. <br /></td></tr>
-<tr class="separator:a7b5a9bc19e4aefcdd10c7f25ca397127"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb13c0c107651370ebf4fb673c949eb3"><td class="memItemLeft" align="right" valign="top"><a id="abb13c0c107651370ebf4fb673c949eb3"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_publisher.html#abb13c0c107651370ebf4fb673c949eb3">write</a> (const std::string &amp;topic, const TMsg &amp;msg)</td></tr>
-<tr class="memdesc:abb13c0c107651370ebf4fb673c949eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Publish the message on the specified topic (don't use this, use <a class="el" href="classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1" title="Publish the message on the publisher&#39;s topic. ">Publisher::publish()</a> instead) <br /></td></tr>
-<tr class="separator:abb13c0c107651370ebf4fb673c949eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae272e0c39457b91be7dde27776ebab69"><td class="memItemLeft" align="right" valign="top"><a id="ae272e0c39457b91be7dde27776ebab69"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_publisher.html#ae272e0c39457b91be7dde27776ebab69">Publisher</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string topic_name, bool managed=true)</td></tr>
+<tr class="memdesc:ae272e0c39457b91be7dde27776ebab69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_publisher.html" title="The publisher class. ">Publisher</a> child of the specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>. <br /></td></tr>
+<tr class="separator:ae272e0c39457b91be7dde27776ebab69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bd271e118741b5c1264bb47c41f7ee1"><td class="memItemLeft" align="right" valign="top"><a id="a4bd271e118741b5c1264bb47c41f7ee1"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1">publish</a> (const TMsg &amp;msg)</td></tr>
 <tr class="memdesc:a4bd271e118741b5c1264bb47c41f7ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Publish the message on the publisher's topic. <br /></td></tr>
@@ -106,11 +102,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_publisher.html#ab5ea0591e2ca505eee083f467bbe3b7d">cleanup</a> () override</td></tr>
 <tr class="memdesc:ab5ea0591e2ca505eee083f467bbe3b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform cleanup and optionally send graph notify. <br /></td></tr>
 <tr class="separator:ab5ea0591e2ca505eee083f467bbe3b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0791be60665255d9dca8cb6f1c340447"><td class="memTemplParams" colspan="2"><a id="a0791be60665255d9dca8cb6f1c340447"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a0791be60665255d9dca8cb6f1c340447"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_publisher.html#a0791be60665255d9dca8cb6f1c340447">write</a> (const std::string &amp;topic, const std::string &amp;msg)</td></tr>
-<tr class="memdesc:a0791be60665255d9dca8cb6f1c340447"><td class="mdescLeft">&#160;</td><td class="mdescRight">Publish a raw payload on the specified topic. <br /></td></tr>
-<tr class="separator:a0791be60665255d9dca8cb6f1c340447"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TMsg, bool notifyGraph = true&gt;<br />
@@ -121,7 +112,7 @@ class b0::Publisher&lt; TMsg, notifyGraph &gt;</h3>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">b0::Subscriber</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="multi_publisher_8cpp-example.html#_a1">multi_publisher.cpp</a>, <a class="el" href="publisher_node_8cpp-example.html#_a1">publisher_node.cpp</a>, and <a class="el" href="publisher_node_object_8cpp-example.html#_a4">publisher_node_object.cpp</a>.</dd>
 </dl></div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/me/Development/BWF/bluezero/include/b0/<a class="el" href="publisher_8h_source.html">publisher.h</a></li>
+<li>/Users/me/Dev/BWF/bluezero/include/b0/<a class="el" href="publisher_8h_source.html">publisher.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
