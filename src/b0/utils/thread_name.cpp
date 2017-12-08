@@ -2,6 +2,8 @@
 
 #ifdef _WIN32
 
+#ifndef __MINGW64__
+
 #include <windows.h>
 
 const DWORD MS_VC_EXCEPTION=0x406D1388;
@@ -16,7 +18,7 @@ typedef struct tagTHREADNAME_INFO
 } THREADNAME_INFO;
 #pragma pack(pop)
 
-void set_thread_name(uint32_t dwThreadID, const char* threadName)
+void dbg_set_thread_name(uint32_t dwThreadID, const char* threadName)
 {
     // DWORD dwThreadID = ::GetThreadId( static_cast<HANDLE>( t.native_handle() ) );
 
@@ -35,7 +37,7 @@ void set_thread_name(uint32_t dwThreadID, const char* threadName)
     }
 }
 
-void set_thread_name(const char *threadName)
+void dbg_set_thread_name(const char *threadName)
 {
     set_thread_name(GetCurrentThreadId(), threadName);
 }
@@ -48,7 +50,32 @@ void set_thread_name(std::thread *thread, const char *threadName)
 }
 #endif
 
-#else
+#endif // !__MINGW64__
+
+#include <string>
+#include <map>
+#include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
+
+static std::map<std::string, std::string> thread_name;
+
+void set_thread_name(const char *threadName)
+{
+#ifndef __MINGW64__
+    dbg_set_thread_name(threadName);
+#endif
+    std::string this_thread_id = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+    thread_name[this_thread_id] = std::string(threadName); 
+}
+
+std::string get_thread_name()
+{
+    std::string this_thread_id = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+    auto i = thread_name.find(this_thread_id);
+    return i == thread_name.end() ? "" : i->second;
+}
+
+#else // _WIN32
 
 #include <pthread.h>
 
@@ -72,5 +99,5 @@ std::string get_thread_name()
     return std::string(&buf[0]);
 }
 
-#endif
+#endif // _WIN32
 
