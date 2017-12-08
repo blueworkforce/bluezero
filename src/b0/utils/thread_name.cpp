@@ -89,7 +89,11 @@ void set_thread_name(std::thread *thread, const char *threadName)
 
 void set_thread_name(const char *threadName)
 {
+#ifdef __OSX__
     pthread_setname_np(threadName);
+#else // __OSX__
+    pthread_setname_np(pthread_self(), threadName);
+#endif // __OSX__
 }
 
 std::string get_thread_name()
