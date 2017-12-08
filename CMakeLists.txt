@@ -89,6 +89,8 @@ protobuf_generate_cpp(
 add_library(
     b0
     SHARED
+    src/b0/utils/thread_name.cpp
+    src/b0/socket/socket.cpp
     src/b0/node.cpp
     src/b0/envelope.cpp
     src/b0/publisher.cpp

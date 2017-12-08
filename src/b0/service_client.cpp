@@ -8,30 +8,18 @@ namespace b0
 {
 
 AbstractServiceClient::AbstractServiceClient(Node *node, std::string service_name, bool managed)
-    : node_(*node),
-      service_name_(service_name),
-      managed_(managed),
-      req_socket_(node_.getZMQContext(), ZMQ_REQ)
+    : socket::Socket(node, zmq::socket_type::req, service_name, managed)
 {
-    if(managed_)
-        node_.addServiceClient(this);
 }
 
 AbstractServiceClient::~AbstractServiceClient()
 {
-    if(managed_)
-        node_.removeServiceClient(this);
 }
 
-void AbstractServiceClient::setCompression(std::string algorithm, int level)
+void AbstractServiceClient::log(LogLevel level, std::string message) const
 {
-    compression_algorithm_ = algorithm;
-    compression_level_ = level;
-}
-
-void AbstractServiceClient::setRemoteAddress(std::string addr)
-{
-    remote_addr_ = addr;
+    boost::format fmt("ServiceClient(%s): %s");
+    Socket::log(level, (fmt % name_ % message).str());
 }
 
 void AbstractServiceClient::init()
@@ -47,14 +35,14 @@ void AbstractServiceClient::cleanup()
 
 std::string AbstractServiceClient::getServiceName()
 {
-    return service_name_;
+    return name_;
 }
 
 void AbstractServiceClient::resolve()
 {
     if(!remote_addr_.empty())
     {
-        node_.log(node_.DEBUG, "Resolve: skipping resolution because remote address (%s) was given", remote_addr_);
+        log(DEBUG, "Skipping resolution because remote address (%s) was given", remote_addr_);
         return;
     }
 
@@ -62,60 +50,25 @@ void AbstractServiceClient::resolve()
 
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::ResolveServiceRequest &rq = *rq0.mutable_resolve();
-    rq.set_service_name(service_name_);
+    rq.set_service_name(name_);
 
     b0::resolver_msgs::Response rsp0;
     resolv_cli.call(rq0, rsp0);
     const b0::resolver_msgs::ResolveServiceResponse &rsp = rsp0.resolve();
     remote_addr_ = rsp.sock_addr();
-    node_.log(node_.TRACE, "Resolve %s -> %s", service_name_, remote_addr_);
+    log(TRACE, "Resolved address: %s", remote_addr_);
 }
 
 void AbstractServiceClient::connect()
 {
-    node_.log(node_.TRACE, "Connecting to service '%s' (%s)...", service_name_, remote_addr_);
-    req_socket_.connect(remote_addr_);
+    log(TRACE, "Connecting to %s...", remote_addr_);
+    socket_.connect(remote_addr_);
 }
 
 void AbstractServiceClient::disconnect()
 {
-    node_.log(node_.TRACE, "Disconnecting from service '%s' (%s)...", service_name_, remote_addr_);
-    req_socket_.disconnect(remote_addr_);
-}
-
-bool AbstractServiceClient::writeRaw(const std::string &msg)
-{
-    ::s_send(req_socket_, wrapEnvelope(msg, compression_algorithm_, compression_level_));
-    return true;
-}
-
-bool AbstractServiceClient::poll(long timeout)
-{
-#ifdef __GNUC__
-    zmq::pollitem_t items[] = {{static_cast<void*>(req_socket_), 0, ZMQ_POLLIN, 0}};
-#else
-    zmq::pollitem_t items[] = {{req_socket_, 0, ZMQ_POLLIN, 0}};
-#endif
-    zmq::poll(&items[0], sizeof(items) / sizeof(items[0]), timeout);
-    return items[0].revents & ZMQ_POLLIN;
-}
-
-bool AbstractServiceClient::readRaw(std::string &msg)
-{
-    msg = unwrapEnvelope(::s_recv(req_socket_));
-    return true;
-}
-
-template<>
-bool ServiceClient<std::string, std::string, true>::write(const std::string &req)
-{
-    return AbstractServiceClient::writeRaw(req);
-}
-
-template<>
-bool ServiceClient<std::string, std::string, true>::read(std::string &rep)
-{
-    return AbstractServiceClient::readRaw(rep);
+    log(TRACE, "Disconnecting from %s...", remote_addr_);
+    socket_.disconnect(remote_addr_);
 }
 
 } // namespace b0

@@ -24,9 +24,9 @@ void pub_thread()
     for(;;) pub.publish(m);
 }
 
-void sub_callback(std::string topic, const test_msgs::Msg1 &msg)
+void sub_callback(const test_msgs::Msg1 &msg)
 {
-    exit(topic == "topic2" && msg.data() == 123456 ? 0 : 1);
+    exit(msg.data() == 123456 ? 0 : 1);
 }
 
 void sub_thread()

@@ -1,6 +1,7 @@
 #include <b0/publisher.h>
 #include <b0/logger/logger.h>
 #include <b0/node.h>
+#include <b0/utils/thread_name.h>
 
 #include "logger.pb.h"
 
@@ -10,12 +11,12 @@ namespace b0
 namespace logger
 {
 
-void LogInterface::log(std::string message)
+void LogInterface::log(std::string message) const
 {
     log(INFO, message);
 }
 
-void LogInterface::log_helper(LogLevel level, boost::format &format)
+void LogInterface::log_helper(LogLevel level, boost::format &format) const
 {
     return log(level, format.str());
 }
@@ -29,28 +30,31 @@ LocalLogger::~LocalLogger()
 {
 }
 
-void LocalLogger::log(LogLevel level, std::string message)
+void LocalLogger::log(LogLevel level, std::string message) const
 {
     LevelInfo info = levelInfo(level);
     std::string name = node_.getName();
-    if(name != "") name = "[" + name + "] ";
     std::stringstream ss;
-    ss << info.ansiEscape() << name << info.levelStr << ": " << message << info.ansiReset() << std::endl;
+    ss << info.ansiEscape();
+    if(!name.empty())
+        ss << "[" << name << "] ";
+    ss << "{" << get_thread_name() << "} ";
+    ss << info.levelStr << ": " << message << info.ansiReset() << std::endl;
     std::cout << ss.str();
 }
 
-std::string LocalLogger::LevelInfo::ansiEscape()
+std::string LocalLogger::LevelInfo::ansiEscape() const
 {
     boost::format fmt("\x1b[%d;%dm");
     return (fmt % attr % fg).str();
 }
 
-std::string LocalLogger::LevelInfo::ansiReset()
+std::string LocalLogger::LevelInfo::ansiReset() const
 {
     return "\x1b[0m";
 }
 
-LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level)
+LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level) const
 {
     switch(level)
     {
@@ -80,11 +84,16 @@ void Logger::connect(std::string addr)
     pub_.init();
 }
 
-void Logger::log(LogLevel level, std::string message)
+void Logger::log(LogLevel level, std::string message) const
+{
+    LocalLogger::log(level, message);
+
+    remoteLog(level, message);
+}
+
+void Logger::remoteLog(LogLevel level, std::string message) const
 {
     std::string name = node_.getName();
-
-    LocalLogger::log(level, message);
 
     b0::logger_msgs::LogEntry e;
     e.set_node_name(name);

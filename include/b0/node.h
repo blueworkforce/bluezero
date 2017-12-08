@@ -1,8 +1,8 @@
 #ifndef B0__NODE_H__INCLUDED
 #define B0__NODE_H__INCLUDED
 
+#include <b0/socket/socket.h>
 #include <b0/service_client.h>
-#include <b0/utils/protobufhelpers.h>
 #include <b0/logger/interface.h>
 
 #include <set>
@@ -139,7 +139,7 @@ protected:
     /*!
      * \brief Log a message to the default logger of this node
      */
-    void log(LogLevel level, std::string message) override;
+    void log(LogLevel level, std::string message) const override;
 
 public:
     /*!
@@ -169,44 +169,14 @@ public:
 
 private:
     /*!
-     * Register a publisher for this node. Do not call this directly. Called by Publisher class.
+     * Register a socket for this node. Do not call this directly. Called by Socket class.
      */
-    void addPublisher(AbstractPublisher *pub);
+    void addSocket(socket::Socket *socket);
 
     /*!
-     * Register a publisher for this node. Do not call this directly. Called by Publisher class.
+     * Register a socket for this node. Do not call this directly. Called by Socket class.
      */
-    void removePublisher(AbstractPublisher *pub);
-
-    /*!
-     * Register a subscriber for this node. Do not call this directly. Called by Subscriber class.
-     */
-    void addSubscriber(AbstractSubscriber *sub);
-
-    /*!
-     * Unregister a subscriber for this node. Do not call this directly. Called by Subscriber class.
-     */
-    void removeSubscriber(AbstractSubscriber *sub);
-
-    /*!
-     * Register a service client for this node. Do not call this directly. Called by ServiceClient class.
-     */
-    void addServiceClient(AbstractServiceClient *cli);
-
-    /*!
-     * Unregister a service client for this node. Do not call this directly. Called by ServiceClient class.
-     */
-    void removeServiceClient(AbstractServiceClient *cli);
-
-    /*!
-     * Register a service server for this node. Do not call this directly. Called by ServiceServer class.
-     */
-    void addServiceServer(AbstractServiceServer *srv);
-
-    /*!
-     * Unregister a service server for this node. Do not call this directly. Called by ServiceServer class.
-     */
-    void removeServiceServer(AbstractServiceServer *srv);
+    void removeSocket(socket::Socket *socket);
 
 public:
     /*!
@@ -372,17 +342,8 @@ private:
     //! Heartbeat thread
     boost::thread heartbeat_thread_;
 
-    //! List of publishers
-    std::set<AbstractPublisher*> publishers_;
-
-    //! List of subscribers
-    std::set<AbstractSubscriber*> subscribers_;
-
-    //! List of service clients
-    std::set<AbstractServiceClient*> service_clients_;
-
-    //! List of service servers
-    std::set<AbstractServiceServer*> service_servers_;
+    //! List of sockets
+    std::set<socket::Socket*> sockets_;
 
     //! Address of the proxy's XSUB socket
     std::string xsub_sock_addr_;
@@ -406,10 +367,7 @@ private:
     static void setupSIGINTHandler();
 
 public:
-    friend class AbstractPublisher;
-    friend class AbstractSubscriber;
-    friend class AbstractServiceClient;
-    friend class AbstractServiceServer;
+    friend class socket::Socket;
 };
 
 } // namespace b0

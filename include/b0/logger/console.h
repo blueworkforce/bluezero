@@ -22,18 +22,24 @@ class Console : public Node
 {
 public:
     /*!
-     * \brief Construct a resolver node
+     * \brief Construct a Console node
      */
     Console();
 
     /*!
-     * \brief Resolver node destructor
+     * \brief Console node destructor
      */
     virtual ~Console();
 
-    std::string getName() const {return "console";}
+    /*!
+     * Return the name of this node
+     */
+    std::string getName() const { return "console"; }
 
-    virtual void onLogMessage(std::string topic, const b0::logger_msgs::LogEntry &entry);
+    /*!
+     * Log message event handler
+     */
+    virtual void onLogMessage(const b0::logger_msgs::LogEntry &entry);
 
 protected:
     //! Subscriber to "log" topic

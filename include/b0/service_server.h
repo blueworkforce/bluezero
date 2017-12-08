@@ -6,7 +6,7 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include <b0/utils/protobufhelpers.h>
+#include <b0/socket/socket.h>
 #include <b0/graph/graph.h>
 
 namespace b0
@@ -16,51 +16,26 @@ class Node;
 
 //! \cond HIDDEN_SYMBOLS
 
-class AbstractServiceServer
+class AbstractServiceServer : public socket::Socket
 {
 public:
+    using logger::LogInterface::log;
+
     AbstractServiceServer(Node *node, std::string service_name, bool managed = true);
     virtual ~AbstractServiceServer();
-    void setCompression(std::string algorithm, int level = -1);
-    virtual void init();
-    virtual void cleanup();
-    virtual void spinOnce() = 0;
+    void log(LogLevel level, std::string message) const override;
+    virtual void init() override;
+    virtual void cleanup() override;
     std::string getServiceName();
     virtual void bind(std::string address);
-    virtual bool poll(long timeout = 0);
-    virtual bool readRaw(std::string &msg);
-    virtual bool writeRaw(const std::string &msg);
 
 protected:
     virtual void bind();
     virtual void unbind();
     virtual void announce();
 
-    //! The Node owning this ServiceServer
-    Node &node_;
-
-    //! The name of the service exposed by this ServiceServer
-    std::string service_name_;
-
-    //! The ZeroMQ REP socket
-    zmq::socket_t rep_socket_;
-
     //! The ZeroMQ address to bind the service socket on
     std::string bind_addr_;
-
-    //! The remote ZeroMQ address to connect to this service socket
-    std::string remote_addr_;
-
-    //! True if this service server is managed (init(), cleanup() are called by the owner Node)
-    const bool managed_;
-
-    //! If set, payloads will be encoded using the specified compression algorithm
-    //! \sa AbstractServiceServer::setCompression()
-    std::string compression_algorithm_;
-
-    //! If a compression algorithm is set, payloads will be encoded using the specified compression level
-    //! \sa AbstractServiceServer::setCompression()
-    int compression_level_;
 };
 
 //! \endcond
@@ -132,26 +107,6 @@ public:
     }
 
     /*!
-     * \brief Read a request message from the underlying ZeroMQ REP socket
-     */
-    virtual bool read(TReq &req)
-    {
-        std::string payload;
-        return AbstractServiceServer::readRaw(payload) &&
-            req.ParseFromString(payload);
-    }
-
-    /*!
-     * \brief Write a reply message to the underlying ZeroMQ REP socket
-     */
-    virtual bool write(const TRep &rep)
-    {
-        std::string payload;
-        return rep.SerializeToString(&payload) &&
-            AbstractServiceServer::writeRaw(payload);
-    }
-
-    /*!
      * \brief Perform initialization and optionally send graph notify
      */
     void init() override
@@ -159,7 +114,7 @@ public:
         AbstractServiceServer::init();
 
         if(notifyGraph)
-            b0::graph::notifyService(node_, service_name_, false, true);
+            b0::graph::notifyService(node_, name_, false, true);
     }
 
     /*!
@@ -170,7 +125,7 @@ public:
         AbstractServiceServer::cleanup();
 
         if(notifyGraph)
-            b0::graph::notifyService(node_, service_name_, false, false);
+            b0::graph::notifyService(node_, name_, false, false);
     }
 
 protected:
@@ -179,18 +134,6 @@ protected:
      */
     boost::function<void(const TReq&, TRep&)> callback_;
 };
-
-/*!
- * \brief Read a raw request from the underlying ZeroMQ REP socket
- */
-template<>
-bool ServiceServer<std::string, std::string, true>::read(std::string &req);
-
-/*!
- * \brief Write a raw reply to the underlying ZeroMQ REP socket
- */
-template<>
-bool ServiceServer<std::string, std::string, true>::write(const std::string &rep);
 
 } // namespace b0
 

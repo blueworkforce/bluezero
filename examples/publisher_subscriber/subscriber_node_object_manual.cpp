@@ -31,13 +31,12 @@ public:
              * of one way to do it, in case you really need to.
              */
 
-            std::string topic;
             example_msgs::TestMessage msg;
 
             // read is blocking
-            sub_.read(topic, msg);
+            sub_.read(msg);
 
-            std::cout << "Received (on topic '" << topic << "'):" << std::endl
+            std::cout << "Received:" << std::endl
                 << msg.DebugString() << std::endl;
         }
     }

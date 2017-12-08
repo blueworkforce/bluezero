@@ -30,9 +30,8 @@ void sub_thread()
     b0::Node node("sub");
     b0::Subscriber<test_msgs::Msg1> sub(&node, "topic1");
     node.init();
-    std::string topic;
     test_msgs::Msg1 m;
-    sub.read(topic, m);
+    sub.read(m);
     exit(m.data() == 123456 ? 0 : 1);
 }
 

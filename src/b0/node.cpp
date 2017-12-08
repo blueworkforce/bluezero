@@ -4,6 +4,7 @@
 #include <b0/service_client.h>
 #include <b0/service_server.h>
 #include <b0/logger/logger.h>
+#include <b0/utils/thread_name.h>
 
 #include <iostream>
 #include <cstdlib>
@@ -33,6 +34,8 @@ Node::Node(std::string nodeName)
       p_logger_(new logger::Logger(this)),
       shutdown_flag_(false)
 {
+    set_thread_name("main");
+
     setupSIGINTHandler();
 
     // initialize time sync state variables:
@@ -55,6 +58,7 @@ void Node::init()
 
     log(DEBUG, "Initialization...");
 
+    log(DEBUG, "Initialization of ResolverServiceClient using remote_address=%s...", resolverAddress());
     resolv_cli_.setRemoteAddress(resolverAddress());
     resolv_cli_.init(); // resolv_cli_ is not managed
 
@@ -62,18 +66,9 @@ void Node::init()
 
     startHeartbeatThread();
 
-    log(DEBUG, "Initializing publishers...");
-    for(auto it = publishers_.begin(); it != publishers_.end(); ++it)
-        (*it)->init();
-    log(DEBUG, "Initializing service clients...");
-    for(auto it = service_clients_.begin(); it != service_clients_.end(); ++it)
-        (*it)->init();
-    log(DEBUG, "Initializing service servers...");
-    for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
-        (*it)->init();
-    log(DEBUG, "Initializing subscribers...");
-    for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
-        (*it)->init();
+    log(DEBUG, "Initializing sockets...");
+    for(auto socket : sockets_)
+        socket->init();
 
     state_ = State::Ready;
 
@@ -94,7 +89,10 @@ void Node::shutdown()
 
 bool Node::shutdownRequested() const
 {
-    return shutdown_flag_ || quit_flag_.load();
+    bool ret = shutdown_flag_ || quit_flag_.load();
+    if(ret)
+        log(TRACE, "Shutdown requested! (shutdown_flag=%d, quit_flag=%d)", shutdown_flag_, quit_flag_.load());
+    return ret;
 }
 
 void Node::spinOnce()
@@ -102,21 +100,9 @@ void Node::spinOnce()
     if(state_ != State::Ready)
         throw std::runtime_error("Cannot call spinOnce() in current state");
 
-    // publishers don't need to spin
-
-    // spin subscribers
-    for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
-    {
-        (*it)->spinOnce();
-    }
-
-    // service clients don't need to spin
-
-    // spin service servers
-    for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
-    {
-        (*it)->spinOnce();
-    }
+    // spin sockets:
+    for(auto socket : sockets_)
+        socket->spinOnce();
 }
 
 void Node::spin(double spinRate)
@@ -124,15 +110,19 @@ void Node::spin(double spinRate)
     if(state_ != State::Ready)
         throw std::runtime_error("Cannot call spin() in current state");
 
+    log(INFO, "Node spinning...");
+
     while(!shutdownRequested())
     {
         spinOnce();
         boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
     }
 
-    log(INFO, "Node shutdown requested");
+    log(INFO, "Node cleanup...");
 
     cleanup();
+
+    log(INFO, "spin() finished");
 }
 
 void Node::cleanup()
@@ -142,21 +132,13 @@ void Node::cleanup()
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
+    log(DEBUG, "Killing heartbeat thread...");
     heartbeat_thread_.interrupt();
     heartbeat_thread_.join();
 
-    log(DEBUG, "Cleanup publishers...");
-    for(auto it = publishers_.begin(); it != publishers_.end(); ++it)
-        (*it)->cleanup();
-    log(DEBUG, "Cleanup service clients...");
-    for(auto it = service_clients_.begin(); it != service_clients_.end(); ++it)
-        (*it)->cleanup();
-    log(DEBUG, "Cleanup service servers...");
-    for(auto it = service_servers_.begin(); it != service_servers_.end(); ++it)
-        (*it)->cleanup();
-    log(DEBUG, "Cleanup subscribers...");
-    for(auto it = subscribers_.begin(); it != subscribers_.end(); ++it)
-        (*it)->cleanup();
+    log(DEBUG, "Cleanup sockets...");
+    for(auto socket : sockets_)
+        socket->cleanup();
 
     // inform resolver that we are shutting down
     notifyShutdown();
@@ -166,7 +148,7 @@ void Node::cleanup()
     state_ = State::Terminated;
 }
 
-void Node::log(LogLevel level, std::string message)
+void Node::log(LogLevel level, std::string message) const
 {
     p_logger_->log(level, message);
 }
@@ -204,56 +186,17 @@ std::string Node::getXSUBSocketAddress() const
     return xsub_sock_addr_;
 }
 
-void Node::addPublisher(AbstractPublisher *pub)
+void Node::addSocket(socket::Socket *socket)
 {
     if(state_ != State::Created)
-        throw std::runtime_error("Cannot create a publisher with an already initialized node");
+        throw std::runtime_error("Cannot create a socket with an already initialized node");
 
-    publishers_.insert(pub);
+    sockets_.insert(socket);
 }
 
-void Node::removePublisher(AbstractPublisher *pub)
+void Node::removeSocket(socket::Socket *socket)
 {
-    publishers_.erase(pub);
-}
-
-void Node::addSubscriber(AbstractSubscriber *sub)
-{
-    if(state_ != State::Created)
-        throw std::runtime_error("Cannot create a subscriber with an already initialized node");
-
-    subscribers_.insert(sub);
-}
-
-void Node::removeSubscriber(AbstractSubscriber *sub)
-{
-    subscribers_.erase(sub);
-}
-
-void Node::addServiceClient(AbstractServiceClient *cli)
-{
-    if(state_ != State::Created)
-        throw std::runtime_error("Cannot create a service client with an already initialized node");
-
-    service_clients_.insert(cli);
-}
-
-void Node::removeServiceClient(AbstractServiceClient *cli)
-{
-    service_clients_.erase(cli);
-}
-
-void Node::addServiceServer(AbstractServiceServer *srv)
-{
-    if(state_ != State::Created)
-        throw std::runtime_error("Cannot create a service server with an already initialized node");
-
-    service_servers_.insert(srv);
-}
-
-void Node::removeServiceServer(AbstractServiceServer *srv)
-{
-    service_servers_.erase(srv);
+    sockets_.erase(socket);
 }
 
 std::string Node::hostname()
@@ -348,9 +291,12 @@ void Node::notifyShutdown()
 
 void Node::heartbeatLoop()
 {
+    set_thread_name("HB");
+
     ResolverServiceClient resolv_cli(this, "resolv", false);
     resolv_cli.setRemoteAddress(resolverAddress());
     resolv_cli.init();
+
     while(!shutdownRequested())
     {
         b0::resolver_msgs::Request rq0;
@@ -366,13 +312,14 @@ void Node::heartbeatLoop()
         int64_t recvTime = hardwareTimeUSec();
         int64_t rtt = recvTime - sendTime;
         const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
-        if(!rsp.ok()) break;
+        if(!rsp.ok())
+        {
+            break;
+        }
         updateTime(rsp.time_usec() + rtt / 2);
         boost::this_thread::sleep_for(boost::chrono::seconds{1});
     }
     resolv_cli.cleanup();
-
-    log(INFO, "Heartbeat thread terminating.");
 }
 
 int64_t Node::hardwareTimeUSec() const

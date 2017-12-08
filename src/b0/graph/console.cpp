@@ -60,7 +60,7 @@ public:
         return (fmt % t % name).str();
     }
 
-    void onGraphChanged(std::string topic, const b0::resolver_msgs::Graph &graph)
+    void onGraphChanged(const b0::resolver_msgs::Graph &graph)
     {
         printOrDisplayGraph("Graph has changed", graph);
     }

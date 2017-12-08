@@ -6,60 +6,48 @@ namespace b0
 {
 
 AbstractPublisher::AbstractPublisher(Node *node, std::string topic, bool managed)
-    : node_(*node),
-      topic_name_(topic),
-      managed_(managed),
-      pub_socket_(node_.getZMQContext(), ZMQ_PUB)
+    : socket::Socket(node, zmq::socket_type::pub, topic, managed)
 {
-    if(managed_)
-        node_.addPublisher(this);
+    setHasHeader(true);
 }
 
 AbstractPublisher::~AbstractPublisher()
 {
-    if(managed_)
-        node_.removePublisher(this);
 }
 
-void AbstractPublisher::setCompression(std::string algorithm, int level)
+void AbstractPublisher::log(LogLevel level, std::string message) const
 {
-    compression_algorithm_ = algorithm;
-    compression_level_ = level;
-}
-
-void AbstractPublisher::setRemoteAddress(std::string addr)
-{
-    remote_addr_ = addr;
+    boost::format fmt("Publisher(%s): %s");
+    Socket::log(level, (fmt % name_ % message).str());
 }
 
 void AbstractPublisher::init()
 {
     if(remote_addr_.empty())
         remote_addr_ = node_.getXSUBSocketAddress();
-    pub_socket_.connect(remote_addr_);
+    connect();
 }
 
 void AbstractPublisher::cleanup()
 {
-    pub_socket_.disconnect(remote_addr_);
+    disconnect();
 }
 
 std::string AbstractPublisher::getTopicName()
 {
-    return topic_name_;
+    return name_;
 }
 
-bool AbstractPublisher::writeRaw(const std::string &topic, const std::string &msg)
+void AbstractPublisher::connect()
 {
-    ::s_sendmore(pub_socket_, topic);
-    ::s_send(pub_socket_, wrapEnvelope(msg, compression_algorithm_, compression_level_));
-    return true;
+    log(TRACE, "Connecting to %s...", remote_addr_);
+    socket_.connect(remote_addr_);
 }
 
-template<>
-bool Publisher<std::string, true>::write(const std::string &topic, const std::string &msg)
+void AbstractPublisher::disconnect()
 {
-    return AbstractPublisher::writeRaw(topic, msg);
+    log(TRACE, "Disconnecting from %s...", remote_addr_);
+    socket_.disconnect(remote_addr_);
 }
 
 } // namespace b0
