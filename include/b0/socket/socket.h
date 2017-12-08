@@ -21,6 +21,14 @@ class Node;
 namespace socket
 {
 
+/*!
+ * \brief The Socket class
+ *
+ * This class wraps a ZeroMQ socket. It provides wrappers for reading and writing
+ * raw payloads, as well as google::protobuf messages.
+ *
+ * \sa b0::Publisher, b0::Subscriber, b0::ServiceClient, b0::ServiceServer
+ */
 class Socket : public logger::LogInterface
 {
 public:

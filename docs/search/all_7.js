@@ -10,6 +10,7 @@ var searchData=
   ['handleresolveservice',['handleResolveService',['../classb0_1_1resolver_1_1_resolver.html#a8b47b18fb70f4b9c8310a35bdbbd5a8d',1,'b0::resolver::Resolver']]],
   ['handleshutdownnode',['handleShutdownNode',['../classb0_1_1resolver_1_1_resolver.html#a307e1132a23bcde20eb6f4d54cb728ea',1,'b0::resolver::Resolver']]],
   ['hardwaretimeusec',['hardwareTimeUSec',['../classb0_1_1_node.html#ac0e0d2edb969938115ac73ec7842b745',1,'b0::Node']]],
+  ['has_5fheader_5f',['has_header_',['../classb0_1_1socket_1_1_socket.html#a8d602b64e5242c1d43c52ec44a90f109',1,'b0::socket::Socket']]],
   ['heartbeat',['heartBeat',['../classb0_1_1resolver_1_1_resolver.html#a0098df6897d19f90d196d69adf00aa5b',1,'b0::resolver::Resolver']]],
   ['heartbeat_5fsweeper_5fthread_5f',['heartbeat_sweeper_thread_',['../classb0_1_1resolver_1_1_resolver.html#a6299bd3671b49232062e32cec28aac1d',1,'b0::resolver::Resolver']]],
   ['heartbeatloop',['heartbeatLoop',['../classb0_1_1_node.html#abbf95d1524c495534d74428d75998094',1,'b0::Node']]],

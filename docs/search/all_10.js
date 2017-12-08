@@ -4,5 +4,6 @@ var searchData=
   ['threadid',['threadID',['../classb0_1_1_node.html#a45af5b0fbd6518f9acc1d39c5179ad26',1,'b0::Node']]],
   ['time_20synchronization',['Time Synchronization',['../timesync.html',1,'']]],
   ['timeusec',['timeUSec',['../classb0_1_1_node.html#aafb522fc3aab3e93c39f8dbb68c5cb45',1,'b0::Node']]],
-  ['trace',['TRACE',['../classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52ae7d85a1f4dd198500b2a960a927e3748',1,'b0::logger::LogInterface']]]
+  ['trace',['TRACE',['../classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52ae7d85a1f4dd198500b2a960a927e3748',1,'b0::logger::LogInterface']]],
+  ['type_5f',['type_',['../classb0_1_1socket_1_1_socket.html#a11cbb5924d5099f08ba5841c9cb9c1d2',1,'b0::socket::Socket']]]
 ];

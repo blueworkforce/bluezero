@@ -2,6 +2,7 @@ var searchData=
 [
   ['p_5flogger_5f',['p_logger_',['../classb0_1_1_node.html#a374b9fa9f122a5229d9c1e1099cd915c',1,'b0::Node']]],
   ['pid',['pid',['../classb0_1_1_node.html#acd5d62408e829bb84d1bf099d66d87a6',1,'b0::Node']]],
+  ['poll',['poll',['../classb0_1_1socket_1_1_socket.html#a7e5519d393ac5e0c84357c2f7a339002',1,'b0::socket::Socket']]],
   ['pub_5fproxy_5fthread_5f',['pub_proxy_thread_',['../classb0_1_1resolver_1_1_resolver.html#aedab62fe925101f5edbe8a332abe1b60',1,'b0::resolver::Resolver']]],
   ['publish',['publish',['../classb0_1_1_publisher.html#a4bd271e118741b5c1264bb47c41f7ee1',1,'b0::Publisher']]],
   ['publisher',['Publisher',['../classb0_1_1_publisher.html',1,'b0::Publisher&lt; TMsg, notifyGraph &gt;'],['../classb0_1_1_publisher.html#ae272e0c39457b91be7dde27776ebab69',1,'b0::Publisher::Publisher()']]],
