@@ -13,17 +13,32 @@ namespace b0
 
 class Node;
 
-//! \cond HIDDEN_SYMBOLS
-
+/*!
+ * \brief The (abstract) service server class
+ *
+ * This class wraps a ZeroMQ REP socket. It will automatically
+ * announce the socket name to resolver.
+ *
+ * \sa b0::ServiceClient, b0::ServiceServer, b0::AbstractServiceClient, b0::AbstractServiceServer
+ */
 class AbstractServiceServer : public socket::Socket
 {
 public:
     using logger::LogInterface::log;
 
+    /*!
+     * \brief Construct an AbstractServiceServer child of the specified Node
+     */
     AbstractServiceServer(Node *node, std::string service_name, bool managed, bool notify_graph);
 
+    /*!
+     * \brief AbstractServiceServer destructor
+     */
     virtual ~AbstractServiceServer();
 
+    /*!
+     * \brief Log a message using node's logger, prepending this service server informations
+     */
     void log(LogLevel level, std::string message) const override;
 
     /*!
@@ -36,28 +51,43 @@ public:
      */
     virtual void cleanup() override;
 
+    /*!
+     * \brief Return the name of this server's service
+     */
     std::string getServiceName();
 
+    /*!
+     * \brief Bind to an additional address
+     */
     virtual void bind(std::string address);
 
 protected:
+    /*!
+     * \brief Bind socket to the address
+     */
     virtual void bind();
+
+    /*!
+     * \brief Unbind socket from the address
+     */
     virtual void unbind();
+
+    /*!
+     * \brief Announce service to resolver
+     */
     virtual void announce();
 
     //! The ZeroMQ address to bind the service socket on
     std::string bind_addr_;
 
+    //! If false this socket will not send announcement to resolv (i.e. it will be "invisible")
     const bool notify_graph_;
 };
 
-//! \endcond
-
 /*!
- * \brief Service server
+ * \brief The service server template class
  *
- * This class wraps a ZeroMQ REP socket. It will automatically
- * announce the socket name to resolver.
+ * This template class specializes b0::AbstractServiceClient to a specific request/response type.
  *
  * If using a callback, when a request is received, it will be handed to the callback, as long as
  * a spin method is called (e.g. Node::spin(), Node::spinOnce() or ServiceServer::spinOnce()).
@@ -65,7 +95,7 @@ protected:
  * You can directly read requests and write replies from the underlying socket, by using
  * ServiceServer::poll(), ServiceServer::read() and ServiceServer::write().
  *
- * \sa ServiceClient
+ * \sa b0::ServiceClient, b0::ServiceServer, b0::AbstractServiceClient, b0::AbstractServiceServer
  */
 template<typename TReq, typename TRep>
 class ServiceServer : public AbstractServiceServer

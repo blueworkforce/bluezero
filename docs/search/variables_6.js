@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['remote_5faddr_5f',['remote_addr_',['../classb0_1_1socket_1_1_socket.html#ac4c1202c9482268a2dba2b2ba8c4c6d0',1,'b0::socket::Socket']]],
-  ['resolv_5fcli_5f',['resolv_cli_',['../classb0_1_1_node.html#a83bebcc577e9e7ddfd93e22a5b52384d',1,'b0::Node']]],
-  ['resolv_5fserver_5f',['resolv_server_',['../classb0_1_1resolver_1_1_resolver.html#ab3e1040fa80f299080fcf35c216384a4',1,'b0::resolver::Resolver']]]
+  ['p_5flogger_5f',['p_logger_',['../classb0_1_1_node.html#a374b9fa9f122a5229d9c1e1099cd915c',1,'b0::Node']]],
+  ['pub_5fproxy_5fthread_5f',['pub_proxy_thread_',['../classb0_1_1resolver_1_1_resolver.html#aedab62fe925101f5edbe8a332abe1b60',1,'b0::resolver::Resolver']]]
 ];

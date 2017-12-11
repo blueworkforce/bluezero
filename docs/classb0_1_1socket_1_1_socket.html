@@ -82,7 +82,19 @@ Inheritance diagram for b0::socket::Socket:</div>
  <div class="center">
   <img src="classb0_1_1socket_1_1_socket.png" usemap="#b0::socket::Socket_map" alt=""/>
   <map id="b0::socket::Socket_map" name="b0::socket::Socket_map">
-<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="0,0,145,24"/>
+<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="1398,0,1854,24"/>
+<area href="classb0_1_1_abstract_publisher.html" title="The (abstract) publisher class. " alt="b0::AbstractPublisher" shape="rect" coords="0,112,456,136"/>
+<area href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. " alt="b0::AbstractServiceClient" shape="rect" coords="932,112,1388,136"/>
+<area href="classb0_1_1_abstract_service_server.html" title="The (abstract) service server class. " alt="b0::AbstractServiceServer" shape="rect" coords="1864,112,2320,136"/>
+<area href="classb0_1_1_abstract_subscriber.html" title="The (abstract) subscriber class. " alt="b0::AbstractSubscriber" shape="rect" coords="2330,112,2786,136"/>
+<area href="classb0_1_1_publisher.html" title="The publisher template class. " alt="b0::Publisher&lt; TMsg &gt;" shape="rect" coords="466,168,922,192"/>
+<area href="classb0_1_1_publisher.html" alt="b0::Publisher&lt; b0::logger_msgs::LogEntry &gt;" shape="rect" coords="466,224,922,248"/>
+<area href="classb0_1_1_publisher.html" alt="b0::Publisher&lt; b0::resolver_msgs::Graph &gt;" shape="rect" coords="466,280,922,304"/>
+<area href="classb0_1_1_service_client.html" title="The service client template class. " alt="b0::ServiceClient&lt; TReq, TRep &gt;" shape="rect" coords="1398,168,1854,192"/>
+<area href="classb0_1_1_service_client.html" alt="b0::ServiceClient&lt; b0::resolver_msgs::Request, b0::resolver_msgs::Response &gt;" shape="rect" coords="1398,224,1854,248"/>
+<area href="classb0_1_1_service_server.html" title="The service server template class. " alt="b0::ServiceServer&lt; TReq, TRep &gt;" shape="rect" coords="1864,168,2320,192"/>
+<area href="classb0_1_1_subscriber.html" title="The subscriber template class. " alt="b0::Subscriber&lt; TMsg &gt;" shape="rect" coords="2796,168,3252,192"/>
+<area href="classb0_1_1_subscriber.html" alt="b0::Subscriber&lt; b0::logger_msgs::LogEntry &gt;" shape="rect" coords="2796,224,3252,248"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -112,10 +124,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ad95b0f7a44725719b8ab8fb1195a5a87">cleanup</a> ()=0</td></tr>
 <tr class="memdesc:ad95b0f7a44725719b8ab8fb1195a5a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform cleanup (clear subscription, disconnect socket) <br /></td></tr>
 <tr class="separator:ad95b0f7a44725719b8ab8fb1195a5a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25a58b4524200db1068df2a886246aed"><td class="memItemLeft" align="right" valign="top"><a id="a25a58b4524200db1068df2a886246aed"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a25a58b4524200db1068df2a886246aed">spinOnce</a> ()=0</td></tr>
-<tr class="memdesc:a25a58b4524200db1068df2a886246aed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process incoming messages and call callbacks. <br /></td></tr>
-<tr class="separator:a25a58b4524200db1068df2a886246aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a601447539016bb8ee7ce16da2001937c"><td class="memItemLeft" align="right" valign="top"><a id="a601447539016bb8ee7ce16da2001937c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a601447539016bb8ee7ce16da2001937c">spinOnce</a> ()</td></tr>
+<tr class="memdesc:a601447539016bb8ee7ce16da2001937c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process incoming messages and call callbacks. <br /></td></tr>
+<tr class="separator:a601447539016bb8ee7ce16da2001937c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a3e2305b2ef8d0d9ba6cb80a378b471"><td class="memItemLeft" align="right" valign="top"><a id="a6a3e2305b2ef8d0d9ba6cb80a378b471"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a6a3e2305b2ef8d0d9ba6cb80a378b471">setRemoteAddress</a> (std::string addr)</td></tr>
 <tr class="memdesc:a6a3e2305b2ef8d0d9ba6cb80a378b471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the remote address the socket will connect to. <br /></td></tr>
@@ -217,7 +229,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classb0_1_1socket_1_1_socket.html" title="The Socket class. ">Socket</a> class. </p>
 <p>This class wraps a ZeroMQ socket. It provides wrappers for reading and writing raw payloads, as well as google::protobuf messages.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_publisher.html" title="The publisher class. ">b0::Publisher</a>, <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">b0::Subscriber</a>, <a class="el" href="classb0_1_1_service_client.html" title="Service client. ">b0::ServiceClient</a>, <a class="el" href="classb0_1_1_service_server.html" title="Service server. ">b0::ServiceServer</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_publisher.html" title="The publisher template class. ">b0::Publisher</a>, <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber template class. ">b0::Subscriber</a>, <a class="el" href="classb0_1_1_service_client.html" title="The service client template class. ">b0::ServiceClient</a>, <a class="el" href="classb0_1_1_service_server.html" title="The service server template class. ">b0::ServiceServer</a> </dd></dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa640b6e1b82300beb1d34996d8848205"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa640b6e1b82300beb1d34996d8848205">&#9670;&nbsp;</a></span>compression_algorithm_</h2>
