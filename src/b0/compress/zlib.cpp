@@ -4,6 +4,7 @@
 #include <boost/format.hpp>
 
 #include <b0/config.h>
+#include <b0/exceptions.h>
 #include <b0/compress/zlib.h>
 
 #ifdef ZLIB_FOUND
@@ -25,7 +26,7 @@ std::string zlib_wrapper(const std::string &str, bool compress, int level, size_
     memset(&zs, 0, sizeof(zs));
     if(compress) ret = deflateInit(&zs, level); else ret = inflateInit(&zs);
     if(ret != Z_OK)
-        throw std::runtime_error((boost::format("%sInit failed") % method).str());;
+        throw exception::Exception((boost::format("%sInit failed") % method).str());;
     zs.next_in = (Bytef*)(str.data());
     zs.avail_in = str.size();
     if(size == 0) size = str.size() * (compress ? 2 : 10);
@@ -43,7 +44,7 @@ std::string zlib_wrapper(const std::string &str, bool compress, int level, size_
     if(compress) deflateEnd(&zs); else inflateEnd(&zs);
     delete[] outbuf;
     if(ret != Z_STREAM_END)
-        throw std::runtime_error((boost::format("zlib %s error %d: %s") % method % ret % zs.msg).str());
+        throw exception::Exception((boost::format("zlib %s error %d: %s") % method % ret % zs.msg).str());
     return outstr;
 }
 

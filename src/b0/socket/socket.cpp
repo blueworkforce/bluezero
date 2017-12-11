@@ -1,5 +1,6 @@
 #include <b0/socket/socket.h>
 #include <b0/node.h>
+#include <b0/exceptions.h>
 #include <b0/envelope.h>
 
 #include <boost/format.hpp>
@@ -68,7 +69,7 @@ bool Socket::read(std::string &msg)
         ok = socket_.recv(&msg_hdr) && ok;
         hdr = std::string(static_cast<char*>(msg_hdr.data()), msg_hdr.size());
         if(!msg_hdr.more())
-            throw std::runtime_error("expected a multipart message");
+            throw exception::MessageUnpackError("expected a multipart message");
     }
     
     zmq::message_t msg_payload;
@@ -84,13 +85,13 @@ bool Socket::read(std::string &msg)
             socket_.recv(&msg_tmp);
             more = msg_tmp.more();
         }
-        throw std::runtime_error("too many message parts");
+        throw exception::MessageUnpackError("too many message parts");
     }
 
     if(has_header_ && hdr != name_)
     {
         boost::format fmt("message header does not match: expected '%s', got '%s'");
-        throw std::runtime_error((fmt % name_ % hdr).str());
+        throw exception::MessageUnpackError((fmt % name_ % hdr).str());
         //return false;
     }
 

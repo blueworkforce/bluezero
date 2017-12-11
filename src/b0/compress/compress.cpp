@@ -1,7 +1,6 @@
 
-#include <boost/format.hpp>
-
 #include <b0/config.h>
+#include <b0/exceptions.h>
 #include <b0/compress/zlib.h>
 #include <b0/compress/lz4.h>
 
@@ -29,7 +28,7 @@ std::string compress(const std::string &algorithm, const std::string &str, int l
         return lz4_compress(str, level);
     }
 #endif
-    else throw std::runtime_error((boost::format("unsupported compression algorithm: %s") % algorithm).str());
+    else throw exception::UnsupportedCompressionAlgorithm(algorithm);
 }
 
 std::string decompress(const std::string &algorithm, const std::string &str, size_t size = 0)
@@ -50,7 +49,7 @@ std::string decompress(const std::string &algorithm, const std::string &str, siz
         return lz4_decompress(str, size);
     }
 #endif
-    else throw std::runtime_error((boost::format("unsupported compression algorithm: %s") % algorithm).str());
+    else throw exception::UnsupportedCompressionAlgorithm(algorithm);
 }
 
 } // namespace compress
