@@ -95,7 +95,6 @@ protobuf_generate_cpp(
 add_library(
     b0
     SHARED
-    src/b0/envelope.cpp
     src/b0/node.cpp
     src/b0/publisher.cpp
     src/b0/service_client.cpp

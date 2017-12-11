@@ -1,6 +1,5 @@
 #include <b0/subscriber.h>
 #include <b0/node.h>
-#include <b0/envelope.h>
 
 namespace b0
 {
