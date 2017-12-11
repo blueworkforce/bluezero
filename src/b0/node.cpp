@@ -87,10 +87,7 @@ void Node::shutdown()
 
 bool Node::shutdownRequested() const
 {
-    bool ret = shutdown_flag_ || quit_flag_.load();
-    if(ret)
-        log(TRACE, "Shutdown requested! (shutdown_flag=%d, quit_flag=%d)", shutdown_flag_, quit_flag_.load());
-    return ret;
+    return shutdown_flag_ || quit_flag_.load();
 }
 
 void Node::spinOnce()
@@ -148,6 +145,9 @@ void Node::cleanup()
 
 void Node::log(LogLevel level, std::string message) const
 {
+    if(boost::this_thread::get_id() != thread_id_)
+        throw std::runtime_error("cannot call Node::log() from another thread");
+
     p_logger_->log(level, message);
 }
 
