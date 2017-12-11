@@ -1,7 +1,10 @@
 #include <b0/socket/socket.h>
+#include <b0/config.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
-#include <b0/envelope.h>
+#include <b0/compress/compress.h>
+
+#include "envelope.pb.h"
 
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
@@ -11,6 +14,25 @@ namespace b0
 
 namespace socket
 {
+
+std::string wrapEnvelope(std::string payload, std::string compression_algorithm, int compression_level)
+{
+    b0::core_msgs::MessageEnvelope env;
+    env.set_uncompressed_size(payload.size());
+    env.set_compression_algorithm(compression_algorithm);
+    env.set_payload(b0::compress::compress(compression_algorithm, payload, compression_level));
+    std::string raw;
+    env.SerializeToString(&raw);
+    return raw;
+}
+
+std::string unwrapEnvelope(std::string rawData)
+{
+    b0::core_msgs::MessageEnvelope env;
+    if(!env.ParseFromString(rawData))
+        return "";
+    return b0::compress::decompress(env.compression_algorithm(), env.payload(), env.uncompressed_size());
+}
 
 Socket::Socket(Node *node, zmq::socket_type type, std::string name, bool managed)
     : node_(*node),

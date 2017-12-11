@@ -1,6 +1,5 @@
 #include <b0/publisher.h>
 #include <b0/node.h>
-#include <b0/envelope.h>
 
 namespace b0
 {

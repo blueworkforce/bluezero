@@ -1,6 +1,5 @@
 #include <b0/service_server.h>
 #include <b0/node.h>
-#include <b0/envelope.h>
 
 #include "resolver.pb.h"
 
