@@ -40,7 +40,7 @@ struct ServiceEntry
 
 class Resolver;
 
-class ResolverServiceServer : public ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>
+class ResolverServiceServer : public ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -82,11 +82,6 @@ public:
      * \brief Shutdown this node (set a flag such that Node::shutdownRequested() returns true)
      */
     void shutdown() override;
-
-    /*!
-     * \brief Provide the (inproc) resolver address
-     */
-    std::string resolverAddress() const override;
 
     /*!
      * \brief Retrieve address of the proxy's XPUB socket
@@ -329,7 +324,7 @@ protected:
     std::set<std::pair<std::string, std::string> > node_uses_service_;
 
     //! Publisher of the Graph message
-    b0::Publisher<b0::resolver_msgs::Graph, false> graph_pub_;
+    b0::Publisher<b0::resolver_msgs::Graph> graph_pub_;
 };
 
 } // namespace resolver

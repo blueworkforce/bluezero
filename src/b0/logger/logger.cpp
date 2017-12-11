@@ -70,7 +70,7 @@ LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level) const
 
 Logger::Logger(b0::Node *node)
     : LocalLogger(node),
-      pub_(node, "log", false)
+      pub_(node, "log", false, false)
 {
 }
 

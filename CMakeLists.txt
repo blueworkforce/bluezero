@@ -96,6 +96,7 @@ add_library(
     SHARED
     src/b0/utils/thread_name.cpp
     src/b0/socket/socket.cpp
+    src/b0/resolver/client.cpp
     src/b0/node.cpp
     src/b0/envelope.cpp
     src/b0/publisher.cpp
@@ -103,7 +104,6 @@ add_library(
     src/b0/service_client.cpp
     src/b0/service_server.cpp
     src/b0/logger/logger.cpp
-    src/b0/graph/graph.cpp
     src/b0/resolver/resolver.cpp
     src/b0/compress/compress.cpp
     src/b0/compress/zlib.cpp

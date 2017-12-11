@@ -7,8 +7,9 @@
 namespace b0
 {
 
-AbstractServiceServer::AbstractServiceServer(Node *node, std::string service_name, bool managed)
+AbstractServiceServer::AbstractServiceServer(Node *node, std::string service_name, bool managed, bool notify_graph)
     : socket::Socket(node, zmq::socket_type::rep, service_name, managed),
+      notify_graph_(notify_graph),
       bind_addr_("")
 {
 }
@@ -27,11 +28,17 @@ void AbstractServiceServer::init()
 {
     bind();
     announce();
+
+    if(notify_graph_)
+        node_.resolverClient().notifyService(name_, false, true);
 }
 
 void AbstractServiceServer::cleanup()
 {
     unbind();
+
+    if(notify_graph_)
+        node_.resolverClient().notifyService(name_, false, false);
 }
 
 std::string AbstractServiceServer::getServiceName()
@@ -57,7 +64,7 @@ void AbstractServiceServer::unbind()
 
 void AbstractServiceServer::announce()
 {
-    Node::ResolverServiceClient &resolv_cli = node_.resolverClient();
+    resolver::Client &resolv_cli = node_.resolverClient();
 
     log(TRACE, "Announcing %s to resolver...", remote_addr_);
     b0::resolver_msgs::Request rq0;
