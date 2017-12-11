@@ -5,8 +5,9 @@
 namespace b0
 {
 
-AbstractSubscriber::AbstractSubscriber(Node *node, std::string topic, bool managed)
-    : socket::Socket(node, zmq::socket_type::sub, topic, managed)
+AbstractSubscriber::AbstractSubscriber(Node *node, std::string topic, bool managed, bool notify_graph)
+    : socket::Socket(node, zmq::socket_type::sub, topic, managed),
+      notify_graph_(notify_graph)
 {
     setHasHeader(true);
 }
@@ -26,11 +27,17 @@ void AbstractSubscriber::init()
     if(remote_addr_.empty())
         remote_addr_ = node_.getXPUBSocketAddress();
     connect();
+
+    if(notify_graph_)
+        node_.resolverClient().notifyTopic(name_, true, true);
 }
 
 void AbstractSubscriber::cleanup()
 {
     disconnect();
+
+    if(notify_graph_)
+        node_.resolverClient().notifyTopic(name_, true, false);
 }
 
 std::string AbstractSubscriber::getTopicName()

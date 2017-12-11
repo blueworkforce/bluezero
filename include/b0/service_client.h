@@ -4,7 +4,6 @@
 #include <string>
 
 #include <b0/socket/socket.h>
-#include <b0/graph/graph.h>
 
 namespace b0
 {
@@ -18,18 +17,32 @@ class AbstractServiceClient : public socket::Socket
 public:
     using logger::LogInterface::log;
 
-    AbstractServiceClient(Node *node, std::string service_name, bool managed = true);
+    AbstractServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph);
+
     virtual ~AbstractServiceClient();
+
     void log(LogLevel level, std::string message) const override;
+
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     virtual void init() override;
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
     virtual void cleanup() override;
+
     virtual void spinOnce() override {}
+
     std::string getServiceName();
 
 protected:
     virtual void resolve();
     virtual void connect();
     virtual void disconnect();
+
+    const bool notify_graph_;
 };
 
 //! \endcond
@@ -49,15 +62,15 @@ protected:
  *
  * \sa ServiceServer
  */
-template<typename TReq, typename TRep, bool notifyGraph = true>
+template<typename TReq, typename TRep>
 class ServiceClient : public AbstractServiceClient
 {
 public:
     /*!
      * \brief Construct a ServiceClient child of a specific Node, which will connect to the specified socket in the specified node
      */
-    ServiceClient(Node *node, std::string service_name, bool managed = true)
-        : AbstractServiceClient(node, service_name, managed)
+    ServiceClient(Node *node, std::string service_name, bool managed = true, bool notify_graph = true)
+        : AbstractServiceClient(node, service_name, managed, notify_graph)
     {
     }
 
@@ -69,28 +82,6 @@ public:
     {
         write(req);
         read(rep);
-    }
-
-    /*!
-     * \brief Perform initialization and optionally send graph notify
-     */
-    void init() override
-    {
-        AbstractServiceClient::init();
-
-        if(notifyGraph)
-            b0::graph::notifyService(node_, name_, true, true);
-    }
-
-    /*!
-     * \brief Perform cleanup and optionally send graph notify
-     */
-    void cleanup() override
-    {
-        AbstractServiceClient::cleanup();
-
-        if(notifyGraph)
-            b0::graph::notifyService(node_, name_, true, false);
     }
 };
 

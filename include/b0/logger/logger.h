@@ -13,7 +13,7 @@ namespace b0
 
 class Node;
 
-template<typename TMsg, bool notifyGraph>
+template<typename TMsg>
 class Publisher;
 
 namespace logger_msgs
@@ -103,7 +103,7 @@ protected:
 
 private:
     //! The publisher where LogEntry es will be published
-    mutable Publisher<b0::logger_msgs::LogEntry, false> pub_;
+    mutable Publisher<b0::logger_msgs::LogEntry> pub_;
 };
 
 } // namespace logger

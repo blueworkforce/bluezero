@@ -27,7 +27,7 @@ bool Node::sigint_handler_setup_ = false;
 
 Node::Node(std::string nodeName)
     : context_(1),
-      resolv_cli_(this, "resolv", false),
+      resolv_cli_(this),
       name_(nodeName),
       state_(State::Created),
       thread_id_(boost::this_thread::get_id()),
@@ -58,8 +58,6 @@ void Node::init()
 
     log(DEBUG, "Initialization...");
 
-    log(DEBUG, "Initialization of ResolverServiceClient using remote_address=%s...", resolverAddress());
-    resolv_cli_.setRemoteAddress(resolverAddress());
     resolv_cli_.init(); // resolv_cli_ is not managed
 
     announceNode();
@@ -231,40 +229,9 @@ std::string Node::freeTCPAddress()
     return (fmt % hostname() % freeTCPPort()).str();
 }
 
-std::string Node::resolverAddress() const
-{
-    const char *resolver_addr = std::getenv("BWF_RESOLVER");
-    if(resolver_addr) return resolver_addr;
-    else return "tcp://localhost:22000";
-}
-
 void Node::announceNode()
 {
-    log(TRACE, "Announcing node '%s' to resolver...", name_);
-    b0::resolver_msgs::Request rq0;
-    b0::resolver_msgs::AnnounceNodeRequest &rq = *rq0.mutable_announce_node();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(hostname());
-    node_id.set_process_id(pid());
-    node_id.set_thread_id(threadID());
-    rq.set_node_name(name_);
-
-    b0::resolver_msgs::Response rsp0;
-    log(TRACE, "Waiting for response from resolver...");
-    resolv_cli_.call(rq0, rsp0);
-    const b0::resolver_msgs::AnnounceNodeResponse &rsp = rsp0.announce_node();
-
-    if(name_ != rsp.node_name())
-    {
-        log(WARN, "Warning: resolver changed this node name to '%s'", rsp.node_name());
-    }
-    name_ = rsp.node_name();
-
-    xpub_sock_addr_ = rsp.xpub_sock_addr();
-    log(TRACE, "Proxy's XPUB socket address: %s", xpub_sock_addr_);
-
-    xsub_sock_addr_ = rsp.xsub_sock_addr();
-    log(TRACE, "Proxy's XSUB socket address: %s", xsub_sock_addr_);
+    resolv_cli_.announceNode(name_, xpub_sock_addr_, xsub_sock_addr_);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
         p_logger->connect(xsub_sock_addr_);
@@ -272,53 +239,24 @@ void Node::announceNode()
 
 void Node::notifyShutdown()
 {
-    log(TRACE, "Notifying node shutdown to resolver...");
-    b0::resolver_msgs::Request rq0;
-    b0::resolver_msgs::ShutdownNodeRequest &rq = *rq0.mutable_shutdown_node();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(hostname());
-    node_id.set_process_id(pid());
-    node_id.set_thread_id(threadID());
-
-    b0::resolver_msgs::Response rsp0;
-    log(TRACE, "Waiting for response from resolver...");
-    resolv_cli_.call(rq0, rsp0);
-    const b0::resolver_msgs::ShutdownNodeResponse &rsp = rsp0.shutdown_node();
-
-    if(!rsp.ok())
-        log(WARN, "resolver has some problem with our shutdown... alas");
+    resolv_cli_.notifyShutdown();
 }
 
 void Node::heartbeatLoop()
 {
     set_thread_name("HB");
 
-    ResolverServiceClient resolv_cli(this, "resolv", false);
-    resolv_cli.setRemoteAddress(resolverAddress());
+    resolver::Client resolv_cli(this);
     resolv_cli.init();
 
     while(!shutdownRequested())
     {
-        b0::resolver_msgs::Request rq0;
-        b0::resolver_msgs::HeartBeatRequest &rq = *rq0.mutable_heartbeat();
-        b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-        node_id.set_host_id(hostname());
-        node_id.set_process_id(pid());
-        node_id.set_thread_id(threadID());
-        int64_t sendTime = hardwareTimeUSec();
-
-        b0::resolver_msgs::Response rsp0;
-        resolv_cli.call(rq0, rsp0);
-        int64_t recvTime = hardwareTimeUSec();
-        int64_t rtt = recvTime - sendTime;
-        const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
-        if(!rsp.ok())
-        {
-            break;
-        }
-        updateTime(rsp.time_usec() + rtt / 2);
+        int64_t time_usec;
+        resolv_cli.sendHeartbeat(&time_usec);
+        updateTime(time_usec);
         boost::this_thread::sleep_for(boost::chrono::seconds{1});
     }
+
     resolv_cli.cleanup();
 }
 

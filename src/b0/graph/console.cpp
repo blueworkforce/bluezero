@@ -4,7 +4,7 @@
 #include <boost/algorithm/string.hpp>
 #include "resolver.pb.h"
 #include <b0/node.h>
-#include <b0/service_client.h>
+#include <b0/resolver/client.h>
 #include <b0/subscriber.h>
 #include <b0/config.h>
 #ifdef HAVE_BOOST_PROCESS
@@ -22,7 +22,7 @@ class Console : public b0::Node
 public:
     Console()
         : Node("graph_console"),
-          cli_(this, "resolver"),
+          resolv_cli_(this),
           sub_(this, "graph", &Console::onGraphChanged)
     {
     }
@@ -48,7 +48,7 @@ public:
             b0::resolver_msgs::GetGraphRequest &gg = *req.mutable_get_graph();
             b0::resolver_msgs::Response resp;
             log(INFO, "Requesting graph");
-            cli_.call(req, resp);
+            resolv_cli_.call(req, resp);
             printOrDisplayGraph("Current graph", resp.get_graph().graph());
         }
     }
@@ -172,7 +172,7 @@ public:
     }
 
 protected:
-    b0::ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response> cli_;
+    b0::resolver::Client resolv_cli_;
     b0::Subscriber<b0::resolver_msgs::Graph> sub_;
 };
 

@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include <b0/graph/graph.h>
 #include <b0/logger/interface.h>
 
 #include <boost/function.hpp>

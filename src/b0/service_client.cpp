@@ -7,8 +7,9 @@
 namespace b0
 {
 
-AbstractServiceClient::AbstractServiceClient(Node *node, std::string service_name, bool managed)
-    : socket::Socket(node, zmq::socket_type::req, service_name, managed)
+AbstractServiceClient::AbstractServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph)
+    : socket::Socket(node, zmq::socket_type::req, service_name, managed),
+      notify_graph_(notify_graph)
 {
 }
 
@@ -26,11 +27,17 @@ void AbstractServiceClient::init()
 {
     resolve();
     connect();
+
+    if(notify_graph_)
+        node_.resolverClient().notifyService(name_, true, true);
 }
 
 void AbstractServiceClient::cleanup()
 {
     disconnect();
+
+    if(notify_graph_)
+        node_.resolverClient().notifyService(name_, true, false);
 }
 
 std::string AbstractServiceClient::getServiceName()
@@ -46,16 +53,10 @@ void AbstractServiceClient::resolve()
         return;
     }
 
-    Node::ResolverServiceClient &resolv_cli = node_.resolverClient();
+    resolver::Client &resolv_cli = node_.resolverClient();
 
-    b0::resolver_msgs::Request rq0;
-    b0::resolver_msgs::ResolveServiceRequest &rq = *rq0.mutable_resolve();
-    rq.set_service_name(name_);
+    resolv_cli.resolveService(name_, remote_addr_);
 
-    b0::resolver_msgs::Response rsp0;
-    resolv_cli.call(rq0, rsp0);
-    const b0::resolver_msgs::ResolveServiceResponse &rsp = rsp0.resolve();
-    remote_addr_ = rsp.sock_addr();
     log(TRACE, "Resolved address: %s", remote_addr_);
 }
 

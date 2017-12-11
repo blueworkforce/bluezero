@@ -4,7 +4,6 @@
 #include <string>
 
 #include <b0/socket/socket.h>
-#include <b0/graph/graph.h>
 
 namespace b0
 {
@@ -18,17 +17,31 @@ class AbstractPublisher : public socket::Socket
 public:
     using logger::LogInterface::log;
 
-    AbstractPublisher(Node *node, std::string topic, bool managed = true);
+    AbstractPublisher(Node *node, std::string topic, bool managed, bool notify_graph);
+
     virtual ~AbstractPublisher();
+
     void log(LogLevel level, std::string message) const override;
+
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     virtual void init() override;
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
     virtual void cleanup() override;
+
     virtual void spinOnce() override {}
+
     std::string getTopicName();
 
 protected:
     virtual void connect();
     virtual void disconnect();
+
+    const bool notify_graph_;
 };
 
 //! \endcond
@@ -41,15 +54,15 @@ protected:
  *
  * \sa b0::Subscriber
  */
-template<typename TMsg, bool notifyGraph = true>
+template<typename TMsg>
 class Publisher : public AbstractPublisher
 {
 public:
     /*!
      * \brief Construct a Publisher child of the specified Node
      */
-    Publisher(Node *node, std::string topic_name, bool managed = true)
-        : AbstractPublisher(node, topic_name, managed)
+    Publisher(Node *node, std::string topic_name, bool managed = true, bool notify_graph = true)
+        : AbstractPublisher(node, topic_name, managed, notify_graph)
     {
     }
 
@@ -59,28 +72,6 @@ public:
     virtual void publish(const TMsg &msg)
     {
         write(msg);
-    }
-
-    /*!
-     * \brief Perform initialization and optionally send graph notify
-     */
-    void init() override
-    {
-        AbstractPublisher::init();
-
-        if(notifyGraph)
-            b0::graph::notifyTopic(node_, name_, false, true);
-    }
-
-    /*!
-     * \brief Perform cleanup and optionally send graph notify
-     */
-    void cleanup() override
-    {
-        AbstractPublisher::cleanup();
-
-        if(notifyGraph)
-            b0::graph::notifyTopic(node_, name_, false, false);
     }
 };
 

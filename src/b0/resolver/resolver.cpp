@@ -21,7 +21,7 @@ namespace resolver
 {
 
 ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
-    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>(resolver, "resolv", &Resolver::handle, true),
+    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(resolver, "resolv", &Resolver::handle, true, false),
       resolver_(resolver)
 {
 }
@@ -43,7 +43,7 @@ void ResolverServiceServer::announce()
 Resolver::Resolver()
     : Node("resolver"),
       resolv_server_(this),
-      graph_pub_(this, "graph")
+      graph_pub_(this, "graph", true, false)
 {
 }
 
@@ -55,10 +55,12 @@ Resolver::~Resolver()
 
 void Resolver::init()
 {
+    resolv_cli_.setRemoteAddress("inproc://resolv");
+
     Node::init();
 
     resolv_server_.bind((boost::format("tcp://*:%s") % resolverPort()).str());
-    resolv_server_.bind(resolverAddress() /* "inproc://resolv" */); // for socket to self
+    resolv_server_.bind("inproc://resolv"); // for socket to self
 
     // setup XPUB-XSUB proxy addresses
     // those will be sent to nodes in response to announce
@@ -87,11 +89,6 @@ void Resolver::shutdown()
 
     pub_proxy_thread_.interrupt();
     pub_proxy_thread_.join();
-}
-
-std::string Resolver::resolverAddress() const
-{
-    return "inproc://resolv";
 }
 
 std::string Resolver::getXPUBSocketAddress() const
@@ -568,28 +565,14 @@ void Resolver::heartBeatSweeper()
 {
     set_thread_name("HBsweep");
 
-    Node::ResolverServiceClient resolv_cli(this, "resolv", false);
+    resolver::Client resolv_cli(this);
     resolv_cli.setRemoteAddress("inproc://resolv");
     resolv_cli.init();
 
     while(!shutdownRequested())
     {
         // send a special heartbeat to resolv itself trigger the sweeping:
-
-        b0::resolver_msgs::Request rq0;
-        b0::resolver_msgs::HeartBeatRequest &rq = *rq0.mutable_heartbeat();
-        rq.mutable_node_id()->set_host_id("self");
-        rq.mutable_node_id()->set_process_id(0);
-        rq.mutable_node_id()->set_thread_id("self");
-
-        b0::resolver_msgs::Response rsp0;
-        resolv_cli.call(rq0, rsp0);
-        const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
-        if(!rsp.ok())
-        {
-            break;
-        }
-
+        resolv_cli.sendHeartbeat();
         boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
     }
 

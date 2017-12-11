@@ -2,7 +2,7 @@
 #define B0__NODE_H__INCLUDED
 
 #include <b0/socket/socket.h>
-#include <b0/service_client.h>
+#include <b0/resolver/client.h>
 #include <b0/logger/interface.h>
 
 #include <set>
@@ -20,14 +20,6 @@ namespace logger
 class Logger;
 
 } // namespace logger
-
-namespace resolver_msgs
-{
-
-class Request;
-class Response;
-
-} // namespace resolver_msgs
 
 class AbstractPublisher;
 class AbstractSubscriber;
@@ -206,16 +198,6 @@ protected:
     virtual std::string freeTCPAddress();
 
     /*!
-     * \brief Get the address of the resolver (e.g. may be provided via an env var)
-     *
-     * The resolver address must be provided via the BWF_RESOLVER environment variable.
-     * If it is not provided, it will be automatically guessed.
-     * The current way of guessing it is to simply return "tcp://localhost:22000", which
-     * is only suitable for running everything on the same machine.
-     */
-    virtual std::string resolverAddress() const;
-
-    /*!
      * \brief Announce this node to resolver
      */
     virtual void announceNode();
@@ -313,18 +295,15 @@ protected:
     //! \endcond
 
 public:
-    //! An alias for the ServiceClient which talks to the resolver service
-    using ResolverServiceClient = ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response, false>;
-
     //! Return the ServiceClient to talk to resolver
-    ResolverServiceClient & resolverClient() {return resolv_cli_;}
+    resolver::Client & resolverClient() {return resolv_cli_;}
 
 protected:
     //! ZeroMQ Context used by all sockets of this node
     zmq::context_t context_;
 
     //! Service client used to talk with resolver (announce, resolve, heartbeat)
-    ResolverServiceClient resolv_cli_;
+    resolver::Client resolv_cli_;
 
     //! The logger of this node
     logger::LogInterface *p_logger_;

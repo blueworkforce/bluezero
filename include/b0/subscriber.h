@@ -7,7 +7,6 @@
 #include <boost/bind.hpp>
 
 #include <b0/socket/socket.h>
-#include <b0/graph/graph.h>
 
 namespace b0
 {
@@ -21,16 +20,29 @@ class AbstractSubscriber : public socket::Socket
 public:
     using logger::LogInterface::log;
 
-    AbstractSubscriber(Node *node, std::string topic_name, bool managed = true);
+    AbstractSubscriber(Node *node, std::string topic_name, bool managed, bool notify_graph);
+
     virtual ~AbstractSubscriber();
+
     void log(LogLevel level, std::string message) const override;
+
+    /*!
+     * \brief Perform initialization and optionally send graph notify
+     */
     virtual void init() override;
+
+    /*!
+     * \brief Perform cleanup and optionally send graph notify
+     */
     virtual void cleanup() override;
+
     std::string getTopicName();
 
 protected:
     virtual void connect();
     virtual void disconnect();
+
+    const bool notify_graph_;
 };
 
 //! \endcond
@@ -55,15 +67,15 @@ protected:
  *
  * \sa b0::Publisher
  */
-template<typename TMsg, bool notifyGraph = true>
+template<typename TMsg>
 class Subscriber : public AbstractSubscriber
 {
 public:
     /*!
      * \brief Construct a Subscriber child of a specified Node, with a boost::function as callback
      */
-    Subscriber(Node *node, std::string topic_name, boost::function<void(const TMsg&)> callback = 0, bool managed = true)
-        : AbstractSubscriber(node, topic_name, managed),
+    Subscriber(Node *node, std::string topic_name, boost::function<void(const TMsg&)> callback = 0, bool managed = true, bool notify_graph = true)
+        : AbstractSubscriber(node, topic_name, managed, notify_graph),
           callback_(callback)
     {
     }
@@ -72,8 +84,8 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method (of the Node subclass) as a callback
      */
     template<class TNode>
-    Subscriber(TNode *node, std::string topic_name, void (TNode::*callbackMethod)(const TMsg&), bool managed = true)
-        : Subscriber(node, topic_name, boost::bind(callbackMethod, node, _1), managed)
+    Subscriber(TNode *node, std::string topic_name, void (TNode::*callbackMethod)(const TMsg&), bool managed = true, bool notify_graph = true)
+        : Subscriber(node, topic_name, boost::bind(callbackMethod, node, _1), managed, notify_graph)
     {
         // delegate constructor. leave empty
     }
@@ -82,32 +94,10 @@ public:
      * \brief Construct a Subscriber child of a specified Node, with a method as a callback
      */
     template<class T>
-    Subscriber(Node *node, std::string topic_name, void (T::*callbackMethod)(const TMsg&), T *callbackObject, bool managed = true)
-        : Subscriber(node, topic_name, boost::bind(callbackMethod, callbackObject, _1), managed)
+    Subscriber(Node *node, std::string topic_name, void (T::*callbackMethod)(const TMsg&), T *callbackObject, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, topic_name, boost::bind(callbackMethod, callbackObject, _1), managed, notify_graph)
     {
         // delegate constructor. leave empty
-    }
-
-    /*!
-     * \brief Perform initialization and optionally send graph notify
-     */
-    void init() override
-    {
-        AbstractSubscriber::init();
-
-        if(notifyGraph)
-            b0::graph::notifyTopic(node_, name_, true, true);
-    }
-
-    /*!
-     * \brief Perform cleanup and optionally send graph notify
-     */
-    void cleanup() override
-    {
-        AbstractSubscriber::cleanup();
-
-        if(notifyGraph)
-            b0::graph::notifyTopic(node_, name_, true, false);
     }
 
     /*!
