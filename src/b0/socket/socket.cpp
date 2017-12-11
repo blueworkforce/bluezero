@@ -3,6 +3,7 @@
 #include <b0/envelope.h>
 
 #include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace b0
 {
@@ -39,7 +40,10 @@ void Socket::setHasHeader(bool has_header)
 
 void Socket::log(LogLevel level, std::string message) const
 {
-    node_.log(level, message);
+    if(boost::lexical_cast<std::string>(boost::this_thread::get_id()) == node_.threadID())
+        node_.log(level, message);
+    else
+        std::cout << "[Skipped logger because in another thread]: " << message << std::endl;
 }
 
 void Socket::setRemoteAddress(std::string addr)
