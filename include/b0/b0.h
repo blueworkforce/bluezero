@@ -3,6 +3,7 @@
 #include <b0/subscriber.h>
 #include <b0/service_client.h>
 #include <b0/service_server.h>
+#include <b0/exceptions.h>
 
 /*!
  * \mainpage BlueWorkforce Middleware - A brief description

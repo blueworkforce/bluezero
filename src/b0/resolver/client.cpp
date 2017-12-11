@@ -1,5 +1,6 @@
 #include <b0/resolver/client.h>
 #include <b0/node.h>
+#include <b0/exceptions.h>
 
 #include "resolver.pb.h"
 
@@ -13,7 +14,7 @@ Client::Client(b0::Node *node)
     : ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(node, "resolv", false, false)
 {
     if(!node)
-        throw std::runtime_error("node cannot be null");
+        throw exception::Exception("node cannot be null");
 
     const char *resolver_addr = std::getenv("BWF_RESOLVER");
     setRemoteAddress(resolver_addr ? resolver_addr : "tcp://localhost:22000");
@@ -40,7 +41,7 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
     const b0::resolver_msgs::AnnounceNodeResponse &rsp = rsp0.announce_node();
 
     if(!rsp.ok())
-        throw std::runtime_error("announceNode failed");
+        throw exception::Exception("announceNode failed");
 
     if(node_name != rsp.node_name())
     {
@@ -69,7 +70,7 @@ void Client::notifyShutdown()
     const b0::resolver_msgs::ShutdownNodeResponse &rsp = rsp0.shutdown_node();
 
     if(!rsp.ok())
-        throw std::runtime_error("notifyShutdown failed");
+        throw exception::Exception("notifyShutdown failed");
 }
 
 void Client::sendHeartbeat(int64_t *time_usec, std::string host_id, int process_id, std::string thread_id)
@@ -96,7 +97,7 @@ void Client::sendHeartbeat(int64_t *time_usec, std::string host_id, int process_
     const b0::resolver_msgs::HeartBeatResponse &rsp = rsp0.heartbeat();
 
     if(!rsp.ok())
-        throw std::runtime_error("sendHeartbeat failed");
+        throw exception::Exception("sendHeartbeat failed");
 
     if(time_usec)
     {
@@ -148,7 +149,7 @@ void Client::announceService(std::string name, std::string addr)
     const b0::resolver_msgs::AnnounceServiceResponse &rsp = rsp0.announce_service();
 
     if(!rsp.ok())
-        throw std::runtime_error("announceService failed");
+        throw exception::Exception("announceService failed");
 }
 
 void Client::resolveService(std::string name, std::string &addr)
@@ -162,7 +163,7 @@ void Client::resolveService(std::string name, std::string &addr)
     const b0::resolver_msgs::ResolveServiceResponse &rsp = rsp0.resolve();
 
     if(!rsp.ok())
-        throw std::runtime_error("resolveService failed");
+        throw exception::Exception("resolveService failed");
 
     addr = rsp.sock_addr();
 }

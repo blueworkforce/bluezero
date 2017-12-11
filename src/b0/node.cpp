@@ -3,6 +3,7 @@
 #include <b0/subscriber.h>
 #include <b0/service_client.h>
 #include <b0/service_server.h>
+#include <b0/exceptions.h>
 #include <b0/logger/logger.h>
 #include <b0/utils/thread_name.h>
 
@@ -54,7 +55,7 @@ Node::~Node()
 void Node::init()
 {
     if(state_ != State::Created)
-        throw std::runtime_error("Cannot call init() in current state");
+        throw exception::InvalidStateTransition("Cannot call init() in current state");
 
     log(DEBUG, "Initialization...");
 
@@ -76,7 +77,7 @@ void Node::init()
 void Node::shutdown()
 {
     if(state_ != State::Ready)
-        throw std::runtime_error("Cannot call shutdown() in current state");
+        throw exception::InvalidStateTransition("Cannot call shutdown() in current state");
 
     log(DEBUG, "Shutting down...");
 
@@ -93,7 +94,7 @@ bool Node::shutdownRequested() const
 void Node::spinOnce()
 {
     if(state_ != State::Ready)
-        throw std::runtime_error("Cannot call spinOnce() in current state");
+        throw exception::InvalidStateTransition("Cannot call spinOnce() in current state");
 
     // spin sockets:
     for(auto socket : sockets_)
@@ -103,7 +104,7 @@ void Node::spinOnce()
 void Node::spin(double spinRate)
 {
     if(state_ != State::Ready)
-        throw std::runtime_error("Cannot call spin() in current state");
+        throw exception::InvalidStateTransition("Cannot call spin() in current state");
 
     log(INFO, "Node spinning...");
 
@@ -123,7 +124,7 @@ void Node::spin(double spinRate)
 void Node::cleanup()
 {
     if(state_ != State::Ready)
-        throw std::runtime_error("Cannot call cleanup() in current state");
+        throw exception::InvalidStateTransition("Cannot call cleanup() in current state");
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
@@ -146,7 +147,7 @@ void Node::cleanup()
 void Node::log(LogLevel level, std::string message) const
 {
     if(boost::this_thread::get_id() != thread_id_)
-        throw std::runtime_error("cannot call Node::log() from another thread");
+        throw exception::Exception("cannot call Node::log() from another thread");
 
     p_logger_->log(level, message);
 }
@@ -187,7 +188,7 @@ std::string Node::getXSUBSocketAddress() const
 void Node::addSocket(socket::Socket *socket)
 {
     if(state_ != State::Created)
-        throw std::runtime_error("Cannot create a socket with an already initialized node");
+        throw exception::Exception("Cannot create a socket with an already initialized node");
 
     sockets_.insert(socket);
 }
