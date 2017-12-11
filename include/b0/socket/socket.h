@@ -65,7 +65,7 @@ public:
     /*!
      * \brief Process incoming messages and call callbacks
      */
-    virtual void spinOnce() = 0;
+    virtual void spinOnce();
 
     /*!
      * \brief Set the remote address the socket will connect to

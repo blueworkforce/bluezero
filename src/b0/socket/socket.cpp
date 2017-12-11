@@ -28,6 +28,10 @@ Socket::~Socket()
         node_.removeSocket(this);
 }
 
+void Socket::spinOnce()
+{
+}
+
 void Socket::setHasHeader(bool has_header)
 {
     has_header_ = has_header;
