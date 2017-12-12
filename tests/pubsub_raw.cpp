@@ -16,18 +16,18 @@ void resolver_thread()
 void pub_thread()
 {
     b0::Node node("pub");
-    b0::Publisher<std::string> pub(&node, "topic1");
+    b0::AbstractPublisher pub(&node, "topic1");
     node.init();
-    for(;;) pub.publish("hello");
+    for(;;) pub.writeRaw("hello");
 }
 
 void sub_thread()
 {
     b0::Node node("sub");
-    b0::Subscriber<std::string> sub(&node, "topic1");
+    b0::AbstractSubscriber sub(&node, "topic1");
     node.init();
     std::string payload;
-    sub.read(payload);
+    sub.readRaw(payload);
     exit(payload == "hello" ? 0 : 1);
 }
 
