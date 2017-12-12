@@ -22,8 +22,8 @@ endif()
 set(CMAKE_AUTOMOC ON)
 
 if(WIN32)
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
     add_definitions(-DBOOST_USE_WINDOWS_H)
-    add_definitions(-D_WINSOCKAPI_)
 endif()
 
 find_package(Doxygen)
