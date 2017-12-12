@@ -29,7 +29,7 @@ public:
     /*!
      * \brief Construct an AbstractServiceServer child of the specified Node
      */
-    AbstractServiceServer(Node *node, std::string service_name, bool managed, bool notify_graph);
+    AbstractServiceServer(Node *node, std::string service_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief AbstractServiceServer destructor

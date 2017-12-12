@@ -104,7 +104,7 @@ public:
     /*!
      * \brief Read a raw payload from the underlying ZeroMQ socket
      */
-    virtual bool read(std::string &msg);
+    virtual bool readRaw(std::string &msg);
 
     /*!
      * \brief Read a google::protobuf::Message from the underlying ZeroMQ socket
@@ -120,7 +120,7 @@ public:
     /*!
      * \brief Write a raw payload
      */
-    virtual bool write(const std::string &msg);
+    virtual bool writeRaw(const std::string &msg);
 
     /*!
      * \brief Write a google::protobuf::Message

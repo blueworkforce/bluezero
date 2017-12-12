@@ -35,7 +35,7 @@ public:
     /*!
      * \brief Construct an AbstractSubscriber child of the specified Node
      */
-    AbstractSubscriber(Node *node, std::string topic_name, bool managed, bool notify_graph);
+    AbstractSubscriber(Node *node, std::string topic_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief AbstractSubscriber destructor

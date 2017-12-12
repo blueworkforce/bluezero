@@ -26,7 +26,7 @@ public:
     /*!
      * \brief Construct an AbstractServiceClient child of the specified Node
      */
-    AbstractServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph);
+    AbstractServiceClient(Node *node, std::string service_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief AbstractServiceClient destructor

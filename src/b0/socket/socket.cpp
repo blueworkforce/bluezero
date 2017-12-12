@@ -79,7 +79,7 @@ std::string Socket::getName() const
     return name_;
 }
 
-bool Socket::read(std::string &msg)
+bool Socket::readRaw(std::string &msg)
 {
     std::string hdr, payload;
 
@@ -125,7 +125,7 @@ bool Socket::read(std::string &msg)
 bool Socket::read(google::protobuf::Message &msg)
 {
     std::string payload;
-    return read(payload) && msg.ParseFromString(payload);
+    return readRaw(payload) && msg.ParseFromString(payload);
 }
 
 bool Socket::poll(long timeout)
@@ -139,7 +139,7 @@ bool Socket::poll(long timeout)
     return items[0].revents & ZMQ_POLLIN;
 }
 
-bool Socket::write(const std::string &msg)
+bool Socket::writeRaw(const std::string &msg)
 {
     std::string payload = wrapEnvelope(msg, compression_algorithm_, compression_level_);
 
@@ -162,7 +162,7 @@ bool Socket::write(const std::string &msg)
 bool Socket::write(const google::protobuf::Message &msg)
 {
     std::string payload;
-    return msg.SerializeToString(&payload) && write(payload);
+    return msg.SerializeToString(&payload) && writeRaw(payload);
 }
 
 void Socket::setCompression(std::string algorithm, int level)
