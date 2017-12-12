@@ -39,7 +39,7 @@ void dbg_set_thread_name(uint32_t dwThreadID, const char* threadName)
 
 void dbg_set_thread_name(const char *threadName)
 {
-    set_thread_name(GetCurrentThreadId(), threadName);
+    dbg_set_thread_name(GetCurrentThreadId(), threadName);
 }
 
 #if 0
