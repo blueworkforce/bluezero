@@ -10,6 +10,8 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "resolver.pb.h"
+#include "logger.pb.h"
+
 #include <b0/resolver/resolver.h>
 #include <b0/logger/logger.h>
 #include <b0/utils/thread_name.h>

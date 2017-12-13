@@ -2,6 +2,7 @@
 #include <b0/node.h>
 
 #include "resolver.pb.h"
+#include "logger.pb.h"
 
 namespace b0
 {
