@@ -107,6 +107,8 @@ void Node::spin(double spinRate)
     while(!shutdownRequested())
     {
         spinOnce();
+        // FIXME: use sleep_until to effectively spin at spinRate Hz...
+        // FIXME: ...i.e.: compensate for the time elapsed in spinOnce()
         boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
     }
 
