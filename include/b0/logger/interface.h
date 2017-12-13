@@ -37,30 +37,6 @@ public:
     };
 
     /*!
-     * \brief Log a message to the remote logger, with the default level (INFO)
-     */
-    virtual void log(std::string message) const;
-
-    /*!
-     * \brief Log a message to the remote logger, at default level, using a format string
-     */
-    template<typename... Arguments>
-    void log(std::string const &fmt, Arguments&&... args) const
-    {
-        try
-        {
-            boost::format format(fmt);
-            log_helper(info, format, std::forward<Arguments>(args)...);
-        }
-        catch(boost::io::too_many_args &ex)
-        {
-            std::string s = fmt;
-            s += " (error during formatting)";
-            log(s);
-        }
-    }
-
-    /*!
      * \brief Log a message to the remote logger, with a specified level
      */
     virtual void log(LogLevel level, std::string message) const = 0;
@@ -80,7 +56,7 @@ public:
         {
             std::string s = fmt;
             s += " (error during formatting)";
-            log(s);
+            log(level, s);
         }
     }
 
