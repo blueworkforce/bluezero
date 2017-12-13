@@ -1,3 +1,4 @@
+#cmakedefine HAVE_POSIX_SIGNALS
 #cmakedefine HAVE_BOOST_PROCESS
 #cmakedefine ZLIB_FOUND
 #cmakedefine LZ4_FOUND
