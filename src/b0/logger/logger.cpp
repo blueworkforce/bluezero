@@ -12,11 +12,6 @@ namespace b0
 namespace logger
 {
 
-void LogInterface::log(std::string message) const
-{
-    log(info, message);
-}
-
 void LogInterface::log_helper(LogLevel level, boost::format &format) const
 {
     return log(level, format.str());
