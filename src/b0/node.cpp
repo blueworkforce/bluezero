@@ -1,4 +1,5 @@
 #include <b0/node.h>
+#include <b0/config.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
 #include <b0/service_client.h>
@@ -275,9 +276,9 @@ void Node::setupSIGINTHandler()
 {
     if(sigint_handler_setup_) return;
 
-#ifndef WIN32
+#ifdef HAVE_POSIX_SIGNALS
     struct sigaction sa;
-    memset(&sa, 0, sizeof(sa));
+    std::memset(&sa, 0, sizeof(sa));
     sa.sa_handler = &Node::signalHandler;
     sigfillset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);

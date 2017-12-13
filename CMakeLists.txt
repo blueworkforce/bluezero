@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 project(bluezero)
 
 include(CheckIncludeFileCXX)
+include(CheckCXXSourceCompiles)
 
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
@@ -83,6 +84,18 @@ try_compile(HAVE_BOOST_PROCESS
     COMPILE_DEFINITIONS "${Boost_DEFINITIONS} -std=c++11"
     LINK_LIBRARIES ${Boost_LIBRARIES}
     COPY_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main)
+
+check_cxx_source_compiles("
+#include <cstring>
+#include <signal.h>
+int main()
+{
+    struct sigaction sa;
+    std::memset(&sa, 0, sizeof(sa));
+    sigfillset(&sa.sa_mask);
+    sigaction(SIGINT, &sa, NULL);
+}
+" HAVE_POSIX_SIGNALS)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/b0/config.h)
 
