@@ -4,6 +4,8 @@
 #include <b0/exceptions.h>
 #include <b0/compress/compress.h>
 
+#include "resolver.pb.h"
+#include "logger.pb.h"
 #include "envelope.pb.h"
 
 #include <boost/format.hpp>
