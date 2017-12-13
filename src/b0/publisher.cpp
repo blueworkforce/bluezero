@@ -49,13 +49,13 @@ std::string AbstractPublisher::getTopicName()
 
 void AbstractPublisher::connect()
 {
-    log(TRACE, "Connecting to %s...", remote_addr_);
+    log(trace, "Connecting to %s...", remote_addr_);
     socket_.connect(remote_addr_);
 }
 
 void AbstractPublisher::disconnect()
 {
-    log(TRACE, "Disconnecting from %s...", remote_addr_);
+    log(trace, "Disconnecting from %s...", remote_addr_);
     socket_.disconnect(remote_addr_);
 }
 

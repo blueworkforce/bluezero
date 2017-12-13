@@ -58,7 +58,7 @@ void Node::init()
     if(state_ != State::Created)
         throw exception::InvalidStateTransition("Cannot call init() in current state");
 
-    log(DEBUG, "Initialization...");
+    log(debug, "Initialization...");
 
     resolv_cli_.init(); // resolv_cli_ is not managed
 
@@ -66,13 +66,13 @@ void Node::init()
 
     startHeartbeatThread();
 
-    log(DEBUG, "Initializing sockets...");
+    log(debug, "Initializing sockets...");
     for(auto socket : sockets_)
         socket->init();
 
     state_ = State::Ready;
 
-    log(DEBUG, "Initialization complete.");
+    log(debug, "Initialization complete.");
 }
 
 void Node::shutdown()
@@ -80,11 +80,11 @@ void Node::shutdown()
     if(state_ != State::Ready)
         throw exception::InvalidStateTransition("Cannot call shutdown() in current state");
 
-    log(DEBUG, "Shutting down...");
+    log(debug, "Shutting down...");
 
     shutdown_flag_ = true;
 
-    log(DEBUG, "Shutting complete.");
+    log(debug, "Shutting complete.");
 }
 
 bool Node::shutdownRequested() const
@@ -107,7 +107,7 @@ void Node::spin(double spinRate)
     if(state_ != State::Ready)
         throw exception::InvalidStateTransition("Cannot call spin() in current state");
 
-    log(INFO, "Node spinning...");
+    log(info, "Node spinning...");
 
     while(!shutdownRequested())
     {
@@ -115,11 +115,11 @@ void Node::spin(double spinRate)
         boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
     }
 
-    log(INFO, "Node cleanup...");
+    log(info, "Node cleanup...");
 
     cleanup();
 
-    log(INFO, "spin() finished");
+    log(info, "spin() finished");
 }
 
 void Node::cleanup()
@@ -129,11 +129,11 @@ void Node::cleanup()
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
-    log(DEBUG, "Killing heartbeat thread...");
+    log(debug, "Killing heartbeat thread...");
     heartbeat_thread_.interrupt();
     heartbeat_thread_.join();
 
-    log(DEBUG, "Cleanup sockets...");
+    log(debug, "Cleanup sockets...");
     for(auto socket : sockets_)
         socket->cleanup();
 
@@ -155,7 +155,7 @@ void Node::log(LogLevel level, std::string message) const
 
 void Node::startHeartbeatThread()
 {
-    log(TRACE, "Starting heartbeat thread...");
+    log(trace, "Starting heartbeat thread...");
     heartbeat_thread_ = boost::thread(&Node::heartbeatLoop, this);
 }
 

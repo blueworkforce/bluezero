@@ -68,10 +68,10 @@ void Resolver::init()
     // those will be sent to nodes in response to announce
     int xsub_proxy_port_ = freeTCPPort();
     xsub_proxy_addr_ = address(hostAddress(), xsub_proxy_port_);
-    log(TRACE, "XSUB address is %s", xsub_proxy_addr_);
+    log(trace, "XSUB address is %s", xsub_proxy_addr_);
     int xpub_proxy_port_ = freeTCPPort();
     xpub_proxy_addr_ = address(hostAddress(), xpub_proxy_port_);
-    log(TRACE, "XPUB address is %s", xpub_proxy_addr_);
+    log(trace, "XPUB address is %s", xpub_proxy_addr_);
     // run XPUB-XSUB proxy:
     pub_proxy_thread_ = boost::thread(&Resolver::pubProxy, this, xsub_proxy_port_, xpub_proxy_port_);
 
@@ -82,7 +82,7 @@ void Resolver::init()
     // (has to be disabled because resolver is a special kind of node)
     onNodeTopicPublishStart(getName(), graph_pub_.getTopicName());
 
-    log(INFO, "Ready.");
+    log(info, "Ready.");
 }
 
 void Resolver::shutdown()
@@ -174,49 +174,49 @@ void Resolver::onNodeDisconnected(std::string name)
 
 void Resolver::onNodeTopicPublishStart(std::string node_name, std::string topic_name)
 {
-    log(INFO, "Graph: node '%s' publishes on topic '%s'", node_name, topic_name);
+    log(info, "Graph: node '%s' publishes on topic '%s'", node_name, topic_name);
     node_publishes_topic_.insert(std::make_pair(node_name, topic_name));
 }
 
 void Resolver::onNodeTopicPublishStop(std::string node_name, std::string topic_name)
 {
-    log(INFO, "Graph: node '%s' stops publishing on topic '%s'", node_name, topic_name);
+    log(info, "Graph: node '%s' stops publishing on topic '%s'", node_name, topic_name);
     node_publishes_topic_.erase(std::make_pair(node_name, topic_name));
 }
 
 void Resolver::onNodeTopicSubscribeStart(std::string node_name, std::string topic_name)
 {
-    log(INFO, "Graph: node '%s' subscribes to topic '%s'", node_name, topic_name);
+    log(info, "Graph: node '%s' subscribes to topic '%s'", node_name, topic_name);
     node_subscribes_topic_.insert(std::make_pair(node_name, topic_name));
 }
 
 void Resolver::onNodeTopicSubscribeStop(std::string node_name, std::string topic_name)
 {
-    log(INFO, "Graph: node '%s' stops subscribing to topic '%s'", node_name, topic_name);
+    log(info, "Graph: node '%s' stops subscribing to topic '%s'", node_name, topic_name);
     node_subscribes_topic_.erase(std::make_pair(node_name, topic_name));
 }
 
 void Resolver::onNodeServiceOfferStart(std::string node_name, std::string service_name)
 {
-    log(INFO, "Graph: node '%s' offers service '%s'", node_name, service_name);
+    log(info, "Graph: node '%s' offers service '%s'", node_name, service_name);
     node_offers_service_.insert(std::make_pair(node_name, service_name));
 }
 
 void Resolver::onNodeServiceOfferStop(std::string node_name, std::string service_name)
 {
-    log(INFO, "Graph: node '%s' stops offering service '%s'", node_name, service_name);
+    log(info, "Graph: node '%s' stops offering service '%s'", node_name, service_name);
     node_offers_service_.erase(std::make_pair(node_name, service_name));
 }
 
 void Resolver::onNodeServiceUseStart(std::string node_name, std::string service_name)
 {
-    log(INFO, "Graph: node '%s' connects to service '%s'", node_name, service_name);
+    log(info, "Graph: node '%s' connects to service '%s'", node_name, service_name);
     node_uses_service_.insert(std::make_pair(node_name, service_name));
 }
 
 void Resolver::onNodeServiceUseStop(std::string node_name, std::string service_name)
 {
-    log(INFO, "Graph: node '%s' disconnects from service '%s'", node_name, service_name);
+    log(info, "Graph: node '%s' disconnects from service '%s'", node_name, service_name);
     node_uses_service_.erase(std::make_pair(node_name, service_name));
 }
 
@@ -335,7 +335,7 @@ void Resolver::handle(const b0::resolver_msgs::Request &req, b0::resolver_msgs::
     else if(req.has_get_graph())
         handleGetGraph(req.get_graph(), *resp.mutable_get_graph());
     else
-        log(ERROR, "received an unrecognized request: %s", req.DebugString());
+        log(error, "received an unrecognized request: %s", req.DebugString());
 }
 
 std::string Resolver::makeUniqueNodeName(std::string nodeName)
@@ -352,12 +352,12 @@ std::string Resolver::makeUniqueNodeName(std::string nodeName)
 
 void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &rq, b0::resolver_msgs::AnnounceNodeResponse &rsp)
 {
-    log(TRACE, "Received a AnnounceNodeRequest");
+    log(trace, "Received a AnnounceNodeRequest");
     const b0::resolver_msgs::NodeID &node_id = rq.node_id();
     if(nodeByID(node_id))
     {
         rsp.set_ok(false);
-        log(ERROR, "A node with the same id (%s) already exists", nodeKey(rq.node_id()));
+        log(error, "A node with the same id (%s) already exists", nodeKey(rq.node_id()));
         return;
     }
     std::string nodeName = makeUniqueNodeName(rq.node_name());
@@ -376,7 +376,7 @@ void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &
     rsp.set_xsub_sock_addr(xsub_proxy_addr_);
     rsp.set_xpub_sock_addr(xpub_proxy_addr_);
     rsp.set_ok(true);
-    log(INFO, "New node has joined: '%s' (key=%s)", e->name, key);
+    log(info, "New node has joined: '%s' (key=%s)", e->name, key);
 }
 
 void Resolver::handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &rq, b0::resolver_msgs::ShutdownNodeResponse &rsp)
@@ -385,14 +385,14 @@ void Resolver::handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &
     if(!ne)
     {
         rsp.set_ok(false);
-        log(ERROR, "Invalid node id: %s", nodeKey(rq.node_id()));
+        log(error, "Invalid node id: %s", nodeKey(rq.node_id()));
         return;
     }
     std::string node_name = ne->name;
     onNodeDisconnected(node_name);
     delete ne;
     rsp.set_ok(true);
-    log(INFO, "Node '%s' has left", node_name);
+    log(info, "Node '%s' has left", node_name);
 }
 
 void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceRequest &rq, b0::resolver_msgs::AnnounceServiceResponse &rsp)
@@ -401,13 +401,13 @@ void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceReq
     if(!ne)
     {
         rsp.set_ok(false);
-        log(ERROR, "Invalid node id: %s", nodeKey(rq.node_id()));
+        log(error, "Invalid node id: %s", nodeKey(rq.node_id()));
         return;
     }
     if(serviceByName(rq.service_name()))
     {
         rsp.set_ok(false);
-        log(ERROR, "A service with name '%s' already exists", rq.service_name());
+        log(error, "A service with name '%s' already exists", rq.service_name());
         return;
     }
     resolver::ServiceEntry *se = new resolver::ServiceEntry;
@@ -418,7 +418,7 @@ void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceReq
     ne->services.push_back(se);
     //onNodeNewService(...);
     rsp.set_ok(true);
-    log(INFO, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name(), rq.sock_addr());
+    log(info, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name(), rq.sock_addr());
 }
 
 void Resolver::handleResolveService(const b0::resolver_msgs::ResolveServiceRequest &rq, b0::resolver_msgs::ResolveServiceResponse &rsp)
@@ -427,11 +427,11 @@ void Resolver::handleResolveService(const b0::resolver_msgs::ResolveServiceReque
     if(it == services_by_name_.end())
     {
         rsp.set_ok(false);
-        log(ERROR, "Failed to resolve service '%s'", rq.service_name());
+        log(error, "Failed to resolve service '%s'", rq.service_name());
         return;
     }
     resolver::ServiceEntry *se = it->second;
-    log(TRACE, "Resolution: '%s' -> %s", rq.service_name(), se->addr);
+    log(trace, "Resolution: '%s' -> %s", rq.service_name(), se->addr);
     rsp.set_ok(true);
     rsp.set_sock_addr(se->addr);
 }
@@ -452,7 +452,7 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         }
         for(auto node_name : nodes_shutdown)
         {
-            log(INFO, "Node '%s' disconnected due to timeout.", node_name);
+            log(info, "Node '%s' disconnected due to timeout.", node_name);
             resolver::NodeEntry *e = nodeByName(node_name);
             onNodeDisconnected(node_name);
             delete e;
@@ -464,7 +464,7 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
         if(!ne)
         {
             rsp.set_ok(false);
-            log(ERROR, "Received a heartbeat from an invalid node id: %s", nodeKey(rq.node_id()));
+            log(error, "Received a heartbeat from an invalid node id: %s", nodeKey(rq.node_id()));
             return;
         }
         heartBeat(ne);

@@ -47,7 +47,7 @@ public:
             b0::resolver_msgs::Request req;
             b0::resolver_msgs::GetGraphRequest &gg = *req.mutable_get_graph();
             b0::resolver_msgs::Response resp;
-            log(INFO, "Requesting graph");
+            log(info, "Requesting graph");
             resolv_cli_.call(req, resp);
             printOrDisplayGraph("Current graph", resp.get_graph().graph());
         }
@@ -69,12 +69,12 @@ public:
     {
         if(termHasImageCapability())
         {
-            log(INFO, message);
+            log(info, message);
             renderAndDisplayGraph(graph);
         }
         else
         {
-            log(INFO, "%s: %s", message, graph.DebugString());
+            log(info, "%s: %s", message, graph.DebugString());
         }
     }
 

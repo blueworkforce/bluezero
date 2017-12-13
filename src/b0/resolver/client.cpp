@@ -26,7 +26,7 @@ Client::~Client()
 
 void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr)
 {
-    log(TRACE, "Announcing node '%s' to resolver...", node_name);
+    log(trace, "Announcing node '%s' to resolver...", node_name);
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::AnnounceNodeRequest &rq = *rq0.mutable_announce_node();
     b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
@@ -36,7 +36,7 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
     rq.set_node_name(node_name);
 
     b0::resolver_msgs::Response rsp0;
-    log(TRACE, "Waiting for response from resolver...");
+    log(trace, "Waiting for response from resolver...");
     call(rq0, rsp0);
     const b0::resolver_msgs::AnnounceNodeResponse &rsp = rsp0.announce_node();
 
@@ -45,15 +45,15 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
 
     if(node_name != rsp.node_name())
     {
-        log(WARN, "Warning: resolver changed this node name to '%s'", rsp.node_name());
+        log(warn, "Warning: resolver changed this node name to '%s'", rsp.node_name());
     }
     node_name = rsp.node_name();
 
     xpub_sock_addr = rsp.xpub_sock_addr();
-    log(TRACE, "Proxy's XPUB socket address: %s", xpub_sock_addr);
+    log(trace, "Proxy's XPUB socket address: %s", xpub_sock_addr);
 
     xsub_sock_addr = rsp.xsub_sock_addr();
-    log(TRACE, "Proxy's XSUB socket address: %s", xsub_sock_addr);
+    log(trace, "Proxy's XSUB socket address: %s", xsub_sock_addr);
 }
 
 void Client::notifyShutdown()

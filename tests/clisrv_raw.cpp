@@ -23,7 +23,7 @@ void cli_thread()
     //cli.call(req, resp); is not implemented in AbstractServiceClient
     cli.writeRaw(req);
     cli.readRaw(resp);
-    node.log(b0::Node::LogLevel::INFO, "server response: %s", resp);
+    node.log(b0::Node::LogLevel::info, "server response: %s", resp);
     exit(resp == "world" ? 0 : 1);
 }
 

@@ -4,12 +4,12 @@ package b0.logger_msgs;
 
 // The level of logging, from most verbose to less verbose
 enum LogLevel {
-  TRACE = 0;
-  DEBUG = 10;
-  INFO = 20;
-  WARN = 30;
-  ERROR = 40;
-  FATAL = 50;
+  trace = 0;
+  debug = 10;
+  info = 20;
+  warn = 30;
+  error = 40;
+  fatal = 50;
 }
 
 // A log message sent by node to resolver
