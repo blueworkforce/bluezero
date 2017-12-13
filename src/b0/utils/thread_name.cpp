@@ -1,3 +1,4 @@
+#include <b0/config.h>
 #include <b0/utils/thread_name.h>
 
 #ifdef _WIN32
@@ -89,11 +90,15 @@ void set_thread_name(std::thread *thread, const char *threadName)
 
 void set_thread_name(const char *threadName)
 {
-#ifdef __APPLE__
-    pthread_setname_np(threadName);
-#else // __OSX__
+#if defined(HAVE_PTHREAD_SETNAME_3)
+    pthread_setname_np(pthread_self(), threadName, (void*)0);
+#elif defined(HAVE_PTHREAD_SETNAME_2)
     pthread_setname_np(pthread_self(), threadName);
-#endif // __OSX__
+#elif defined(HAVE_PTHREAD_SETNAME_1)
+    pthread_setname_np(threadName);
+#else
+#error "pthread_setname_np() not available"
+#endif
 }
 
 std::string get_thread_name()

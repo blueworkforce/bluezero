@@ -4,6 +4,7 @@ project(bluezero)
 
 include(CheckIncludeFileCXX)
 include(CheckCXXSourceCompiles)
+include(CheckCXXSourceRuns)
 
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
@@ -96,6 +97,34 @@ int main()
     sigaction(SIGINT, &sa, NULL);
 }
 " HAVE_POSIX_SIGNALS)
+
+set(SAVE_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+set(CMAKE_REQUIRED_FLAGS "-pthread")
+check_cxx_source_runs("
+#include <pthread.h>
+int main()
+{
+    pthread_setname_np(\"foo\");
+    return 0;
+}
+" HAVE_PTHREAD_SETNAME_1)
+check_c_source_runs("
+#include <pthread.h>
+int main()
+{
+    pthread_setname_np(pthread_self(), \"foo\");
+    return 0;
+}
+" HAVE_PTHREAD_SETNAME_2)
+check_c_source_runs("
+#include <pthread.h>
+int main()
+{
+    pthread_setname_np(pthread_self(), \"foo\", (void *)0);
+    return 0;
+}
+" HAVE_PTHREAD_SETNAME_3)
+set(CMAKE_REQUIRED_FLAGS ${SAVE_CMAKE_REQUIRED_FLAGS})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/b0/config.h)
 
