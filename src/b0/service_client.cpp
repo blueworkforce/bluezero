@@ -49,7 +49,7 @@ void AbstractServiceClient::resolve()
 {
     if(!remote_addr_.empty())
     {
-        log(DEBUG, "Skipping resolution because remote address (%s) was given", remote_addr_);
+        log(debug, "Skipping resolution because remote address (%s) was given", remote_addr_);
         return;
     }
 
@@ -57,18 +57,18 @@ void AbstractServiceClient::resolve()
 
     resolv_cli.resolveService(name_, remote_addr_);
 
-    log(TRACE, "Resolved address: %s", remote_addr_);
+    log(trace, "Resolved address: %s", remote_addr_);
 }
 
 void AbstractServiceClient::connect()
 {
-    log(TRACE, "Connecting to %s...", remote_addr_);
+    log(trace, "Connecting to %s...", remote_addr_);
     socket_.connect(remote_addr_);
 }
 
 void AbstractServiceClient::disconnect()
 {
-    log(TRACE, "Disconnecting from %s...", remote_addr_);
+    log(trace, "Disconnecting from %s...", remote_addr_);
     socket_.disconnect(remote_addr_);
 }
 

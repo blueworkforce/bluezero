@@ -54,7 +54,7 @@ void AbstractServiceServer::bind()
     bind_addr_ = (fmt % "*" % port).str();
     remote_addr_ = (fmt % host % port).str();
     socket_.bind(bind_addr_);
-    log(DEBUG, "Bound to %s", bind_addr_);
+    log(debug, "Bound to %s", bind_addr_);
 }
 
 void AbstractServiceServer::unbind()
@@ -66,7 +66,7 @@ void AbstractServiceServer::announce()
 {
     resolver::Client &resolv_cli = node_.resolverClient();
 
-    log(TRACE, "Announcing %s to resolver...", remote_addr_);
+    log(trace, "Announcing %s to resolver...", remote_addr_);
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::AnnounceServiceRequest &rq = *rq0.mutable_announce_service();
     b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
@@ -84,7 +84,7 @@ void AbstractServiceServer::announce()
 void AbstractServiceServer::bind(std::string address)
 {
     socket_.bind(address);
-    log(DEBUG, "Bound to additional address %s", address);
+    log(debug, "Bound to additional address %s", address);
 }
 
 } // namespace b0

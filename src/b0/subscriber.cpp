@@ -49,14 +49,14 @@ std::string AbstractSubscriber::getTopicName()
 
 void AbstractSubscriber::connect()
 {
-    log(TRACE, "Connecting to %s...", remote_addr_);
+    log(trace, "Connecting to %s...", remote_addr_);
     socket_.connect(remote_addr_);
     socket_.setsockopt(ZMQ_SUBSCRIBE, name_.data(), name_.size());
 }
 
 void AbstractSubscriber::disconnect()
 {
-    log(TRACE, "Disconnecting from %s...", remote_addr_);
+    log(trace, "Disconnecting from %s...", remote_addr_);
     socket_.setsockopt(ZMQ_UNSUBSCRIBE, name_.data(), name_.size());
     socket_.disconnect(remote_addr_);
 }

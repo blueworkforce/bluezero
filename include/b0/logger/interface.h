@@ -5,30 +5,6 @@
 
 #include <boost/format.hpp>
 
-#ifdef TRACE
-#undef TRACE
-#endif // TRACE
-
-#ifdef DEBUG
-#undef DEBUG
-#endif // DEBUG
-
-#ifdef INFO
-#undef INFO
-#endif // INFO
-
-#ifdef WARN
-#undef WARN
-#endif // WARN
-
-#ifdef ERROR
-#undef ERROR
-#endif // ERROR
-
-#ifdef FATAL
-#undef FATAL
-#endif // FATAL
-
 namespace b0
 {
 
@@ -47,17 +23,17 @@ public:
     enum LogLevel
     {
         //! The most verbose level
-        TRACE,
+        trace,
         //! Less verbose than TRACE
-        DEBUG,
+        debug,
         //! The default level, should not cause too much spam on the console
-        INFO,
+        info,
         //! Warning level
-        WARN,
+        warn,
         //! Error level
-        ERROR,
+        error,
         //! Fatal error level, after which the node would usually terminate
-        FATAL
+        fatal
     };
 
     /*!
@@ -74,7 +50,7 @@ public:
         try
         {
             boost::format format(fmt);
-            log_helper(INFO, format, std::forward<Arguments>(args)...);
+            log_helper(info, format, std::forward<Arguments>(args)...);
         }
         catch(boost::io::too_many_args &ex)
         {

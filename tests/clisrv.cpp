@@ -24,7 +24,7 @@ void cli_thread()
     req.set_a(123456);
     req.set_b(1);
     cli.call(req, resp);
-    node.log(b0::Node::LogLevel::INFO, "server response: %s", resp.DebugString());
+    node.log(b0::Node::LogLevel::info, "server response: %s", resp.DebugString());
     exit(resp.c() == 123457 ? 0 : 1);
 }
 

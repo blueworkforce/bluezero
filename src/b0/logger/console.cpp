@@ -32,15 +32,15 @@ Console::~Console()
 
 void Console::onLogMessage(const b0::logger_msgs::LogEntry &entry)
 {
-    LogLevel level = LogLevel::INFO;
+    LogLevel level = LogLevel::info;
     switch(entry.level())
     {
-    case b0::logger_msgs::TRACE: level = LogLevel::TRACE; break;
-    case b0::logger_msgs::DEBUG: level = LogLevel::DEBUG; break;
-    case b0::logger_msgs::INFO:  level = LogLevel::INFO;  break;
-    case b0::logger_msgs::WARN:  level = LogLevel::WARN;  break;
-    case b0::logger_msgs::ERROR: level = LogLevel::ERROR; break;
-    case b0::logger_msgs::FATAL: level = LogLevel::FATAL; break;
+    case b0::logger_msgs::trace: level = LogLevel::trace; break;
+    case b0::logger_msgs::debug: level = LogLevel::debug; break;
+    case b0::logger_msgs::info:  level = LogLevel::info;  break;
+    case b0::logger_msgs::warn:  level = LogLevel::warn;  break;
+    case b0::logger_msgs::error: level = LogLevel::error; break;
+    case b0::logger_msgs::fatal: level = LogLevel::fatal; break;
     }
     LocalLogger::LevelInfo info = dummy_logger_.levelInfo(level);
     std::cout << info.ansiEscape() << "[" << entry.node_name() << "] " << info.levelStr << ": " << entry.msg() << info.ansiReset() << std::endl;
