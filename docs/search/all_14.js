@@ -10,5 +10,6 @@ var searchData=
   ['_7elogger',['~Logger',['../classb0_1_1logger_1_1_logger.html#aea7009aa8fca59373614281e463f884e',1,'b0::logger::Logger']]],
   ['_7enode',['~Node',['../classb0_1_1_node.html#a2aa2c822381e7898a23147d96a0a33ed',1,'b0::Node']]],
   ['_7eresolver',['~Resolver',['../classb0_1_1resolver_1_1_resolver.html#a56baee57e453b124b3932f89dd675e80',1,'b0::resolver::Resolver']]],
-  ['_7esocket',['~Socket',['../classb0_1_1socket_1_1_socket.html#a0a9d9bbb0cb491ea8f692f8b3f1a8e84',1,'b0::socket::Socket']]]
+  ['_7esocket',['~Socket',['../classb0_1_1socket_1_1_socket.html#a0a9d9bbb0cb491ea8f692f8b3f1a8e84',1,'b0::socket::Socket']]],
+  ['_7etimesync',['~TimeSync',['../classb0_1_1_time_sync.html#a3f0b6cc6471124bb5758a3d1a9a7e97c',1,'b0::TimeSync']]]
 ];

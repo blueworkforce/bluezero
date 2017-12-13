@@ -106,28 +106,19 @@ Inheritance diagram for b0::logger::LogInterface:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a9e1bba7c917cf21596c47e0e1a291a52"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> { <br />
-&#160;&#160;<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52ae7d85a1f4dd198500b2a960a927e3748">TRACE</a>, 
-<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52adf1e0fdf663cb14e943c8876352d1662">DEBUG</a>, 
-<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52a9c6702e00f64c0afd3d99bf17381c315">INFO</a>, 
-<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52aaa1ca38be5321899c82ca4f9942509fb">WARN</a>, 
+&#160;&#160;<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52ab4f763378f60a18076b1ee73cdc4c2d4">trace</a>, 
+<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52a0a5a78a787b7a7ef328f140e81fc1c52">debug</a>, 
+<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52a5a5eacba12d9c9b744e112b19cd85869">info</a>, 
+<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52a55d051a416b8430fe3214803d7489c40">warn</a>, 
 <br />
-&#160;&#160;<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52a37c4c066411358b062819a7b490c1dbc">ERROR</a>, 
-<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52aae2933295347458c8024f290afd3fabe">FATAL</a>
+&#160;&#160;<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52a70dc8a6e1ef2909e142846e7fd19eeb5">error</a>, 
+<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52aede9ff280c19b0431e905e31818f4206">fatal</a>
 <br />
  }</td></tr>
 <tr class="separator:a9e1bba7c917cf21596c47e0e1a291a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a33f00c520ab4f21737d44a2d2723d1ec"><td class="memItemLeft" align="right" valign="top"><a id="a33f00c520ab4f21737d44a2d2723d1ec"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a33f00c520ab4f21737d44a2d2723d1ec">log</a> (std::string message) const</td></tr>
-<tr class="memdesc:a33f00c520ab4f21737d44a2d2723d1ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, with the default level (INFO) <br /></td></tr>
-<tr class="separator:a33f00c520ab4f21737d44a2d2723d1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e232df70ff967b1a49dad8fff2b27d1"><td class="memTemplParams" colspan="2"><a id="a1e232df70ff967b1a49dad8fff2b27d1"></a>
-template&lt;typename... Arguments&gt; </td></tr>
-<tr class="memitem:a1e232df70ff967b1a49dad8fff2b27d1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a1e232df70ff967b1a49dad8fff2b27d1">log</a> (std::string const &amp;fmt, Arguments &amp;&amp;... args) const</td></tr>
-<tr class="memdesc:a1e232df70ff967b1a49dad8fff2b27d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, at default level, using a format string. <br /></td></tr>
-<tr class="separator:a1e232df70ff967b1a49dad8fff2b27d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad87688b4895316c5048d588c39d4e11a"><td class="memItemLeft" align="right" valign="top"><a id="ad87688b4895316c5048d588c39d4e11a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#ad87688b4895316c5048d588c39d4e11a">log</a> (<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> level, std::string message) const =0</td></tr>
 <tr class="memdesc:ad87688b4895316c5048d588c39d4e11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the remote logger, with a specified level. <br /></td></tr>
@@ -154,17 +145,17 @@ template&lt;typename... Arguments&gt; </td></tr>
 </div><div class="memdoc">
 <p>The level of logging </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52ae7d85a1f4dd198500b2a960a927e3748"></a>TRACE&#160;</td><td class="fielddoc"><p>The most verbose level. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52ab4f763378f60a18076b1ee73cdc4c2d4"></a>trace&#160;</td><td class="fielddoc"><p>The most verbose level. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52adf1e0fdf663cb14e943c8876352d1662"></a>DEBUG&#160;</td><td class="fielddoc"><p>Less verbose than TRACE. </p>
+<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52a0a5a78a787b7a7ef328f140e81fc1c52"></a>debug&#160;</td><td class="fielddoc"><p>Less verbose than TRACE. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52a9c6702e00f64c0afd3d99bf17381c315"></a>INFO&#160;</td><td class="fielddoc"><p>The default level, should not cause too much spam on the console. </p>
+<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52a5a5eacba12d9c9b744e112b19cd85869"></a>info&#160;</td><td class="fielddoc"><p>The default level, should not cause too much spam on the console. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52aaa1ca38be5321899c82ca4f9942509fb"></a>WARN&#160;</td><td class="fielddoc"><p>Warning level. </p>
+<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52a55d051a416b8430fe3214803d7489c40"></a>warn&#160;</td><td class="fielddoc"><p>Warning level. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52a37c4c066411358b062819a7b490c1dbc"></a>ERROR&#160;</td><td class="fielddoc"><p>Error level. </p>
+<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52a70dc8a6e1ef2909e142846e7fd19eeb5"></a>error&#160;</td><td class="fielddoc"><p>Error level. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52aae2933295347458c8024f290afd3fabe"></a>FATAL&#160;</td><td class="fielddoc"><p>Fatal error level, after which the node would usually terminate. </p>
+<tr><td class="fieldname"><a id="a9e1bba7c917cf21596c47e0e1a291a52aede9ff280c19b0431e905e31818f4206"></a>fatal&#160;</td><td class="fielddoc"><p>Fatal error level, after which the node would usually terminate. </p>
 </td></tr>
 </table>
 

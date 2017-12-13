@@ -8,7 +8,7 @@ var searchData=
   ['compression_5flevel_5f',['compression_level_',['../classb0_1_1socket_1_1_socket.html#a57089bcb868570455c1ca688a8dce584',1,'b0::socket::Socket']]],
   ['connect',['connect',['../classb0_1_1_abstract_publisher.html#a9342685d427f2e48504a2dc9c89fd6f9',1,'b0::AbstractPublisher::connect()'],['../classb0_1_1_abstract_service_client.html#a15f3433b7b3d7ca0c0e73f03ae3e8d12',1,'b0::AbstractServiceClient::connect()'],['../classb0_1_1_abstract_subscriber.html#adbb50e1a1591b096b56ae567a791be23',1,'b0::AbstractSubscriber::connect()'],['../classb0_1_1logger_1_1_logger.html#ac7a74ad47bbc7b0302785ae88be83461',1,'b0::logger::Logger::connect()']]],
   ['console',['Console',['../classb0_1_1logger_1_1_console.html',1,'b0::logger::Console'],['../classb0_1_1logger_1_1_console.html#a26b4f597a33609b930b7f1da6d6964d2',1,'b0::logger::Console::Console()']]],
-  ['constantrateadjustedoffset',['constantRateAdjustedOffset',['../classb0_1_1_node.html#a6fa86d86385e653383613c02667cc12f',1,'b0::Node']]],
+  ['constantrateadjustedoffset',['constantRateAdjustedOffset',['../classb0_1_1_time_sync.html#ab8d82015ad6dddc676dd1fc4b032d921',1,'b0::TimeSync']]],
   ['context_5f',['context_',['../classb0_1_1_node.html#aa0e6c480231c908dc7c4ed35712307c0',1,'b0::Node']]],
   ['created',['Created',['../classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fdea304ffec727faffeec401b499f840b7d8',1,'b0::Node']]]
 ];
