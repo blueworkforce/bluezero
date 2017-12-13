@@ -113,6 +113,7 @@ add_library(
     src/b0/resolver/resolver.cpp
     src/b0/socket/socket.cpp
     src/b0/utils/thread_name.cpp
+    src/b0/utils/time_sync.cpp
     ${B0_MSG_SOURCES}
 )
 target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
