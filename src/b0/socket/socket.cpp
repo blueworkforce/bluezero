@@ -17,25 +17,6 @@ namespace b0
 namespace socket
 {
 
-std::string wrapEnvelope(std::string payload, std::string compression_algorithm, int compression_level)
-{
-    b0::core_msgs::MessageEnvelope env;
-    env.set_uncompressed_size(payload.size());
-    env.set_compression_algorithm(compression_algorithm);
-    env.set_payload(b0::compress::compress(compression_algorithm, payload, compression_level));
-    std::string raw;
-    env.SerializeToString(&raw);
-    return raw;
-}
-
-std::string unwrapEnvelope(std::string rawData)
-{
-    b0::core_msgs::MessageEnvelope env;
-    if(!env.ParseFromString(rawData))
-        return "";
-    return b0::compress::decompress(env.compression_algorithm(), env.payload(), env.uncompressed_size());
-}
-
 Socket::Socket(Node *node, zmq::socket_type type, std::string name, bool managed)
     : node_(*node),
       type_(type),
@@ -87,6 +68,7 @@ bool Socket::readRaw(std::string &msg)
 
     bool ok = true;
 
+    // if necessary, read header (usually for topics, i.e. PUB/SUB)
     if(has_header_)
     {
         zmq::message_t msg_hdr;
@@ -96,10 +78,12 @@ bool Socket::readRaw(std::string &msg)
             throw exception::MessageUnpackError("expected a multipart message");
     }
     
+    // read payload
     zmq::message_t msg_payload;
     ok = socket_.recv(&msg_payload) && ok;
     payload = std::string(static_cast<char*>(msg_payload.data()), msg_payload.size());
 
+    // read additional parts, and throw an error, because there shouldn't be any more parts
     if(msg_payload.more())
     {
         bool more = true;
@@ -112,14 +96,17 @@ bool Socket::readRaw(std::string &msg)
         throw exception::MessageUnpackError("too many message parts");
     }
 
+    // if necessary, check header
     if(has_header_ && hdr != name_)
     {
         boost::format fmt("message header does not match: expected '%s', got '%s'");
         throw exception::MessageUnpackError((fmt % name_ % hdr).str());
-        //return false;
     }
 
-    msg = unwrapEnvelope(payload);
+    b0::core_msgs::MessageEnvelope env;
+    if(!env.ParseFromString(payload))
+        throw exception::MessageUnpackError("failed to decode MessageEnvelope");
+    msg = b0::compress::decompress(env.compression_algorithm(), env.payload(), env.uncompressed_size());
 
     return ok;
 }
@@ -143,10 +130,9 @@ bool Socket::poll(long timeout)
 
 bool Socket::writeRaw(const std::string &msg)
 {
-    std::string payload = wrapEnvelope(msg, compression_algorithm_, compression_level_);
-
     bool ok = true;
 
+    // if necessary, write header (usually for topics, i.e. PUB/SUB)
     if(has_header_)
     {
         zmq::message_t msg_hdr(name_.size());
@@ -154,6 +140,15 @@ bool Socket::writeRaw(const std::string &msg)
         ok = socket_.send(msg_hdr, ZMQ_SNDMORE) && ok;
     }
 
+    // create payload envelope
+    b0::core_msgs::MessageEnvelope env;
+    env.set_uncompressed_size(msg.size());
+    env.set_compression_algorithm(compression_algorithm_);
+    env.set_payload(b0::compress::compress(compression_algorithm_, msg, compression_level_));
+    std::string payload;
+    env.SerializeToString(&payload);
+
+    // write payload
     zmq::message_t msg_payload(payload.size());
     std::memcpy(msg_payload.data(), payload.data(), payload.size());
     ok = socket_.send(msg_payload) && ok;
