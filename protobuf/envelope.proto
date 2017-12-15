@@ -7,5 +7,6 @@ message MessageEnvelope {
   required bytes payload = 1;
   required int32 uncompressed_size = 2;
   required string compression_algorithm = 3;
+  required string type = 4;
 }
 

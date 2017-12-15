@@ -64,6 +64,12 @@ std::string Socket::getName() const
 
 bool Socket::readRaw(std::string &msg)
 {
+    std::string type;
+    return readRaw(msg, type);
+}
+
+bool Socket::readRaw(std::string &msg, std::string &type)
+{
     std::string hdr, payload;
 
     bool ok = true;
@@ -107,14 +113,20 @@ bool Socket::readRaw(std::string &msg)
     if(!env.ParseFromString(payload))
         throw exception::MessageUnpackError("failed to decode MessageEnvelope");
     msg = b0::compress::decompress(env.compression_algorithm(), env.payload(), env.uncompressed_size());
+    type = env.type();
 
     return ok;
 }
 
 bool Socket::read(google::protobuf::Message &msg)
 {
-    std::string payload;
-    return readRaw(payload) && msg.ParseFromString(payload);
+    std::string payload, type;
+    if(!readRaw(payload, type))
+        return false;
+    if(!msg.ParseFromString(payload))
+        return false;
+    std::string expected_type = msg.GetTypeName();
+    return type == expected_type;
 }
 
 bool Socket::poll(long timeout)
@@ -128,7 +140,7 @@ bool Socket::poll(long timeout)
     return items[0].revents & ZMQ_POLLIN;
 }
 
-bool Socket::writeRaw(const std::string &msg)
+bool Socket::writeRaw(const std::string &msg, const std::string &type)
 {
     bool ok = true;
 
@@ -145,6 +157,7 @@ bool Socket::writeRaw(const std::string &msg)
     env.set_uncompressed_size(msg.size());
     env.set_compression_algorithm(compression_algorithm_);
     env.set_payload(b0::compress::compress(compression_algorithm_, msg, compression_level_));
+    env.set_type(type);
     std::string payload;
     env.SerializeToString(&payload);
 
@@ -159,7 +172,10 @@ bool Socket::writeRaw(const std::string &msg)
 bool Socket::write(const google::protobuf::Message &msg)
 {
     std::string payload;
-    return msg.SerializeToString(&payload) && writeRaw(payload);
+    if(!msg.SerializeToString(&payload))
+        return false;
+    std::string type = msg.GetTypeName();
+    return writeRaw(payload, type);
 }
 
 void Socket::setCompression(std::string algorithm, int level)
