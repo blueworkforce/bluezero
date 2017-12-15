@@ -130,10 +130,14 @@ public:
 public:
     /*!
      * \brief Set compression algorithm and level
+     *
+     * The messages sent with this socket will be compressed using the specified algorithm.
+     * This has no effect on received messages, which will be automatically decompressed
+     * using the algorithm specified in the message envelope.
      */
     void setCompression(std::string algorithm, int level = -1);
 
-protected:
+private:
     //! If set, payloads will be encoded using the specified compression algorithm
     //! \sa WriteSocket::setCompression()
     std::string compression_algorithm_;
