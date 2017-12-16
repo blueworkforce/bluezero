@@ -8,7 +8,6 @@
 #include "logger.pb.h"
 #include "envelope.pb.h"
 
-#include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 
 namespace b0
@@ -62,31 +61,31 @@ std::string Socket::getName() const
     return name_;
 }
 
-bool Socket::readRaw(std::string &msg)
+void Socket::readRaw(std::string &msg)
 {
     std::string type;
-    return readRaw(msg, type);
+    readRaw(msg, type);
 }
 
-bool Socket::readRaw(std::string &msg, std::string &type)
+void Socket::readRaw(std::string &msg, std::string &type)
 {
     std::string hdr, payload;
-
-    bool ok = true;
 
     // if necessary, read header (usually for topics, i.e. PUB/SUB)
     if(has_header_)
     {
         zmq::message_t msg_hdr;
-        ok = socket_.recv(&msg_hdr) && ok;
+        if(!socket_.recv(&msg_hdr))
+            throw exception::SocketReadError();
         hdr = std::string(static_cast<char*>(msg_hdr.data()), msg_hdr.size());
         if(!msg_hdr.more())
-            throw exception::MessageUnpackError("expected a multipart message");
+            throw exception::MessageMissingHeaderError();
     }
     
     // read payload
     zmq::message_t msg_payload;
-    ok = socket_.recv(&msg_payload) && ok;
+    if(!socket_.recv(&msg_payload))
+        throw exception::SocketReadError();
     payload = std::string(static_cast<char*>(msg_payload.data()), msg_payload.size());
 
     // read additional parts, and throw an error, because there shouldn't be any more parts
@@ -96,37 +95,33 @@ bool Socket::readRaw(std::string &msg, std::string &type)
         while(more)
         {
             zmq::message_t msg_tmp;
-            socket_.recv(&msg_tmp);
+            if(!socket_.recv(&msg_tmp))
+                throw exception::SocketReadError();
             more = msg_tmp.more();
         }
-        throw exception::MessageUnpackError("too many message parts");
+        throw exception::MessageTooManyPartsError();
     }
 
     // if necessary, check header
     if(has_header_ && hdr != name_)
-    {
-        boost::format fmt("message header does not match: expected '%s', got '%s'");
-        throw exception::MessageUnpackError((fmt % name_ % hdr).str());
-    }
+        throw exception::HeaderMismatch(hdr, name_);
 
     b0::core_msgs::MessageEnvelope env;
     if(!env.ParseFromString(payload))
-        throw exception::MessageUnpackError("failed to decode MessageEnvelope");
+        throw exception::EnvelopeDecodeError();
     msg = b0::compress::decompress(env.compression_algorithm(), env.payload(), env.uncompressed_size());
     type = env.type();
-
-    return ok;
 }
 
-bool Socket::read(google::protobuf::Message &msg)
+void Socket::read(google::protobuf::Message &msg)
 {
     std::string payload, type;
-    if(!readRaw(payload, type))
-        return false;
+    readRaw(payload, type);
     if(!msg.ParseFromString(payload))
-        return false;
+        throw exception::ProtobufParseError();
     std::string expected_type = msg.GetTypeName();
-    return type == expected_type;
+    if(type != expected_type)
+        throw exception::MessageTypeMismatch(type, expected_type);
 }
 
 bool Socket::poll(long timeout)
@@ -140,16 +135,15 @@ bool Socket::poll(long timeout)
     return items[0].revents & ZMQ_POLLIN;
 }
 
-bool Socket::writeRaw(const std::string &msg, const std::string &type)
+void Socket::writeRaw(const std::string &msg, const std::string &type)
 {
-    bool ok = true;
-
     // if necessary, write header (usually for topics, i.e. PUB/SUB)
     if(has_header_)
     {
         zmq::message_t msg_hdr(name_.size());
         std::memcpy(msg_hdr.data(), name_.data(), name_.size());
-        ok = socket_.send(msg_hdr, ZMQ_SNDMORE) && ok;
+        if(!socket_.send(msg_hdr, ZMQ_SNDMORE))
+            throw exception::SocketWriteError();
     }
 
     // create payload envelope
@@ -159,23 +153,23 @@ bool Socket::writeRaw(const std::string &msg, const std::string &type)
     env.set_payload(b0::compress::compress(compression_algorithm_, msg, compression_level_));
     env.set_type(type);
     std::string payload;
-    env.SerializeToString(&payload);
+    if(!env.SerializeToString(&payload))
+        throw exception::EnvelopeEncodeError();
 
     // write payload
     zmq::message_t msg_payload(payload.size());
     std::memcpy(msg_payload.data(), payload.data(), payload.size());
-    ok = socket_.send(msg_payload) && ok;
-
-    return ok;
+    if(!socket_.send(msg_payload))
+        throw exception::SocketWriteError();
 }
 
-bool Socket::write(const google::protobuf::Message &msg)
+void Socket::write(const google::protobuf::Message &msg)
 {
     std::string payload;
     if(!msg.SerializeToString(&payload))
-        return false;
+        throw exception::ProtobufSerializeError();
     std::string type = msg.GetTypeName();
-    return writeRaw(payload, type);
+    writeRaw(payload, type);
 }
 
 void Socket::setCompression(std::string algorithm, int level)

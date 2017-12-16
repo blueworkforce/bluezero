@@ -104,17 +104,17 @@ public:
     /*!
      * \brief Read a raw payload from the underlying ZeroMQ socket
      */
-    virtual bool readRaw(std::string &msg);
+    virtual void readRaw(std::string &msg);
 
     /*!
      * \brief Read a raw payload with type from the underlying ZeroMQ socket
      */
-    virtual bool readRaw(std::string &msg, std::string &type);
+    virtual void readRaw(std::string &msg, std::string &type);
 
     /*!
      * \brief Read a google::protobuf::Message from the underlying ZeroMQ socket
      */
-    virtual bool read(google::protobuf::Message &msg);
+    virtual void read(google::protobuf::Message &msg);
 
     /*!
      * \brief Poll for messages. If timeout is 0 return immediately, otherwise wait
@@ -125,12 +125,12 @@ public:
     /*!
      * \brief Write a raw payload
      */
-    virtual bool writeRaw(const std::string &msg, const std::string &type = "");
+    virtual void writeRaw(const std::string &msg, const std::string &type = "");
 
     /*!
      * \brief Write a google::protobuf::Message
      */
-    virtual bool write(const google::protobuf::Message &msg);
+    virtual void write(const google::protobuf::Message &msg);
 
 public:
     /*!

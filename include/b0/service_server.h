@@ -141,10 +141,8 @@ public:
         {
             TReq req;
             TRep rep;
-            if(read(req))
-            {
-                callback_(req, rep);
-            }
+            read(req);
+            callback_(req, rep);
             write(rep);
         }
     }

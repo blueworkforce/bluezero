@@ -10,7 +10,7 @@ namespace exception
 {
 
 /*!
- * \brief An exception thrown when an invalid method for the current object state is called
+ * \brief An exception thrown when reading from socket fails
  */
 class MessageUnpackError : public Exception
 {
@@ -19,6 +19,48 @@ public:
      * \brief Construct an MessageUnpackError exception
      */
     MessageUnpackError(std::string message = "");
+};
+
+class MessageMissingHeaderError : public MessageUnpackError
+{
+public:
+    MessageMissingHeaderError();
+};
+
+class MessageTooManyPartsError : public MessageUnpackError
+{
+public:
+    MessageTooManyPartsError();
+};
+
+class HeaderMismatch : public MessageUnpackError
+{
+public:
+    HeaderMismatch(std::string header, std::string expected_header);
+};
+
+class EnvelopeDecodeError : public MessageUnpackError
+{
+public:
+    EnvelopeDecodeError();
+};
+
+class ProtobufParseError : public MessageUnpackError
+{
+public:
+    ProtobufParseError();
+};
+
+class SocketReadError : public MessageUnpackError
+{
+public:
+    SocketReadError();
+};
+
+class MessageTypeMismatch : public MessageUnpackError
+{
+public:
+    MessageTypeMismatch(std::string type, std::string expected_type);
 };
 
 } // namespace exception
