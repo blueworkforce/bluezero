@@ -149,6 +149,7 @@ add_library(
     src/b0/compress/zlib.cpp
     src/b0/exception/exception.cpp
     src/b0/exception/invalid_state_transition.cpp
+    src/b0/exception/message_pack_error.cpp
     src/b0/exception/message_unpack_error.cpp
     src/b0/exception/unsupported_compression_algorithm.cpp
     src/b0/logger/logger.cpp

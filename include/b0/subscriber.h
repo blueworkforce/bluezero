@@ -134,8 +134,8 @@ public:
         while(poll())
         {
             TMsg msg;
-            if(read(msg))
-                callback_(msg);
+            read(msg);
+            callback_(msg);
         }
     }
  

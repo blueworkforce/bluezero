@@ -35,8 +35,8 @@ void srv_thread()
     node.init();
     test_msgs::Req req;
     test_msgs::Resp resp;
-    if(srv.read(req))
-        resp.set_c(req.a() + req.b());
+    srv.read(req);
+    resp.set_c(req.a() + req.b());
     srv.write(resp);
 }
 
