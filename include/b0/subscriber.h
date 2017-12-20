@@ -146,6 +146,19 @@ protected:
     boost::function<void(TMsg&)> callback_;
 };
 
+template<>
+void Subscriber<std::string>::spinOnce()
+{
+    if(callback_.empty()) return;
+
+    while(poll())
+    {
+        std::string msg;
+        readRaw(msg);
+        callback_(msg);
+    }
+}
+
 } // namespace b0
 
 #endif // B0__SUBSCRIBER_H__INCLUDED

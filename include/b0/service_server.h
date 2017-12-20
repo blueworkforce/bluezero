@@ -154,6 +154,20 @@ protected:
     boost::function<void(const TReq&, TRep&)> callback_;
 };
 
+template<>
+void ServiceServer<std::string, std::string>::spinOnce()
+{
+    if(callback_.empty()) return;
+
+    while(poll())
+    {
+        std::string req, rep;
+        readRaw(req);
+        callback_(req, rep);
+        writeRaw(rep);
+    }
+}
+
 } // namespace b0
 
 #endif // B0__SERVICE_SERVER_H__INCLUDED
