@@ -4,11 +4,13 @@
 #include "resolver.pb.h"
 #include "logger.pb.h"
 
+#include <zmq.hpp>
+
 namespace b0
 {
 
 AbstractServiceClient::AbstractServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph)
-    : socket::Socket(node, zmq::socket_type::req, service_name, managed),
+    : socket::Socket(node, ZMQ_REQ, service_name, managed),
       notify_graph_(notify_graph)
 {
 }
@@ -29,7 +31,7 @@ void AbstractServiceClient::init()
     connect();
 
     if(notify_graph_)
-        node_.resolverClient().notifyService(name_, true, true);
+        node_.notifyService(name_, true, true);
 }
 
 void AbstractServiceClient::cleanup()
@@ -37,7 +39,7 @@ void AbstractServiceClient::cleanup()
     disconnect();
 
     if(notify_graph_)
-        node_.resolverClient().notifyService(name_, true, false);
+        node_.notifyService(name_, true, false);
 }
 
 std::string AbstractServiceClient::getServiceName()
@@ -53,9 +55,7 @@ void AbstractServiceClient::resolve()
         return;
     }
 
-    resolver::Client &resolv_cli = node_.resolverClient();
-
-    resolv_cli.resolveService(name_, remote_addr_);
+    node_.resolveService(name_, remote_addr_);
 
     log(trace, "Resolved address: %s", remote_addr_);
 }
@@ -63,13 +63,13 @@ void AbstractServiceClient::resolve()
 void AbstractServiceClient::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
-    socket_.connect(remote_addr_);
+    Socket::connect(remote_addr_);
 }
 
 void AbstractServiceClient::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
-    socket_.disconnect(remote_addr_);
+    Socket::disconnect(remote_addr_);
 }
 
 } // namespace b0

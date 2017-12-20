@@ -64,9 +64,19 @@ LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level) const
     return {"?????", 1, 0x1e, 0};
 }
 
+struct LoggerPrivate
+{
+    LoggerPrivate(Node *node)
+        : pub_(node, "log", false, false)
+    {
+    }
+
+    Publisher<b0::logger_msgs::LogEntry> pub_;
+};
+
 Logger::Logger(b0::Node *node)
     : LocalLogger(node),
-      pub_(node, "log", false, false)
+      private_(new LoggerPrivate(node))
 {
 }
 
@@ -76,8 +86,8 @@ Logger::~Logger()
 
 void Logger::connect(std::string addr)
 {
-    pub_.setRemoteAddress(addr);
-    pub_.init();
+    private_->pub_.setRemoteAddress(addr);
+    private_->pub_.init();
 }
 
 void Logger::log(LogLevel level, std::string message) const
@@ -103,7 +113,7 @@ void Logger::remoteLog(LogLevel level, std::string message) const
         case LogLevel::fatal: e.set_level(b0::logger_msgs::fatal); break;
     }
     e.set_msg(message);
-    pub_.publish(e);
+    private_->pub_.publish(e);
 }
 
 } // namespace logger

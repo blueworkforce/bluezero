@@ -4,11 +4,13 @@
 #include "resolver.pb.h"
 #include "logger.pb.h"
 
+#include <zmq.hpp>
+
 namespace b0
 {
 
 AbstractServiceServer::AbstractServiceServer(Node *node, std::string service_name, bool managed, bool notify_graph)
-    : socket::Socket(node, zmq::socket_type::rep, service_name, managed),
+    : socket::Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_("")
 {
@@ -30,7 +32,7 @@ void AbstractServiceServer::init()
     announce();
 
     if(notify_graph_)
-        node_.resolverClient().notifyService(name_, false, true);
+        node_.notifyService(name_, false, true);
 }
 
 void AbstractServiceServer::cleanup()
@@ -38,7 +40,7 @@ void AbstractServiceServer::cleanup()
     unbind();
 
     if(notify_graph_)
-        node_.resolverClient().notifyService(name_, false, false);
+        node_.notifyService(name_, false, false);
 }
 
 std::string AbstractServiceServer::getServiceName()
@@ -53,37 +55,24 @@ void AbstractServiceServer::bind()
     int port = node_.freeTCPPort();
     bind_addr_ = (fmt % "*" % port).str();
     remote_addr_ = (fmt % host % port).str();
-    socket_.bind(bind_addr_);
+    Socket::bind(bind_addr_);
     log(debug, "Bound to %s", bind_addr_);
 }
 
 void AbstractServiceServer::unbind()
 {
-    //socket_.unbind(bind_addr_); // FIXME: causes a zmq error on node shutdown
+    //Socket::unbind(bind_addr_); // FIXME: causes a zmq error on node shutdown
 }
 
 void AbstractServiceServer::announce()
 {
-    resolver::Client &resolv_cli = node_.resolverClient();
-
     log(trace, "Announcing %s to resolver...", remote_addr_);
-    b0::resolver_msgs::Request rq0;
-    b0::resolver_msgs::AnnounceServiceRequest &rq = *rq0.mutable_announce_service();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(node_.hostname());
-    node_id.set_process_id(node_.pid());
-    node_id.set_thread_id(node_.threadID());
-    rq.set_service_name(name_);
-    rq.set_sock_addr(remote_addr_);
-
-    b0::resolver_msgs::Response rsp0;
-    resolv_cli.call(rq0, rsp0);
-    const b0::resolver_msgs::AnnounceServiceResponse &rsp = rsp0.announce_service();
+    node_.announceService(name_, remote_addr_);
 }
 
 void AbstractServiceServer::bind(std::string address)
 {
-    socket_.bind(address);
+    Socket::bind(address);
     log(debug, "Bound to additional address %s", address);
 }
 

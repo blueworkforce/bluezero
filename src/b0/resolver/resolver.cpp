@@ -13,8 +13,11 @@
 #include "logger.pb.h"
 
 #include <b0/resolver/resolver.h>
+#include <b0/resolver/client.h>
 #include <b0/logger/logger.h>
 #include <b0/utils/thread_name.h>
+
+#include <zmq.hpp>
 
 namespace b0
 {
@@ -57,7 +60,7 @@ Resolver::~Resolver()
 
 void Resolver::init()
 {
-    resolv_cli_.setRemoteAddress("inproc://resolv");
+    resolv_addr_ = "inproc://resolv";
 
     Node::init();
 
@@ -223,6 +226,8 @@ void Resolver::onNodeServiceUseStop(std::string node_name, std::string service_n
 void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 {
     set_thread_name("XPROXY");
+
+    zmq::context_t &context_ = *reinterpret_cast<zmq::context_t*>(getContext());
 
     zmq::socket_t proxy_in_sock_(context_, ZMQ_XSUB);
     std::string xsub_proxy_addr = address(xsub_proxy_port);

@@ -13,9 +13,6 @@ namespace b0
 
 class Node;
 
-template<typename TMsg>
-class Publisher;
-
 namespace logger_msgs
 {
 
@@ -70,6 +67,12 @@ protected:
     b0::Node &node_;
 };
 
+//! \cond HIDDEN_SYMBOLS
+
+struct LoggerPrivate;
+
+//! \endcond
+
 /*!
  * \brief A subclass of LocalLogger which also sends log messages remotely, via a ZeroMQ PUB socket
  */
@@ -102,8 +105,7 @@ protected:
     virtual void remoteLog(LogLevel level, std::string message) const;
 
 private:
-    //! The publisher where LogEntry es will be published
-    mutable Publisher<b0::logger_msgs::LogEntry> pub_;
+    mutable std::unique_ptr<LoggerPrivate> private_;
 };
 
 } // namespace logger

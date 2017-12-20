@@ -8,8 +8,6 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include <zmq.hpp>
-
 #include <google/protobuf/message.h>
 
 namespace b0
@@ -19,6 +17,12 @@ class Node;
 
 namespace socket
 {
+
+//! \cond HIDDEN_SYMBOLS
+
+struct SocketPrivate;
+
+//! \endcond
 
 /*!
  * \brief The Socket class
@@ -34,7 +38,7 @@ public:
     /*!
      * \brief Construct a Socket
      */
-    Socket(Node *node, zmq::socket_type type, std::string name, bool managed = true);
+    Socket(Node *node, int type, std::string name, bool managed = true);
 
     /*!
      * \brief Socket destructor
@@ -77,10 +81,10 @@ public:
      */
     std::string getName() const;
 
-protected:
-    //! The type of the underlying ZeroMQ socket
-    zmq::socket_type type_;
+private:
+    std::unique_ptr<SocketPrivate> private_;
 
+protected:
     //! The Node owning this Socket
     Node &node_;
 
@@ -96,9 +100,6 @@ protected:
 
     //! The address of the ZeroMQ socket to connect to (will skip name resolution if given)
     std::string remote_addr_;
-
-    //! The underlying ZeroMQ socket
-    zmq::socket_t socket_;
 
 public:
     /*!
@@ -150,6 +151,25 @@ private:
     //! If a compression algorithm is set, payloads will be encoded using the specified compression level
     //! \sa WriteSocket::setCompression()
     int compression_level_;
+
+protected:
+    //! Wrapper to zmq::socket_t::connect
+    void connect(std::string const &addr);
+
+    //! Wrapper to zmq::socket_t::disconnect
+    void disconnect(std::string const &addr);
+
+    //! Wrapper to zmq::socket_t::bind
+    void bind(std::string const &addr);
+
+    //! Wrapper to zmq::socket_t::unbind
+    void unbind(std::string const &addr);
+
+    //! Wrapper to zmq::socket_t::setsockopt
+    void setsockopt(int option, const void *optval, size_t optvallen);
+
+    //! Wrapper to zmq::socket_t::getsockopt
+    void getsockopt(int option, void *optval, size_t *optvallen);
 };
 
 } // namespace socket

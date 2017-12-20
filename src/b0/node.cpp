@@ -7,6 +7,7 @@
 #include <b0/exceptions.h>
 #include <b0/logger/logger.h>
 #include <b0/utils/thread_name.h>
+#include <b0/resolver/client.h>
 
 #include <iostream>
 #include <cstdlib>
@@ -15,6 +16,8 @@
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <zmq.hpp>
 
 #include "resolver.pb.h"
 #include "logger.pb.h"
@@ -26,9 +29,29 @@ std::atomic<bool> Node::quit_flag_(false);
 
 bool Node::sigint_handler_setup_ = false;
 
+struct NodePrivate
+{
+    NodePrivate(Node *node, int io_threads)
+        : context_(io_threads)
+    {
+    }
+
+    zmq::context_t context_;
+};
+
+struct NodePrivate2
+{
+    NodePrivate2(Node *node)
+        : resolv_cli_(node)
+    {
+    }
+
+    resolver::Client resolv_cli_;
+};
+
 Node::Node(std::string nodeName)
-    : context_(1),
-      resolv_cli_(this),
+    : private_(new NodePrivate(this, 1)),
+      private2_(new NodePrivate2(this)),
       name_(nodeName),
       state_(State::Created),
       thread_id_(boost::this_thread::get_id()),
@@ -53,7 +76,10 @@ void Node::init()
 
     log(debug, "Initialization...");
 
-    resolv_cli_.init(); // resolv_cli_ is not managed
+    // this hack is needed for implementing the resolver node:
+    if(!resolv_addr_.empty()) private2_->resolv_cli_.setRemoteAddress(resolv_addr_);
+
+    private2_->resolv_cli_.init(); // resolv_cli_ is not managed
 
     announceNode();
 
@@ -135,7 +161,7 @@ void Node::cleanup()
     // inform resolver that we are shutting down
     notifyShutdown();
 
-    resolv_cli_.cleanup(); // resolv_cli_ is not managed
+    private2_->resolv_cli_.cleanup(); // resolv_cli_ is not managed
 
     state_ = State::Terminated;
 }
@@ -166,9 +192,9 @@ Node::State Node::getState() const
     return state_;
 }
 
-zmq::context_t& Node::getZMQContext()
+void * Node::getContext()
 {
-    return context_;
+    return &private_->context_;
 }
 
 std::string Node::getXPUBSocketAddress() const
@@ -220,6 +246,30 @@ int Node::freeTCPPort()
     return socket.local_endpoint().port();
 }
 
+void Node::notifyTopic(std::string topic_name, bool reverse, bool active)
+{
+    resolver::Client &resolv_cli_ = private2_->resolv_cli_;
+    resolv_cli_.notifyTopic(topic_name, reverse, active);
+}
+
+void Node::notifyService(std::string service_name, bool reverse, bool active)
+{
+    resolver::Client &resolv_cli_ = private2_->resolv_cli_;
+    resolv_cli_.notifyService(service_name, reverse, active);
+}
+
+void Node::announceService(std::string service_name, std::string addr)
+{
+    resolver::Client &resolv_cli_ = private2_->resolv_cli_;
+    resolv_cli_.announceService(service_name, addr);
+}
+
+void Node::resolveService(std::string service_name, std::string &addr)
+{
+    resolver::Client &resolv_cli_ = private2_->resolv_cli_;
+    resolv_cli_.resolveService(service_name, addr);
+}
+
 std::string Node::freeTCPAddress()
 {
     boost::format fmt("tcp://%s:%d");
@@ -228,7 +278,7 @@ std::string Node::freeTCPAddress()
 
 void Node::announceNode()
 {
-    resolv_cli_.announceNode(name_, xpub_sock_addr_, xsub_sock_addr_);
+    private2_->resolv_cli_.announceNode(name_, xpub_sock_addr_, xsub_sock_addr_);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
         p_logger->connect(xsub_sock_addr_);
@@ -236,7 +286,7 @@ void Node::announceNode()
 
 void Node::notifyShutdown()
 {
-    resolv_cli_.notifyShutdown();
+    private2_->resolv_cli_.notifyShutdown();
 }
 
 void Node::heartbeatLoop()
