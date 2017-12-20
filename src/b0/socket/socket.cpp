@@ -10,19 +10,32 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include <zmq.hpp>
+
 namespace b0
 {
 
 namespace socket
 {
 
-Socket::Socket(Node *node, zmq::socket_type type, std::string name, bool managed)
-    : node_(*node),
-      type_(type),
+struct SocketPrivate
+{
+    SocketPrivate(Node *node, zmq::context_t &context, int type)
+        : type_(type),
+          socket_(context, type)
+    {
+    }
+
+    int type_;
+    zmq::socket_t socket_;
+};
+
+Socket::Socket(Node *node, int type, std::string name, bool managed)
+    : private_(new SocketPrivate(node, *reinterpret_cast<zmq::context_t*>(node->getContext()), type)),
+      node_(*node),
       name_(name),
       has_header_(false),
-      managed_(managed),
-      socket_(node_.getZMQContext(), type_)
+      managed_(managed)
 {
     if(managed_)
         node_.addSocket(this);
@@ -69,6 +82,8 @@ void Socket::readRaw(std::string &msg)
 
 void Socket::readRaw(std::string &msg, std::string &type)
 {
+    zmq::socket_t &socket_ = private_->socket_;
+
     std::string hdr, payload;
 
     // if necessary, read header (usually for topics, i.e. PUB/SUB)
@@ -126,6 +141,7 @@ void Socket::read(google::protobuf::Message &msg)
 
 bool Socket::poll(long timeout)
 {
+    zmq::socket_t &socket_ = private_->socket_;
 #ifdef __GNUC__
     zmq::pollitem_t items[] = {{static_cast<void*>(socket_), 0, ZMQ_POLLIN, 0}};
 #else
@@ -137,6 +153,8 @@ bool Socket::poll(long timeout)
 
 void Socket::writeRaw(const std::string &msg, const std::string &type)
 {
+    zmq::socket_t &socket_ = private_->socket_;
+
     // if necessary, write header (usually for topics, i.e. PUB/SUB)
     if(has_header_)
     {
@@ -176,6 +194,42 @@ void Socket::setCompression(std::string algorithm, int level)
 {
     compression_algorithm_ = algorithm;
     compression_level_ = level;
+}
+
+void Socket::connect(std::string const &addr)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.connect(addr);
+}
+
+void Socket::disconnect(std::string const &addr)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.disconnect(addr);
+}
+
+void Socket::bind(std::string const &addr)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.bind(addr);
+}
+
+void Socket::unbind(std::string const &addr)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.unbind(addr);
+}
+
+void Socket::setsockopt(int option, const void *optval, size_t optvallen)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.setsockopt(option, optval, optvallen);
+}
+
+void Socket::getsockopt(int option, void *optval, size_t *optvallen)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.getsockopt(option, optval, optvallen);
 }
 
 } // namespace socket

@@ -4,11 +4,13 @@
 #include "resolver.pb.h"
 #include "logger.pb.h"
 
+#include <zmq.hpp>
+
 namespace b0
 {
 
 AbstractSubscriber::AbstractSubscriber(Node *node, std::string topic, bool managed, bool notify_graph)
-    : socket::Socket(node, zmq::socket_type::sub, topic, managed),
+    : socket::Socket(node, ZMQ_SUB, topic, managed),
       notify_graph_(notify_graph)
 {
     setHasHeader(true);
@@ -31,7 +33,7 @@ void AbstractSubscriber::init()
     connect();
 
     if(notify_graph_)
-        node_.resolverClient().notifyTopic(name_, true, true);
+        node_.notifyTopic(name_, true, true);
 }
 
 void AbstractSubscriber::cleanup()
@@ -39,7 +41,7 @@ void AbstractSubscriber::cleanup()
     disconnect();
 
     if(notify_graph_)
-        node_.resolverClient().notifyTopic(name_, true, false);
+        node_.notifyTopic(name_, true, false);
 }
 
 std::string AbstractSubscriber::getTopicName()
@@ -50,15 +52,15 @@ std::string AbstractSubscriber::getTopicName()
 void AbstractSubscriber::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
-    socket_.connect(remote_addr_);
-    socket_.setsockopt(ZMQ_SUBSCRIBE, name_.data(), name_.size());
+    Socket::connect(remote_addr_);
+    Socket::setsockopt(ZMQ_SUBSCRIBE, name_.data(), name_.size());
 }
 
 void AbstractSubscriber::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
-    socket_.setsockopt(ZMQ_UNSUBSCRIBE, name_.data(), name_.size());
-    socket_.disconnect(remote_addr_);
+    Socket::setsockopt(ZMQ_UNSUBSCRIBE, name_.data(), name_.size());
+    Socket::disconnect(remote_addr_);
 }
 
 } // namespace b0

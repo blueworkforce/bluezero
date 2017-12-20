@@ -4,11 +4,13 @@
 #include "resolver.pb.h"
 #include "logger.pb.h"
 
+#include <zmq.hpp>
+
 namespace b0
 {
 
 AbstractPublisher::AbstractPublisher(Node *node, std::string topic, bool managed, bool notify_graph)
-    : socket::Socket(node, zmq::socket_type::pub, topic, managed),
+    : socket::Socket(node, ZMQ_PUB, topic, managed),
       notify_graph_(notify_graph)
 {
     setHasHeader(true);
@@ -31,7 +33,7 @@ void AbstractPublisher::init()
     connect();
 
     if(notify_graph_)
-        node_.resolverClient().notifyTopic(name_, false, true);
+        node_.notifyTopic(name_, false, true);
 }
 
 void AbstractPublisher::cleanup()
@@ -39,7 +41,7 @@ void AbstractPublisher::cleanup()
     disconnect();
 
     if(notify_graph_)
-        node_.resolverClient().notifyTopic(name_, false, false);
+        node_.notifyTopic(name_, false, false);
 }
 
 std::string AbstractPublisher::getTopicName()
@@ -50,13 +52,13 @@ std::string AbstractPublisher::getTopicName()
 void AbstractPublisher::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
-    socket_.connect(remote_addr_);
+    Socket::connect(remote_addr_);
 }
 
 void AbstractPublisher::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
-    socket_.disconnect(remote_addr_);
+    Socket::disconnect(remote_addr_);
 }
 
 } // namespace b0

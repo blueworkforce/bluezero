@@ -2,7 +2,6 @@
 #define B0__NODE_H__INCLUDED
 
 #include <b0/socket/socket.h>
-#include <b0/resolver/client.h>
 #include <b0/logger/interface.h>
 #include <b0/utils/time_sync.h>
 
@@ -22,6 +21,13 @@ namespace logger
 class Logger;
 
 } // namespace logger
+
+//! \cond HIDDEN_SYMBOLS
+
+struct NodePrivate;
+struct NodePrivate2;
+
+//! \endcond
 
 /*!
  * \brief The abstraction for a node in the network.
@@ -144,7 +150,7 @@ public:
     /*!
      * \brief Get the ZeroMQ Context
      */
-    zmq::context_t& getZMQContext();
+    void * getContext();
 
     /*!
      * \brief Retrieve address of the proxy's XPUB socket
@@ -188,6 +194,26 @@ public:
      */
     virtual int freeTCPPort();
 
+    /*!
+     * \brief Notify topic publishing/subscription start or end
+     */
+    virtual void notifyTopic(std::string topic_name, bool reverse, bool active);
+
+    /*!
+     * \brief Notify service advertising/use start or end
+     */
+    virtual void notifyService(std::string service_name, bool reverse, bool active);
+
+    /*!
+     * \brief Announce service address
+     */
+    virtual void announceService(std::string service_name, std::string addr);
+
+    /*!
+     * \brief Resolve service address by name
+     */
+    virtual void resolveService(std::string service_name, std::string &addr);
+
 protected:
     /*!
      * \brief Find and return an available tcp address, e.g. tcp://hostname:portnumber
@@ -220,16 +246,13 @@ public:
      */
     int64_t timeUSec();
 
-public:
-    //! Return the ServiceClient to talk to resolver
-    resolver::Client & resolverClient() {return resolv_cli_;}
+private:
+    std::unique_ptr<NodePrivate> private_;
+    std::unique_ptr<NodePrivate2> private2_;
 
 protected:
-    //! ZeroMQ Context used by all sockets of this node
-    zmq::context_t context_;
-
-    //! Service client used to talk with resolver (announce, resolve, heartbeat)
-    resolver::Client resolv_cli_;
+    //! Target address of resolver client
+    std::string resolv_addr_;
 
     //! The logger of this node
     logger::LogInterface *p_logger_;
