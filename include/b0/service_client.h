@@ -110,6 +110,13 @@ public:
     }
 };
 
+template<>
+void ServiceClient<std::string, std::string>::call(const std::string &req, std::string &rep)
+{
+    writeRaw(req);
+    readRaw(rep);
+}
+
 } // namespace b0
 
 #endif // B0__SERVICE_CLIENT_H__INCLUDED

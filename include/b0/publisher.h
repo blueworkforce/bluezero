@@ -96,6 +96,12 @@ public:
     }
 };
 
+template<>
+void Publisher<std::string>::publish(const std::string &msg)
+{
+    writeRaw(msg);
+}
+
 } // namespace b0
 
 #endif // B0__PUBLISHER_H__INCLUDED
