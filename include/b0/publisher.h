@@ -97,7 +97,7 @@ public:
 };
 
 template<>
-void Publisher<std::string>::publish(const std::string &msg)
+inline void Publisher<std::string>::publish(const std::string &msg)
 {
     writeRaw(msg);
 }

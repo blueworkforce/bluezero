@@ -111,7 +111,7 @@ public:
 };
 
 template<>
-void ServiceClient<std::string, std::string>::call(const std::string &req, std::string &rep)
+inline void ServiceClient<std::string, std::string>::call(const std::string &req, std::string &rep)
 {
     writeRaw(req);
     readRaw(rep);

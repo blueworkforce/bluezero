@@ -147,7 +147,7 @@ protected:
 };
 
 template<>
-void Subscriber<std::string>::spinOnce()
+inline void Subscriber<std::string>::spinOnce()
 {
     if(callback_.empty()) return;
 

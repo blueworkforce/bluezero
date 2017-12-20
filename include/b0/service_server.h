@@ -155,7 +155,7 @@ protected:
 };
 
 template<>
-void ServiceServer<std::string, std::string>::spinOnce()
+inline void ServiceServer<std::string, std::string>::spinOnce()
 {
     if(callback_.empty()) return;
 
