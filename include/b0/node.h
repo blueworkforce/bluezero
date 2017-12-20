@@ -6,6 +6,7 @@
 #include <b0/logger/interface.h>
 #include <b0/utils/time_sync.h>
 
+#include <atomic>
 #include <set>
 #include <string>
 
