@@ -9,6 +9,7 @@ include(CheckCXXSourceRuns)
 
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
+option(BUILD_GUI "Build gui programs" OFF)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR 1)
@@ -195,5 +196,9 @@ endif()
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+if(BUILD_GUI)
+    add_subdirectory(gui)
 endif()
 
