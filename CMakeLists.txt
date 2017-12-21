@@ -158,6 +158,7 @@ add_library(
     src/b0/exception/message_pack_error.cpp
     src/b0/exception/message_unpack_error.cpp
     src/b0/exception/unsupported_compression_algorithm.cpp
+    src/b0/graph/graphviz.cpp
     src/b0/logger/logger.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
