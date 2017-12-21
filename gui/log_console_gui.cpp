@@ -63,13 +63,8 @@ public:
         tableWidget->setHorizontalHeaderLabels(labels);
 
         QTimer *timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &LogConsoleWindow::spinOnce);
+        connect(timer, &QTimer::timeout, [this](){this->node_.spinOnce();});
         timer->start(100);
-    }
-
-    void spinOnce()
-    {
-        node_.spinOnce();
     }
 
     void onLogEntry(const b0::logger_msgs::LogEntry &entry)

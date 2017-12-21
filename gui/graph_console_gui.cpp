@@ -20,13 +20,8 @@ public:
         setCentralWidget(imageWidget);
 
         QTimer *timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &GraphConsoleWindow::spinOnce);
+        connect(timer, &QTimer::timeout, [this](){this->node_.spinOnce();});
         timer->start(100);
-    }
-
-    void spinOnce()
-    {
-        node_.spinOnce();
     }
 
     void onGraphChanged(const b0::resolver_msgs::Graph &graph)
