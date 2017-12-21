@@ -168,6 +168,15 @@ void Client::resolveService(std::string name, std::string &addr)
     addr = rsp.sock_addr();
 }
 
+void Client::getGraph(b0::resolver_msgs::Graph &graph)
+{
+    b0::resolver_msgs::Request req;
+    b0::resolver_msgs::GetGraphRequest &gg = *req.mutable_get_graph();
+    b0::resolver_msgs::Response resp;
+    call(req, resp);
+    graph = resp.get_graph().graph();
+}
+
 } // namespace resolver
 
 } // namespace b0

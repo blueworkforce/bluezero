@@ -44,12 +44,10 @@ public:
              * FIXME: it would be anyway better to have a timeout, and if a graph
              *        is not received in the first 2 seconds, send an explicit request
              */
-            b0::resolver_msgs::Request req;
-            b0::resolver_msgs::GetGraphRequest &gg = *req.mutable_get_graph();
-            b0::resolver_msgs::Response resp;
             log(info, "Requesting graph");
-            resolv_cli_.call(req, resp);
-            printOrDisplayGraph("Current graph", resp.get_graph().graph());
+            b0::resolver_msgs::Graph graph;
+            resolv_cli_.getGraph(graph);
+            printOrDisplayGraph("Current graph", graph);
         }
     }
 

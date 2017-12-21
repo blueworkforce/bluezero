@@ -16,6 +16,7 @@ namespace resolver_msgs
 
 class Request;
 class Response;
+class Graph;
 
 } // namespace resolver_msgs
 
@@ -74,6 +75,11 @@ public:
      * \brief Resolve a service name
      */
     virtual void resolveService(std::string name, std::string &addr);
+
+    /*!
+     * \brief Request the node sockets graph
+     */
+    virtual void getGraph(b0::resolver_msgs::Graph &graph);
 };
 
 } // namespace resolver
