@@ -106,7 +106,7 @@ int main()
 " HAVE_POSIX_SIGNALS)
 
 set(SAVE_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
-set(CMAKE_REQUIRED_FLAGS "-pthread")
+set(CMAKE_REQUIRED_FLAGS "-D_GNU_SOURCE -Werror -pthread")
 check_cxx_source_runs("
 #include <pthread.h>
 int main()
