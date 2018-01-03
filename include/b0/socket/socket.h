@@ -170,6 +170,12 @@ protected:
 
     //! Wrapper to zmq::socket_t::getsockopt
     void getsockopt(int option, void *optval, size_t *optvallen);
+
+    //! High level wrapper for setsockopt
+    void setIntOption(int option, int value);
+
+    //! High level wrapper for getsockopt
+    int getIntOption(int option);
 };
 
 } // namespace socket

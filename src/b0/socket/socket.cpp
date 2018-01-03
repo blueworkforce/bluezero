@@ -232,6 +232,18 @@ void Socket::getsockopt(int option, void *optval, size_t *optvallen)
     socket_.getsockopt(option, optval, optvallen);
 }
 
+void Socket::setIntOption(int option, int value)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    socket_.setsockopt<int>(option, value);
+}
+
+int Socket::getIntOption(int option)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+    return socket_.getsockopt<int>(option);
+}
+
 } // namespace socket
 
 } // namespace b0
