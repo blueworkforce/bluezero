@@ -41,7 +41,7 @@
  * - tracking of connected nodes
  * - clock synchronization (see \ref timesync)
  *
- * \b Important: you must have the resolver node running prior to running any node.
+ * \b Important: you must have the resolver node running prior to running any node. See \ref remote_nodes for more information about running distributed nodes.
  *
  * \section examples Examples
  *
@@ -83,6 +83,76 @@
  * \ref client_node_object.cpp "OOP client node"
  *
  * \ref server_node_object.cpp "OOP server node"
+ *
+ *
+ * \page remote_nodes Connecting remote nodes
+ *
+ * When using nodes distributed across multiple machines, you must make sure that
+ * all nodes are able to reach each other, using IP and TCP protocol.
+ *
+ * \section Example
+ *
+ * Suppose we have a network with two machines: A and B.
+ *
+ * - Machine A: 192.168.1.5 will run the resolver node and a subscriber node.
+ * - Machine B: 192.168.1.6 will run a publisher node.
+ *
+ * By default, nodes will use their hostnames when announcing socket addresses.
+ * If it is not possible to reach a machine via its hostname externally (and in general,
+ * it is not), IP addresses must be provided instead, by using environment variables.
+ *
+ * The two varables to specify are BWF_HOST_ID and BWF_RESOLVER.
+ *
+ * **BWF_HOST_ID** it is used when announcing socket addresses to the resolver. It defaults to the
+ * machine hostname.
+ *
+ * **BWF_RESOLVER** is used on all nodes except the resolver node to specify the address of
+ * the resolver socket. It defaults to tcp://localhost:22000, so it is not required to specify
+ * this variasble if everything is running on the same machine.
+ *
+ * When starting the resolver node, BWF_RESOLVER_PORT can be used to specify a different TCP
+ * port number to listen to.
+ *
+ * \subsection remote_a_resolver Machine A - starting resolver
+ *
+ * On machine A we run
+ *
+ * ~~~
+ * export BWF_HOST_ID=192.168.1.5
+ *
+ * ./resolver
+ * ~~~
+ *
+ * to run the resolver node.
+ *
+ * \subsection remote_a_subscriber Machine A - starting subscriber
+ *
+ * On machine A we run
+ *
+ * ~~~
+ * export BWF_HOST_ID=192.168.1.5
+ *
+ * ./examples/publisher_subscriber/subscriber_node
+ * ~~~
+ *
+ * to run the subscriber node.
+ *
+ * Note that we don't need to specify BWF_RESOLVER, because the default value (tcp://localhost:22000)
+ * is sufficient to reach the resolver which is running on the same machine.
+ *
+ * \subsection remote_b_publisher Machine B - starting publisher
+ *
+ * On machine B we run
+ *
+ * ~~~
+ * export BWF_HOST_ID=192.168.1.6
+ *
+ * export BWF_RESOLVER=tcp://192.168.1.5:22000
+ *
+ * ./examples/publisher_subscriber/publisher_node
+ * ~~~
+ *
+ * to run the publisher node.
  *
  */
 
