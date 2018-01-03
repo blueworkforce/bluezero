@@ -214,6 +214,11 @@ public:
      */
     virtual void resolveService(std::string service_name, std::string &addr);
 
+    /*!
+     * \brief Set the timeout for the announce phase. See b0::resolver::Client::setAnnounceTimeout()
+     */
+    virtual void setAnnounceTimeout(int timeout = -1);
+
 protected:
     /*!
      * \brief Find and return an available tcp address, e.g. tcp://hostname:portnumber

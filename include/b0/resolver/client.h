@@ -42,6 +42,13 @@ public:
     virtual ~Client();
 
     /*!
+     * \brief Set a timeout for the read in the announce phase. Use -1 for no timeout.
+     * A timeout will cause the announce phase to abort if a response from the resolver
+     * node is not received within the specified amount of milliseconds.
+     */
+    void setAnnounceTimeout(int timeout = -1);
+
+    /*!
      * \brief Announce this node to resolver
      */
     virtual void announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr);
@@ -80,6 +87,9 @@ public:
      * \brief Request the node sockets graph
      */
     virtual void getGraph(b0::resolver_msgs::Graph &graph);
+
+private:
+    int announce_timeout_;
 };
 
 } // namespace resolver
