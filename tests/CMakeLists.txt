@@ -44,3 +44,8 @@ target_link_libraries(compress b0)
 add_test(compress-zlib compress zlib)
 add_test(compress-lz4 compress lz4)
 
+add_executable(announce_timeout announce_timeout.cpp ${TEST_MSGS})
+target_link_libraries(announce_timeout b0)
+add_test(announce_timeout announce_timeout 1000 1)
+add_test(announce_notimeout announce_timeout -1 0)
+

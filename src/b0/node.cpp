@@ -270,6 +270,12 @@ void Node::resolveService(std::string service_name, std::string &addr)
     resolv_cli_.resolveService(service_name, addr);
 }
 
+void Node::setAnnounceTimeout(int timeout)
+{
+    resolver::Client &resolv_cli_ = private2_->resolv_cli_;
+    resolv_cli_.setAnnounceTimeout(timeout);
+}
+
 std::string Node::freeTCPAddress()
 {
     boost::format fmt("tcp://%s:%d");

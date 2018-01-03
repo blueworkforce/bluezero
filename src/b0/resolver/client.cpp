@@ -2,6 +2,8 @@
 #include <b0/node.h>
 #include <b0/exceptions.h>
 
+#include <zmq.hpp>
+
 #include "resolver.pb.h"
 
 namespace b0
@@ -11,7 +13,8 @@ namespace resolver
 {
 
 Client::Client(b0::Node *node)
-    : ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(node, "resolv", false, false)
+    : ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(node, "resolv", false, false),
+      announce_timeout_(-1)
 {
     if(!node)
         throw exception::Exception("node cannot be null");
@@ -24,8 +27,16 @@ Client::~Client()
 {
 }
 
+void Client::setAnnounceTimeout(int timeout)
+{
+    announce_timeout_ = timeout;
+}
+
 void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr)
 {
+    int old_timeout = getIntOption(ZMQ_RCVTIMEO);
+    setIntOption(ZMQ_RCVTIMEO, announce_timeout_);
+
     log(trace, "Announcing node '%s' to resolver...", node_name);
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::AnnounceNodeRequest &rq = *rq0.mutable_announce_node();
@@ -38,6 +49,9 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
     b0::resolver_msgs::Response rsp0;
     log(trace, "Waiting for response from resolver...");
     call(rq0, rsp0);
+
+    setIntOption(ZMQ_RCVTIMEO, old_timeout);
+
     const b0::resolver_msgs::AnnounceNodeResponse &rsp = rsp0.announce_node();
 
     if(!rsp.ok())
