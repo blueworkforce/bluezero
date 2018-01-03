@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['time_20synchronization',['Time Synchronization',['../timesync.html',1,'']]]
+  ['connecting_20remote_20nodes',['Connecting remote nodes',['../remote_nodes.html',1,'']]]
 ];

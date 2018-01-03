@@ -148,10 +148,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classb0_1_1_node.html#a768b1268d5125e1647c4dfbb8a1d8fde">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#ae1de6f40614c3fca3f96f569b17be8b5">getState</a> () const</td></tr>
 <tr class="memdesc:ae1de6f40614c3fca3f96f569b17be8b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the state of this node. <br /></td></tr>
 <tr class="separator:ae1de6f40614c3fca3f96f569b17be8b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6da4a7c64fcd1d50c87d3171054752af"><td class="memItemLeft" align="right" valign="top"><a id="a6da4a7c64fcd1d50c87d3171054752af"></a>
-zmq::context_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a6da4a7c64fcd1d50c87d3171054752af">getZMQContext</a> ()</td></tr>
-<tr class="memdesc:a6da4a7c64fcd1d50c87d3171054752af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the ZeroMQ Context. <br /></td></tr>
-<tr class="separator:a6da4a7c64fcd1d50c87d3171054752af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95132ce7c1910718778bdc18194f2990"><td class="memItemLeft" align="right" valign="top"><a id="a95132ce7c1910718778bdc18194f2990"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a95132ce7c1910718778bdc18194f2990">getContext</a> ()</td></tr>
+<tr class="memdesc:a95132ce7c1910718778bdc18194f2990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the ZeroMQ Context. <br /></td></tr>
+<tr class="separator:a95132ce7c1910718778bdc18194f2990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab28aeb2a6b7f3d4187eede80fd55c01b"><td class="memItemLeft" align="right" valign="top"><a id="ab28aeb2a6b7f3d4187eede80fd55c01b"></a>
 virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#ab28aeb2a6b7f3d4187eede80fd55c01b">getXPUBSocketAddress</a> () const</td></tr>
 <tr class="memdesc:ab28aeb2a6b7f3d4187eede80fd55c01b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve address of the proxy's XPUB socket. <br /></td></tr>
@@ -176,6 +176,22 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a68cf5da7b65c0f0d912f52bcf1740404">freeTCPPort</a> ()</td></tr>
 <tr class="memdesc:a68cf5da7b65c0f0d912f52bcf1740404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find and return an available TCP port. <br /></td></tr>
 <tr class="separator:a68cf5da7b65c0f0d912f52bcf1740404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c84114d73f4d806d7d46c3cadfdf097"><td class="memItemLeft" align="right" valign="top"><a id="a9c84114d73f4d806d7d46c3cadfdf097"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a9c84114d73f4d806d7d46c3cadfdf097">notifyTopic</a> (std::string topic_name, bool reverse, bool active)</td></tr>
+<tr class="memdesc:a9c84114d73f4d806d7d46c3cadfdf097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify topic publishing/subscription start or end. <br /></td></tr>
+<tr class="separator:a9c84114d73f4d806d7d46c3cadfdf097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08a12611b9370a1b85915788973f30c9"><td class="memItemLeft" align="right" valign="top"><a id="a08a12611b9370a1b85915788973f30c9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a08a12611b9370a1b85915788973f30c9">notifyService</a> (std::string service_name, bool reverse, bool active)</td></tr>
+<tr class="memdesc:a08a12611b9370a1b85915788973f30c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify service advertising/use start or end. <br /></td></tr>
+<tr class="separator:a08a12611b9370a1b85915788973f30c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9064967b820224650326b0a2988a8bbc"><td class="memItemLeft" align="right" valign="top"><a id="a9064967b820224650326b0a2988a8bbc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a9064967b820224650326b0a2988a8bbc">announceService</a> (std::string service_name, std::string addr)</td></tr>
+<tr class="memdesc:a9064967b820224650326b0a2988a8bbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Announce service address. <br /></td></tr>
+<tr class="separator:a9064967b820224650326b0a2988a8bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b56605aeb81c3caf961416d1b37f0d6"><td class="memItemLeft" align="right" valign="top"><a id="a5b56605aeb81c3caf961416d1b37f0d6"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a5b56605aeb81c3caf961416d1b37f0d6">resolveService</a> (std::string service_name, std::string &amp;addr)</td></tr>
+<tr class="memdesc:a5b56605aeb81c3caf961416d1b37f0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolve service address by name. <br /></td></tr>
+<tr class="separator:a5b56605aeb81c3caf961416d1b37f0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0e0d2edb969938115ac73ec7842b745"><td class="memItemLeft" align="right" valign="top"><a id="ac0e0d2edb969938115ac73ec7842b745"></a>
 int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#ac0e0d2edb969938115ac73ec7842b745">hardwareTimeUSec</a> () const</td></tr>
 <tr class="memdesc:ac0e0d2edb969938115ac73ec7842b745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return this computer's clock time in microseconds. <br /></td></tr>
@@ -184,10 +200,6 @@ int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#aafb522fc3aab3e93c39f8dbb68c5cb45">timeUSec</a> ()</td></tr>
 <tr class="memdesc:aafb522fc3aab3e93c39f8dbb68c5cb45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the adjusted time in microseconds. See <a class="el" href="timesync.html">Time Synchronization</a> for details. <br /></td></tr>
 <tr class="separator:aafb522fc3aab3e93c39f8dbb68c5cb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8f067a0e9d0c1ec0f93186051cc990"><td class="memItemLeft" align="right" valign="top"><a id="a8a8f067a0e9d0c1ec0f93186051cc990"></a>
-<a class="el" href="classb0_1_1resolver_1_1_client.html">resolver::Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a8a8f067a0e9d0c1ec0f93186051cc990">resolverClient</a> ()</td></tr>
-<tr class="memdesc:a8a8f067a0e9d0c1ec0f93186051cc990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the <a class="el" href="classb0_1_1_service_client.html" title="The service client template class. ">ServiceClient</a> to talk to resolver. <br /></td></tr>
-<tr class="separator:a8a8f067a0e9d0c1ec0f93186051cc990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
 <tr class="memitem:a0bc1432f4bf696cda1d33830ee583d0c inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="a0bc1432f4bf696cda1d33830ee583d0c"></a>
 template&lt;typename... Arguments&gt; </td></tr>
@@ -223,14 +235,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:aa0e6c480231c908dc7c4ed35712307c0"><td class="memItemLeft" align="right" valign="top"><a id="aa0e6c480231c908dc7c4ed35712307c0"></a>
-zmq::context_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#aa0e6c480231c908dc7c4ed35712307c0">context_</a></td></tr>
-<tr class="memdesc:aa0e6c480231c908dc7c4ed35712307c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ZeroMQ Context used by all sockets of this node. <br /></td></tr>
-<tr class="separator:aa0e6c480231c908dc7c4ed35712307c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ac7750c05a043ce3de4226410d53177"><td class="memItemLeft" align="right" valign="top"><a id="a3ac7750c05a043ce3de4226410d53177"></a>
-<a class="el" href="classb0_1_1resolver_1_1_client.html">resolver::Client</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a3ac7750c05a043ce3de4226410d53177">resolv_cli_</a></td></tr>
-<tr class="memdesc:a3ac7750c05a043ce3de4226410d53177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service client used to talk with resolver (announce, resolve, heartbeat) <br /></td></tr>
-<tr class="separator:a3ac7750c05a043ce3de4226410d53177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec15b70fe948a198c8cce6396380c185"><td class="memItemLeft" align="right" valign="top"><a id="aec15b70fe948a198c8cce6396380c185"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#aec15b70fe948a198c8cce6396380c185">resolv_addr_</a></td></tr>
+<tr class="memdesc:aec15b70fe948a198c8cce6396380c185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Target address of resolver client. <br /></td></tr>
+<tr class="separator:aec15b70fe948a198c8cce6396380c185"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a374b9fa9f122a5229d9c1e1099cd915c"><td class="memItemLeft" align="right" valign="top"><a id="a374b9fa9f122a5229d9c1e1099cd915c"></a>
 <a class="el" href="classb0_1_1logger_1_1_log_interface.html">logger::LogInterface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_node.html#a374b9fa9f122a5229d9c1e1099cd915c">p_logger_</a></td></tr>
 <tr class="memdesc:a374b9fa9f122a5229d9c1e1099cd915c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logger of this node. <br /></td></tr>
