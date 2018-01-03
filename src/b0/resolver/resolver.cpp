@@ -431,6 +431,7 @@ void Resolver::handleResolveService(const b0::resolver_msgs::ResolveServiceReque
     auto it = services_by_name_.find(rq.service_name());
     if(it == services_by_name_.end())
     {
+        rsp.set_sock_addr("");
         rsp.set_ok(false);
         log(error, "Failed to resolve service '%s'", rq.service_name());
         return;

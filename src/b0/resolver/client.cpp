@@ -163,7 +163,7 @@ void Client::resolveService(std::string name, std::string &addr)
     const b0::resolver_msgs::ResolveServiceResponse &rsp = rsp0.resolve();
 
     if(!rsp.ok())
-        throw exception::Exception("resolveService failed");
+        throw exception::NameResolutionError(name);
 
     addr = rsp.sock_addr();
 }

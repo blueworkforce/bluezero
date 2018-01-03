@@ -28,6 +28,10 @@ add_executable(clisrv_raw clisrv_raw.cpp ${TEST_MSGS})
 target_link_libraries(clisrv_raw b0)
 add_test(clisrv_raw clisrv_raw)
 
+add_executable(clisrv_badname clisrv_badname.cpp ${TEST_MSGS})
+target_link_libraries(clisrv_badname b0)
+add_test(clisrv_badname clisrv_badname)
+
 add_executable(time_sync time_sync.cpp)
 target_link_libraries(time_sync b0)
 add_test(time_sync_offset_recover time_sync offset_recover)
