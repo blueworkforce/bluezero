@@ -43,6 +43,11 @@ int main(int argc, char **argv)
      */
     node.spin();
 
+    /*
+     * Perform cleanup (stop threads, notify resolver that this node has quit, ...)
+     */
+    node.cleanup();
+
     return 0;
 }
 

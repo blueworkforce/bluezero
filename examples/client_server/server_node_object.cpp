@@ -35,6 +35,7 @@ int main(int argc, char **argv)
     TestServerNode node;
     node.init();
     node.spin();
+    node.cleanup();
     return 0;
 }
 
