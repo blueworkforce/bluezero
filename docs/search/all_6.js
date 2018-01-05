@@ -2,6 +2,7 @@ var searchData=
 [
   ['getcontext',['getContext',['../classb0_1_1_node.html#a95132ce7c1910718778bdc18194f2990',1,'b0::Node']]],
   ['getgraph',['getGraph',['../classb0_1_1resolver_1_1_client.html#a428d26c996907cfa2f9c7c665eac4981',1,'b0::resolver::Client::getGraph()'],['../classb0_1_1resolver_1_1_resolver.html#a8dc97f0c1891ded7b7a149dcdd171adf',1,'b0::resolver::Resolver::getGraph()']]],
+  ['getintoption',['getIntOption',['../classb0_1_1socket_1_1_socket.html#aa5f117d128fdaf4c73b61d8e5f15b04c',1,'b0::socket::Socket']]],
   ['getname',['getName',['../classb0_1_1_node.html#a621c09d8e40a3907288ef73935b8d547',1,'b0::Node::getName()'],['../classb0_1_1logger_1_1_console.html#a4b0f4509d99ea5336df46d99c6f6293f',1,'b0::logger::Console::getName()'],['../classb0_1_1socket_1_1_socket.html#ab45228812d22d9020c2c026f79340a92',1,'b0::socket::Socket::getName()']]],
   ['getservicename',['getServiceName',['../classb0_1_1_abstract_service_client.html#a4e1c909a0005d636cfbb72e73de8be51',1,'b0::AbstractServiceClient::getServiceName()'],['../classb0_1_1_abstract_service_server.html#af8fe8bca207ed72f89aec3eef143ab5d',1,'b0::AbstractServiceServer::getServiceName()']]],
   ['getsockopt',['getsockopt',['../classb0_1_1socket_1_1_socket.html#a8dc8ac39d70fc89fb405d7e70cdd202b',1,'b0::socket::Socket']]],

@@ -98,6 +98,10 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1resolver_1_1_client.html#ad933477aef18bb06c22e2f8ff8fc4e87">~Client</a> ()</td></tr>
 <tr class="memdesc:ad933477aef18bb06c22e2f8ff8fc4e87"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classb0_1_1resolver_1_1_resolver.html" title="The resolver node. ">Resolver</a> client destructor. <br /></td></tr>
 <tr class="separator:ad933477aef18bb06c22e2f8ff8fc4e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a444e3064d55b526f8d3888a4017da16d"><td class="memItemLeft" align="right" valign="top"><a id="a444e3064d55b526f8d3888a4017da16d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1resolver_1_1_client.html#a444e3064d55b526f8d3888a4017da16d">setAnnounceTimeout</a> (int timeout=-1)</td></tr>
+<tr class="memdesc:a444e3064d55b526f8d3888a4017da16d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a timeout for the read in the announce phase. Use -1 for no timeout. A timeout will cause the announce phase to abort if a response from the resolver node is not received within the specified amount of milliseconds. <br /></td></tr>
+<tr class="separator:a444e3064d55b526f8d3888a4017da16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f77e2a6c199a74e54beaf97570da722"><td class="memItemLeft" align="right" valign="top"><a id="a5f77e2a6c199a74e54beaf97570da722"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1resolver_1_1_client.html#a5f77e2a6c199a74e54beaf97570da722">announceNode</a> (std::string &amp;node_name, std::string &amp;xpub_sock_addr, std::string &amp;xsub_sock_addr)</td></tr>
 <tr class="memdesc:a5f77e2a6c199a74e54beaf97570da722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Announce this node to resolver. <br /></td></tr>
@@ -281,6 +285,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a8dc8ac39d70fc89fb405d7e70cdd202b">getsockopt</a> (int option, void *optval, size_t *optvallen)</td></tr>
 <tr class="memdesc:a8dc8ac39d70fc89fb405d7e70cdd202b inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::getsockopt. <br /></td></tr>
 <tr class="separator:a8dc8ac39d70fc89fb405d7e70cdd202b inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae079d08f5d4c56b7b8766452d993214f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ae079d08f5d4c56b7b8766452d993214f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ae079d08f5d4c56b7b8766452d993214f">setIntOption</a> (int option, int value)</td></tr>
+<tr class="memdesc:ae079d08f5d4c56b7b8766452d993214f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for setsockopt. <br /></td></tr>
+<tr class="separator:ae079d08f5d4c56b7b8766452d993214f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5f117d128fdaf4c73b61d8e5f15b04c inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="aa5f117d128fdaf4c73b61d8e5f15b04c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#aa5f117d128fdaf4c73b61d8e5f15b04c">getIntOption</a> (int option)</td></tr>
+<tr class="memdesc:aa5f117d128fdaf4c73b61d8e5f15b04c inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for getsockopt. <br /></td></tr>
+<tr class="separator:aa5f117d128fdaf4c73b61d8e5f15b04c inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classb0_1_1_abstract_service_client"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classb0_1_1_abstract_service_client')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classb0_1_1_abstract_service_client.html">b0::AbstractServiceClient</a></td></tr>
 <tr class="memitem:a422510bf4bb359aee9075e7755ed2024 inherit pro_attribs_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a422510bf4bb359aee9075e7755ed2024"></a>
 const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a422510bf4bb359aee9075e7755ed2024">notify_graph_</a></td></tr>
