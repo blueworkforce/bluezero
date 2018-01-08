@@ -22,12 +22,18 @@
  *
  * Any publishers, subscribers, service client and servers must be constructed prior to calling b0::Node::init().
  *
- * NOTE: In a thread there should be at most one b0::Node.
- *
  * The two ways of interconnecting nodes are:
  * - \b services, like clients and servers (functionality is provided by classes b0::ServiceClient and b0::ServiceServer)
  * - \b topics, like in publishers and subscribers (functionality provided by classes b0::Publisher and b0::Subscriber)
  *
+ * \section threading Threading and thread safety
+ *
+ * The functions of the library are not thread-safe, and so are the functions of ZeroMQ.
+ * Thus, every node must be accessed always from the same thread.
+ *
+ * Also, since the identifier of a node is the triple composed by the machine hostname, the process
+ * identifier, and the thread identifier, it is not possible to have more than one node per thread.
+ * This may change in future.
  *
  * \section resolver_intro Resolver node
  *
