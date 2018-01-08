@@ -154,6 +154,9 @@ protected:
     boost::function<void(const TReq&, TRep&)> callback_;
 };
 
+/*!
+ * \brief Raw version of ServiceServer::spinOnce()
+ */
 template<>
 inline void ServiceServer<std::string, std::string>::spinOnce()
 {

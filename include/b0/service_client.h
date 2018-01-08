@@ -110,6 +110,9 @@ public:
     }
 };
 
+/*!
+ * \brief Raw version of ServiceClient::call()
+ */
 template<>
 inline void ServiceClient<std::string, std::string>::call(const std::string &req, std::string &rep)
 {

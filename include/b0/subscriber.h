@@ -146,6 +146,9 @@ protected:
     boost::function<void(TMsg&)> callback_;
 };
 
+/*!
+ * \brief Raw version of Subscriber::spinOnce()
+ */
 template<>
 inline void Subscriber<std::string>::spinOnce()
 {

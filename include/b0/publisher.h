@@ -96,6 +96,9 @@ public:
     }
 };
 
+/*!
+ * \brief Raw version of Publisher::publish()
+ */
 template<>
 inline void Publisher<std::string>::publish(const std::string &msg)
 {
