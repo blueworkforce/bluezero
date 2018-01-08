@@ -12,6 +12,10 @@ add_executable(pubsub_raw pubsub_raw.cpp ${TEST_MSGS})
 target_link_libraries(pubsub_raw b0)
 add_test(pubsub_raw pubsub_raw)
 
+add_executable(pubsub_many pubsub_many.cpp ${TEST_MSGS})
+target_link_libraries(pubsub_many b0)
+add_test(pubsub_many pubsub_many)
+
 add_executable(pubsub_check_type pubsub_check_type.cpp ${TEST_MSGS})
 target_link_libraries(pubsub_check_type b0)
 add_test(pubsub_check_type pubsub_check_type)
