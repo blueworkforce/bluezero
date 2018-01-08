@@ -49,3 +49,7 @@ target_link_libraries(announce_timeout b0)
 add_test(announce_timeout announce_timeout 1000 1)
 add_test(announce_notimeout announce_timeout -1 0)
 
+add_executable(two_nodes_one_thread two_nodes_one_thread.cpp ${TEST_MSGS})
+target_link_libraries(two_nodes_one_thread b0)
+add_test(two_nodes_one_thread two_nodes_one_thread)
+
