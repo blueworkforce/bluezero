@@ -21,8 +21,8 @@ message AnnounceNodeRequest {
 message AnnounceNodeResponse {
   required bool ok = 1;
   optional string node_name = 2;
-  required string xsub_sock_addr = 3;
-  required string xpub_sock_addr = 4;
+  optional string xsub_sock_addr = 3;
+  optional string xpub_sock_addr = 4;
 }
 
 // Sent by node to resolver when shutting down
@@ -58,7 +58,7 @@ message ResolveServiceRequest {
 // Response to ResolveServiceRequest message
 message ResolveServiceResponse {
   required bool ok = 1;
-  required string sock_addr = 2;
+  optional string sock_addr = 2;
 }
 
 // Heartbeat sent by node to resolver
@@ -69,7 +69,7 @@ message HeartBeatRequest {
 // Response to HeartBeatRequest message
 message HeartBeatResponse {
   required bool ok = 1;
-  required int64 time_usec = 2;
+  optional int64 time_usec = 2;
 }
 
 // Sent by node to tell a topic it is publishing onto/subscribing to
