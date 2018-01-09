@@ -223,8 +223,17 @@ void Node::removeSocket(socket::Socket *socket)
 std::string Node::hostname()
 {
     const char *host_addr = std::getenv("BWF_HOST_ID");
-    if(host_addr) return host_addr;
-    else return boost::asio::ip::host_name();
+    if(host_addr)
+    {
+        log(warn, "BWF_HOST_ID variable is deprecated. Use B0_HOST_ID instead.");
+        return host_addr;
+    }
+    host_addr = std::getenv("B0_HOST_ID");
+    if(host_addr)
+    {
+        return host_addr;
+    }
+    return boost::asio::ip::host_name();
 }
 
 int Node::pid()
