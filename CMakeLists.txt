@@ -182,14 +182,14 @@ if(LZ4_FOUND)
     target_link_libraries(b0 ${LZ4_LIBRARY})
 endif()
 
-add_executable(resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_main.cpp)
-target_link_libraries(resolver b0)
+add_executable(b0_resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_main.cpp)
+target_link_libraries(b0_resolver b0)
 
-add_executable(logger_console src/b0/logger/console.cpp)
-target_link_libraries(logger_console b0)
+add_executable(b0_logger_console src/b0/logger/console.cpp)
+target_link_libraries(b0_logger_console b0)
 
-add_executable(graph_console src/b0/graph/console.cpp)
-target_link_libraries(graph_console b0)
+add_executable(b0_graph_console src/b0/graph/console.cpp)
+target_link_libraries(b0_graph_console b0)
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
