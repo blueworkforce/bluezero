@@ -260,15 +260,33 @@ bool Resolver::nodeNameExists(std::string name)
 std::string Resolver::hostAddress()
 {
     const char *host_addr = std::getenv("BWF_HOST_ID");
-    if(host_addr) return host_addr;
-    else return boost::asio::ip::host_name();
+    if(host_addr)
+    {
+        log(warn, "BWF_HOST_ID varable is deprecated. Use B0_HOST_ID instead.");
+        return host_addr;
+    }
+    host_addr = std::getenv("B0_HOST_ID");
+    if(host_addr)
+    {
+        return host_addr;
+    }
+    return boost::asio::ip::host_name();
 }
 
 int Resolver::resolverPort() const
 {
     const char *resolver_port = std::getenv("BWF_RESOLVER_PORT");
-    if(!resolver_port) return 22000;
-    return boost::lexical_cast<int>(resolver_port);
+    if(resolver_port)
+    {
+        log(warn, "BWF_RESOLVER_PORT variable is deprecated. Use B0_RESOLVER_PORT instead.");
+        return boost::lexical_cast<int>(resolver_port);
+    }
+    resolver_port = std::getenv("B0_RESOLVER_PORT");
+    if(resolver_port)
+    {
+        return boost::lexical_cast<int>(resolver_port);
+    }
+    return 22000;
 }
 
 std::string Resolver::address(std::string host, int port)

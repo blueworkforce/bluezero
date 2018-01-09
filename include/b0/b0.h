@@ -102,15 +102,15 @@
  * Nodes by default will try to reach resolver at tcp://localhost:22000, which only works
  * when testing all nodes on the same machine. When the resolver node is on another machine,
  * (for example the machine hostname is resolver-node-host.local)
- * the environment variable BWF_RESOLVER must be set to the correct address, e.g.:
+ * the environment variable B0_RESOLVER must be set to the correct address, e.g.:
  *
  * ~~~
- * export BWF_RESOLVER="tcp://resolver-node-host.local:22000"
+ * export B0_RESOLVER="tcp://resolver-node-host.local:22000"
  * ~~~
  *
  * prior to launching every node, or in .bashrc or similar.
  *
- * When BWF_RESOLVER is not specified it defaults to "tcp://localhost:22000".
+ * When B0_RESOLVER is not specified it defaults to "tcp://localhost:22000".
  *
  * \section reaching_nodes Reaching every other node
  *
@@ -132,14 +132,14 @@
  * If from machine A we are able to reach (ping) machine B by using its hostname bob.local,
  * and vice-versa, from machine B we are able to reach machine A by using its hostname alice.local,
  * there is no additional configuration to set. Otherwise, we need to explicitly tell how a machine
- * is reached from outside (i.e. what's the correct IP or hostname), by setting the BWF_HOST_ID
+ * is reached from outside (i.e. what's the correct IP or hostname), by setting the B0_HOST_ID
  * environment variable, e.g.:
  *
  * ~~~
- * export BWF_HOST_ID="192.168.1.3"
+ * export B0_HOST_ID="192.168.1.3"
  * ~~~
  *
- * When BWF_HOST_ID is not specified it defaults to the machine hostname.
+ * When B0_HOST_ID is not specified it defaults to the machine hostname.
  *
  * \section remote_nodes_example Example
  *
@@ -149,14 +149,14 @@
  * - Machine B (192.168.1.6) will run a publisher node.
  *
  * By default, nodes will use their hostnames when announcing socket addresses.
- * We override this behavior, by setting BWF_HOST_ID to the machine IP address.
+ * We override this behavior, by setting B0_HOST_ID to the machine IP address.
  *
  * \subsection remote_nodes_example_a_resolver Machine A - starting resolver
  *
  * On machine A we run
  *
  * ~~~
- * export BWF_HOST_ID="192.168.1.5"
+ * export B0_HOST_ID="192.168.1.5"
  *
  * ./resolver
  * ~~~
@@ -168,14 +168,14 @@
  * On machine A we run
  *
  * ~~~
- * export BWF_HOST_ID="192.168.1.5"
+ * export B0_HOST_ID="192.168.1.5"
  *
  * ./examples/publisher_subscriber/subscriber_node
  * ~~~
  *
  * to run the subscriber node.
  *
- * Note that for this machine we don't need to specify BWF_RESOLVER, because the default value
+ * Note that for this machine we don't need to specify B0_RESOLVER, because the default value
  * (tcp://localhost:22000) is good to reach the resolver socket.
  *
  * \subsection remote_nodes_example_b_publisher Machine B - starting publisher
@@ -183,9 +183,9 @@
  * On machine B we run
  *
  * ~~~
- * export BWF_HOST_ID="192.168.1.6"
+ * export B0_HOST_ID="192.168.1.6"
  *
- * export BWF_RESOLVER="tcp://192.168.1.5:22000"
+ * export B0_RESOLVER="tcp://192.168.1.5:22000"
  *
  * ./examples/publisher_subscriber/publisher_node
  * ~~~
