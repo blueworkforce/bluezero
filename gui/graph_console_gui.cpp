@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    b0::Node graphConsoleNode("graph_console");
+    b0::Node graphConsoleNode("graph_console_gui");
 
     GraphConsoleWindow graphConsoleWindow(graphConsoleNode);
 
