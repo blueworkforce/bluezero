@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <b0/b0.h>
 
 #include <QApplication>
@@ -11,6 +13,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTimer>
+#include <QAction>
+#include <QClipboard>
 
 #include "logger.pb.h"
 
@@ -41,6 +45,12 @@ public:
             QVBoxLayout *layout = new QVBoxLayout;
             layout->addWidget(filterToolBar);
             tableWidget = new QTableWidget;
+            tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+            tableWidget->setSelectionMode(QAbstractItemView::ContiguousSelection);
+            tableWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+            QAction *action1 = new QAction("Copy selected entries", this);
+            connect(action1, &QAction::triggered, this, &LogConsoleWindow::copySelectedEntries);
+            tableWidget->insertAction(0, action1);
             layout->addWidget(tableWidget);
             centralWidget->setLayout(layout);
         }
@@ -65,6 +75,30 @@ public:
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, [this](){this->node_.spinOnce();});
         timer->start(100);
+    }
+
+    void copySelectedEntries()
+    {
+        QModelIndexList selection = tableWidget->selectionModel()->selectedRows();
+        QString s;
+
+        foreach(QTableWidgetSelectionRange range, tableWidget->selectedRanges())
+        {
+            for(int row = range.topRow(); row <= range.bottomRow(); row++)
+            {
+                if(s.length()) s += "\n";
+                s += tableWidget->item(row, 0)->text();
+                s += " [";
+                s += tableWidget->item(row, 1)->text();
+                s += "] ";
+                s += tableWidget->item(row, 2)->text();
+                s += ": ";
+                s += tableWidget->item(row, 3)->text();
+            }
+        }
+
+        QClipboard *clipboard = QApplication::clipboard();
+        clipboard->setText(s);
     }
 
     void onLogEntry(const b0::logger_msgs::LogEntry &entry)
