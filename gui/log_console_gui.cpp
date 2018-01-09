@@ -1,7 +1,10 @@
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include <b0/b0.h>
 
+#include <QRegExp>
 #include <QApplication>
 #include <QMainWindow>
 #include <QWidget>
@@ -34,7 +37,7 @@ public:
             layout->addWidget(new QLabel("Level:"));
             layout->addWidget(comboLevel);
             textNode = new QLineEdit;
-            layout->addWidget(new QLabel("Node:"));
+            layout->addWidget(new QLabel("Node(s):"));
             layout->addWidget(textNode);
             filterToolBar->setLayout(layout);
         }
@@ -140,15 +143,24 @@ public:
 
     void textNodeChanged(const QString &txt)
     {
-        filterNodeName = textNode->text().toStdString();
+        QStringList words = textNode->text().split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        filterNodeNames.clear();
+        foreach(QString s, words)
+            filterNodeNames.push_back(s.toStdString());
         refilter();
     }
 
     bool filter(const b0::logger_msgs::LogEntry &entry)
     {
         if(entry.level() < filterLevel) return true;
-        if(entry.node_name().find(filterNodeName) == std::string::npos) return true;
-        return false;
+
+        if(filterNodeNames.empty()) return false;
+        else
+        {
+            for(std::string s : filterNodeNames)
+                if(entry.node_name().find(s) != std::string::npos) return false;
+            return true;
+        }
     }
 
     void refilter()
@@ -165,7 +177,7 @@ private:
     QComboBox *comboLevel;
     QLineEdit *textNode;
     std::vector<b0::logger_msgs::LogEntry> all_entries_;
-    std::string filterNodeName = "";
+    std::vector<std::string> filterNodeNames;
     b0::logger_msgs::LogLevel filterLevel = b0::logger_msgs::trace;
 };
 
@@ -173,7 +185,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    b0::Node logConsoleNode("log_console");
+    b0::Node logConsoleNode("log_console_gui");
 
     LogConsoleWindow logConsoleWindow(logConsoleNode);
 
