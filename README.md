@@ -1,6 +1,8 @@
 # BlueZero git repository
 
-Middleware for the BlueWorkforce projects
+BlueZero (in short, "B0") is a cross-platform middleware which provides tools for interconnecting pieces of software running in multiple threads, processes or machines.
+
+It has some similarities with ROS, although it only focuses on providing communication paradigms (client/server and publisher/subscriber) and message transport (based on ZeroMQ), while being agnostic to message serialization format or common protocols and data structures.
 
 ## Documentation
 
