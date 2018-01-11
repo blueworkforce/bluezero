@@ -6,6 +6,8 @@
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
+#include <b0/publisher.h>
+#include <b0/subscriber.h>
 
 int run_resolver = 0;
 
@@ -21,6 +23,8 @@ void node_thread()
 {
     b0::Node node("testnode");
     node.setAnnounceTimeout(500);
+    b0::Publisher<std::string> pub(&node, "testtopic");
+    b0::Subscriber<std::string> sub(&node, "testtopic");
     try
     {
         node.init();
