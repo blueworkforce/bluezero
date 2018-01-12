@@ -37,6 +37,8 @@ Socket::Socket(Node *node, int type, std::string name, bool managed)
       has_header_(false),
       managed_(managed)
 {
+    setLingerPeriod(5000);
+
     if(managed_)
         node_.addSocket(this);
 }
@@ -196,6 +198,66 @@ void Socket::setCompression(std::string algorithm, int level)
     compression_level_ = level;
 }
 
+int Socket::getReadTimeout() const
+{
+    return getIntOption(ZMQ_RCVTIMEO);
+}
+
+void Socket::setReadTimeout(int timeout)
+{
+    setIntOption(ZMQ_RCVTIMEO, timeout);
+}
+
+int Socket::getWriteTimeout() const
+{
+    return getIntOption(ZMQ_SNDTIMEO);
+}
+
+void Socket::setWriteTimeout(int timeout)
+{
+    setIntOption(ZMQ_SNDTIMEO, timeout);
+}
+
+int Socket::getLingerPeriod() const
+{
+    return getIntOption(ZMQ_LINGER);
+}
+
+void Socket::setLingerPeriod(int period)
+{
+    setIntOption(ZMQ_LINGER, period);
+}
+
+int Socket::getBacklog() const
+{
+    return getIntOption(ZMQ_BACKLOG);
+}
+
+void Socket::setBacklog(int backlog)
+{
+    setIntOption(ZMQ_BACKLOG, backlog);
+}
+
+bool Socket::getImmediate() const
+{
+    return getIntOption(ZMQ_IMMEDIATE) != 0;
+}
+
+void Socket::setImmediate(bool immediate)
+{
+    setIntOption(ZMQ_IMMEDIATE, immediate ? 1 : 0);
+}
+
+bool Socket::getConflate() const
+{
+    return getIntOption(ZMQ_CONFLATE) != 0;
+}
+
+void Socket::setConflate(bool conflate)
+{
+    setIntOption(ZMQ_CONFLATE, conflate ? 1 : 0);
+}
+
 void Socket::connect(std::string const &addr)
 {
     zmq::socket_t &socket_ = private_->socket_;
@@ -226,7 +288,7 @@ void Socket::setsockopt(int option, const void *optval, size_t optvallen)
     socket_.setsockopt(option, optval, optvallen);
 }
 
-void Socket::getsockopt(int option, void *optval, size_t *optvallen)
+void Socket::getsockopt(int option, void *optval, size_t *optvallen) const
 {
     zmq::socket_t &socket_ = private_->socket_;
     socket_.getsockopt(option, optval, optvallen);
@@ -238,7 +300,7 @@ void Socket::setIntOption(int option, int value)
     socket_.setsockopt<int>(option, value);
 }
 
-int Socket::getIntOption(int option)
+int Socket::getIntOption(int option) const
 {
     zmq::socket_t &socket_ = private_->socket_;
     return socket_.getsockopt<int>(option);
