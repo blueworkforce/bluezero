@@ -258,6 +258,26 @@ void Socket::setConflate(bool conflate)
     setIntOption(ZMQ_CONFLATE, conflate ? 1 : 0);
 }
 
+int Socket::getReadHWM() const
+{
+    return getIntOption(ZMQ_RCVHWM);
+}
+
+void Socket::setReadHWM(int n)
+{
+    setIntOption(ZMQ_RCVHWM, n);
+}
+
+int Socket::getWriteHWM() const
+{
+    return getIntOption(ZMQ_SNDHWM);
+}
+
+void Socket::setWriteHWM(int n)
+{
+    setIntOption(ZMQ_SNDHWM, n);
+}
+
 void Socket::connect(std::string const &addr)
 {
     zmq::socket_t &socket_ = private_->socket_;

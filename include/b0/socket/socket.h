@@ -189,6 +189,18 @@ public:
     //! (low-level socket option) Set conflate flag
     void setConflate(bool conflate);
 
+    //! (low-level socket option) Get read high-water-mark
+    int getReadHWM() const;
+
+    //! (low-level socket option) Set read high-water-mark
+    void setReadHWM(int n);
+
+    //! (low-level socket option) Get write high-water-mark
+    int getWriteHWM() const;
+
+    //! (low-level socket option) Set write high-water-mark
+    void setWriteHWM(int n);
+
 protected:
     //! Wrapper to zmq::socket_t::connect
     void connect(std::string const &addr);
