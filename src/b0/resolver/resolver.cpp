@@ -462,9 +462,9 @@ void Resolver::handleResolveService(const b0::resolver_msgs::ResolveServiceReque
 
 void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0::resolver_msgs::HeartBeatResponse &rsp)
 {
-    if(rq.node_id().host_id() == "self" && rq.node_id().process_id() == 0 && rq.node_id().thread_id() == "self")
+    if(rq.node_id().host_id() == "self" && rq.node_id().process_id() == -1 && rq.node_id().thread_id() == "self")
     {
-        // a HeartBeatRequest from "self" pid=0 thread="self" means to actually perform
+        // a HeartBeatRequest from "self" pid=-1 thread="self" means to actually perform
         // the detection and purging of dead nodes
         std::set<std::string> nodes_shutdown;
         for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); ++i)
@@ -598,7 +598,7 @@ void Resolver::heartBeatSweeper()
     while(!shutdownRequested())
     {
         // send a special heartbeat to resolv itself trigger the sweeping:
-        resolv_cli.sendHeartbeat();
+        resolv_cli.sendHeartbeat(0, "self", -1, "self");
         boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
     }
 
