@@ -309,6 +309,7 @@ void Node::heartbeatLoop()
     set_thread_name("HB");
 
     resolver::Client resolv_cli(this);
+    resolv_cli.setReadTimeout(1000);
     resolv_cli.init();
 
     while(!shutdownRequested())
