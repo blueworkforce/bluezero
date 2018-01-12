@@ -42,8 +42,8 @@ void Client::setAnnounceTimeout(int timeout)
 
 void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr)
 {
-    int old_timeout = getIntOption(ZMQ_RCVTIMEO);
-    setIntOption(ZMQ_RCVTIMEO, announce_timeout_);
+    int old_timeout = getReadTimeout();
+    setReadTimeout(announce_timeout_);
 
     log(trace, "Announcing node '%s' to resolver...", node_name);
     b0::resolver_msgs::Request rq0;
@@ -58,7 +58,7 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
     log(trace, "Waiting for response from resolver...");
     call(rq0, rsp0);
 
-    setIntOption(ZMQ_RCVTIMEO, old_timeout);
+    setReadTimeout(old_timeout);
 
     const b0::resolver_msgs::AnnounceNodeResponse &rsp = rsp0.announce_node();
 

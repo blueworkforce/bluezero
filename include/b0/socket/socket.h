@@ -152,6 +152,43 @@ private:
     //! \sa WriteSocket::setCompression()
     int compression_level_;
 
+public:
+    //! (low-level socket option) Get read timeout
+    int getReadTimeout() const;
+
+    //! (low-level socket option) Set read timeout
+    void setReadTimeout(int timeout);
+
+    //! (low-level socket option) Get write timeout
+    int getWriteTimeout() const;
+
+    //! (low-level socket option) Set write timeout
+    void setWriteTimeout(int timeout);
+
+    //! (low-level socket option) Get linger period
+    int getLingerPeriod() const;
+
+    //! (low-level socket option) Set linger period
+    void setLingerPeriod(int period);
+
+    //! (low-level socket option) Get backlog
+    int getBacklog() const;
+
+    //! (low-level socket option) Set backlog
+    void setBacklog(int backlog);
+
+    //! (low-level socket option) Get immediate flag
+    bool getImmediate() const;
+
+    //! (low-level socket option) Set immediate flag
+    void setImmediate(bool immediate);
+
+    //! (low-level socket option) Get conflate flag
+    bool getConflate() const;
+
+    //! (low-level socket option) Set conflate flag
+    void setConflate(bool conflate);
+
 protected:
     //! Wrapper to zmq::socket_t::connect
     void connect(std::string const &addr);
@@ -169,13 +206,13 @@ protected:
     void setsockopt(int option, const void *optval, size_t optvallen);
 
     //! Wrapper to zmq::socket_t::getsockopt
-    void getsockopt(int option, void *optval, size_t *optvallen);
+    void getsockopt(int option, void *optval, size_t *optvallen) const;
 
     //! High level wrapper for setsockopt
     void setIntOption(int option, int value);
 
     //! High level wrapper for getsockopt
-    int getIntOption(int option);
+    int getIntOption(int option) const;
 };
 
 } // namespace socket
