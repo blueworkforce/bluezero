@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <b0/user_data.h>
 #include <b0/logger/interface.h>
 
 #include <boost/function.hpp>
@@ -32,7 +33,7 @@ struct SocketPrivate;
  *
  * \sa b0::Publisher, b0::Subscriber, b0::ServiceClient, b0::ServiceServer
  */
-class Socket : public logger::LogInterface
+class Socket : public logger::LogInterface, public UserData
 {
 public:
     /*!

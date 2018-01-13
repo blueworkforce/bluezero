@@ -1,6 +1,7 @@
 #ifndef B0__NODE_H__INCLUDED
 #define B0__NODE_H__INCLUDED
 
+#include <b0/user_data.h>
 #include <b0/socket/socket.h>
 #include <b0/logger/interface.h>
 #include <b0/utils/time_sync.h>
@@ -35,7 +36,7 @@ struct NodePrivate2;
  * You must create at most one node per thread.
  * You can have many nodes in one process by creating several threads.
  */
-class Node : public logger::LogInterface
+class Node : public logger::LogInterface, public UserData
 {
 public:
     using logger::LogInterface::log;
