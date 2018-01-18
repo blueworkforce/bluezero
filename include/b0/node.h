@@ -2,7 +2,7 @@
 #define B0__NODE_H__INCLUDED
 
 #include <b0/user_data.h>
-#include <b0/socket/socket.h>
+#include <b0/socket.h>
 #include <b0/logger/interface.h>
 #include <b0/utils/time_sync.h>
 
@@ -167,12 +167,12 @@ private:
     /*!
      * Register a socket for this node. Do not call this directly. Called by Socket class.
      */
-    void addSocket(socket::Socket *socket);
+    void addSocket(Socket *socket);
 
     /*!
      * Register a socket for this node. Do not call this directly. Called by Socket class.
      */
-    void removeSocket(socket::Socket *socket);
+    void removeSocket(Socket *socket);
 
 public:
     /*!
@@ -277,7 +277,7 @@ private:
     boost::thread heartbeat_thread_;
 
     //! List of sockets
-    std::set<socket::Socket*> sockets_;
+    std::set<Socket*> sockets_;
 
     //! Address of the proxy's XSUB socket
     std::string xsub_sock_addr_;
@@ -304,7 +304,7 @@ private:
     static void setupSIGINTHandler();
 
 public:
-    friend class socket::Socket;
+    friend class Socket;
 };
 
 } // namespace b0

@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 
@@ -10,16 +9,14 @@
 
 //! \cond HIDDEN_SYMBOLS
 
-void callback1(const example_msgs::TestMessage &msg)
+void callback1(const std::string &msg)
 {
-    std::cout << "Received:" << std::endl
-        << msg.DebugString() << std::endl;
+    std::cout << "Received: " << msg << std::endl;
 }
 
-void callback2(const example_msgs::TestMessage2 &msg)
+void callback2(const std::string &msg)
 {
-    std::cout << "Received:" << std::endl
-        << msg.DebugString() << std::endl;
+    std::cout << "Received: " << msg << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -30,16 +27,14 @@ int main(int argc, char **argv)
     b0::Node node("subscriber");
 
     /*
-     * Subscribe on topic "A" for messages of type example_msgs::TestMessage
-     * and call callback1(std::string topic, const example_msgs::TestMessage &msg)
-     * when a message is received.
+     * Subscribe on topic "A" and call callback1(const std::string &msg) when a message is received.
      */
-    b0::Subscriber<example_msgs::TestMessage> subA(&node, "A", &callback1);
+    b0::Subscriber subA(&node, "A", &callback1);
 
     /*
-     * Similar as above for topic "B" and type example_msgs::TestMessage2
+     * Subscribe on topic "B" and call callback2(const std::string &msg) when a message is received.
      */
-    b0::Subscriber<example_msgs::TestMessage2> subB(&node, "B", &callback2);
+    b0::Subscriber subB(&node, "B", &callback2);
 
     /*
      * Initialize the node (will announce node name to the network, and do other nice things)

@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/service_server.h>
-#include "client_server.pb.h"
 
 #include <iostream>
 
@@ -19,15 +18,15 @@ public:
     {
     }
 
-    void on(const example_msgs::TestRequest &req, example_msgs::TestResponse &resp)
+    void on(const std::string &req, std::string &rep)
     {
-        std::cout << "Received:" << std::endl << req.DebugString() << std::endl;
-        resp.set_sum(req.a() + req.b());
-        std::cout << "Sending:" << std::endl << resp.DebugString() << std::endl;
+        std::cout << "Received: " << req << std::endl;
+        rep = "hi";
+        std::cout << "Sending: " << rep << std::endl;
     }
 
 protected:
-    b0::ServiceServer<example_msgs::TestRequest, example_msgs::TestResponse> srv_;
+    b0::ServiceServer srv_;
 };
 
 int main(int argc, char **argv)

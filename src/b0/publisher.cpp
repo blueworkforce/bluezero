@@ -9,24 +9,24 @@
 namespace b0
 {
 
-AbstractPublisher::AbstractPublisher(Node *node, std::string topic, bool managed, bool notify_graph)
-    : socket::Socket(node, ZMQ_PUB, topic, managed),
+Publisher::Publisher(Node *node, std::string topic, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_PUB, topic, managed),
       notify_graph_(notify_graph)
 {
     setHasHeader(true);
 }
 
-AbstractPublisher::~AbstractPublisher()
+Publisher::~Publisher()
 {
 }
 
-void AbstractPublisher::log(LogLevel level, std::string message) const
+void Publisher::log(LogLevel level, std::string message) const
 {
     boost::format fmt("Publisher(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
 }
 
-void AbstractPublisher::init()
+void Publisher::init()
 {
     if(remote_addr_.empty())
         remote_addr_ = node_.getXSUBSocketAddress();
@@ -36,7 +36,7 @@ void AbstractPublisher::init()
         node_.notifyTopic(name_, false, true);
 }
 
-void AbstractPublisher::cleanup()
+void Publisher::cleanup()
 {
     disconnect();
 
@@ -44,18 +44,23 @@ void AbstractPublisher::cleanup()
         node_.notifyTopic(name_, false, false);
 }
 
-std::string AbstractPublisher::getTopicName()
+std::string Publisher::getTopicName()
 {
     return name_;
 }
 
-void AbstractPublisher::connect()
+void Publisher::publish(const std::string &msg)
+{
+    writeRaw(msg);
+}
+
+void Publisher::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
 }
 
-void AbstractPublisher::disconnect()
+void Publisher::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
     Socket::disconnect(remote_addr_);

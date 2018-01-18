@@ -1,4 +1,4 @@
-#include <b0/socket/socket.h>
+#include <b0/socket.h>
 #include <b0/config.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
@@ -13,9 +13,6 @@
 #include <zmq.hpp>
 
 namespace b0
-{
-
-namespace socket
 {
 
 struct SocketPrivate
@@ -130,17 +127,6 @@ void Socket::readRaw(std::string &msg, std::string &type)
     type = env.type();
 }
 
-void Socket::read(google::protobuf::Message &msg)
-{
-    std::string payload, type;
-    readRaw(payload, type);
-    if(!msg.ParseFromString(payload))
-        throw exception::ProtobufParseError();
-    std::string expected_type = msg.GetTypeName();
-    if(type != expected_type)
-        throw exception::MessageTypeMismatch(type, expected_type);
-}
-
 bool Socket::poll(long timeout)
 {
     zmq::socket_t &socket_ = private_->socket_;
@@ -181,15 +167,6 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
     std::memcpy(msg_payload.data(), payload.data(), payload.size());
     if(!socket_.send(msg_payload))
         throw exception::SocketWriteError();
-}
-
-void Socket::write(const google::protobuf::Message &msg)
-{
-    std::string payload;
-    if(!msg.SerializeToString(&payload))
-        throw exception::ProtobufSerializeError();
-    std::string type = msg.GetTypeName();
-    writeRaw(payload, type);
 }
 
 void Socket::setCompression(std::string algorithm, int level)
@@ -325,8 +302,6 @@ int Socket::getIntOption(int option) const
     zmq::socket_t &socket_ = private_->socket_;
     return socket_.getsockopt<int>(option);
 }
-
-} // namespace socket
 
 } // namespace b0
 

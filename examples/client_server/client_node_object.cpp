@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/service_client.h>
-#include "client_server.pb.h"
 
 #include <iostream>
 
@@ -20,21 +19,18 @@ public:
 
     void run()
     {
-        example_msgs::TestRequest req;
-        req.set_a(100);
-        req.set_b(35);
+        std::string req = "hello";
+        std::string rep;
 
-        example_msgs::TestResponse resp;
+        std::cout << "Sending: " << req << std::endl;
 
-        std::cout << "Sending:" << std::endl << req.DebugString() << std::endl;
+        cli_.call(req, rep);
 
-        cli_.call(req, resp);
-
-        std::cout << "Received:" << std::endl << resp.DebugString() << std::endl;
+        std::cout << "Received: " << rep << std::endl;
     }
 
 protected:
-    b0::ServiceClient<example_msgs::TestRequest, example_msgs::TestResponse> cli_;
+    b0::ServiceClient cli_;
 };
 
 int main(int argc, char **argv)

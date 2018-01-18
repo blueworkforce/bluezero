@@ -16,7 +16,7 @@ void resolver_thread()
 void pub_thread()
 {
     b0::Node node("pub");
-    b0::AbstractPublisher pub(&node, "topic1");
+    b0::Publisher pub(&node, "topic1");
     node.init();
     for(;;) pub.writeRaw("hello");
 }
@@ -24,7 +24,7 @@ void pub_thread()
 void sub_thread()
 {
     b0::Node node("sub");
-    b0::AbstractSubscriber sub(&node, "topic1");
+    b0::Subscriber sub(&node, "topic1");
     node.init();
     std::string payload;
     sub.readRaw(payload);

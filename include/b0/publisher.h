@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <b0/socket/socket.h>
+#include <b0/socket.h>
 
 namespace b0
 {
@@ -11,27 +11,27 @@ namespace b0
 class Node;
 
 /*!
- * \brief The (abstract) publisher class
+ * \brief The publisher class
  *
- * This class wraps a ZeroMQ PUB socket. It will automatically connect to the
+ * This class wraps a PUB socket. It will automatically connect to the
  * XSUB socket of the proxy (note: the proxy is started by the resolver node).
  *
- * \sa b0::Publisher, b0::Subscriber, b0::AbstractPublisher, b0::AbstractSubscriber
+ * \sa b0::Publisher, b0::Subscriber
  */
-class AbstractPublisher : public socket::Socket
+class Publisher : public Socket
 {
 public:
     using logger::LogInterface::log;
 
     /*!
-     * \brief Construct an AbstractPublisher child of the specified Node
+     * \brief Construct an Publisher child of the specified Node
      */
-    AbstractPublisher(Node *node, std::string topic, bool managed = true, bool notify_graph = true);
+    Publisher(Node *node, std::string topic, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief AbstractPublisher destructor
+     * \brief Publisher destructor
      */
-    virtual ~AbstractPublisher();
+    virtual ~Publisher();
 
     /*!
      * \brief Log a message using node's logger, prepending this publisher informations
@@ -53,6 +53,11 @@ public:
      */
     std::string getTopicName();
 
+    /*!
+     * \brief Publish a message
+     */
+    virtual void publish(const std::string &msg);
+
 protected:
     /*!
      * \brief Connect to the remote address
@@ -67,43 +72,6 @@ protected:
     //! If false this socket will not send announcement to resolv (i.e. it will be "invisible")
     const bool notify_graph_;
 };
-
-/*!
- * \brief The publisher template class
- *
- * This template class specializes b0::AbstractPublisher to a specific message type.
- *
- * \sa b0::Publisher, b0::Subscriber, b0::AbstractPublisher, b0::AbstractSubscriber
- */
-template<typename TMsg>
-class Publisher : public AbstractPublisher
-{
-public:
-    /*!
-     * \brief Construct a Publisher child of the specified Node
-     */
-    Publisher(Node *node, std::string topic_name, bool managed = true, bool notify_graph = true)
-        : AbstractPublisher(node, topic_name, managed, notify_graph)
-    {
-    }
-
-    /*!
-     * \brief Publish the message on the publisher's topic
-     */
-    virtual void publish(const TMsg &msg)
-    {
-        write(msg);
-    }
-};
-
-/*!
- * \brief Raw version of Publisher::publish()
- */
-template<>
-inline void Publisher<std::string>::publish(const std::string &msg)
-{
-    writeRaw(msg);
-}
 
 } // namespace b0
 

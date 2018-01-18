@@ -1,4 +1,5 @@
-#include <b0/b0.h>
+#include <b0/node.h>
+#include <b0/protobuf/subscriber.h>
 #include <b0/graph/graphviz.h>
 
 #include <QApplication>
@@ -48,7 +49,7 @@ int main(int argc, char **argv)
 
     GraphConsoleWindow graphConsoleWindow(graphConsoleNode);
 
-    b0::Subscriber<b0::resolver_msgs::Graph> logSub(&graphConsoleNode, "graph", &GraphConsoleWindow::onGraphChanged, &graphConsoleWindow);
+    b0::protobuf::Subscriber<b0::resolver_msgs::Graph> logSub(&graphConsoleNode, "graph", &GraphConsoleWindow::onGraphChanged, &graphConsoleWindow);
 
     graphConsoleNode.init();
 

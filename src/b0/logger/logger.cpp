@@ -1,4 +1,4 @@
-#include <b0/publisher.h>
+#include <b0/protobuf/publisher.h>
 #include <b0/logger/logger.h>
 #include <b0/node.h>
 #include <b0/utils/thread_name.h>
@@ -71,7 +71,7 @@ struct LoggerPrivate
     {
     }
 
-    Publisher<b0::logger_msgs::LogEntry> pub_;
+    protobuf::Publisher<b0::logger_msgs::LogEntry> pub_;
 };
 
 Logger::Logger(b0::Node *node)

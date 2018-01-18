@@ -1,5 +1,5 @@
-#ifndef B0__SOCKET__SOCKET_H__INCLUDED
-#define B0__SOCKET__SOCKET_H__INCLUDED
+#ifndef B0__SOCKET_H__INCLUDED
+#define B0__SOCKET_H__INCLUDED
 
 #include <string>
 
@@ -9,15 +9,10 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include <google/protobuf/message.h>
-
 namespace b0
 {
 
 class Node;
-
-namespace socket
-{
 
 //! \cond HIDDEN_SYMBOLS
 
@@ -114,11 +109,6 @@ public:
     virtual void readRaw(std::string &msg, std::string &type);
 
     /*!
-     * \brief Read a google::protobuf::Message from the underlying ZeroMQ socket
-     */
-    virtual void read(google::protobuf::Message &msg);
-
-    /*!
      * \brief Poll for messages. If timeout is 0 return immediately, otherwise wait
      *        for the specified amount of milliseconds.
      */
@@ -128,11 +118,6 @@ public:
      * \brief Write a raw payload
      */
     virtual void writeRaw(const std::string &msg, const std::string &type = "");
-
-    /*!
-     * \brief Write a google::protobuf::Message
-     */
-    virtual void write(const google::protobuf::Message &msg);
 
 public:
     /*!
@@ -228,8 +213,6 @@ protected:
     int getIntOption(int option) const;
 };
 
-} // namespace socket
-
 } // namespace b0
 
-#endif // B0__SOCKET__SOCKET_H__INCLUDED
+#endif // B0__SOCKET_H__INCLUDED

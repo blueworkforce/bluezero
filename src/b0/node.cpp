@@ -207,7 +207,7 @@ std::string Node::getXSUBSocketAddress() const
     return xsub_sock_addr_;
 }
 
-void Node::addSocket(socket::Socket *socket)
+void Node::addSocket(Socket *socket)
 {
     if(state_ != State::Created)
         throw exception::Exception("Cannot create a socket with an already initialized node");
@@ -215,7 +215,7 @@ void Node::addSocket(socket::Socket *socket)
     sockets_.insert(socket);
 }
 
-void Node::removeSocket(socket::Socket *socket)
+void Node::removeSocket(Socket *socket)
 {
     sockets_.erase(socket);
 }

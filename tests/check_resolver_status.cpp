@@ -1,7 +1,6 @@
 #include <iostream>
 #include <boost/thread.hpp>
 
-#include "test_msgs.pb.h"
 #include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
@@ -23,8 +22,8 @@ void node_thread()
 {
     b0::Node node("testnode");
     node.setAnnounceTimeout(500);
-    b0::Publisher<std::string> pub(&node, "testtopic");
-    b0::Subscriber<std::string> sub(&node, "testtopic");
+    b0::Publisher pub(&node, "testtopic");
+    b0::Subscriber sub(&node, "testtopic");
     try
     {
         node.init();

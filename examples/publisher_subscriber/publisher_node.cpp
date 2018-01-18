@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/publisher.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 
@@ -20,7 +19,7 @@ int main(int argc, char **argv)
     /*
      * Create a Publisher to publish on topic "A"
      */
-    b0::Publisher<example_msgs::TestMessage> pub(&node, "A");
+    b0::Publisher pub(&node, "A");
 
     /*
      * Initialize the node (will announce node name to the network, and do other nice things)
@@ -38,13 +37,12 @@ int main(int argc, char **argv)
         /*
          * Create a message to send
          */
-        example_msgs::TestMessage msg;
-        msg.set_data(i++);
+        std::string msg = (boost::format("msg-%d") % i++).str();
 
         /*
          * Send the message on the "A" topic
          */
-        std::cout << "Sending:" << std::endl << msg.DebugString() << std::endl;
+        std::cout << "Sending: " << msg << std::endl;
         pub.publish(msg);
 
         /*

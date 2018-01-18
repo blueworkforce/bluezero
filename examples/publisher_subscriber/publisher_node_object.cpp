@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/publisher.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 #include <boost/lexical_cast.hpp>
@@ -28,9 +27,8 @@ public:
         {
             spinOnce();
 
-            example_msgs::TestMessage msg;
-            msg.set_data(i++);
-            std::cout << "Sending:" << std::endl << msg.DebugString() << std::endl;
+            std::string msg = (boost::format("msg-%d") % i++).str();
+            std::cout << "Sending: " << msg << std::endl;
             pub_.publish(msg);
 
             boost::this_thread::sleep_for(boost::chrono::seconds(1));
@@ -38,7 +36,7 @@ public:
     }
 
 private:
-    b0::Publisher<example_msgs::TestMessage> pub_;
+    b0::Publisher pub_;
 };
 
 int main(int argc, char **argv)

@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/publisher.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 
@@ -19,11 +18,11 @@ int main(int argc, char **argv)
 
     /*
      * Create two publishers:
-     *  - pubA publishes messages of type example_msgs::TestMessage on topic "A"
-     *  - pubB publishes messages of type example_msgs::TestMessage2 on topic "B"
+     *  - pubA publishes messages on topic "A"
+     *  - pubB publishes messages on topic "B"
      */
-    b0::Publisher<example_msgs::TestMessage> pubA(&node, "A");
-    b0::Publisher<example_msgs::TestMessage2> pubB(&node, "B");
+    b0::Publisher pubA(&node, "A");
+    b0::Publisher pubB(&node, "B");
 
     /*
      * Initialize the node (will announce node name to the network, and do other nice things)
@@ -41,15 +40,13 @@ int main(int argc, char **argv)
         /*
          * Publish some data on "A"
          */
-        example_msgs::TestMessage msg1;
-        msg1.set_data(i++);
+        std::string msg1 = (boost::format("meow-%d") % i++).str();
         pubA.publish(msg1);
 
         /*
          * Publish some data on "B"
          */
-        example_msgs::TestMessage2 msg2;
-        msg2.set_data((boost::format("string_%d") % i++).str());
+        std::string msg2 = (boost::format("woof-%d") % i++).str();
         pubB.publish(msg2);
 
         /*

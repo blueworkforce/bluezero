@@ -146,10 +146,11 @@ add_library(
     b0
     SHARED
     src/b0/node.cpp
+    src/b0/socket.cpp
     src/b0/publisher.cpp
+    src/b0/subscriber.cpp
     src/b0/service_client.cpp
     src/b0/service_server.cpp
-    src/b0/subscriber.cpp
     src/b0/compress/compress.cpp
     src/b0/compress/lz4.cpp
     src/b0/compress/zlib.cpp
@@ -161,9 +162,9 @@ add_library(
     src/b0/exception/unsupported_compression_algorithm.cpp
     src/b0/graph/graphviz.cpp
     src/b0/logger/logger.cpp
+    src/b0/protobuf/socket.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
-    src/b0/socket/socket.cpp
     src/b0/utils/thread_name.cpp
     src/b0/utils/time_sync.cpp
     ${B0_MSG_SOURCES}

@@ -16,21 +16,20 @@ void resolver_thread()
 void cli_thread()
 {
     b0::Node node("cli");
-    b0::AbstractServiceClient cli(&node, "service1");
+    b0::ServiceClient cli(&node, "service1");
     node.init();
     std::string req = "hello";
-    std::string resp;
-    //cli.call(req, resp); is not implemented in AbstractServiceClient
+    std::string rep;
     cli.writeRaw(req);
-    cli.readRaw(resp);
-    node.log(b0::Node::LogLevel::info, "server response: %s", resp);
-    exit(resp == "world" ? 0 : 1);
+    cli.readRaw(rep);
+    node.log(b0::Node::LogLevel::info, "server response: %s", rep);
+    exit(rep == "world" ? 0 : 1);
 }
 
 void srv_thread()
 {
     b0::Node node("srv");
-    b0::AbstractServiceServer srv(&node, "service1");
+    b0::ServiceServer srv(&node, "service1");
     node.init();
     std::string req;
     std::string resp = "world";
