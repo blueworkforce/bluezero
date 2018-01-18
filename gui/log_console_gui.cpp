@@ -2,7 +2,8 @@
 #include <string>
 #include <vector>
 
-#include <b0/b0.h>
+#include <b0/node.h>
+#include <b0/protobuf/subscriber.h>
 
 #include <QRegExp>
 #include <QApplication>
@@ -189,7 +190,7 @@ int main(int argc, char **argv)
 
     LogConsoleWindow logConsoleWindow(logConsoleNode);
 
-    b0::Subscriber<b0::logger_msgs::LogEntry> logSub(&logConsoleNode, "log", &LogConsoleWindow::onLogEntry, &logConsoleWindow);
+    b0::protobuf::Subscriber<b0::logger_msgs::LogEntry> logSub(&logConsoleNode, "log", &LogConsoleWindow::onLogEntry, &logConsoleWindow);
 
     logConsoleNode.init();
 

@@ -3,7 +3,7 @@
 #include "resolver.pb.h"
 #include <b0/node.h>
 #include <b0/resolver/client.h>
-#include <b0/subscriber.h>
+#include <b0/protobuf/subscriber.h>
 #include <b0/graph/graphviz.h>
 #include <b0/config.h>
 #ifdef HAVE_BOOST_PROCESS
@@ -104,7 +104,7 @@ public:
 
 protected:
     b0::resolver::Client resolv_cli_;
-    b0::Subscriber<b0::resolver_msgs::Graph> sub_;
+    b0::protobuf::Subscriber<b0::resolver_msgs::Graph> sub_;
 };
 
 } // namespace graph

@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <b0/socket/socket.h>
+#include <b0/socket.h>
 
 namespace b0
 {
@@ -11,27 +11,27 @@ namespace b0
 class Node;
 
 /*!
- * \brief The (abstract) service client class
+ * \brief The service client class
  *
- * This class wraps a ZeroMQ REQ socket. It will automatically resolve the address
+ * This class wraps a REQ socket. It will automatically resolve the address
  * of service name.
  *
- * \sa b0::ServiceClient, b0::ServiceServer, b0::AbstractServiceClient, b0::AbstractServiceServer
+ * \sa b0::ServiceClient, b0::ServiceServer
  */
-class AbstractServiceClient : public socket::Socket
+class ServiceClient : public Socket
 {
 public:
     using logger::LogInterface::log;
 
     /*!
-     * \brief Construct an AbstractServiceClient child of the specified Node
+     * \brief Construct an ServiceClient child of the specified Node
      */
-    AbstractServiceClient(Node *node, std::string service_name, bool managed = true, bool notify_graph = true);
+    ServiceClient(Node *node, std::string service_name, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief AbstractServiceClient destructor
+     * \brief ServiceClient destructor
      */
-    virtual ~AbstractServiceClient();
+    virtual ~ServiceClient();
 
     /*!
      * \brief Log a message using node's logger, prepending this service client informations
@@ -53,6 +53,12 @@ public:
      */
     std::string getServiceName();
 
+    /*!
+     * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
+     * \sa ServiceServer::read(), ServiceServer::write()
+     */
+    virtual void call(const std::string &req, std::string &rep);
+
 protected:
     /*!
      * \brief Perform service address resolution
@@ -72,53 +78,6 @@ protected:
     //! If false this socket will not send announcement to resolv (i.e. it will be "invisible")
     const bool notify_graph_;
 };
-
-/*!
- * \brief The service client template class
- *
- * This template class specializes b0::AbstractServiceClient to a specific request/response type.
- * It implements the call() method as well.
- *
- * The remote service is invoked with ServiceClient::call() and the call is blocking.
- * It will unblock as soon as the server sends out a reply.
- *
- * You can make it work asynchronously by directly using ServiceClient::write(), and polling
- * for the reply with ServiceClient::poll(), followed by ServiceClient::read().
- *
- * \sa b0::ServiceClient, b0::ServiceServer, b0::AbstractServiceClient, b0::AbstractServiceServer
- */
-template<typename TReq, typename TRep>
-class ServiceClient : public AbstractServiceClient
-{
-public:
-    /*!
-     * \brief Construct a ServiceClient child of a specific Node, which will connect to the specified socket in the specified node
-     */
-    ServiceClient(Node *node, std::string service_name, bool managed = true, bool notify_graph = true)
-        : AbstractServiceClient(node, service_name, managed, notify_graph)
-    {
-    }
-
-    /*!
-     * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
-     * \sa ServiceServer::read(), ServiceServer::write()
-     */
-    virtual void call(const TReq &req, TRep &rep)
-    {
-        write(req);
-        read(rep);
-    }
-};
-
-/*!
- * \brief Raw version of ServiceClient::call()
- */
-template<>
-inline void ServiceClient<std::string, std::string>::call(const std::string &req, std::string &rep)
-{
-    writeRaw(req);
-    readRaw(rep);
-}
 
 } // namespace b0
 

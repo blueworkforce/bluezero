@@ -9,24 +9,25 @@
 namespace b0
 {
 
-AbstractSubscriber::AbstractSubscriber(Node *node, std::string topic, bool managed, bool notify_graph)
-    : socket::Socket(node, ZMQ_SUB, topic, managed),
-      notify_graph_(notify_graph)
+Subscriber::Subscriber(Node *node, std::string topic, boost::function<void(const std::string&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_SUB, topic, managed),
+      notify_graph_(notify_graph),
+      callback_(callback)
 {
     setHasHeader(true);
 }
 
-AbstractSubscriber::~AbstractSubscriber()
+Subscriber::~Subscriber()
 {
 }
 
-void AbstractSubscriber::log(LogLevel level, std::string message) const
+void Subscriber::log(LogLevel level, std::string message) const
 {
     boost::format fmt("Subscriber(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
 }
 
-void AbstractSubscriber::init()
+void Subscriber::init()
 {
     if(remote_addr_.empty())
         remote_addr_ = node_.getXPUBSocketAddress();
@@ -36,7 +37,7 @@ void AbstractSubscriber::init()
         node_.notifyTopic(name_, true, true);
 }
 
-void AbstractSubscriber::cleanup()
+void Subscriber::cleanup()
 {
     disconnect();
 
@@ -44,19 +45,31 @@ void AbstractSubscriber::cleanup()
         node_.notifyTopic(name_, true, false);
 }
 
-std::string AbstractSubscriber::getTopicName()
+void Subscriber::spinOnce()
+{
+    if(callback_.empty()) return;
+
+    while(poll())
+    {
+        std::string msg;
+        readRaw(msg);
+        callback_(msg);
+    }
+}
+
+std::string Subscriber::getTopicName()
 {
     return name_;
 }
 
-void AbstractSubscriber::connect()
+void Subscriber::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
     Socket::setsockopt(ZMQ_SUBSCRIBE, name_.data(), name_.size());
 }
 
-void AbstractSubscriber::disconnect()
+void Subscriber::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
     Socket::setsockopt(ZMQ_UNSUBSCRIBE, name_.data(), name_.size());

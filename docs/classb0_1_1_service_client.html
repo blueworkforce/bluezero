@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BlueZero (BØ): b0::ServiceClient&lt; TReq, TRep &gt; Class Template Reference</title>
+<title>BlueZero (BØ): b0::ServiceClient Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,129 +65,252 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classb0_1_1_service_client-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">b0::ServiceClient&lt; TReq, TRep &gt; Class Template Reference</div>  </div>
+<div class="title">b0::ServiceClient Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The service client template class.  
+<p>The service client class.  
  <a href="classb0_1_1_service_client.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="service__client_8h_source.html">b0/service_client.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for b0::ServiceClient&lt; TReq, TRep &gt;:</div>
+Inheritance diagram for b0::ServiceClient:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classb0_1_1_service_client.png" usemap="#b0::ServiceClient_3C_20TReq_2C_20TRep_20_3E_map" alt=""/>
-  <map id="b0::ServiceClient_3C_20TReq_2C_20TRep_20_3E_map" name="b0::ServiceClient_3C_20TReq_2C_20TRep_20_3E_map">
-<area href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. " alt="b0::AbstractServiceClient" shape="rect" coords="0,112,198,136"/>
-<area href="classb0_1_1socket_1_1_socket.html" title="The Socket class. " alt="b0::socket::Socket" shape="rect" coords="0,56,198,80"/>
-<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="0,0,198,24"/>
+  <img src="classb0_1_1_service_client.png" usemap="#b0::ServiceClient_map" alt=""/>
+  <map id="b0::ServiceClient_map" name="b0::ServiceClient_map">
+<area href="classb0_1_1_socket.html" title="The Socket class. " alt="b0::Socket" shape="rect" coords="77,56,222,80"/>
+<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="0,0,145,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acc7ae1cb1cf106e77a0050e76c795d00"><td class="memItemLeft" align="right" valign="top"><a id="acc7ae1cb1cf106e77a0050e76c795d00"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#acc7ae1cb1cf106e77a0050e76c795d00">ServiceClient</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string service_name, bool managed=true, bool notify_graph=true)</td></tr>
-<tr class="memdesc:acc7ae1cb1cf106e77a0050e76c795d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_service_client.html" title="The service client template class. ">ServiceClient</a> child of a specific <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>, which will connect to the specified socket in the specified node. <br /></td></tr>
-<tr class="separator:acc7ae1cb1cf106e77a0050e76c795d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd4d1f8416ffa68fad4f8d10b5ae82ed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#acd4d1f8416ffa68fad4f8d10b5ae82ed">call</a> (const TReq &amp;req, TRep &amp;rep)</td></tr>
-<tr class="memdesc:acd4d1f8416ffa68fad4f8d10b5ae82ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a request and read a reply from the underlying ZeroMQ REQ socket.  <a href="#acd4d1f8416ffa68fad4f8d10b5ae82ed">More...</a><br /></td></tr>
-<tr class="separator:acd4d1f8416ffa68fad4f8d10b5ae82ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ab36c2ef698554609b71089c0573454"><td class="memTemplParams" colspan="2"><a id="a7ab36c2ef698554609b71089c0573454"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a7ab36c2ef698554609b71089c0573454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a7ab36c2ef698554609b71089c0573454">call</a> (const std::string &amp;req, std::string &amp;rep)</td></tr>
-<tr class="memdesc:a7ab36c2ef698554609b71089c0573454"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw version of <a class="el" href="classb0_1_1_service_client.html#acd4d1f8416ffa68fad4f8d10b5ae82ed" title="Write a request and read a reply from the underlying ZeroMQ REQ socket. ">ServiceClient::call()</a> <br /></td></tr>
-<tr class="separator:a7ab36c2ef698554609b71089c0573454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classb0_1_1_abstract_service_client"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1_abstract_service_client')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1_abstract_service_client.html">b0::AbstractServiceClient</a></td></tr>
-<tr class="memitem:a48a81273c5b6a2af2439a4f240e39211 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a48a81273c5b6a2af2439a4f240e39211"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a48a81273c5b6a2af2439a4f240e39211">AbstractServiceClient</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string service_name, bool managed=true, bool notify_graph=true)</td></tr>
-<tr class="memdesc:a48a81273c5b6a2af2439a4f240e39211 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct an <a class="el" href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. ">AbstractServiceClient</a> child of the specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>. <br /></td></tr>
-<tr class="separator:a48a81273c5b6a2af2439a4f240e39211 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cf696165593a153dbd53c0cc057773b inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a8cf696165593a153dbd53c0cc057773b"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a8cf696165593a153dbd53c0cc057773b">~AbstractServiceClient</a> ()</td></tr>
-<tr class="memdesc:a8cf696165593a153dbd53c0cc057773b inherit pub_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. ">AbstractServiceClient</a> destructor. <br /></td></tr>
-<tr class="separator:a8cf696165593a153dbd53c0cc057773b inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61d233e462e27e197222cdc4e2cf54f8 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a61d233e462e27e197222cdc4e2cf54f8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a61d233e462e27e197222cdc4e2cf54f8">log</a> (<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> level, std::string message) const override</td></tr>
-<tr class="memdesc:a61d233e462e27e197222cdc4e2cf54f8 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message using node's logger, prepending this service client informations. <br /></td></tr>
-<tr class="separator:a61d233e462e27e197222cdc4e2cf54f8 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a2828971b0fe5914261c3b347c6d4fc inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a6a2828971b0fe5914261c3b347c6d4fc"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a6a2828971b0fe5914261c3b347c6d4fc">init</a> () override</td></tr>
-<tr class="memdesc:a6a2828971b0fe5914261c3b347c6d4fc inherit pub_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform initialization and optionally send graph notify. <br /></td></tr>
-<tr class="separator:a6a2828971b0fe5914261c3b347c6d4fc inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86cec3a70454cc4ad0ee82937e1930d8 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a86cec3a70454cc4ad0ee82937e1930d8"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a86cec3a70454cc4ad0ee82937e1930d8">cleanup</a> () override</td></tr>
-<tr class="memdesc:a86cec3a70454cc4ad0ee82937e1930d8 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform cleanup and optionally send graph notify. <br /></td></tr>
-<tr class="separator:a86cec3a70454cc4ad0ee82937e1930d8 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e1c909a0005d636cfbb72e73de8be51 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a4e1c909a0005d636cfbb72e73de8be51"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a4e1c909a0005d636cfbb72e73de8be51">getServiceName</a> ()</td></tr>
-<tr class="memdesc:a4e1c909a0005d636cfbb72e73de8be51 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of this client's service. <br /></td></tr>
-<tr class="separator:a4e1c909a0005d636cfbb72e73de8be51 inherit pub_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classb0_1_1socket_1_1_socket"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1socket_1_1_socket')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1socket_1_1_socket.html">b0::socket::Socket</a></td></tr>
-<tr class="memitem:aff2b5dbdf0106d918ee13725b1687a9c inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="aff2b5dbdf0106d918ee13725b1687a9c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#aff2b5dbdf0106d918ee13725b1687a9c">Socket</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, int type, std::string name, bool managed=true)</td></tr>
-<tr class="memdesc:aff2b5dbdf0106d918ee13725b1687a9c inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1socket_1_1_socket.html" title="The Socket class. ">Socket</a>. <br /></td></tr>
-<tr class="separator:aff2b5dbdf0106d918ee13725b1687a9c inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a9d9bbb0cb491ea8f692f8b3f1a8e84 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a0a9d9bbb0cb491ea8f692f8b3f1a8e84"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a0a9d9bbb0cb491ea8f692f8b3f1a8e84">~Socket</a> ()</td></tr>
-<tr class="memdesc:a0a9d9bbb0cb491ea8f692f8b3f1a8e84 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classb0_1_1socket_1_1_socket.html" title="The Socket class. ">Socket</a> destructor. <br /></td></tr>
-<tr class="separator:a0a9d9bbb0cb491ea8f692f8b3f1a8e84 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f894f62e111582ed8fc66094733fb2e inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a4f894f62e111582ed8fc66094733fb2e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a4f894f62e111582ed8fc66094733fb2e">setHasHeader</a> (bool has_header)</td></tr>
-<tr class="memdesc:a4f894f62e111582ed8fc66094733fb2e inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the has_header_ flag which specifies if this socket require a message part with the address (usually for publish/subscribe pattern). <br /></td></tr>
-<tr class="separator:a4f894f62e111582ed8fc66094733fb2e inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70542be24ba6e2c36e33645d0021aaf8 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a70542be24ba6e2c36e33645d0021aaf8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a70542be24ba6e2c36e33645d0021aaf8">log</a> (<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> level, std::string message) const override</td></tr>
-<tr class="memdesc:a70542be24ba6e2c36e33645d0021aaf8 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the default logger of this node. <br /></td></tr>
-<tr class="separator:a70542be24ba6e2c36e33645d0021aaf8 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a601447539016bb8ee7ce16da2001937c inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a601447539016bb8ee7ce16da2001937c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a601447539016bb8ee7ce16da2001937c">spinOnce</a> ()</td></tr>
-<tr class="memdesc:a601447539016bb8ee7ce16da2001937c inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process incoming messages and call callbacks. <br /></td></tr>
-<tr class="separator:a601447539016bb8ee7ce16da2001937c inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a3e2305b2ef8d0d9ba6cb80a378b471 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a6a3e2305b2ef8d0d9ba6cb80a378b471"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a6a3e2305b2ef8d0d9ba6cb80a378b471">setRemoteAddress</a> (std::string addr)</td></tr>
-<tr class="memdesc:a6a3e2305b2ef8d0d9ba6cb80a378b471 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the remote address the socket will connect to. <br /></td></tr>
-<tr class="separator:a6a3e2305b2ef8d0d9ba6cb80a378b471 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab45228812d22d9020c2c026f79340a92 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ab45228812d22d9020c2c026f79340a92"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ab45228812d22d9020c2c026f79340a92">getName</a> () const</td></tr>
-<tr class="memdesc:ab45228812d22d9020c2c026f79340a92 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of the socket bus. <br /></td></tr>
-<tr class="separator:ab45228812d22d9020c2c026f79340a92 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a054e37de95b74dc7906ddf7f14cde259 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a054e37de95b74dc7906ddf7f14cde259"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a054e37de95b74dc7906ddf7f14cde259">readRaw</a> (std::string &amp;msg)</td></tr>
-<tr class="memdesc:a054e37de95b74dc7906ddf7f14cde259 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw payload from the underlying ZeroMQ socket. <br /></td></tr>
-<tr class="separator:a054e37de95b74dc7906ddf7f14cde259 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad618ddae35e4a83b1ab64c53f1a6963d inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ad618ddae35e4a83b1ab64c53f1a6963d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ad618ddae35e4a83b1ab64c53f1a6963d">readRaw</a> (std::string &amp;msg, std::string &amp;type)</td></tr>
-<tr class="memdesc:ad618ddae35e4a83b1ab64c53f1a6963d inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw payload with type from the underlying ZeroMQ socket. <br /></td></tr>
-<tr class="separator:ad618ddae35e4a83b1ab64c53f1a6963d inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e41d43ccda58caaea0233576c695de3 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a3e41d43ccda58caaea0233576c695de3"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a3e41d43ccda58caaea0233576c695de3">read</a> (google::protobuf::Message &amp;msg)</td></tr>
-<tr class="memdesc:a3e41d43ccda58caaea0233576c695de3 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a google::protobuf::Message from the underlying ZeroMQ socket. <br /></td></tr>
-<tr class="separator:a3e41d43ccda58caaea0233576c695de3 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e5519d393ac5e0c84357c2f7a339002 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a7e5519d393ac5e0c84357c2f7a339002"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a7e5519d393ac5e0c84357c2f7a339002">poll</a> (long timeout=0)</td></tr>
-<tr class="memdesc:a7e5519d393ac5e0c84357c2f7a339002 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll for messages. If timeout is 0 return immediately, otherwise wait for the specified amount of milliseconds. <br /></td></tr>
-<tr class="separator:a7e5519d393ac5e0c84357c2f7a339002 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a551df72d760615e647686a8392272eac inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a551df72d760615e647686a8392272eac"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a551df72d760615e647686a8392272eac">writeRaw</a> (const std::string &amp;msg, const std::string &amp;type=&quot;&quot;)</td></tr>
-<tr class="memdesc:a551df72d760615e647686a8392272eac inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a raw payload. <br /></td></tr>
-<tr class="separator:a551df72d760615e647686a8392272eac inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c7b3135dba6af6e8771300deda20fb9 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a0c7b3135dba6af6e8771300deda20fb9"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a0c7b3135dba6af6e8771300deda20fb9">write</a> (const google::protobuf::Message &amp;msg)</td></tr>
-<tr class="memdesc:a0c7b3135dba6af6e8771300deda20fb9 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a google::protobuf::Message. <br /></td></tr>
-<tr class="separator:a0c7b3135dba6af6e8771300deda20fb9 inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86e56d139cd79f8ce0045b3c3ebc9b2b inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a86e56d139cd79f8ce0045b3c3ebc9b2b">setCompression</a> (std::string algorithm, int level=-1)</td></tr>
-<tr class="memdesc:a86e56d139cd79f8ce0045b3c3ebc9b2b inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set compression algorithm and level.  <a href="classb0_1_1socket_1_1_socket.html#a86e56d139cd79f8ce0045b3c3ebc9b2b">More...</a><br /></td></tr>
-<tr class="separator:a86e56d139cd79f8ce0045b3c3ebc9b2b inherit pub_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58242bf3afca5b5b261ffb4ad14cd072"><td class="memItemLeft" align="right" valign="top"><a id="a58242bf3afca5b5b261ffb4ad14cd072"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a58242bf3afca5b5b261ffb4ad14cd072">ServiceClient</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, std::string service_name, bool managed=true, bool notify_graph=true)</td></tr>
+<tr class="memdesc:a58242bf3afca5b5b261ffb4ad14cd072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct an <a class="el" href="classb0_1_1_service_client.html" title="The service client class. ">ServiceClient</a> child of the specified <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>. <br /></td></tr>
+<tr class="separator:a58242bf3afca5b5b261ffb4ad14cd072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37bbca6197cad279ef0d7dec168af7a6"><td class="memItemLeft" align="right" valign="top"><a id="a37bbca6197cad279ef0d7dec168af7a6"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a37bbca6197cad279ef0d7dec168af7a6">~ServiceClient</a> ()</td></tr>
+<tr class="memdesc:a37bbca6197cad279ef0d7dec168af7a6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classb0_1_1_service_client.html" title="The service client class. ">ServiceClient</a> destructor. <br /></td></tr>
+<tr class="separator:a37bbca6197cad279ef0d7dec168af7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3596f8a7f173949de49a662b5bcc246"><td class="memItemLeft" align="right" valign="top"><a id="ae3596f8a7f173949de49a662b5bcc246"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#ae3596f8a7f173949de49a662b5bcc246">log</a> (<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> level, std::string message) const override</td></tr>
+<tr class="memdesc:ae3596f8a7f173949de49a662b5bcc246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message using node's logger, prepending this service client informations. <br /></td></tr>
+<tr class="separator:ae3596f8a7f173949de49a662b5bcc246"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6501e387ab8466cf2159edfd54e1429e"><td class="memItemLeft" align="right" valign="top"><a id="a6501e387ab8466cf2159edfd54e1429e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a6501e387ab8466cf2159edfd54e1429e">init</a> () override</td></tr>
+<tr class="memdesc:a6501e387ab8466cf2159edfd54e1429e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform initialization and optionally send graph notify. <br /></td></tr>
+<tr class="separator:a6501e387ab8466cf2159edfd54e1429e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f10585a02ea704ce1db2d50990fe8b"><td class="memItemLeft" align="right" valign="top"><a id="a17f10585a02ea704ce1db2d50990fe8b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a17f10585a02ea704ce1db2d50990fe8b">cleanup</a> () override</td></tr>
+<tr class="memdesc:a17f10585a02ea704ce1db2d50990fe8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform cleanup and optionally send graph notify. <br /></td></tr>
+<tr class="separator:a17f10585a02ea704ce1db2d50990fe8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb57d08afe6fe876f81f273af03b3c4d"><td class="memItemLeft" align="right" valign="top"><a id="adb57d08afe6fe876f81f273af03b3c4d"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#adb57d08afe6fe876f81f273af03b3c4d">getServiceName</a> ()</td></tr>
+<tr class="memdesc:adb57d08afe6fe876f81f273af03b3c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of this client's service. <br /></td></tr>
+<tr class="separator:adb57d08afe6fe876f81f273af03b3c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dc47b030407dbd60eba34d36fb8328d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a9dc47b030407dbd60eba34d36fb8328d">call</a> (const std::string &amp;req, std::string &amp;rep)</td></tr>
+<tr class="memdesc:a9dc47b030407dbd60eba34d36fb8328d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a request and read a reply from the underlying ZeroMQ REQ socket.  <a href="#a9dc47b030407dbd60eba34d36fb8328d">More...</a><br /></td></tr>
+<tr class="separator:a9dc47b030407dbd60eba34d36fb8328d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classb0_1_1_socket"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1_socket')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1_socket.html">b0::Socket</a></td></tr>
+<tr class="memitem:a33b997f9f5a0b69a6340b62a590a10d8 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a33b997f9f5a0b69a6340b62a590a10d8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a33b997f9f5a0b69a6340b62a590a10d8">Socket</a> (<a class="el" href="classb0_1_1_node.html">Node</a> *node, int type, std::string name, bool managed=true)</td></tr>
+<tr class="memdesc:a33b997f9f5a0b69a6340b62a590a10d8 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classb0_1_1_socket.html" title="The Socket class. ">Socket</a>. <br /></td></tr>
+<tr class="separator:a33b997f9f5a0b69a6340b62a590a10d8 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac43846d8c17c34042975309a1a4be8ee inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ac43846d8c17c34042975309a1a4be8ee"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ac43846d8c17c34042975309a1a4be8ee">~Socket</a> ()</td></tr>
+<tr class="memdesc:ac43846d8c17c34042975309a1a4be8ee inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classb0_1_1_socket.html" title="The Socket class. ">Socket</a> destructor. <br /></td></tr>
+<tr class="separator:ac43846d8c17c34042975309a1a4be8ee inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4031a2b1c64a60d0d10a2f7ed7de324 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="af4031a2b1c64a60d0d10a2f7ed7de324"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#af4031a2b1c64a60d0d10a2f7ed7de324">setHasHeader</a> (bool has_header)</td></tr>
+<tr class="memdesc:af4031a2b1c64a60d0d10a2f7ed7de324 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the has_header_ flag which specifies if this socket require a message part with the address (usually for publish/subscribe pattern). <br /></td></tr>
+<tr class="separator:af4031a2b1c64a60d0d10a2f7ed7de324 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ce6d9f894ad4e51501b47f99e62fdf inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a86ce6d9f894ad4e51501b47f99e62fdf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a86ce6d9f894ad4e51501b47f99e62fdf">log</a> (<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> level, std::string message) const override</td></tr>
+<tr class="memdesc:a86ce6d9f894ad4e51501b47f99e62fdf inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message to the default logger of this node. <br /></td></tr>
+<tr class="separator:a86ce6d9f894ad4e51501b47f99e62fdf inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a370e1ba98897f86666093ff1cb663bc3 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a370e1ba98897f86666093ff1cb663bc3"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a370e1ba98897f86666093ff1cb663bc3">spinOnce</a> ()</td></tr>
+<tr class="memdesc:a370e1ba98897f86666093ff1cb663bc3 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process incoming messages and call callbacks. <br /></td></tr>
+<tr class="separator:a370e1ba98897f86666093ff1cb663bc3 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb8ab83d98eb9f584476f4a77dcce0f4 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="abb8ab83d98eb9f584476f4a77dcce0f4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#abb8ab83d98eb9f584476f4a77dcce0f4">setRemoteAddress</a> (std::string addr)</td></tr>
+<tr class="memdesc:abb8ab83d98eb9f584476f4a77dcce0f4 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the remote address the socket will connect to. <br /></td></tr>
+<tr class="separator:abb8ab83d98eb9f584476f4a77dcce0f4 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a843d3582b4b3eef02f007e639af2e9f3 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a843d3582b4b3eef02f007e639af2e9f3"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a843d3582b4b3eef02f007e639af2e9f3">getName</a> () const</td></tr>
+<tr class="memdesc:a843d3582b4b3eef02f007e639af2e9f3 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of the socket bus. <br /></td></tr>
+<tr class="separator:a843d3582b4b3eef02f007e639af2e9f3 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab401d743fff67f4fc32d6d10fc89f394 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ab401d743fff67f4fc32d6d10fc89f394"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ab401d743fff67f4fc32d6d10fc89f394">readRaw</a> (std::string &amp;msg)</td></tr>
+<tr class="memdesc:ab401d743fff67f4fc32d6d10fc89f394 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw payload from the underlying ZeroMQ socket. <br /></td></tr>
+<tr class="separator:ab401d743fff67f4fc32d6d10fc89f394 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8aa650eecece4188f8e86f8b70d60a2 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ae8aa650eecece4188f8e86f8b70d60a2"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ae8aa650eecece4188f8e86f8b70d60a2">readRaw</a> (std::string &amp;msg, std::string &amp;type)</td></tr>
+<tr class="memdesc:ae8aa650eecece4188f8e86f8b70d60a2 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw payload with type from the underlying ZeroMQ socket. <br /></td></tr>
+<tr class="separator:ae8aa650eecece4188f8e86f8b70d60a2 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f2b867a9d7c04c33b7fa20593cad031 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a5f2b867a9d7c04c33b7fa20593cad031"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a5f2b867a9d7c04c33b7fa20593cad031">poll</a> (long timeout=0)</td></tr>
+<tr class="memdesc:a5f2b867a9d7c04c33b7fa20593cad031 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll for messages. If timeout is 0 return immediately, otherwise wait for the specified amount of milliseconds. <br /></td></tr>
+<tr class="separator:a5f2b867a9d7c04c33b7fa20593cad031 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a1a23f248a32f5f33d5d3bd6b5c688f inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a0a1a23f248a32f5f33d5d3bd6b5c688f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a0a1a23f248a32f5f33d5d3bd6b5c688f">writeRaw</a> (const std::string &amp;msg, const std::string &amp;type=&quot;&quot;)</td></tr>
+<tr class="memdesc:a0a1a23f248a32f5f33d5d3bd6b5c688f inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a raw payload. <br /></td></tr>
+<tr class="separator:a0a1a23f248a32f5f33d5d3bd6b5c688f inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96e9b442ac068ce4da441c4034af961c inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a96e9b442ac068ce4da441c4034af961c">setCompression</a> (std::string algorithm, int level=-1)</td></tr>
+<tr class="memdesc:a96e9b442ac068ce4da441c4034af961c inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set compression algorithm and level.  <a href="classb0_1_1_socket.html#a96e9b442ac068ce4da441c4034af961c">More...</a><br /></td></tr>
+<tr class="separator:a96e9b442ac068ce4da441c4034af961c inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ea6cff1b0e9759223552e4d50fb1f0 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a26ea6cff1b0e9759223552e4d50fb1f0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a26ea6cff1b0e9759223552e4d50fb1f0">getReadTimeout</a> () const</td></tr>
+<tr class="memdesc:a26ea6cff1b0e9759223552e4d50fb1f0 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get read timeout <br /></td></tr>
+<tr class="separator:a26ea6cff1b0e9759223552e4d50fb1f0 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae05fbf6480d77b6676457f307ea59bff inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ae05fbf6480d77b6676457f307ea59bff"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ae05fbf6480d77b6676457f307ea59bff">setReadTimeout</a> (int timeout)</td></tr>
+<tr class="memdesc:ae05fbf6480d77b6676457f307ea59bff inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set read timeout <br /></td></tr>
+<tr class="separator:ae05fbf6480d77b6676457f307ea59bff inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a057eb248f959ecb29e3456eaeceb94b0 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a057eb248f959ecb29e3456eaeceb94b0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a057eb248f959ecb29e3456eaeceb94b0">getWriteTimeout</a> () const</td></tr>
+<tr class="memdesc:a057eb248f959ecb29e3456eaeceb94b0 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get write timeout <br /></td></tr>
+<tr class="separator:a057eb248f959ecb29e3456eaeceb94b0 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a61e6927081cc8effedaed02852a40 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a48a61e6927081cc8effedaed02852a40"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a48a61e6927081cc8effedaed02852a40">setWriteTimeout</a> (int timeout)</td></tr>
+<tr class="memdesc:a48a61e6927081cc8effedaed02852a40 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set write timeout <br /></td></tr>
+<tr class="separator:a48a61e6927081cc8effedaed02852a40 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b26cd496a672f462f6f6ab324a4c54e inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a1b26cd496a672f462f6f6ab324a4c54e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a1b26cd496a672f462f6f6ab324a4c54e">getLingerPeriod</a> () const</td></tr>
+<tr class="memdesc:a1b26cd496a672f462f6f6ab324a4c54e inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get linger period <br /></td></tr>
+<tr class="separator:a1b26cd496a672f462f6f6ab324a4c54e inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19ea70383f3d5710780d836376cdd4e inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ad19ea70383f3d5710780d836376cdd4e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ad19ea70383f3d5710780d836376cdd4e">setLingerPeriod</a> (int period)</td></tr>
+<tr class="memdesc:ad19ea70383f3d5710780d836376cdd4e inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set linger period <br /></td></tr>
+<tr class="separator:ad19ea70383f3d5710780d836376cdd4e inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96cc4a76fd4db5dacb539b83b8229115 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a96cc4a76fd4db5dacb539b83b8229115"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a96cc4a76fd4db5dacb539b83b8229115">getBacklog</a> () const</td></tr>
+<tr class="memdesc:a96cc4a76fd4db5dacb539b83b8229115 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get backlog <br /></td></tr>
+<tr class="separator:a96cc4a76fd4db5dacb539b83b8229115 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a462e98f271eb14d6f3ca60ddc8573df7 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a462e98f271eb14d6f3ca60ddc8573df7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a462e98f271eb14d6f3ca60ddc8573df7">setBacklog</a> (int backlog)</td></tr>
+<tr class="memdesc:a462e98f271eb14d6f3ca60ddc8573df7 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set backlog <br /></td></tr>
+<tr class="separator:a462e98f271eb14d6f3ca60ddc8573df7 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec4b5543f940649aa7e45d1fd75c16f9 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="aec4b5543f940649aa7e45d1fd75c16f9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#aec4b5543f940649aa7e45d1fd75c16f9">getImmediate</a> () const</td></tr>
+<tr class="memdesc:aec4b5543f940649aa7e45d1fd75c16f9 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get immediate flag <br /></td></tr>
+<tr class="separator:aec4b5543f940649aa7e45d1fd75c16f9 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5a1255fb676b2e8e7ef0884cca7fb3e inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="aa5a1255fb676b2e8e7ef0884cca7fb3e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#aa5a1255fb676b2e8e7ef0884cca7fb3e">setImmediate</a> (bool immediate)</td></tr>
+<tr class="memdesc:aa5a1255fb676b2e8e7ef0884cca7fb3e inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set immediate flag <br /></td></tr>
+<tr class="separator:aa5a1255fb676b2e8e7ef0884cca7fb3e inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7b6751416b73cc2b6ca0641c3bb20f2 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ac7b6751416b73cc2b6ca0641c3bb20f2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ac7b6751416b73cc2b6ca0641c3bb20f2">getConflate</a> () const</td></tr>
+<tr class="memdesc:ac7b6751416b73cc2b6ca0641c3bb20f2 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get conflate flag <br /></td></tr>
+<tr class="separator:ac7b6751416b73cc2b6ca0641c3bb20f2 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad642491c6f707b8b6b8e7cf3ecdc52c1 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ad642491c6f707b8b6b8e7cf3ecdc52c1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ad642491c6f707b8b6b8e7cf3ecdc52c1">setConflate</a> (bool conflate)</td></tr>
+<tr class="memdesc:ad642491c6f707b8b6b8e7cf3ecdc52c1 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set conflate flag <br /></td></tr>
+<tr class="separator:ad642491c6f707b8b6b8e7cf3ecdc52c1 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a797e30893e31d119ddc2e3d43fb68c3c inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a797e30893e31d119ddc2e3d43fb68c3c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a797e30893e31d119ddc2e3d43fb68c3c">getReadHWM</a> () const</td></tr>
+<tr class="memdesc:a797e30893e31d119ddc2e3d43fb68c3c inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get read high-water-mark <br /></td></tr>
+<tr class="separator:a797e30893e31d119ddc2e3d43fb68c3c inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29ee8797fc40ac78bce39cc7c5834bc8 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a29ee8797fc40ac78bce39cc7c5834bc8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a29ee8797fc40ac78bce39cc7c5834bc8">setReadHWM</a> (int n)</td></tr>
+<tr class="memdesc:a29ee8797fc40ac78bce39cc7c5834bc8 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set read high-water-mark <br /></td></tr>
+<tr class="separator:a29ee8797fc40ac78bce39cc7c5834bc8 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93483279d5a33fc9def350f6960e48f inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ae93483279d5a33fc9def350f6960e48f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ae93483279d5a33fc9def350f6960e48f">getWriteHWM</a> () const</td></tr>
+<tr class="memdesc:ae93483279d5a33fc9def350f6960e48f inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get write high-water-mark <br /></td></tr>
+<tr class="separator:ae93483279d5a33fc9def350f6960e48f inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ff46fe39ae25822c2a50acf6741ca9 inherit pub_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a75ff46fe39ae25822c2a50acf6741ca9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a75ff46fe39ae25822c2a50acf6741ca9">setWriteHWM</a> (int n)</td></tr>
+<tr class="memdesc:a75ff46fe39ae25822c2a50acf6741ca9 inherit pub_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set write high-water-mark <br /></td></tr>
+<tr class="separator:a75ff46fe39ae25822c2a50acf6741ca9 inherit pub_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
 <tr class="memitem:a0bc1432f4bf696cda1d33830ee583d0c inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="a0bc1432f4bf696cda1d33830ee583d0c"></a>
 template&lt;typename... Arguments&gt; </td></tr>
 <tr class="memitem:a0bc1432f4bf696cda1d33830ee583d0c inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classb0_1_1logger_1_1_log_interface.html#a0bc1432f4bf696cda1d33830ee583d0c">log</a> (<a class="el" href="classb0_1_1logger_1_1_log_interface.html#a9e1bba7c917cf21596c47e0e1a291a52">LogLevel</a> level, std::string const &amp;fmt, Arguments &amp;&amp;... args) const</td></tr>
 <tr class="memdesc:a0bc1432f4bf696cda1d33830ee583d0c inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message using a format string. <br /></td></tr>
 <tr class="separator:a0bc1432f4bf696cda1d33830ee583d0c inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5b92037e8ad7d9ddd119e9a747122e85"><td class="memItemLeft" align="right" valign="top"><a id="a5b92037e8ad7d9ddd119e9a747122e85"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a5b92037e8ad7d9ddd119e9a747122e85">resolve</a> ()</td></tr>
+<tr class="memdesc:a5b92037e8ad7d9ddd119e9a747122e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform service address resolution. <br /></td></tr>
+<tr class="separator:a5b92037e8ad7d9ddd119e9a747122e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4fc75361a20414ca979132c12adb7a"><td class="memItemLeft" align="right" valign="top"><a id="a5d4fc75361a20414ca979132c12adb7a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a5d4fc75361a20414ca979132c12adb7a">connect</a> ()</td></tr>
+<tr class="memdesc:a5d4fc75361a20414ca979132c12adb7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to service server endpoint. <br /></td></tr>
+<tr class="separator:a5d4fc75361a20414ca979132c12adb7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8aa1ecb9caef16d2bdff1a07788b0f4"><td class="memItemLeft" align="right" valign="top"><a id="ab8aa1ecb9caef16d2bdff1a07788b0f4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#ab8aa1ecb9caef16d2bdff1a07788b0f4">disconnect</a> ()</td></tr>
+<tr class="memdesc:ab8aa1ecb9caef16d2bdff1a07788b0f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect from service server endpoint. <br /></td></tr>
+<tr class="separator:ab8aa1ecb9caef16d2bdff1a07788b0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classb0_1_1_socket"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classb0_1_1_socket')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classb0_1_1_socket.html">b0::Socket</a></td></tr>
+<tr class="memitem:af9af5e88aba1d5ddf178383abee4736f inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="af9af5e88aba1d5ddf178383abee4736f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#af9af5e88aba1d5ddf178383abee4736f">connect</a> (std::string const &amp;addr)</td></tr>
+<tr class="memdesc:af9af5e88aba1d5ddf178383abee4736f inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::connect. <br /></td></tr>
+<tr class="separator:af9af5e88aba1d5ddf178383abee4736f inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a020200ad4b828121b6023cfc4f0320b6 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a020200ad4b828121b6023cfc4f0320b6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a020200ad4b828121b6023cfc4f0320b6">disconnect</a> (std::string const &amp;addr)</td></tr>
+<tr class="memdesc:a020200ad4b828121b6023cfc4f0320b6 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::disconnect. <br /></td></tr>
+<tr class="separator:a020200ad4b828121b6023cfc4f0320b6 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6179353eceb011622027eaae6ea05905 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a6179353eceb011622027eaae6ea05905"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a6179353eceb011622027eaae6ea05905">bind</a> (std::string const &amp;addr)</td></tr>
+<tr class="memdesc:a6179353eceb011622027eaae6ea05905 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::bind. <br /></td></tr>
+<tr class="separator:a6179353eceb011622027eaae6ea05905 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6940ce03a78c585ba203777a8c2d2bc3 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a6940ce03a78c585ba203777a8c2d2bc3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a6940ce03a78c585ba203777a8c2d2bc3">unbind</a> (std::string const &amp;addr)</td></tr>
+<tr class="memdesc:a6940ce03a78c585ba203777a8c2d2bc3 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::unbind. <br /></td></tr>
+<tr class="separator:a6940ce03a78c585ba203777a8c2d2bc3 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf7cc22f17332280735f99b2609c2c80 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="abf7cc22f17332280735f99b2609c2c80"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#abf7cc22f17332280735f99b2609c2c80">setsockopt</a> (int option, const void *optval, size_t optvallen)</td></tr>
+<tr class="memdesc:abf7cc22f17332280735f99b2609c2c80 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::setsockopt. <br /></td></tr>
+<tr class="separator:abf7cc22f17332280735f99b2609c2c80 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a385d1e651a6f8c1258d43d6e0d461896 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a385d1e651a6f8c1258d43d6e0d461896"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a385d1e651a6f8c1258d43d6e0d461896">getsockopt</a> (int option, void *optval, size_t *optvallen) const</td></tr>
+<tr class="memdesc:a385d1e651a6f8c1258d43d6e0d461896 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::getsockopt. <br /></td></tr>
+<tr class="separator:a385d1e651a6f8c1258d43d6e0d461896 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512d435006253ab6e35cc34450e780a2 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a512d435006253ab6e35cc34450e780a2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a512d435006253ab6e35cc34450e780a2">setIntOption</a> (int option, int value)</td></tr>
+<tr class="memdesc:a512d435006253ab6e35cc34450e780a2 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for setsockopt. <br /></td></tr>
+<tr class="separator:a512d435006253ab6e35cc34450e780a2 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2631574f96dd34da6136d7e29d013a1 inherit pro_methods_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="af2631574f96dd34da6136d7e29d013a1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#af2631574f96dd34da6136d7e29d013a1">getIntOption</a> (int option) const</td></tr>
+<tr class="memdesc:af2631574f96dd34da6136d7e29d013a1 inherit pro_methods_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for getsockopt. <br /></td></tr>
+<tr class="separator:af2631574f96dd34da6136d7e29d013a1 inherit pro_methods_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a7d6e27a64d41e818f0e21d9c298d29de"><td class="memItemLeft" align="right" valign="top"><a id="a7d6e27a64d41e818f0e21d9c298d29de"></a>
+const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_service_client.html#a7d6e27a64d41e818f0e21d9c298d29de">notify_graph_</a></td></tr>
+<tr class="memdesc:a7d6e27a64d41e818f0e21d9c298d29de"><td class="mdescLeft">&#160;</td><td class="mdescRight">If false this socket will not send announcement to resolv (i.e. it will be "invisible") <br /></td></tr>
+<tr class="separator:a7d6e27a64d41e818f0e21d9c298d29de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classb0_1_1_socket"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classb0_1_1_socket')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classb0_1_1_socket.html">b0::Socket</a></td></tr>
+<tr class="memitem:a9d717c10149c0468ed3f099059300bb5 inherit pro_attribs_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a9d717c10149c0468ed3f099059300bb5"></a>
+<a class="el" href="classb0_1_1_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a9d717c10149c0468ed3f099059300bb5">node_</a></td></tr>
+<tr class="memdesc:a9d717c10149c0468ed3f099059300bb5 inherit pro_attribs_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a> owning this <a class="el" href="classb0_1_1_socket.html" title="The Socket class. ">Socket</a>. <br /></td></tr>
+<tr class="separator:a9d717c10149c0468ed3f099059300bb5 inherit pro_attribs_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73b839e92d108010341ad876c65ee396 inherit pro_attribs_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a73b839e92d108010341ad876c65ee396"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a73b839e92d108010341ad876c65ee396">name_</a></td></tr>
+<tr class="memdesc:a73b839e92d108010341ad876c65ee396 inherit pro_attribs_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">This socket bus name. <br /></td></tr>
+<tr class="separator:a73b839e92d108010341ad876c65ee396 inherit pro_attribs_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad92fd4342b55769aabf53f668425574b inherit pro_attribs_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ad92fd4342b55769aabf53f668425574b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#ad92fd4342b55769aabf53f668425574b">has_header_</a></td></tr>
+<tr class="memdesc:ad92fd4342b55769aabf53f668425574b inherit pro_attribs_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the payload has a header part (i.e. topic). If true, the envelope with this socket name will be prepended to the payload. <br /></td></tr>
+<tr class="separator:ad92fd4342b55769aabf53f668425574b inherit pro_attribs_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe1dd584c9f4bc5dcaa02c5174aeb300 inherit pro_attribs_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="afe1dd584c9f4bc5dcaa02c5174aeb300"></a>
+const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#afe1dd584c9f4bc5dcaa02c5174aeb300">managed_</a></td></tr>
+<tr class="memdesc:afe1dd584c9f4bc5dcaa02c5174aeb300 inherit pro_attribs_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this socket is managed (<a class="el" href="classb0_1_1_socket.html#a2e0ed1f96cd4cb36143800d87d53ea58" title="Perform initialization (resolve name, connect socket, set subscription) ">init()</a>, <a class="el" href="classb0_1_1_socket.html#a2fea34535bad1ef17b0355644ac2a70b" title="Perform cleanup (clear subscription, disconnect socket) ">cleanup()</a> are called by the owner <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>) <br /></td></tr>
+<tr class="separator:afe1dd584c9f4bc5dcaa02c5174aeb300 inherit pro_attribs_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a954d8a1705f76043dd6eb52053f152ab inherit pro_attribs_classb0_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a954d8a1705f76043dd6eb52053f152ab"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_socket.html#a954d8a1705f76043dd6eb52053f152ab">remote_addr_</a></td></tr>
+<tr class="memdesc:a954d8a1705f76043dd6eb52053f152ab inherit pro_attribs_classb0_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address of the ZeroMQ socket to connect to (will skip name resolution if given) <br /></td></tr>
+<tr class="separator:a954d8a1705f76043dd6eb52053f152ab inherit pro_attribs_classb0_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -203,111 +326,32 @@ Additional Inherited Members</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a9e1bba7c917cf21596c47e0e1a291a52 inherit pub_types_classb0_1_1logger_1_1_log_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classb0_1_1_abstract_service_client"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classb0_1_1_abstract_service_client')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classb0_1_1_abstract_service_client.html">b0::AbstractServiceClient</a></td></tr>
-<tr class="memitem:aaf0e77b382a88010312a92f50d9a6009 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="aaf0e77b382a88010312a92f50d9a6009"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#aaf0e77b382a88010312a92f50d9a6009">resolve</a> ()</td></tr>
-<tr class="memdesc:aaf0e77b382a88010312a92f50d9a6009 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform service address resolution. <br /></td></tr>
-<tr class="separator:aaf0e77b382a88010312a92f50d9a6009 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15f3433b7b3d7ca0c0e73f03ae3e8d12 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a15f3433b7b3d7ca0c0e73f03ae3e8d12"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a15f3433b7b3d7ca0c0e73f03ae3e8d12">connect</a> ()</td></tr>
-<tr class="memdesc:a15f3433b7b3d7ca0c0e73f03ae3e8d12 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to service server endpoint. <br /></td></tr>
-<tr class="separator:a15f3433b7b3d7ca0c0e73f03ae3e8d12 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f4536b015cc3eb3d07a6adfc5f491b9 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a7f4536b015cc3eb3d07a6adfc5f491b9"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a7f4536b015cc3eb3d07a6adfc5f491b9">disconnect</a> ()</td></tr>
-<tr class="memdesc:a7f4536b015cc3eb3d07a6adfc5f491b9 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect from service server endpoint. <br /></td></tr>
-<tr class="separator:a7f4536b015cc3eb3d07a6adfc5f491b9 inherit pro_methods_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classb0_1_1socket_1_1_socket"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classb0_1_1socket_1_1_socket')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classb0_1_1socket_1_1_socket.html">b0::socket::Socket</a></td></tr>
-<tr class="memitem:a4305f8263263dd55ce571403ed9820aa inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a4305f8263263dd55ce571403ed9820aa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a4305f8263263dd55ce571403ed9820aa">connect</a> (std::string const &amp;addr)</td></tr>
-<tr class="memdesc:a4305f8263263dd55ce571403ed9820aa inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::connect. <br /></td></tr>
-<tr class="separator:a4305f8263263dd55ce571403ed9820aa inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0efbf4a02e89b967ffbd4ba31cd637d0 inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a0efbf4a02e89b967ffbd4ba31cd637d0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a0efbf4a02e89b967ffbd4ba31cd637d0">disconnect</a> (std::string const &amp;addr)</td></tr>
-<tr class="memdesc:a0efbf4a02e89b967ffbd4ba31cd637d0 inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::disconnect. <br /></td></tr>
-<tr class="separator:a0efbf4a02e89b967ffbd4ba31cd637d0 inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8bb220e268a9409edc575a52185c96d inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="af8bb220e268a9409edc575a52185c96d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#af8bb220e268a9409edc575a52185c96d">bind</a> (std::string const &amp;addr)</td></tr>
-<tr class="memdesc:af8bb220e268a9409edc575a52185c96d inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::bind. <br /></td></tr>
-<tr class="separator:af8bb220e268a9409edc575a52185c96d inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2449f58ebfb661ffb8163370cae6d78f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a2449f58ebfb661ffb8163370cae6d78f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a2449f58ebfb661ffb8163370cae6d78f">unbind</a> (std::string const &amp;addr)</td></tr>
-<tr class="memdesc:a2449f58ebfb661ffb8163370cae6d78f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::unbind. <br /></td></tr>
-<tr class="separator:a2449f58ebfb661ffb8163370cae6d78f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06a2aa2d78e521f02c14b81fc6db6863 inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a06a2aa2d78e521f02c14b81fc6db6863"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a06a2aa2d78e521f02c14b81fc6db6863">setsockopt</a> (int option, const void *optval, size_t optvallen)</td></tr>
-<tr class="memdesc:a06a2aa2d78e521f02c14b81fc6db6863 inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::setsockopt. <br /></td></tr>
-<tr class="separator:a06a2aa2d78e521f02c14b81fc6db6863 inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dc8ac39d70fc89fb405d7e70cdd202b inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a8dc8ac39d70fc89fb405d7e70cdd202b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a8dc8ac39d70fc89fb405d7e70cdd202b">getsockopt</a> (int option, void *optval, size_t *optvallen)</td></tr>
-<tr class="memdesc:a8dc8ac39d70fc89fb405d7e70cdd202b inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::getsockopt. <br /></td></tr>
-<tr class="separator:a8dc8ac39d70fc89fb405d7e70cdd202b inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae079d08f5d4c56b7b8766452d993214f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ae079d08f5d4c56b7b8766452d993214f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ae079d08f5d4c56b7b8766452d993214f">setIntOption</a> (int option, int value)</td></tr>
-<tr class="memdesc:ae079d08f5d4c56b7b8766452d993214f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for setsockopt. <br /></td></tr>
-<tr class="separator:ae079d08f5d4c56b7b8766452d993214f inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5f117d128fdaf4c73b61d8e5f15b04c inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="aa5f117d128fdaf4c73b61d8e5f15b04c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#aa5f117d128fdaf4c73b61d8e5f15b04c">getIntOption</a> (int option)</td></tr>
-<tr class="memdesc:aa5f117d128fdaf4c73b61d8e5f15b04c inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for getsockopt. <br /></td></tr>
-<tr class="separator:aa5f117d128fdaf4c73b61d8e5f15b04c inherit pro_methods_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classb0_1_1_abstract_service_client"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classb0_1_1_abstract_service_client')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classb0_1_1_abstract_service_client.html">b0::AbstractServiceClient</a></td></tr>
-<tr class="memitem:a422510bf4bb359aee9075e7755ed2024 inherit pro_attribs_classb0_1_1_abstract_service_client"><td class="memItemLeft" align="right" valign="top"><a id="a422510bf4bb359aee9075e7755ed2024"></a>
-const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1_abstract_service_client.html#a422510bf4bb359aee9075e7755ed2024">notify_graph_</a></td></tr>
-<tr class="memdesc:a422510bf4bb359aee9075e7755ed2024 inherit pro_attribs_classb0_1_1_abstract_service_client"><td class="mdescLeft">&#160;</td><td class="mdescRight">If false this socket will not send announcement to resolv (i.e. it will be "invisible") <br /></td></tr>
-<tr class="separator:a422510bf4bb359aee9075e7755ed2024 inherit pro_attribs_classb0_1_1_abstract_service_client"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classb0_1_1socket_1_1_socket"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classb0_1_1socket_1_1_socket')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classb0_1_1socket_1_1_socket.html">b0::socket::Socket</a></td></tr>
-<tr class="memitem:ad81cd9bfb6e7a70455198f9c8d05b704 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ad81cd9bfb6e7a70455198f9c8d05b704"></a>
-<a class="el" href="classb0_1_1_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ad81cd9bfb6e7a70455198f9c8d05b704">node_</a></td></tr>
-<tr class="memdesc:ad81cd9bfb6e7a70455198f9c8d05b704 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a> owning this <a class="el" href="classb0_1_1socket_1_1_socket.html" title="The Socket class. ">Socket</a>. <br /></td></tr>
-<tr class="separator:ad81cd9bfb6e7a70455198f9c8d05b704 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b668e1e6c11e3c6bb31a4d82a03ad41 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a9b668e1e6c11e3c6bb31a4d82a03ad41"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a9b668e1e6c11e3c6bb31a4d82a03ad41">name_</a></td></tr>
-<tr class="memdesc:a9b668e1e6c11e3c6bb31a4d82a03ad41 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">This socket bus name. <br /></td></tr>
-<tr class="separator:a9b668e1e6c11e3c6bb31a4d82a03ad41 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d602b64e5242c1d43c52ec44a90f109 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="a8d602b64e5242c1d43c52ec44a90f109"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a8d602b64e5242c1d43c52ec44a90f109">has_header_</a></td></tr>
-<tr class="memdesc:a8d602b64e5242c1d43c52ec44a90f109 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the payload has a header part (i.e. topic). If true, the envelope with this socket name will be prepended to the payload. <br /></td></tr>
-<tr class="separator:a8d602b64e5242c1d43c52ec44a90f109 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa53599d3bfee7242b8bb6c35bcecf354 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="aa53599d3bfee7242b8bb6c35bcecf354"></a>
-const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#aa53599d3bfee7242b8bb6c35bcecf354">managed_</a></td></tr>
-<tr class="memdesc:aa53599d3bfee7242b8bb6c35bcecf354 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this socket is managed (<a class="el" href="classb0_1_1socket_1_1_socket.html#a94a723b0753f7dfde7ffa4e75701c5ad" title="Perform initialization (resolve name, connect socket, set subscription) ">init()</a>, <a class="el" href="classb0_1_1socket_1_1_socket.html#ad95b0f7a44725719b8ab8fb1195a5a87" title="Perform cleanup (clear subscription, disconnect socket) ">cleanup()</a> are called by the owner <a class="el" href="classb0_1_1_node.html" title="The abstraction for a node in the network. ">Node</a>) <br /></td></tr>
-<tr class="separator:aa53599d3bfee7242b8bb6c35bcecf354 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4c1202c9482268a2dba2b2ba8c4c6d0 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memItemLeft" align="right" valign="top"><a id="ac4c1202c9482268a2dba2b2ba8c4c6d0"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ac4c1202c9482268a2dba2b2ba8c4c6d0">remote_addr_</a></td></tr>
-<tr class="memdesc:ac4c1202c9482268a2dba2b2ba8c4c6d0 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address of the ZeroMQ socket to connect to (will skip name resolution if given) <br /></td></tr>
-<tr class="separator:ac4c1202c9482268a2dba2b2ba8c4c6d0 inherit pro_attribs_classb0_1_1socket_1_1_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TReq, typename TRep&gt;<br />
-class b0::ServiceClient&lt; TReq, TRep &gt;</h3>
-
-<p>The service client template class. </p>
-<p>This template class specializes <a class="el" href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. ">b0::AbstractServiceClient</a> to a specific request/response type. It implements the <a class="el" href="classb0_1_1_service_client.html#acd4d1f8416ffa68fad4f8d10b5ae82ed" title="Write a request and read a reply from the underlying ZeroMQ REQ socket. ">call()</a> method as well.</p>
-<p>The remote service is invoked with <a class="el" href="classb0_1_1_service_client.html#acd4d1f8416ffa68fad4f8d10b5ae82ed" title="Write a request and read a reply from the underlying ZeroMQ REQ socket. ">ServiceClient::call()</a> and the call is blocking. It will unblock as soon as the server sends out a reply.</p>
-<p>You can make it work asynchronously by directly using <a class="el" href="classb0_1_1socket_1_1_socket.html#a0c7b3135dba6af6e8771300deda20fb9" title="Write a google::protobuf::Message. ">ServiceClient::write()</a>, and polling for the reply with <a class="el" href="classb0_1_1socket_1_1_socket.html#a7e5519d393ac5e0c84357c2f7a339002" title="Poll for messages. If timeout is 0 return immediately, otherwise wait for the specified amount of mil...">ServiceClient::poll()</a>, followed by <a class="el" href="classb0_1_1socket_1_1_socket.html#a3e41d43ccda58caaea0233576c695de3" title="Read a google::protobuf::Message from the underlying ZeroMQ socket. ">ServiceClient::read()</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_service_client.html" title="The service client template class. ">b0::ServiceClient</a>, <a class="el" href="classb0_1_1_service_server.html" title="The service server template class. ">b0::ServiceServer</a>, <a class="el" href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. ">b0::AbstractServiceClient</a>, <a class="el" href="classb0_1_1_abstract_service_server.html" title="The (abstract) service server class. ">b0::AbstractServiceServer</a> </dd></dl>
+<div class="textblock"><p>The service client class. </p>
+<p>This class wraps a REQ socket. It will automatically resolve the address of service name.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_service_client.html" title="The service client class. ">b0::ServiceClient</a>, <a class="el" href="classb0_1_1_service_server.html" title="The service server class. ">b0::ServiceServer</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="client_node_8cpp-example.html#_a1">client_node.cpp</a>, and <a class="el" href="client_node_object_8cpp-example.html#_a1">client_node_object.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="acd4d1f8416ffa68fad4f8d10b5ae82ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd4d1f8416ffa68fad4f8d10b5ae82ed">&#9670;&nbsp;</a></span>call()</h2>
+<a id="a9dc47b030407dbd60eba34d36fb8328d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dc47b030407dbd60eba34d36fb8328d">&#9670;&nbsp;</a></span>call()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename TReq, typename TRep&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classb0_1_1_service_client.html">b0::ServiceClient</a>&lt; TReq, TRep &gt;::call </td>
+          <td class="memname">virtual void b0::ServiceClient::call </td>
           <td>(</td>
-          <td class="paramtype">const TReq &amp;&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>req</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TRep &amp;&#160;</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
           <td class="paramname"><em>rep</em>&#160;</td>
         </tr>
         <tr>
@@ -318,14 +362,15 @@ template&lt;typename TReq, typename TRep&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Write a request and read a reply from the underlying ZeroMQ REQ socket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1socket_1_1_socket.html#a3e41d43ccda58caaea0233576c695de3" title="Read a google::protobuf::Message from the underlying ZeroMQ socket. ">ServiceServer::read()</a>, <a class="el" href="classb0_1_1socket_1_1_socket.html#a0c7b3135dba6af6e8771300deda20fb9" title="Write a google::protobuf::Message. ">ServiceServer::write()</a> </dd></dl>
-
+<dl class="section see"><dt>See also</dt><dd>ServiceServer::read(), ServiceServer::write() </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="client_node_8cpp-example.html#a3">client_node.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

@@ -2,8 +2,8 @@
 #define B0__RESOLVER__RESOLVER_H__INCLUDED
 
 #include <b0/node.h>
-#include <b0/service_server.h>
-#include <b0/publisher.h>
+#include <b0/protobuf/service_server.h>
+#include <b0/protobuf/publisher.h>
 
 #include <string>
 #include <vector>
@@ -40,7 +40,7 @@ struct ServiceEntry
 
 class Resolver;
 
-class ResolverServiceServer : public ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
+class ResolverServiceServer : public b0::protobuf::ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -324,7 +324,7 @@ protected:
     std::set<std::pair<std::string, std::string> > node_uses_service_;
 
     //! Publisher of the Graph message
-    b0::Publisher<b0::resolver_msgs::Graph> graph_pub_;
+    b0::protobuf::Publisher<b0::resolver_msgs::Graph> graph_pub_;
 };
 
 } // namespace resolver

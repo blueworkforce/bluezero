@@ -83,19 +83,11 @@ Inheritance diagram for b0::socket::Socket:</div>
  <div class="center">
   <img src="classb0_1_1socket_1_1_socket.png" usemap="#b0::socket::Socket_map" alt=""/>
   <map id="b0::socket::Socket_map" name="b0::socket::Socket_map">
-<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="1514,0,1970,24"/>
-<area href="classb0_1_1_abstract_publisher.html" title="The (abstract) publisher class. " alt="b0::AbstractPublisher" shape="rect" coords="233,112,689,136"/>
-<area href="classb0_1_1_abstract_service_client.html" title="The (abstract) service client class. " alt="b0::AbstractServiceClient" shape="rect" coords="1165,112,1621,136"/>
-<area href="classb0_1_1_abstract_service_server.html" title="The (abstract) service server class. " alt="b0::AbstractServiceServer" shape="rect" coords="1864,112,2320,136"/>
-<area href="classb0_1_1_abstract_subscriber.html" title="The (abstract) subscriber class. " alt="b0::AbstractSubscriber" shape="rect" coords="2563,112,3019,136"/>
-<area href="classb0_1_1_publisher.html" title="The publisher template class. " alt="b0::Publisher&lt; TMsg &gt;" shape="rect" coords="0,168,456,192"/>
-<area href="classb0_1_1_publisher.html" alt="b0::Publisher&lt; b0::resolver_msgs::Graph &gt;" shape="rect" coords="466,168,922,192"/>
-<area href="classb0_1_1_service_client.html" title="The service client template class. " alt="b0::ServiceClient&lt; TReq, TRep &gt;" shape="rect" coords="932,168,1388,192"/>
-<area href="classb0_1_1_service_client.html" alt="b0::ServiceClient&lt; b0::resolver_msgs::Request, b0::resolver_msgs::Response &gt;" shape="rect" coords="1398,168,1854,192"/>
-<area href="classb0_1_1_service_server.html" title="The service server template class. " alt="b0::ServiceServer&lt; TReq, TRep &gt;" shape="rect" coords="1864,168,2320,192"/>
-<area href="classb0_1_1_subscriber.html" title="The subscriber template class. " alt="b0::Subscriber&lt; TMsg &gt;" shape="rect" coords="2330,168,2786,192"/>
-<area href="classb0_1_1_subscriber.html" alt="b0::Subscriber&lt; b0::logger_msgs::LogEntry &gt;" shape="rect" coords="2796,168,3252,192"/>
-<area href="classb0_1_1resolver_1_1_client.html" title="The resolver client. " alt="b0::resolver::Client" shape="rect" coords="1398,224,1854,248"/>
+<area href="classb0_1_1logger_1_1_log_interface.html" title="Base class to add logging functionalities to nodes. " alt="b0::logger::LogInterface" shape="rect" coords="155,0,300,24"/>
+<area href="classb0_1_1_publisher.html" title="The publisher class. " alt="b0::Publisher" shape="rect" coords="0,112,145,136"/>
+<area href="classb0_1_1_service_client.html" title="The service client class. " alt="b0::ServiceClient" shape="rect" coords="155,112,300,136"/>
+<area href="classb0_1_1_service_server.html" title="The service server class. " alt="b0::ServiceServer" shape="rect" coords="310,112,455,136"/>
+<area href="classb0_1_1_subscriber.html" title="The subscriber class. " alt="b0::Subscriber" shape="rect" coords="465,112,610,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -164,6 +156,70 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a86e56d139cd79f8ce0045b3c3ebc9b2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a86e56d139cd79f8ce0045b3c3ebc9b2b">setCompression</a> (std::string algorithm, int level=-1)</td></tr>
 <tr class="memdesc:a86e56d139cd79f8ce0045b3c3ebc9b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set compression algorithm and level.  <a href="#a86e56d139cd79f8ce0045b3c3ebc9b2b">More...</a><br /></td></tr>
 <tr class="separator:a86e56d139cd79f8ce0045b3c3ebc9b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef533600fdd921a93b19192d7d883a11"><td class="memItemLeft" align="right" valign="top"><a id="aef533600fdd921a93b19192d7d883a11"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#aef533600fdd921a93b19192d7d883a11">getReadTimeout</a> () const</td></tr>
+<tr class="memdesc:aef533600fdd921a93b19192d7d883a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get read timeout <br /></td></tr>
+<tr class="separator:aef533600fdd921a93b19192d7d883a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac10656a2e756c1f846c9614706406912"><td class="memItemLeft" align="right" valign="top"><a id="ac10656a2e756c1f846c9614706406912"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ac10656a2e756c1f846c9614706406912">setReadTimeout</a> (int timeout)</td></tr>
+<tr class="memdesc:ac10656a2e756c1f846c9614706406912"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set read timeout <br /></td></tr>
+<tr class="separator:ac10656a2e756c1f846c9614706406912"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5490d93598f20bcd71c3f93ada782a0"><td class="memItemLeft" align="right" valign="top"><a id="ab5490d93598f20bcd71c3f93ada782a0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ab5490d93598f20bcd71c3f93ada782a0">getWriteTimeout</a> () const</td></tr>
+<tr class="memdesc:ab5490d93598f20bcd71c3f93ada782a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get write timeout <br /></td></tr>
+<tr class="separator:ab5490d93598f20bcd71c3f93ada782a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75f06809d96777f26eefb48e471057ce"><td class="memItemLeft" align="right" valign="top"><a id="a75f06809d96777f26eefb48e471057ce"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a75f06809d96777f26eefb48e471057ce">setWriteTimeout</a> (int timeout)</td></tr>
+<tr class="memdesc:a75f06809d96777f26eefb48e471057ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set write timeout <br /></td></tr>
+<tr class="separator:a75f06809d96777f26eefb48e471057ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858fb112abdcab081b602519b237fb3c"><td class="memItemLeft" align="right" valign="top"><a id="a858fb112abdcab081b602519b237fb3c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a858fb112abdcab081b602519b237fb3c">getLingerPeriod</a> () const</td></tr>
+<tr class="memdesc:a858fb112abdcab081b602519b237fb3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get linger period <br /></td></tr>
+<tr class="separator:a858fb112abdcab081b602519b237fb3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a606ccd607b645a83f21de0b73cb1fdc7"><td class="memItemLeft" align="right" valign="top"><a id="a606ccd607b645a83f21de0b73cb1fdc7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a606ccd607b645a83f21de0b73cb1fdc7">setLingerPeriod</a> (int period)</td></tr>
+<tr class="memdesc:a606ccd607b645a83f21de0b73cb1fdc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set linger period <br /></td></tr>
+<tr class="separator:a606ccd607b645a83f21de0b73cb1fdc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6a02245c90d78a709ec49a961ef965c"><td class="memItemLeft" align="right" valign="top"><a id="ac6a02245c90d78a709ec49a961ef965c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ac6a02245c90d78a709ec49a961ef965c">getBacklog</a> () const</td></tr>
+<tr class="memdesc:ac6a02245c90d78a709ec49a961ef965c"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get backlog <br /></td></tr>
+<tr class="separator:ac6a02245c90d78a709ec49a961ef965c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c40cd120e7dd8f395f437f22fd3f028"><td class="memItemLeft" align="right" valign="top"><a id="a1c40cd120e7dd8f395f437f22fd3f028"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a1c40cd120e7dd8f395f437f22fd3f028">setBacklog</a> (int backlog)</td></tr>
+<tr class="memdesc:a1c40cd120e7dd8f395f437f22fd3f028"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set backlog <br /></td></tr>
+<tr class="separator:a1c40cd120e7dd8f395f437f22fd3f028"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3863dfdd7a73cb095c815d4132107e82"><td class="memItemLeft" align="right" valign="top"><a id="a3863dfdd7a73cb095c815d4132107e82"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a3863dfdd7a73cb095c815d4132107e82">getImmediate</a> () const</td></tr>
+<tr class="memdesc:a3863dfdd7a73cb095c815d4132107e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get immediate flag <br /></td></tr>
+<tr class="separator:a3863dfdd7a73cb095c815d4132107e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace7544362f4ac9d615531cc17270a83c"><td class="memItemLeft" align="right" valign="top"><a id="ace7544362f4ac9d615531cc17270a83c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ace7544362f4ac9d615531cc17270a83c">setImmediate</a> (bool immediate)</td></tr>
+<tr class="memdesc:ace7544362f4ac9d615531cc17270a83c"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set immediate flag <br /></td></tr>
+<tr class="separator:ace7544362f4ac9d615531cc17270a83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f8e3e6fe53b8935c64946f10346851e"><td class="memItemLeft" align="right" valign="top"><a id="a3f8e3e6fe53b8935c64946f10346851e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a3f8e3e6fe53b8935c64946f10346851e">getConflate</a> () const</td></tr>
+<tr class="memdesc:a3f8e3e6fe53b8935c64946f10346851e"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get conflate flag <br /></td></tr>
+<tr class="separator:a3f8e3e6fe53b8935c64946f10346851e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e20af28888941292344eedbc9f9724b"><td class="memItemLeft" align="right" valign="top"><a id="a3e20af28888941292344eedbc9f9724b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a3e20af28888941292344eedbc9f9724b">setConflate</a> (bool conflate)</td></tr>
+<tr class="memdesc:a3e20af28888941292344eedbc9f9724b"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set conflate flag <br /></td></tr>
+<tr class="separator:a3e20af28888941292344eedbc9f9724b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a208d8a60d562890a981e9e577f18381b"><td class="memItemLeft" align="right" valign="top"><a id="a208d8a60d562890a981e9e577f18381b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a208d8a60d562890a981e9e577f18381b">getReadHWM</a> () const</td></tr>
+<tr class="memdesc:a208d8a60d562890a981e9e577f18381b"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get read high-water-mark <br /></td></tr>
+<tr class="separator:a208d8a60d562890a981e9e577f18381b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ba2291df7a01d88d359dfd126cec150"><td class="memItemLeft" align="right" valign="top"><a id="a3ba2291df7a01d88d359dfd126cec150"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a3ba2291df7a01d88d359dfd126cec150">setReadHWM</a> (int n)</td></tr>
+<tr class="memdesc:a3ba2291df7a01d88d359dfd126cec150"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set read high-water-mark <br /></td></tr>
+<tr class="separator:a3ba2291df7a01d88d359dfd126cec150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a514686829572f900674f1d08a260d5aa"><td class="memItemLeft" align="right" valign="top"><a id="a514686829572f900674f1d08a260d5aa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a514686829572f900674f1d08a260d5aa">getWriteHWM</a> () const</td></tr>
+<tr class="memdesc:a514686829572f900674f1d08a260d5aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Get write high-water-mark <br /></td></tr>
+<tr class="separator:a514686829572f900674f1d08a260d5aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b8327adba9095d4b626e79e9770db88"><td class="memItemLeft" align="right" valign="top"><a id="a3b8327adba9095d4b626e79e9770db88"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a3b8327adba9095d4b626e79e9770db88">setWriteHWM</a> (int n)</td></tr>
+<tr class="memdesc:a3b8327adba9095d4b626e79e9770db88"><td class="mdescLeft">&#160;</td><td class="mdescRight">(low-level socket option) Set write high-water-mark <br /></td></tr>
+<tr class="separator:a3b8327adba9095d4b626e79e9770db88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classb0_1_1logger_1_1_log_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classb0_1_1logger_1_1_log_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classb0_1_1logger_1_1_log_interface.html">b0::logger::LogInterface</a></td></tr>
 <tr class="memitem:a0bc1432f4bf696cda1d33830ee583d0c inherit pub_methods_classb0_1_1logger_1_1_log_interface"><td class="memTemplParams" colspan="2"><a id="a0bc1432f4bf696cda1d33830ee583d0c"></a>
 template&lt;typename... Arguments&gt; </td></tr>
@@ -193,18 +249,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a06a2aa2d78e521f02c14b81fc6db6863">setsockopt</a> (int option, const void *optval, size_t optvallen)</td></tr>
 <tr class="memdesc:a06a2aa2d78e521f02c14b81fc6db6863"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::setsockopt. <br /></td></tr>
 <tr class="separator:a06a2aa2d78e521f02c14b81fc6db6863"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dc8ac39d70fc89fb405d7e70cdd202b"><td class="memItemLeft" align="right" valign="top"><a id="a8dc8ac39d70fc89fb405d7e70cdd202b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a8dc8ac39d70fc89fb405d7e70cdd202b">getsockopt</a> (int option, void *optval, size_t *optvallen)</td></tr>
-<tr class="memdesc:a8dc8ac39d70fc89fb405d7e70cdd202b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::getsockopt. <br /></td></tr>
-<tr class="separator:a8dc8ac39d70fc89fb405d7e70cdd202b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8fb865c16a9022ffabc2993aa15f32f"><td class="memItemLeft" align="right" valign="top"><a id="ad8fb865c16a9022ffabc2993aa15f32f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ad8fb865c16a9022ffabc2993aa15f32f">getsockopt</a> (int option, void *optval, size_t *optvallen) const</td></tr>
+<tr class="memdesc:ad8fb865c16a9022ffabc2993aa15f32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to zmq::socket_t::getsockopt. <br /></td></tr>
+<tr class="separator:ad8fb865c16a9022ffabc2993aa15f32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae079d08f5d4c56b7b8766452d993214f"><td class="memItemLeft" align="right" valign="top"><a id="ae079d08f5d4c56b7b8766452d993214f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#ae079d08f5d4c56b7b8766452d993214f">setIntOption</a> (int option, int value)</td></tr>
 <tr class="memdesc:ae079d08f5d4c56b7b8766452d993214f"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for setsockopt. <br /></td></tr>
 <tr class="separator:ae079d08f5d4c56b7b8766452d993214f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5f117d128fdaf4c73b61d8e5f15b04c"><td class="memItemLeft" align="right" valign="top"><a id="aa5f117d128fdaf4c73b61d8e5f15b04c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#aa5f117d128fdaf4c73b61d8e5f15b04c">getIntOption</a> (int option)</td></tr>
-<tr class="memdesc:aa5f117d128fdaf4c73b61d8e5f15b04c"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for getsockopt. <br /></td></tr>
-<tr class="separator:aa5f117d128fdaf4c73b61d8e5f15b04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a123b85dd5b6f910c399c4b08efadaf68"><td class="memItemLeft" align="right" valign="top"><a id="a123b85dd5b6f910c399c4b08efadaf68"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classb0_1_1socket_1_1_socket.html#a123b85dd5b6f910c399c4b08efadaf68">getIntOption</a> (int option) const</td></tr>
+<tr class="memdesc:a123b85dd5b6f910c399c4b08efadaf68"><td class="mdescLeft">&#160;</td><td class="mdescRight">High level wrapper for getsockopt. <br /></td></tr>
+<tr class="separator:a123b85dd5b6f910c399c4b08efadaf68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -247,7 +303,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classb0_1_1socket_1_1_socket.html" title="The Socket class. ">Socket</a> class. </p>
 <p>This class wraps a ZeroMQ socket. It provides wrappers for reading and writing raw payloads, as well as google::protobuf messages.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_publisher.html" title="The publisher template class. ">b0::Publisher</a>, <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber template class. ">b0::Subscriber</a>, <a class="el" href="classb0_1_1_service_client.html" title="The service client template class. ">b0::ServiceClient</a>, <a class="el" href="classb0_1_1_service_server.html" title="The service server template class. ">b0::ServiceServer</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classb0_1_1_publisher.html" title="The publisher class. ">b0::Publisher</a>, <a class="el" href="classb0_1_1_subscriber.html" title="The subscriber class. ">b0::Subscriber</a>, <a class="el" href="classb0_1_1_service_client.html" title="The service client class. ">b0::ServiceClient</a>, <a class="el" href="classb0_1_1_service_server.html" title="The service server class. ">b0::ServiceServer</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a86e56d139cd79f8ce0045b3c3ebc9b2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86e56d139cd79f8ce0045b3c3ebc9b2b">&#9670;&nbsp;</a></span>setCompression()</h2>

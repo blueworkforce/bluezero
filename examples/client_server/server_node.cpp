@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/service_server.h>
-#include "client_server.pb.h"
 
 #include <iostream>
 
@@ -13,13 +12,11 @@
 /*
  * This callback will be called whenever a request message is read from the socket
  */
-void callback(const example_msgs::TestRequest &req, example_msgs::TestResponse &resp)
+void callback(const std::string &req, std::string &rep)
 {
-    std::cout << "Received:" << std::endl << req.DebugString() << std::endl;
-
-    resp.set_sum(req.a() + req.b());
-
-    std::cout << "Sending:" << std::endl << resp.DebugString() << std::endl;
+    std::cout << "Received: " << req << std::endl;
+    rep = "hi";
+    std::cout << "Sending: " << rep << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -36,7 +33,7 @@ int main(int argc, char **argv)
      * Create a ServiceServer for a service named "control"
      * It will call the specified callback upon receiving requests.
      */
-    b0::ServiceServer<example_msgs::TestRequest, example_msgs::TestResponse> srv(&node, "control", &callback);
+    b0::ServiceServer srv(&node, "control", &callback);
 
     /*
      * Initialize the node (will announce node name to the network, and do other nice things)

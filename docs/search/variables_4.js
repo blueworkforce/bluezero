@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['managed_5f',['managed_',['../classb0_1_1socket_1_1_socket.html#aa53599d3bfee7242b8bb6c35bcecf354',1,'b0::socket::Socket']]]
+  ['managed_5f',['managed_',['../classb0_1_1_socket.html#afe1dd584c9f4bc5dcaa02c5174aeb300',1,'b0::Socket']]]
 ];

@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/service_client.h>
-#include "client_server.pb.h"
 
 #include <iostream>
 
@@ -20,7 +19,7 @@ int main(int argc, char **argv)
     /*
      * Create a ServiceClient that will connect to the service "control"
      */
-    b0::ServiceClient<example_msgs::TestRequest, example_msgs::TestResponse> cli(&node, "control");
+    b0::ServiceClient cli(&node, "control");
 
     /*
      * Initialize the node (will announce the node name to the network, and do other nice things)
@@ -28,23 +27,21 @@ int main(int argc, char **argv)
     node.init();
 
     /*
-     * Create a TestRequest message and set its fields
+     * Create a request message
      */
-    example_msgs::TestRequest req;
-    req.set_a(100);
-    req.set_b(35);
-    std::cout << "Sending:" << std::endl << req.DebugString() << std::endl;
+    std::string req = "hello";
+    std::cout << "Sending: " << req << std::endl;
 
     /*
      * The response will be written here
      */
-    example_msgs::TestResponse resp;
+    std::string rep;
 
     /*
      * Call the service (blocking)
      */
-    cli.call(req, resp);
-    std::cout << "Received:" << std::endl << resp.DebugString() << std::endl;
+    cli.call(req, rep);
+    std::cout << "Received: " << rep << std::endl;
 
     /*
      * Perform cleanup (stop threads, notify resolver that this node has quit, ...)

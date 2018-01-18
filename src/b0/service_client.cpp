@@ -9,23 +9,23 @@
 namespace b0
 {
 
-AbstractServiceClient::AbstractServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph)
-    : socket::Socket(node, ZMQ_REQ, service_name, managed),
+ServiceClient::ServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_REQ, service_name, managed),
       notify_graph_(notify_graph)
 {
 }
 
-AbstractServiceClient::~AbstractServiceClient()
+ServiceClient::~ServiceClient()
 {
 }
 
-void AbstractServiceClient::log(LogLevel level, std::string message) const
+void ServiceClient::log(LogLevel level, std::string message) const
 {
     boost::format fmt("ServiceClient(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
 }
 
-void AbstractServiceClient::init()
+void ServiceClient::init()
 {
     resolve();
     connect();
@@ -34,7 +34,7 @@ void AbstractServiceClient::init()
         node_.notifyService(name_, true, true);
 }
 
-void AbstractServiceClient::cleanup()
+void ServiceClient::cleanup()
 {
     disconnect();
 
@@ -42,12 +42,18 @@ void AbstractServiceClient::cleanup()
         node_.notifyService(name_, true, false);
 }
 
-std::string AbstractServiceClient::getServiceName()
+std::string ServiceClient::getServiceName()
 {
     return name_;
 }
 
-void AbstractServiceClient::resolve()
+void ServiceClient::call(const std::string &req, std::string &rep)
+{
+    writeRaw(req);
+    readRaw(rep);
+}
+
+void ServiceClient::resolve()
 {
     if(!remote_addr_.empty())
     {
@@ -60,13 +66,13 @@ void AbstractServiceClient::resolve()
     log(trace, "Resolved address: %s", remote_addr_);
 }
 
-void AbstractServiceClient::connect()
+void ServiceClient::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
 }
 
-void AbstractServiceClient::disconnect()
+void ServiceClient::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
     Socket::disconnect(remote_addr_);

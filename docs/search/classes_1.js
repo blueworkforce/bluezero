@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['client',['Client',['../classb0_1_1resolver_1_1_client.html',1,'b0::resolver']]],
-  ['console',['Console',['../classb0_1_1logger_1_1_console.html',1,'b0::logger']]]
+  ['locallogger',['LocalLogger',['../classb0_1_1logger_1_1_local_logger.html',1,'b0::logger']]],
+  ['logger',['Logger',['../classb0_1_1logger_1_1_logger.html',1,'b0::logger']]],
+  ['loginterface',['LogInterface',['../classb0_1_1logger_1_1_log_interface.html',1,'b0::logger']]]
 ];

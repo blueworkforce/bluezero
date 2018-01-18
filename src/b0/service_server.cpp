@@ -9,24 +9,25 @@
 namespace b0
 {
 
-AbstractServiceServer::AbstractServiceServer(Node *node, std::string service_name, bool managed, bool notify_graph)
-    : socket::Socket(node, ZMQ_REP, service_name, managed),
+ServiceServer::ServiceServer(Node *node, std::string service_name, boost::function<void(const std::string&, std::string&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
-      bind_addr_("")
+      bind_addr_(""),
+      callback_(callback)
 {
 }
 
-AbstractServiceServer::~AbstractServiceServer()
+ServiceServer::~ServiceServer()
 {
 }
 
-void AbstractServiceServer::log(LogLevel level, std::string message) const
+void ServiceServer::log(LogLevel level, std::string message) const
 {
     boost::format fmt("ServiceServer(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
 }
 
-void AbstractServiceServer::init()
+void ServiceServer::init()
 {
     bind();
     announce();
@@ -35,7 +36,7 @@ void AbstractServiceServer::init()
         node_.notifyService(name_, false, true);
 }
 
-void AbstractServiceServer::cleanup()
+void ServiceServer::cleanup()
 {
     unbind();
 
@@ -43,12 +44,25 @@ void AbstractServiceServer::cleanup()
         node_.notifyService(name_, false, false);
 }
 
-std::string AbstractServiceServer::getServiceName()
+void ServiceServer::spinOnce()
+{
+    if(callback_.empty()) return;
+
+    while(poll())
+    {
+        std::string req, rep;
+        readRaw(req);
+        callback_(req, rep);
+        writeRaw(rep);
+    }
+}
+
+std::string ServiceServer::getServiceName()
 {
     return name_;
 }
 
-void AbstractServiceServer::bind()
+void ServiceServer::bind()
 {
     boost::format fmt("tcp://%s:%d");
     std::string host = node_.hostname();
@@ -59,18 +73,18 @@ void AbstractServiceServer::bind()
     log(debug, "Bound to %s", bind_addr_);
 }
 
-void AbstractServiceServer::unbind()
+void ServiceServer::unbind()
 {
     //Socket::unbind(bind_addr_); // FIXME: causes a zmq error on node shutdown
 }
 
-void AbstractServiceServer::announce()
+void ServiceServer::announce()
 {
     log(trace, "Announcing %s to resolver...", remote_addr_);
     node_.announceService(name_, remote_addr_);
 }
 
-void AbstractServiceServer::bind(std::string address)
+void ServiceServer::bind(std::string address)
 {
     Socket::bind(address);
     log(debug, "Bound to additional address %s", address);

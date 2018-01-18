@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 
@@ -20,14 +19,13 @@ public:
     {
     }
 
-    void on(const example_msgs::TestMessage &msg)
+    void on(const std::string &msg)
     {
-        std::cout << "Received:" << std::endl
-            << msg.DebugString() << std::endl;
+        std::cout << "Received: " << msg << std::endl;
     }
 
 private:
-    b0::Subscriber<example_msgs::TestMessage> sub_;
+    b0::Subscriber sub_;
 };
 
 int main(int argc, char **argv)

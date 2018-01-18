@@ -1,6 +1,5 @@
 #include <boost/thread.hpp>
 
-#include "test_msgs.pb.h"
 #include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
@@ -17,22 +16,21 @@ void resolver_thread()
 void pub_thread()
 {
     b0::Node node("pub2");
-    b0::Publisher<test_msgs::Msg1> pub(&node, "topic2");
+    b0::Publisher pub(&node, "topic2");
     node.init();
-    test_msgs::Msg1 m;
-    m.set_data(123456);
+    std::string m = "foo";
     for(;;) pub.publish(m);
 }
 
-void sub_callback(const test_msgs::Msg1 &msg)
+void sub_callback(const std::string &msg)
 {
-    exit(msg.data() == 123456 ? 0 : 1);
+    exit(msg == "foo" ? 0 : 1);
 }
 
 void sub_thread()
 {
     b0::Node node("sub2");
-    b0::Subscriber<test_msgs::Msg1> sub(&node, "topic2", &sub_callback);
+    b0::Subscriber sub(&node, "topic2", &sub_callback);
     node.init();
     node.spin();
 }

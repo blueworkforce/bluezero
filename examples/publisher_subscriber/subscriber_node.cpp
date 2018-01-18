@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 
@@ -14,10 +13,9 @@
  * This callback will be called whenever a message is received on any
  * of the subscribed topics
  */
-void callback(const example_msgs::TestMessage &msg)
+void callback(const std::string &msg)
 {
-    std::cout << "Received:" << std::endl
-        << msg.DebugString() << std::endl;
+    std::cout << "Received: " << msg << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -31,7 +29,7 @@ int main(int argc, char **argv)
      * Create a Subscriber to subscribe to topic "A"
      * It will call the specified callback upon receiving messages
      */
-    b0::Subscriber<example_msgs::TestMessage> sub(&node, "A", &callback);
+    b0::Subscriber sub(&node, "A", &callback);
 
     /*
      * Initialize the node (will announce node name to the network, and do other nice things)

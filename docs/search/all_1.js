@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['bind',['bind',['../classb0_1_1_abstract_service_server.html#a8dfc696eefa9e3ed10c9e5a58fde2a74',1,'b0::AbstractServiceServer::bind(std::string address)'],['../classb0_1_1_abstract_service_server.html#ae2378b015a108fde2613bdb88ce0c255',1,'b0::AbstractServiceServer::bind()'],['../classb0_1_1socket_1_1_socket.html#af8bb220e268a9409edc575a52185c96d',1,'b0::socket::Socket::bind()']]],
-  ['bind_5faddr_5f',['bind_addr_',['../classb0_1_1_abstract_service_server.html#a770b96ebec1eb8bcf79ed9c6507bd25d',1,'b0::AbstractServiceServer']]],
+  ['bind',['bind',['../classb0_1_1_service_server.html#acf434ee6e43a5346867ad8010f519a3c',1,'b0::ServiceServer::bind(std::string address)'],['../classb0_1_1_service_server.html#a017ecfde81a3cdc5b5f9d291249cf2e1',1,'b0::ServiceServer::bind()'],['../classb0_1_1_socket.html#a6179353eceb011622027eaae6ea05905',1,'b0::Socket::bind()']]],
+  ['bind_5faddr_5f',['bind_addr_',['../classb0_1_1_service_server.html#a8588799a560e7640ce73c29b6234c3f0',1,'b0::ServiceServer']]],
   ['blueworkforce_20middleware_20_2d_20a_20brief_20description',['BlueWorkforce Middleware - A brief description',['../index.html',1,'']]]
 ];

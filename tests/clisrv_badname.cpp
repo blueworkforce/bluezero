@@ -1,6 +1,5 @@
 #include <boost/thread.hpp>
 
-#include "test_msgs.pb.h"
 #include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
@@ -18,7 +17,7 @@ void resolver_thread()
 void cli_thread()
 {
     b0::Node node("cli");
-    b0::ServiceClient<test_msgs::Req, test_msgs::Resp> cli(&node, "service1b");
+    b0::ServiceClient cli(&node, "service1b");
     try
     {
         node.init();
@@ -34,7 +33,7 @@ void cli_thread()
 void srv_thread()
 {
     b0::Node node("srv");
-    b0::ServiceServer<test_msgs::Req, test_msgs::Resp> srv(&node, "service1a");
+    b0::ServiceServer srv(&node, "service1a");
     node.init();
     node.spin();
 }

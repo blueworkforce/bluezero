@@ -1,6 +1,5 @@
 #include <boost/thread.hpp>
 
-#include "test_msgs.pb.h"
 #include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
@@ -17,27 +16,25 @@ void resolver_thread()
 void cli_thread()
 {
     b0::Node node("cli");
-    b0::ServiceClient<test_msgs::Req, test_msgs::Resp> cli(&node, "service1");
+    b0::ServiceClient cli(&node, "service1");
     node.init();
-    test_msgs::Req req;
-    test_msgs::Resp resp;
-    req.set_a(123456);
-    req.set_b(1);
-    cli.call(req, resp);
-    node.log(b0::Node::LogLevel::info, "server response: %s", resp.DebugString());
-    exit(resp.c() == 123457 ? 0 : 1);
+    std::string req = "foo";
+    std::string rep;
+    cli.call(req, rep);
+    node.log(b0::Node::LogLevel::info, "server response: %s", rep);
+    exit(rep == "foo_" ? 0 : 1);
 }
 
 void srv_thread()
 {
     b0::Node node("srv");
-    b0::ServiceServer<test_msgs::Req, test_msgs::Resp> srv(&node, "service1");
+    b0::ServiceServer srv(&node, "service1");
     node.init();
-    test_msgs::Req req;
-    test_msgs::Resp resp;
-    srv.read(req);
-    resp.set_c(req.a() + req.b());
-    srv.write(resp);
+    std::string req;
+    std::string rep;
+    srv.readRaw(req);
+    rep = req + "_";
+    srv.writeRaw(rep);
 }
 
 void timeout_thread()

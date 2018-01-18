@@ -1,7 +1,7 @@
 #ifndef B0__RESOLVER__CLIENT_H__INCLUDED
 #define B0__RESOLVER__CLIENT_H__INCLUDED
 
-#include <b0/service_client.h>
+#include <b0/protobuf/service_client.h>
 
 #include <cstdint>
 #include <string>
@@ -28,7 +28,7 @@ namespace resolver
  *
  * Performs service name resolution.
  */
-class Client : public ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
+class Client : public protobuf::ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
 {
 public:
     /*!

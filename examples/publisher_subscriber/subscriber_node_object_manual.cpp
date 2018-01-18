@@ -1,6 +1,5 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
-#include "publisher_subscriber.pb.h"
 
 #include <iostream>
 
@@ -31,18 +30,17 @@ public:
              * of one way to do it, in case you really need to.
              */
 
-            example_msgs::TestMessage msg;
+            std::string msg;
 
             // read is blocking
-            sub_.read(msg);
+            sub_.readRaw(msg);
 
-            std::cout << "Received:" << std::endl
-                << msg.DebugString() << std::endl;
+            std::cout << "Received: " << msg << std::endl;
         }
     }
 
 private:
-    b0::Subscriber<example_msgs::TestMessage> sub_;
+    b0::Subscriber sub_;
 };
 
 int main(int argc, char **argv)
