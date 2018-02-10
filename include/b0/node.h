@@ -132,12 +132,12 @@ protected:
      */
     virtual void startHeartbeatThread();
 
+public:
     /*!
      * \brief Log a message to the default logger of this node
      */
     void log(LogLevel level, std::string message) const override;
 
-public:
     /*!
      * \brief Get the name assigned by resolver to this node
      */
