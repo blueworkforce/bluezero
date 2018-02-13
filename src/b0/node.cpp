@@ -53,7 +53,7 @@ Node::Node(std::string nodeName)
     : private_(new NodePrivate(this, 1)),
       private2_(new NodePrivate2(this)),
       name_(nodeName),
-      state_(State::Created),
+      state_(NodeState::Created),
       thread_id_(boost::this_thread::get_id()),
       p_logger_(new logger::Logger(this)),
       shutdown_flag_(false)
@@ -71,8 +71,8 @@ Node::~Node()
 
 void Node::init()
 {
-    if(state_ != State::Created)
-        throw exception::InvalidStateTransition("Cannot call init() in current state");
+    if(state_ != NodeState::Created)
+        throw exception::InvalidStateTransition("init", state_);
 
     log(debug, "Initialization...");
 
@@ -89,15 +89,15 @@ void Node::init()
     for(auto socket : sockets_)
         socket->init();
 
-    state_ = State::Ready;
+    state_ = NodeState::Ready;
 
     log(debug, "Initialization complete.");
 }
 
 void Node::shutdown()
 {
-    if(state_ != State::Ready)
-        throw exception::InvalidStateTransition("Cannot call shutdown() in current state");
+    if(state_ != NodeState::Ready)
+        throw exception::InvalidStateTransition("shutdown", state_);
 
     log(debug, "Shutting down...");
 
@@ -113,8 +113,8 @@ bool Node::shutdownRequested() const
 
 void Node::spinOnce()
 {
-    if(state_ != State::Ready)
-        throw exception::InvalidStateTransition("Cannot call spinOnce() in current state");
+    if(state_ != NodeState::Ready)
+        throw exception::InvalidStateTransition("spinOnce", state_);
 
     // spin sockets:
     for(auto socket : sockets_)
@@ -123,8 +123,8 @@ void Node::spinOnce()
 
 void Node::spin(double spinRate)
 {
-    if(state_ != State::Ready)
-        throw exception::InvalidStateTransition("Cannot call spin() in current state");
+    if(state_ != NodeState::Ready)
+        throw exception::InvalidStateTransition("spin", state_);
 
     log(info, "Node spinning...");
 
@@ -145,8 +145,8 @@ void Node::spin(double spinRate)
 
 void Node::cleanup()
 {
-    if(state_ != State::Ready)
-        throw exception::InvalidStateTransition("Cannot call cleanup() in current state");
+    if(state_ != NodeState::Ready)
+        throw exception::InvalidStateTransition("cleanup", state_);
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
@@ -163,7 +163,7 @@ void Node::cleanup()
 
     private2_->resolv_cli_.cleanup(); // resolv_cli_ is not managed
 
-    state_ = State::Terminated;
+    state_ = NodeState::Terminated;
 }
 
 void Node::log(LogLevel level, std::string message) const
@@ -187,7 +187,7 @@ std::string Node::getName() const
     return name_;
 }
 
-Node::State Node::getState() const
+NodeState Node::getState() const
 {
     return state_;
 }
@@ -209,7 +209,7 @@ std::string Node::getXSUBSocketAddress() const
 
 void Node::addSocket(Socket *socket)
 {
-    if(state_ != State::Created)
+    if(state_ != NodeState::Created)
         throw exception::Exception("Cannot create a socket with an already initialized node");
 
     sockets_.insert(socket);
