@@ -10,6 +10,7 @@ include(CheckCXXSourceRuns)
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
 option(BUILD_GUI "Build gui programs" OFF)
+option(PYTHON_BINDINGS "Compile python bindings" OFF)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR 1)
@@ -204,5 +205,9 @@ endif()
 
 if(BUILD_GUI)
     add_subdirectory(gui)
+endif()
+
+if(PYTHON_BINDINGS)
+    add_subdirectory(python)
 endif()
 
