@@ -15,10 +15,13 @@
 void * callback(const void *req, size_t sz, size_t *out_sz)
 {
     printf("Received: %s\n", (const char*)req);
+
     const char *repmsg = "hi";
-    void *rep = strdup(repmsg);
-    *out_sz = strlen(repmsg);
     printf("Sending: %s\n", repmsg);
+
+    *out_sz = strlen(repmsg);
+    void *rep = b0_buffer_new(*out_sz);
+    memcpy(rep, repmsg, *out_sz);
     return rep;
 }
 
