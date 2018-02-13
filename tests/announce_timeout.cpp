@@ -1,7 +1,5 @@
 #include <boost/thread.hpp>
 
-#include "test_msgs.pb.h"
-
 #include <iostream>
 
 #include <b0/node.h>
