@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "test_msgs.pb.h"
 #include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
