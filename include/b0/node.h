@@ -2,6 +2,7 @@
 #define B0__NODE_H__INCLUDED
 
 #include <b0/user_data.h>
+#include <b0/node_state.h>
 #include <b0/socket.h>
 #include <b0/logger/interface.h>
 #include <b0/utils/time_sync.h>
@@ -40,19 +41,6 @@ class Node : public logger::LogInterface, public UserData
 {
 public:
     using logger::LogInterface::log;
-
-    /*!
-     * \brief The state of a Node
-     */
-    enum State
-    {
-        //! \brief Just after creation, before initialization.
-        Created,
-        //! \brief After initialization.
-        Ready,
-        //! \brief Just after cleanup.
-        Terminated
-    };
 
     /*!
      * \brief Create a node with a given name.
@@ -146,7 +134,7 @@ public:
     /*!
      * \brief Get the state of this node
      */
-    State getState() const;
+    NodeState getState() const;
 
     /*!
      * \brief Get the ZeroMQ Context
@@ -268,7 +256,7 @@ private:
     std::string name_;
 
     //! State of this node
-    State state_;
+    NodeState state_;
 
     //! Id of the thread in which this node has been created
     boost::thread::id thread_id_;

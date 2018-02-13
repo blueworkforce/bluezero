@@ -147,6 +147,7 @@ add_library(
     b0
     SHARED
     src/b0/c.cpp
+    src/b0/node_state.cpp
     src/b0/node.cpp
     src/b0/socket.cpp
     src/b0/publisher.cpp
