@@ -45,6 +45,11 @@ int main(int argc, char **argv)
     printf("Received: %s\n", rep);
 
     /*
+     * Free reply buffer
+     */
+    b0_buffer_delete(rep);
+
+    /*
      * Perform cleanup (stop threads, notify resolver that this node has quit, ...)
      */
     b0_node_cleanup(node);
