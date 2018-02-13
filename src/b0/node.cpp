@@ -136,10 +136,6 @@ void Node::spin(double spinRate)
         boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
     }
 
-    log(info, "Node cleanup...");
-
-    cleanup();
-
     log(info, "spin() finished");
 }
 
