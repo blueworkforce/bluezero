@@ -12,7 +12,7 @@ var searchData=
   ['getreadtimeout',['getReadTimeout',['../classb0_1_1_socket.html#a26ea6cff1b0e9759223552e4d50fb1f0',1,'b0::Socket']]],
   ['getservicename',['getServiceName',['../classb0_1_1_service_client.html#adb57d08afe6fe876f81f273af03b3c4d',1,'b0::ServiceClient::getServiceName()'],['../classb0_1_1_service_server.html#a93de498c7c6f146492a6226a70c7e460',1,'b0::ServiceServer::getServiceName()']]],
   ['getsockopt',['getsockopt',['../classb0_1_1_socket.html#a385d1e651a6f8c1258d43d6e0d461896',1,'b0::Socket']]],
-  ['getstate',['getState',['../classb0_1_1_node.html#ae1de6f40614c3fca3f96f569b17be8b5',1,'b0::Node']]],
+  ['getstate',['getState',['../classb0_1_1_node.html#a1b4317b799226e8c0d978c276bd60279',1,'b0::Node']]],
   ['gettopicname',['getTopicName',['../classb0_1_1_publisher.html#a9f20ca2857d67267ebfe10b5cbd02a7e',1,'b0::Publisher::getTopicName()'],['../classb0_1_1_subscriber.html#aea346323b922c3b8d65096334297877f',1,'b0::Subscriber::getTopicName()']]],
   ['getwritehwm',['getWriteHWM',['../classb0_1_1_socket.html#ae93483279d5a33fc9def350f6960e48f',1,'b0::Socket']]],
   ['getwritetimeout',['getWriteTimeout',['../classb0_1_1_socket.html#a057eb248f959ecb29e3456eaeceb94b0',1,'b0::Socket']]],
