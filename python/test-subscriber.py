@@ -1,6 +1,6 @@
 import pyb0
-def callback(payload):
-    print('received payload: %s' % payload)
+def callback(msg):
+    print('Received message: "%s"' % msg)
 node = pyb0.Node('python-subscriber')
 sub = pyb0.Subscriber(node, 'A', callback)
 node.init()
