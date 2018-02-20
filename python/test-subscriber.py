@@ -1,8 +1,8 @@
-import pyb0
+import pyb0 as b0
 def callback(msg):
     print('Received message: "%s"' % msg)
-node = pyb0.Node('python-subscriber')
-sub = pyb0.Subscriber(node, 'A', callback)
+node = b0.Node('python-subscriber')
+sub = b0.Subscriber(node, 'A', callback)
 node.init()
 node.spin()
 node.cleanup()

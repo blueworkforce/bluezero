@@ -1,7 +1,7 @@
-import pyb0
+import pyb0 as b0
 from time import sleep
-node = pyb0.Node('python-publisher')
-pub = pyb0.Publisher(node, 'A')
+node = b0.Node('python-publisher')
+pub = b0.Publisher(node, 'A')
 node.init()
 for i in range(1000000):
     msg = 'msg-%d' % i
