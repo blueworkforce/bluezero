@@ -49,6 +49,8 @@ BOOST_PYTHON_MODULE(pyb0)
         .def("cleanup", &b0::Node::cleanup)
         .def("spin_once", &b0::Node::spinOnce)
         .def("spin", &Node_spin)
+        .def("time_usec", &b0::Node::timeUSec)
+        .def("hardware_time_usec", &b0::Node::hardwareTimeUSec)
     ;
     class_<b0::Publisher, boost::noncopyable>
         ("Publisher", init<b0::Node*, std::string>())
