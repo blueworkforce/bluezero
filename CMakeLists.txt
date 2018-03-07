@@ -209,6 +209,6 @@ if(BUILD_GUI)
 endif()
 
 if(PYTHON_BINDINGS)
-    add_subdirectory(python)
+    add_subdirectory(python-boost)
 endif()
 
