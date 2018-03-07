@@ -1,3 +1,4 @@
 .DS_Store
 .clang_complete
 build
+*.pyc
