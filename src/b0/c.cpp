@@ -238,6 +238,7 @@ void * b0_service_client_call(b0_service_client *cli, const void *data, size_t s
     reinterpret_cast<b0::ServiceClient*>(cli)->call(req, rep);
     void *ret = b0_buffer_new(rep.size());
     memcpy(ret, rep.data(), rep.size());
+    *out_size = rep.size();
     return ret;
 }
 
