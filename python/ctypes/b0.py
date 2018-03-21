@@ -5,22 +5,20 @@ import os
 import ctypes as ct
 
 libb0 = None
-ext = '.so'
-suf = 'lib'
+prefix, suffix = 'lib', '.so'
 if platform.system() in ('cli', 'Windows'):
-    ext = '.dll'
-    suf = ''
+    prefix, suffix = '', '.dll'
 if platform.system() in ('Darwin', ):
-    ext = '.dylib'
+    suffix = '.dylib'
 for path in ('.', 'build', '../../build'):
     fullpath = os.path.join(os.path.dirname(__file__), path)
     if not os.path.isdir(fullpath): continue
-    libb0_fullpath = os.path.join(fullpath, suf + 'b0' + ext)
+    libb0_fullpath = os.path.join(fullpath, '%sb0%s' % (prefix, suffix))
     if os.path.exists(libb0_fullpath):
         libb0 = ct.CDLL(libb0_fullpath)
         break
 if libb0 is None:
-    raise RuntimeError('%sb0%s not found' % (suf,ext))
+    raise RuntimeError('%sb0%s not found' % (prefix, suffix))
 
 b0_buffer_new = ct.CFUNCTYPE(ct.c_void_p, ct.c_size_t)(("b0_buffer_new", libb0))
 b0_buffer_delete = ct.CFUNCTYPE(None, ct.c_void_p)(("b0_buffer_delete", libb0))
