@@ -184,26 +184,6 @@ public:
     virtual std::string address(int port);
 
     /*!
-     * \brief Create a string with the node key
-     */
-    std::string nodeKey(std::string host_id, int process_id, std::string thread_id);
-
-    /*!
-     * \brief Create a string with the node key
-     */
-    std::string nodeKey(const b0::resolver_msgs::NodeID &node_id);
-
-    /*!
-     * \brief Create a string with the node key
-     */
-    std::string nodeKey(const resolver::NodeEntry *node_entry);
-
-    /*!
-     * \brief Get the NodeEntry given the NodeID
-     */
-    virtual resolver::NodeEntry * nodeByID(const b0::resolver_msgs::NodeID &node_id);
-
-    /*!
      * \brief Get the NodeEntry given the node name
      */
     virtual resolver::NodeEntry * nodeByName(std::string node_name);

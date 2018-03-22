@@ -34,10 +34,7 @@ ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
 void ResolverServiceServer::announce()
 {
     b0::resolver_msgs::AnnounceServiceRequest rq;
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(node_.hostname());
-    node_id.set_process_id(node_.pid());
-    node_id.set_thread_id(node_.threadID());
+    rq.set_node_name(node_.getName());
     rq.set_service_name(name_);
     rq.set_sock_addr(remote_addr_);
     b0::resolver_msgs::AnnounceServiceResponse rsp;
@@ -110,11 +107,6 @@ void Resolver::announceNode()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
     b0::resolver_msgs::AnnounceNodeRequest rq;
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    b0::Node &node_ = *this;
-    node_id.set_host_id(node_.hostname());
-    node_id.set_process_id(node_.pid());
-    node_id.set_thread_id(node_.threadID());
     rq.set_node_name(getName());
     b0::resolver_msgs::AnnounceNodeResponse rsp;
     handleAnnounceNode(rq, rsp);
@@ -128,7 +120,7 @@ void Resolver::notifyShutdown()
     // directly route this call to the handler, otherwise it will cause a deadlock
 #if 0
     b0::resolver_msgs::ShutdownNodeRequest rq;
-    getNodeID(*rq.mutable_node_id());
+    rq.set_node_name(getName());
     b0::resolver_msgs::ShutdownNodeResponse rsp;
     handleShutdownNode(rq, rsp);
 #else
@@ -146,7 +138,6 @@ void Resolver::onNodeDisconnected(std::string name)
 
     for(resolver::ServiceEntry *s : e->services)
         services_by_name_.erase(s->name);
-    nodes_by_key_.erase(nodeKey(e));
     nodes_by_name_.erase(name);
 
     std::set<std::pair<std::string, std::string> > npt, nst, nos, nus;
@@ -300,28 +291,6 @@ std::string Resolver::address(int port)
     return address("*", port);
 }
 
-std::string Resolver::nodeKey(std::string host_id, int process_id, std::string thread_id)
-{
-    return (boost::format("%s-%d-%s") % host_id % process_id % thread_id).str();
-}
-
-std::string Resolver::nodeKey(const b0::resolver_msgs::NodeID &node_id)
-{
-    return nodeKey(node_id.host_id(), node_id.process_id(), node_id.thread_id());
-}
-
-std::string Resolver::nodeKey(const resolver::NodeEntry *node_entry)
-{
-    return nodeKey(node_entry->host_id, node_entry->process_id, node_entry->thread_id);
-}
-
-resolver::NodeEntry * Resolver::nodeByID(const b0::resolver_msgs::NodeID &node_id)
-{
-    std::string k = nodeKey(node_id);
-    auto it = nodes_by_key_.find(k);
-    return it == nodes_by_key_.end() ? 0 : it->second;
-}
-
 resolver::NodeEntry * Resolver::nodeByName(std::string node_name)
 {
     auto it = nodes_by_name_.find(node_name);
@@ -376,39 +345,27 @@ std::string Resolver::makeUniqueNodeName(std::string nodeName)
 void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &rq, b0::resolver_msgs::AnnounceNodeResponse &rsp)
 {
     log(trace, "Received a AnnounceNodeRequest");
-    const b0::resolver_msgs::NodeID &node_id = rq.node_id();
-    if(nodeByID(node_id))
-    {
-        rsp.set_ok(false);
-        log(error, "A node with the same id (%s) already exists", nodeKey(rq.node_id()));
-        return;
-    }
     std::string nodeName = makeUniqueNodeName(rq.node_name());
     resolver::NodeEntry *e = new resolver::NodeEntry;
-    e->host_id = node_id.host_id();
-    e->process_id = node_id.process_id();
-    e->thread_id = node_id.thread_id();
     e->name = nodeName;
     heartBeat(e);
     nodes_by_name_[nodeName] = e;
-    std::string key = nodeKey(e);
-    nodes_by_key_[key] = e;
     onNodeConnected(nodeName);
     onGraphChanged();
     rsp.set_node_name(e->name);
     rsp.set_xsub_sock_addr(xsub_proxy_addr_);
     rsp.set_xpub_sock_addr(xpub_proxy_addr_);
     rsp.set_ok(true);
-    log(info, "New node has joined: '%s' (key=%s)", e->name, key);
+    log(info, "New node has joined: '%s'", e->name);
 }
 
 void Resolver::handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &rq, b0::resolver_msgs::ShutdownNodeResponse &rsp)
 {
-    resolver::NodeEntry *ne = nodeByID(rq.node_id());
+    resolver::NodeEntry *ne = nodeByName(rq.node_name());
     if(!ne)
     {
         rsp.set_ok(false);
-        log(error, "Invalid node id: %s", nodeKey(rq.node_id()));
+        log(error, "Invalid node name: %s", rq.node_name());
         return;
     }
     std::string node_name = ne->name;
@@ -420,11 +377,11 @@ void Resolver::handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &
 
 void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceRequest &rq, b0::resolver_msgs::AnnounceServiceResponse &rsp)
 {
-    resolver::NodeEntry *ne = nodeByID(rq.node_id());
+    resolver::NodeEntry *ne = nodeByName(rq.node_name());
     if(!ne)
     {
         rsp.set_ok(false);
-        log(error, "Invalid node id: %s", nodeKey(rq.node_id()));
+        log(error, "Invalid node name: %s", rq.node_name());
         return;
     }
     if(serviceByName(rq.service_name()))
@@ -462,9 +419,9 @@ void Resolver::handleResolveService(const b0::resolver_msgs::ResolveServiceReque
 
 void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0::resolver_msgs::HeartBeatResponse &rsp)
 {
-    if(rq.node_id().host_id() == "self" && rq.node_id().process_id() == -1 && rq.node_id().thread_id() == "self")
+    if(rq.node_name() == "resolver")
     {
-        // a HeartBeatRequest from "self" pid=-1 thread="self" means to actually perform
+        // a HeartBeatRequest from "resolver" means to actually perform
         // the detection and purging of dead nodes
         std::set<std::string> nodes_shutdown;
         for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); ++i)
@@ -484,11 +441,11 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
     }
     else
     {
-        resolver::NodeEntry *ne = nodeByID(rq.node_id());
+        resolver::NodeEntry *ne = nodeByName(rq.node_name());
         if(!ne)
         {
             rsp.set_ok(false);
-            log(error, "Received a heartbeat from an invalid node id: %s", nodeKey(rq.node_id()));
+            log(error, "Received a heartbeat from an invalid node name: %s", rq.node_name());
             return;
         }
         heartBeat(ne);
@@ -597,8 +554,8 @@ void Resolver::heartBeatSweeper()
 
     while(!shutdownRequested())
     {
-        // send a special heartbeat to resolv itself trigger the sweeping:
-        resolv_cli.sendHeartbeat(0, "self", -1, "self");
+        // send a heartbeat to resolv itself trigger the sweeping:
+        resolv_cli.sendHeartbeat(nullptr);
         boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
     }
 

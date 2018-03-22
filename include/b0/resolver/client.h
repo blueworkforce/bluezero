@@ -61,7 +61,7 @@ public:
     /*!
      * \brief Send a heartbeat to resolver
      */
-    virtual void sendHeartbeat(int64_t *time_usec = nullptr, std::string host_id = "", int process_id = 0, std::string thread_id = "");
+    virtual void sendHeartbeat(int64_t *time_usec = nullptr);
 
     /*!
      * \brief Notify topic publishing/subscription start or end
