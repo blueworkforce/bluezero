@@ -31,10 +31,6 @@
  * The functions of the library are not thread-safe, and so are the functions of ZeroMQ.
  * Thus, every node must be accessed always from the same thread.
  *
- * Also, since the identifier of a node is the triple composed by the machine hostname, the process
- * identifier, and the thread identifier, it is not possible to have more than one node per thread.
- * This may change in future.
- *
  * \section resolver_intro Resolver node
  *
  * The most important part of the network is the resolver node.

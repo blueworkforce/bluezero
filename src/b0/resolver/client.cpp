@@ -48,10 +48,6 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
     log(trace, "Announcing node '%s' to resolver...", node_name);
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::AnnounceNodeRequest &rq = *rq0.mutable_announce_node();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(node_.hostname());
-    node_id.set_process_id(node_.pid());
-    node_id.set_thread_id(node_.threadID());
     rq.set_node_name(node_name);
 
     b0::resolver_msgs::Response rsp0;
@@ -82,10 +78,7 @@ void Client::notifyShutdown()
 {
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::ShutdownNodeRequest &rq = *rq0.mutable_shutdown_node();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(node_.hostname());
-    node_id.set_process_id(node_.pid());
-    node_id.set_thread_id(node_.threadID());
+    rq.set_node_name(node_.getName());
 
     b0::resolver_msgs::Response rsp0;
     call(rq0, rsp0);
@@ -95,23 +88,11 @@ void Client::notifyShutdown()
         throw exception::Exception("notifyShutdown failed");
 }
 
-void Client::sendHeartbeat(int64_t *time_usec, std::string host_id, int process_id, std::string thread_id)
+void Client::sendHeartbeat(int64_t *time_usec)
 {
-    if(host_id == "")
-        host_id = node_.hostname();
-
-    if(process_id == 0)
-        process_id = node_.pid();
-
-    if(thread_id == "")
-        thread_id = node_.threadID();
-
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::HeartBeatRequest &rq = *rq0.mutable_heartbeat();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(host_id);
-    node_id.set_process_id(process_id);
-    node_id.set_thread_id(thread_id);
+    rq.set_node_name(node_.getName());
     int64_t sendTime = node_.hardwareTimeUSec();
 
     b0::resolver_msgs::Response rsp0;
@@ -159,10 +140,7 @@ void Client::announceService(std::string name, std::string addr)
 {
     b0::resolver_msgs::Request rq0;
     b0::resolver_msgs::AnnounceServiceRequest &rq = *rq0.mutable_announce_service();
-    b0::resolver_msgs::NodeID &node_id = *rq.mutable_node_id();
-    node_id.set_host_id(node_.hostname());
-    node_id.set_process_id(node_.pid());
-    node_id.set_thread_id(node_.threadID());
+    rq.set_node_name(node_.getName());
     rq.set_service_name(name);
     rq.set_sock_addr(addr);
 

@@ -2,17 +2,9 @@ syntax = "proto2";
 
 package b0.resolver_msgs;
 
-// Data structure to contain identification of a node
-message NodeID {
-  required bytes host_id = 1;
-  required uint32 process_id = 2;
-  required string thread_id = 3;
-}
-
 // Sent by node to resolver, to announce its presence
 // and try to self-assign a name
 message AnnounceNodeRequest {
-  required NodeID node_id = 1;
   optional string node_name = 8;
 }
 
@@ -28,7 +20,7 @@ message AnnounceNodeResponse {
 // Sent by node to resolver when shutting down
 // (it's not really a request buit rather a notification)
 message ShutdownNodeRequest {
-  required NodeID node_id = 1;
+  required string node_name = 1;
 }
 
 // Sent by resolver to node in reply to ShutdownNodeRequest
@@ -40,7 +32,7 @@ message ShutdownNodeResponse {
 // Sent by ServiceServer to announce a service by some name
 // The name must be unique
 message AnnounceServiceRequest {
-  required NodeID node_id = 1;
+  required string node_name = 1;
   required string service_name = 2;
   required string sock_addr = 3;
 }
@@ -63,7 +55,7 @@ message ResolveServiceResponse {
 
 // Heartbeat sent by node to resolver
 message HeartBeatRequest {
-  required NodeID node_id = 1;
+  required string node_name = 1;
 }
 
 // Response to HeartBeatRequest message
