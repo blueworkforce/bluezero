@@ -10,7 +10,8 @@ include(CheckCXXSourceRuns)
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
 option(BUILD_GUI "Build gui programs" OFF)
-option(PYTHON_BINDINGS "Compile python bindings" OFF)
+option(BINDINGS_BOOST_PYTHON "Compile python bindings (using boost::python)" OFF)
+option(BINDINGS_SWIG "Enable build of bindings using SWIG" OFF)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR 1)
@@ -189,12 +190,14 @@ endif()
 set_target_properties(b0
     PROPERTIES
     PUBLIC_HEADER
+    "
     include/b0/b0.h
     include/b0/node.h
     include/b0/publisher.h
     include/b0/subscriber.h
     include/b0/service_client.h
     include/b0/service_server.h
+    "
 )
 
 add_executable(b0_resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_main.cpp)
@@ -206,7 +209,7 @@ target_link_libraries(b0_logger_console b0)
 add_executable(b0_graph_console src/b0/graph/console.cpp)
 target_link_libraries(b0_graph_console b0)
 
-install(TARGETS ${PROJECT_NAME} b0
+install(TARGETS b0
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib/static
@@ -226,7 +229,11 @@ if(BUILD_GUI)
     add_subdirectory(gui)
 endif()
 
-if(PYTHON_BINDINGS)
-    add_subdirectory(bindings/python/boost)
+if(BINDINGS_BOOST_PYTHON)
+    add_subdirectory(bindings/python-boost)
+endif()
+
+if(BINDINGS_SWIG)
+    add_subdirectory(bindings)
 endif()
 
