@@ -186,6 +186,17 @@ if(LZ4_FOUND)
     target_link_libraries(b0 ${LZ4_LIBRARY})
 endif()
 
+set_target_properties(b0
+    PROPERTIES
+    PUBLIC_HEADER
+    include/b0/b0.h
+    include/b0/node.h
+    include/b0/publisher.h
+    include/b0/subscriber.h
+    include/b0/service_client.h
+    include/b0/service_server.h
+)
+
 add_executable(b0_resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_main.cpp)
 target_link_libraries(b0_resolver b0)
 
@@ -194,6 +205,13 @@ target_link_libraries(b0_logger_console b0)
 
 add_executable(b0_graph_console src/b0/graph/console.cpp)
 target_link_libraries(b0_graph_console b0)
+
+install(TARGETS ${PROJECT_NAME} b0
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib/static
+    PUBLIC_HEADER DESTINATION include
+)
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
