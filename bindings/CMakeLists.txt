@@ -1,5 +1,7 @@
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
+set(SWIG_CXX_EXTENSION cpp)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 option(BINDINGS_SWIG_CSHARP "Build C# bindings (using SWIG)" OFF)
