@@ -196,6 +196,21 @@ void b0_subscriber_log(b0_subscriber *sub, int level, const char *message)
     reinterpret_cast<b0::Subscriber*>(sub)->log(log_level_from_int(level), message);
 }
 
+int b0_subscriber_poll(b0_subscriber *sub, long timeout)
+{
+    return reinterpret_cast<b0::Subscriber*>(sub)->poll(timeout);
+}
+
+void * b0_subscriber_read(b0_subscriber *sub, size_t *size)
+{
+    std::string msg;
+    reinterpret_cast<b0::Subscriber*>(sub)->readRaw(msg);
+    void *ret = b0_buffer_new(msg.size());
+    memcpy(ret, msg.data(), msg.size());
+    if(size) *size = msg.size();
+    return ret;
+}
+
 b0_service_client * b0_service_client_new_ex(b0_node *node, const char *service_name, int managed, int notify_graph)
 {
     return reinterpret_cast<b0_service_client*>(new b0::ServiceClient(reinterpret_cast<b0::Node*>(node), service_name, managed, notify_graph));
@@ -293,6 +308,26 @@ const char * b0_service_server_get_service_name(b0_service_server *srv)
 void b0_service_server_log(b0_service_server *srv, int level, const char *message)
 {
     reinterpret_cast<b0::ServiceServer*>(srv)->log(log_level_from_int(level), message);
+}
+
+int b0_service_server_poll(b0_service_server *srv, long timeout)
+{
+    return reinterpret_cast<b0::ServiceServer*>(srv)->poll(timeout);
+}
+
+void * b0_service_server_read(b0_service_server *srv, size_t *size)
+{
+    std::string msg;
+    reinterpret_cast<b0::ServiceServer*>(srv)->readRaw(msg);
+    void *ret = b0_buffer_new(msg.size());
+    memcpy(ret, msg.data(), msg.size());
+    if(size) *size = msg.size();
+    return ret;
+}
+
+void b0_service_server_write(b0_service_server *srv, const void *msg, size_t size)
+{
+    reinterpret_cast<b0::ServiceServer*>(srv)->writeRaw(std::string(reinterpret_cast<const char *>(msg), size));
 }
 
 }
