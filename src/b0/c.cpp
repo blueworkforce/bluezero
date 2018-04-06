@@ -158,7 +158,10 @@ void b0_subscriber_callback_wrapper(const std::string &msg, void (*callback)(con
 
 b0_subscriber * b0_subscriber_new_ex(b0_node *node, const char *topic_name, void (*callback)(const void *, size_t), int managed, int notify_graph)
 {
-    return reinterpret_cast<b0_subscriber*>(new b0::Subscriber(reinterpret_cast<b0::Node*>(node), topic_name, boost::bind(b0_subscriber_callback_wrapper, _1, callback), managed, notify_graph));
+    boost::function<void(const std::string&)> cb_arg;
+    if(callback)
+        cb_arg = boost::bind(b0_subscriber_callback_wrapper, _1, callback);
+    return reinterpret_cast<b0_subscriber*>(new b0::Subscriber(reinterpret_cast<b0::Node*>(node), topic_name, cb_arg, managed, notify_graph));
 }
 
 b0_subscriber * b0_subscriber_new(b0_node *node, const char *topic_name, void (*callback)(const void *, size_t))
@@ -272,7 +275,10 @@ void b0_service_server_callback_wrapper(const std::string &req, std::string &rep
 
 b0_service_server * b0_service_server_new_ex(b0_node *node, const char *service_name, void * (*callback)(const void *, size_t, size_t *), int managed, int notify_graph)
 {
-    return reinterpret_cast<b0_service_server*>(new b0::ServiceServer(reinterpret_cast<b0::Node*>(node), service_name, boost::bind(b0_service_server_callback_wrapper, _1, _2, callback), managed, notify_graph));
+    boost::function<void(const std::string&, std::string&)> cb_arg;
+    if(callback)
+        cb_arg = boost::bind(b0_service_server_callback_wrapper, _1, _2, callback);
+    return reinterpret_cast<b0_service_server*>(new b0::ServiceServer(reinterpret_cast<b0::Node*>(node), service_name, cb_arg, managed, notify_graph));
 }
 
 b0_service_server * b0_service_server_new(b0_node *node, const char *service_name, void * (*callback)(const void *, size_t, size_t *))
