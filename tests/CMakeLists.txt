@@ -6,6 +6,10 @@ add_executable(pubsub2 pubsub2.cpp)
 target_link_libraries(pubsub2 b0)
 add_test(pubsub2 pubsub2)
 
+add_executable(pubsub_unmanaged pubsub_unmanaged.cpp)
+target_link_libraries(pubsub_unmanaged b0)
+add_test(pubsub_unmanaged pubsub_unmanaged)
+
 add_executable(pubsub_raw pubsub_raw.cpp)
 target_link_libraries(pubsub_raw b0)
 add_test(pubsub_raw pubsub_raw)
