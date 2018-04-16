@@ -25,9 +25,9 @@ void node_thread()
     catch(b0::exception::Exception &ex)
     {
         std::string expected_ex = "announceNode failed";
-        if(ex.what() == expected_ex) exit(0);
+        if(ex.what() == expected_ex) exit(1);
     }
-    exit(1);
+    exit(0);
 }
 
 void timeout_thread()
