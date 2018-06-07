@@ -10,7 +10,7 @@
  *
  * \section api API Design
  *
- * The main class used to create a node is b0::Node. Node uses two-phase initialization, so you must call b0::Node::init() after the constructor, and b0::Node::cleanup() before the destructor.
+ * The main class used to create a node is b0::Node. Node uses two-phase initialization, so you must call b0::Node::init() after the constructor, and b0::Node::cleanup() before the destructor. <b>Do not call b0::Node::init() from your node class constructor!</b>
  *
  * Also, b0::Node::spinOnce() must be called periodically to process incoming messages (or just call b0::Node::spin() once).
  *
