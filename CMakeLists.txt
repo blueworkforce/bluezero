@@ -11,6 +11,7 @@ option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
 option(BUILD_GUI "Build gui programs" OFF)
 option(BINDINGS_BOOST_PYTHON "Compile python bindings (using boost::python)" OFF)
+option(BINDINGS_JAVA "Compile Java bindings (using JNI)" OFF)
 option(BINDINGS_SWIG "Enable build of bindings using SWIG" OFF)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -137,6 +138,12 @@ set(CMAKE_REQUIRED_FLAGS ${SAVE_CMAKE_REQUIRED_FLAGS})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/b0/config.h)
 
+if(BINDINGS_JAVA)
+    find_package(JNI REQUIRED)
+    include_directories(${JNI_INCLUDE_DIRS})
+    set(B0_EXTRA_SOURCES ${B0_EXTRA_SOURCES} bindings/java/java.cpp)
+endif()
+
 protobuf_generate_cpp(
     B0_MSG_SOURCES
     B0_MSG_HEADERS
@@ -172,6 +179,7 @@ add_library(
     src/b0/utils/thread_name.cpp
     src/b0/utils/time_sync.cpp
     ${B0_MSG_SOURCES}
+    ${B0_EXTRA_SOURCES}
 )
 target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
 if(WIN32)
