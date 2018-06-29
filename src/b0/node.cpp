@@ -11,11 +11,11 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <boost/chrono.hpp>
 #include <boost/thread.hpp>
 #include <boost/asio.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <zmq.hpp>
 
@@ -133,7 +133,8 @@ void Node::spin(double spinRate)
         spinOnce();
         // FIXME: use sleep_until to effectively spin at spinRate Hz...
         // FIXME: ...i.e.: compensate for the time elapsed in spinOnce()
-        boost::this_thread::sleep(boost::posix_time::microseconds(1000000. / spinRate));
+        long usec = 1000000. / spinRate;
+        boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
     }
 
     log(info, "spin() finished");
