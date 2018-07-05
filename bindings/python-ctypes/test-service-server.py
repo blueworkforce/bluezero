@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
 import b0
 
 def callback(req):
-    print('Received request "%s"...' % req)
-    rep = 'hi'
-    print('Sending reply "%s"...' % rep)
-    return rep.encode('utf-8')
+    req_str = req.decode('utf-8')
+    print('Received request "%s"...' % req_str)
+    rep_str = u'hì'
+    print('Sending reply "%s"...' % rep_str)
+    rep = rep_str.encode('utf-8')
+    return rep
 node = b0.Node('python-service-server')
 srv = b0.ServiceServer(node, 'control', callback)
 node.init()

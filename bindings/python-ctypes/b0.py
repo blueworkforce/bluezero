@@ -153,8 +153,8 @@ class Publisher:
 class Subscriber:
     def __init__(self, node, topic_name, callback, managed=1, notify_graph=1):
         def w(data, size):
-            data_str = ''.join(map(chr, ct.cast(data, ct.POINTER(ct.c_ubyte * size)).contents))
-            return callback(data_str)
+            data_bytes = bytearray(ct.cast(data, ct.POINTER(ct.c_ubyte * size)).contents)
+            return callback(data_bytes)
         self._cb = ct.CFUNCTYPE(None, ct.c_void_p, ct.c_size_t)(w)
         self._sub = b0_subscriber_new_ex(node._node, topic_name, self._cb, managed, notify_graph)
 
@@ -201,8 +201,8 @@ class ServiceClient:
         outsz = ct.c_size_t()
         outbuf = b0_service_client_call(self._cli, buf, sz, ct.byref(outsz))
         outarr = ct.cast(outbuf, ct.POINTER(ct.c_ubyte * outsz.value))
-        rep_str = ''.join(map(chr, outarr.contents))
-        return rep_str
+        rep_bytes = bytearray(outarr.contents)
+        return rep_bytes
 
     def log(self, level, message):
         b0_service_client_log(self._cli, level, message)
@@ -210,13 +210,13 @@ class ServiceClient:
 class ServiceServer:
     def __init__(self, node, topic_name, callback, managed=1, notify_graph=1):
         def w(data, size, outsize):
-            req_str = ''.join(map(chr, ct.cast(data, ct.POINTER(ct.c_ubyte * size)).contents))
-            resp_str = callback(req_str)
-            outsize[0] = len(resp_str)
+            req_bytes = bytearray(ct.cast(data, ct.POINTER(ct.c_ubyte * size)).contents)
+            resp_bytes = callback(req_bytes)
+            outsize[0] = len(resp_bytes)
             outdata = b0_buffer_new(outsize[0])
             outarr = ct.cast(outdata, ct.POINTER(ct.c_ubyte * outsize[0]))
             #for i, c in enumerate(resp_str): outarr.contents[i] = ord(c)
-            ct.memmove(outarr, ct.c_char_p(resp_str), len(resp_str))
+            ct.memmove(outarr, ct.c_char_p(resp_bytes), len(resp_bytes))
             return outdata
         self._cb = ct.CFUNCTYPE(ct.c_void_p, ct.c_void_p, ct.c_size_t, ct.POINTER(ct.c_size_t))(w)
         self._srv = b0_service_server_new_ex(node._node, topic_name, self._cb, managed, notify_graph)
