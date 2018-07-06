@@ -23,17 +23,17 @@ public:
     enum LogLevel
     {
         //! The most verbose level
-        trace,
+        trace = 0,
         //! Less verbose than TRACE
-        debug,
+        debug = 10,
         //! The default level, should not cause too much spam on the console
-        info,
+        info = 20,
         //! Warning level
-        warn,
+        warn = 30,
         //! Error level
-        error,
+        error = 40,
         //! Fatal error level, after which the node would usually terminate
-        fatal
+        fatal = 50
     };
 
     /*!

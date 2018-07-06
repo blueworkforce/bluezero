@@ -65,6 +65,12 @@ private:
 protected:
     //! The node
     b0::Node &node_;
+
+    //! The output log level.
+    LogLevel outputLevel_;
+
+    //! The default output log level, set via B0_LOG_LEVEL environment variable.
+    static LogLevel defaultOutputLevel_;
 };
 
 //! \cond HIDDEN_SYMBOLS

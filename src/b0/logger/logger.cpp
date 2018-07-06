@@ -18,9 +18,24 @@ void LogInterface::log_helper(LogLevel level, boost::format &format) const
     return log(level, format.str());
 }
 
+LogInterface::LogLevel LocalLogger::defaultOutputLevel_ = LogLevel::trace;
+
 LocalLogger::LocalLogger(b0::Node *node)
     : node_(*node)
 {
+    const char *log_level = std::getenv("B0_LOG_LEVEL");
+    if(log_level)
+    {
+        std::string log_level_str(log_level);
+        if(log_level_str == "trace") defaultOutputLevel_ = LogLevel::trace;
+        else if(log_level_str == "debug") defaultOutputLevel_ = LogLevel::debug;
+        else if(log_level_str == "info") defaultOutputLevel_ = LogLevel::info;
+        else if(log_level_str == "warn") defaultOutputLevel_ = LogLevel::warn;
+        else if(log_level_str == "error") defaultOutputLevel_ = LogLevel::error;
+        else if(log_level_str == "fatal") defaultOutputLevel_ = LogLevel::fatal;
+        else throw std::runtime_error((boost::format("invalid log level: %s") % log_level_str).str());
+        outputLevel_ = defaultOutputLevel_;
+    }
 }
 
 LocalLogger::~LocalLogger()
@@ -29,6 +44,8 @@ LocalLogger::~LocalLogger()
 
 void LocalLogger::log(LogLevel level, std::string message) const
 {
+    if(level < outputLevel_) return;
+
     LevelInfo info = levelInfo(level);
     std::string name = node_.getName();
     std::stringstream ss;
