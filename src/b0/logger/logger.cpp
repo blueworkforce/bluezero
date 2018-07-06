@@ -2,6 +2,7 @@
 #include <b0/logger/logger.h>
 #include <b0/node.h>
 #include <b0/utils/thread_name.h>
+#include <iomanip>
 
 #include "resolver.pb.h"
 #include "logger.pb.h"
@@ -32,11 +33,20 @@ void LocalLogger::log(LogLevel level, std::string message) const
     std::string name = node_.getName();
     std::stringstream ss;
     ss << info.ansiEscape();
-    if(!name.empty())
-        ss << "[" << name << "] ";
-    ss << "{" << get_thread_name() << "} ";
-    ss << info.levelStr << ": " << message << info.ansiReset() << std::endl;
-    std::cout << ss.str();
+
+    auto now = std::chrono::system_clock::now();
+    std::time_t time = std::chrono::system_clock::to_time_t(now);
+    ss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S ");
+
+    if(!name.empty()) ss << "[" << name << "] ";
+
+    ss << info.levelStr << ": ";
+
+    ss << message;
+
+    ss << info.ansiReset();
+
+    std::cout << ss.str() << std::endl;
 }
 
 std::string LocalLogger::LevelInfo::ansiEscape() const
@@ -113,6 +123,7 @@ void Logger::remoteLog(LogLevel level, std::string message) const
         case LogLevel::fatal: e.set_level(b0::logger_msgs::fatal); break;
     }
     e.set_msg(message);
+    e.set_time_usec(node_.timeUSec());
     private_->pub_.publish(e);
 }
 

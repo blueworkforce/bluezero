@@ -17,5 +17,6 @@ message LogEntry {
   required string node_name = 1;
   required LogLevel level = 2;
   required string msg = 3;
+  required int64 time_usec = 4;
 }
 
