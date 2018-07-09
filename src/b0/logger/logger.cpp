@@ -34,8 +34,8 @@ LocalLogger::LocalLogger(b0::Node *node)
         else if(log_level_str == "error") defaultOutputLevel_ = LogLevel::error;
         else if(log_level_str == "fatal") defaultOutputLevel_ = LogLevel::fatal;
         else throw std::runtime_error((boost::format("invalid log level: %s") % log_level_str).str());
-        outputLevel_ = defaultOutputLevel_;
     }
+    outputLevel_ = defaultOutputLevel_;
 }
 
 LocalLogger::~LocalLogger()
