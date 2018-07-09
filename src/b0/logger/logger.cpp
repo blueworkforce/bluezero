@@ -3,6 +3,7 @@
 #include <b0/node.h>
 #include <b0/utils/thread_name.h>
 #include <iomanip>
+#include <chrono>
 
 #include "resolver.pb.h"
 #include "logger.pb.h"
