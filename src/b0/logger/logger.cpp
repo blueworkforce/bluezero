@@ -18,7 +18,7 @@ void LogInterface::log_helper(LogLevel level, boost::format &format) const
     return log(level, format.str());
 }
 
-LogInterface::LogLevel LocalLogger::defaultOutputLevel_ = LogLevel::trace;
+LogInterface::LogLevel LocalLogger::defaultOutputLevel_ = LogLevel::warn;
 
 LocalLogger::LocalLogger(b0::Node *node)
     : node_(*node)
