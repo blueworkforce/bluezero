@@ -23,7 +23,7 @@ LogInterface::LogLevel LocalLogger::defaultOutputLevel_ = LogLevel::warn;
 LocalLogger::LocalLogger(b0::Node *node)
     : node_(*node)
 {
-    const char *log_level = std::getenv("B0_LOG_LEVEL");
+    const char *log_level = std::getenv("B0_CONSOLE_LOGLEVEL");
     if(log_level)
     {
         std::string log_level_str(log_level);
