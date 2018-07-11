@@ -211,10 +211,10 @@
  * Message payloads (used by BlueZero sockets) are wrapped in a MessageEnvelope message
  * (see 'protobuf/envelope.proto').
  *
- * The network architecture is centralized, thus every node will talk only to the resolver node.
- * The resolver node offers one service ('resolv'), and also runs a XPUB/XSUB proxy that allows
- * each node to broadcast messages to any other node subscribing to the same topic, via Publisher
- * and Subscriber sockets.
+ * The network architecture is mostly centralized: every node will talk to the resolver node, except
+ * for services which use dedicated sockets, and topics which use a XPUB/XSUB proxy.
+ *
+ * The resolver node offers one service ('resolv'), and also runs the XPUB/XSUB proxy.
  *
  * There are three main phases of the lifetime of a node:
  * - startup
