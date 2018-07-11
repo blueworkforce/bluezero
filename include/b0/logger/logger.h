@@ -71,6 +71,9 @@ protected:
 
     //! The default output log level, set via B0_CONSOLE_LOGLEVEL environment variable.
     static LogLevel defaultOutputLevel_;
+
+    //! Flag to indicate if terminal supports ANSI escapes sequences for text color
+    bool color_;
 };
 
 //! \cond HIDDEN_SYMBOLS

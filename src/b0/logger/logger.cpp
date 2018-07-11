@@ -23,7 +23,8 @@ void LogInterface::log_helper(LogLevel level, boost::format &format) const
 LogInterface::LogLevel LocalLogger::defaultOutputLevel_ = LogLevel::warn;
 
 LocalLogger::LocalLogger(b0::Node *node)
-    : node_(*node)
+    : node_(*node),
+      color_(false)
 {
     const char *log_level = std::getenv("B0_CONSOLE_LOGLEVEL");
     if(log_level)
@@ -38,6 +39,13 @@ LocalLogger::LocalLogger(b0::Node *node)
         else throw exception::ArgumentError(log_level_str, "log level");
     }
     outputLevel_ = defaultOutputLevel_;
+
+    const char *term = std::getenv("TERM");
+    if(term)
+    {
+        std::string term_str(term);
+        if(term_str == "xterm-color" || term_str == "xterm-256color") color_ = true;
+    }
 }
 
 LocalLogger::~LocalLogger()
@@ -51,7 +59,7 @@ void LocalLogger::log(LogLevel level, std::string message) const
     LevelInfo info = levelInfo(level);
     std::string name = node_.getName();
     std::stringstream ss;
-    ss << info.ansiEscape();
+    if(color_) ss << info.ansiEscape();
 
     auto now = std::chrono::system_clock::now();
     std::time_t time = std::chrono::system_clock::to_time_t(now);
@@ -63,7 +71,7 @@ void LocalLogger::log(LogLevel level, std::string message) const
 
     ss << message;
 
-    ss << info.ansiReset();
+    if(color_) ss << info.ansiReset();
 
     std::cout << ss.str() << std::endl;
 }
