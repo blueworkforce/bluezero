@@ -283,7 +283,7 @@
  *
  * \section node_shutdown Node shutdown
  *
- * When a node is shutdown, it will send a Shutdown message to inform the resolver node about that.
+ * When a node is shutdown, it will send a b0::resolver_msgs::ShutdownNodeRequest message to inform the resolver node about that.
  *
  * \mscfile node-shutdown.msc
  *
