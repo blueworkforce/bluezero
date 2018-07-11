@@ -198,8 +198,9 @@
  *
  * \page protocol Protocol
  *
- * This page describes the BlueZero protocol. It is not required to use the BlueZero library,
- * but serves as a specification for re-implementing BlueZero.
+ * This page describes the BlueZero protocol. Knowledge of the communication protocol is
+ * not required to use the BlueZero library, but serves as a specification for
+ * re-implementing BlueZero.
  *
  * \section protocol_intro Introduction
  *
