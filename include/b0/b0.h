@@ -305,9 +305,10 @@
  * \mscfile graph-get.msc
  *
  * The program b0_graph_console (and also gui/b0_graph_console_gui) included in BlueZero is
- * an example of displaying tsuch graph, while whatching for changes to it in realtime.
+ * an example of displaying such graph, while whatching for changes to it in realtime.
  *
- * Here is a rendering of the graph during a BlueZero session with several nodes running:
+ * Here is a rendering of the graph (b0::resolver_msgs::Graph) during a BlueZero session
+ * with several nodes running:
  *
  * \dotfile graph-example.gv
  *
