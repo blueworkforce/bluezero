@@ -6,7 +6,7 @@ It has some similarities with ROS, although it only focuses on providing communi
 
 ## Documentation
 
-See the generated [`doc/html/index.html`](https://blueworkforce.github.io/bluezero/) in the `build` dir for the documentation.
+See the generated [`docs/index.html`](https://blueworkforce.github.io/bluezero/) for the documentation.
 
 ## License
 
