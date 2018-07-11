@@ -232,7 +232,7 @@
  *
  * \subsection node_startup_topics Topics
  *
- * As part of the node graph protocol, if the node subscribes or publishes on some topic,
+ * As part of the \ref graph "node graph protocol", if the node subscribes or publishes on some topic,
  * it will inform the resolver node via the NodeTopic message.
  *
  * \mscfile graph-topic.msc
@@ -244,7 +244,7 @@
  *
  * \mscfile node-startup-service.msc
  *
- * Additionally, as part of the node graph protocol, if the node offers or uses some service,
+ * Additionally, as part of the \ref graph "node graph protocol", if the node offers or uses some service,
  * it will inform the resolver node via the NodeService message.
  *
  * \mscfile graph-service.msc
@@ -292,5 +292,29 @@
  *
  * \mscfile graph-topic.msc
  * \mscfile graph-service.msc
+ *
+ *
+ * \page graph Graph protocol
+ *
+ * The graph protocol is a subset of the \ref protocol "protocol", consisting of a series of messages used to allow introspection of node, topics, and services connections.
+ *
+ * The messages sent by sockets to inform resolver about these connections are NodeTopic and NodeService (see \ref protocol).
+ *
+ * Additionally, the GetGraph message can be used to retrieve the graph:
+ *
+ * \mscfile graph-get.msc
+ *
+ * The program b0_graph_console included in BlueZero is an example of displaying tsuch graph,
+ * while whatching for changes to it in realtime.
+ *
+ * Here is a rendering of the graph during a BlueZero session with several nodes running:
+ *
+ * \dotfile graph-example.gv
+ *
+ * Black ovals are nodes, red diamonds are services, and blue boxes are topics.
+ *
+ * An arrow from node to topic means a node is publishing to a topic. Vice-versa, an arrow from topic to node means a node is subscribing to a topic.
+ *
+ * An arrow from node to service means a node is offering a service. Vice-versa, an arrow from service to node means a node is using a service.
  */
 
