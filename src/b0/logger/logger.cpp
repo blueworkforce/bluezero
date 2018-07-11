@@ -1,6 +1,7 @@
 #include <b0/protobuf/publisher.h>
 #include <b0/logger/logger.h>
 #include <b0/node.h>
+#include <b0/exception/argument_error.h>
 #include <b0/utils/thread_name.h>
 #include <iomanip>
 #include <chrono>
@@ -34,7 +35,7 @@ LocalLogger::LocalLogger(b0::Node *node)
         else if(log_level_str == "warn") defaultOutputLevel_ = LogLevel::warn;
         else if(log_level_str == "error") defaultOutputLevel_ = LogLevel::error;
         else if(log_level_str == "fatal") defaultOutputLevel_ = LogLevel::fatal;
-        else throw std::runtime_error((boost::format("invalid log level: %s") % log_level_str).str());
+        else throw exception::ArgumentError(log_level_str, "log level");
     }
     outputLevel_ = defaultOutputLevel_;
 }
