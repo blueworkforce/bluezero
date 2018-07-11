@@ -3,6 +3,6 @@ msc {
 
     n [ label="node" ], r [ label="resolver" ];
 
-    n->r [ label="b0.resolver_msgs.GetGraphRequest" ];
-    r->n [ label="b0.resolver_msgs.GetGraphResponse" ];
+    n->r [ label="b0::resolver_msgs::GetGraphRequest" ];
+    r->n [ label="b0::resolver_msgs::GetGraphResponse" ];
 }

@@ -118,7 +118,7 @@
  * \section reaching_nodes Reaching every other node
  *
  * Nodes also need to be able to reach each other node.
- * When a node creates a directly addressed socket, such as ServiceClient or ServiceServer, it
+ * When a node creates a directly addressed socket, such as b0::ServiceClient or b0::ServiceServer, it
  * will advertise that socket name and address to resolver.
  *
  * Since there is no reliable way of automatically determining the correct IP address of the node
@@ -206,10 +206,9 @@
  * The transport of messages exchanged between BlueZero nodes and the resolver node is
  * implemented with ZeroMQ.
  *
- * The messages are defined using Google Protocol Buffers (see the 'protobuf' direcotry).
+ * The messages are defined using Google Protocol Buffers.
  *
- * Message payloads (used by BlueZero sockets) are wrapped in a MessageEnvelope message
- * (see 'protobuf/envelope.proto').
+ * Message payloads (used by BlueZero sockets) are wrapped in a b0::core_msgs::MessageEnvelope message.
  *
  * The network architecture is mostly centralized: every node will talk to the resolver node, except
  * for services which use dedicated sockets, and topics which use a XPUB/XSUB proxy.
@@ -224,8 +223,9 @@
  * \section node_startup Node startup
  *
  * In the startup phase a node must announce its presence to the resolver node via the
- * AnnounceNode message.
- * The resolver will reply with the final node name (as it may be changed in case of a
+ * b0::resolver_msgs::AnnounceNodeRequest message.
+ * The resolver will reply with the b0::resolver_msgs::AnnounceNodeResponse message,
+ * containing the final node name (as it may be changed in case of a
  * name clash) and important info for node communication, such as the XPUB/XSUB addresses.
  *
  * \mscfile node-startup.msc
@@ -233,19 +233,19 @@
  * \subsection node_startup_topics Topics
  *
  * As part of the \ref graph "node graph protocol", if the node subscribes or publishes on some topic,
- * it will inform the resolver node via the NodeTopic message.
+ * it will inform the resolver node via the b0::resolver_msgs::NodeTopicRequest message.
  *
  * \mscfile graph-topic.msc
  *
  * \subsection node_startup_services Services
  *
  * If the node offers some service, it will announce each service name and address
- * via the AnnounceService message.
+ * via the b0::resolver_msgs::AnnounceServiceRequest message.
  *
  * \mscfile node-startup-service.msc
  *
  * Additionally, as part of the \ref graph "node graph protocol", if the node offers or uses some service,
- * it will inform the resolver node via the NodeService message.
+ * it will inform the resolver node via the b0::resolver_msgs::NodeServiceRequest message.
  *
  * \mscfile graph-service.msc
  *
@@ -259,8 +259,8 @@
  * \subsection node_lifetime_topics Topics
  *
  * When a node wants to publish to some topic, it has to use the XPUB address given by resolver
- * in the AnnounceNodeResponse message.
- * The payload to write to the socket is a MessageEnvelope message.
+ * in the b0::resolver_msgs::AnnounceNodeResponse message.
+ * The payload to write to the socket is a b0::core_msgs::MessageEnvelope message.
  *
  * \mscfile topic-write.msc
  *
@@ -272,12 +272,12 @@
  * \subsection node_lifetime_services Services
  *
  * When a node wants to use a service, it has to resolve the service name to an address,
- * via the ResolveService message.
+ * via the b0::resolver_msgs::ResolveServiceRequest message.
  *
  * \mscfile service-resolve.msc
  *
  * The request payload to write to the socket, as well as the response payload to be read
- * from the socket, are a MessageEnvelope message.
+ * from the socket, are a b0::core_msgs::MessageEnvelope message.
  *
  * \mscfile service-call.msc
  *
@@ -287,7 +287,7 @@
  *
  * \mscfile node-shutdown.msc
  *
- * Additionally, it will send NodeTopic and NodeService to inform about not using or offering the
+ * Additionally, it will send b0::resolver_msgs::NodeTopicRequest and b0::resolver_msgs::NodeServiceRequest to inform about not using or offering the
  * topics or services anymore.
  *
  * \mscfile graph-topic.msc
@@ -298,9 +298,9 @@
  *
  * The graph protocol is a subset of the \ref protocol "protocol", consisting of a series of messages used to allow introspection of node, topics, and services connections.
  *
- * The messages sent by sockets to inform resolver about these connections are NodeTopic and NodeService (see \ref protocol).
+ * The messages sent by sockets to inform resolver about these connections are b0::resolver_msgs::NodeTopicRequest and b0::resolver_msgs::NodeServiceRequest (see \ref protocol).
  *
- * Additionally, the GetGraph message can be used to retrieve the graph:
+ * Additionally, the b0::resolver_msgs::GetGraphRequest message can be used to retrieve the graph:
  *
  * \mscfile graph-get.msc
  *
@@ -316,5 +316,7 @@
  * An arrow from node to topic means a node is publishing to a topic. Vice-versa, an arrow from topic to node means a node is subscribing to a topic.
  *
  * An arrow from node to service means a node is offering a service. Vice-versa, an arrow from service to node means a node is using a service.
+ *
+ * Nodes have an implicit connection to the 'resolv' service, however it is not shown in the graph.
  */
 
