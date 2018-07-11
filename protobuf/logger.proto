@@ -14,9 +14,9 @@ enum LogLevel {
 
 // A log message sent by node to resolver
 message LogEntry {
-  required string node_name = 1;
-  required LogLevel level = 2;
-  required string msg = 3;
-  required int64 time_usec = 4;
+  required string node_name = 1; // name of the node
+  required LogLevel level = 2; // severity of the message
+  required string msg = 3; // content of the message
+  required int64 time_usec = 4; // time stamp of the message
 }
 
