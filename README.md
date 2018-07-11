@@ -25,6 +25,7 @@ See [LICENSE.md](LICENSE.md).
  - lz4 (for compressing payloads)
  - Doxygen (for generating documentation)
  - Graphviz (for generating documentation)
+ - mscgen (for generating documentation)
 
 ### Ubuntu 16
 

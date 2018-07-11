@@ -10,7 +10,11 @@
  *
  * \section api API Design
  *
- * The main class used to create a node is b0::Node. Node uses two-phase initialization, so you must call b0::Node::init() after the constructor, and b0::Node::cleanup() before the destructor. <b>Do not call b0::Node::init() from your node class constructor!</b>
+ * The main class used to create a node is b0::Node.
+ *
+ * A node implements one part of the \ref protocol "protocol", with the other counterpart of the protocol implemented by the \ref resolver_intro "resolver node".
+ *
+ * Node uses two-phase initialization, so you must call b0::Node::init() after the constructor, and b0::Node::cleanup() before the destructor. <b>Do not call b0::Node::init() from your node class constructor!</b>
  *
  * Also, b0::Node::spinOnce() must be called periodically to process incoming messages (or just call b0::Node::spin() once).
  *
@@ -34,7 +38,10 @@
  * \section resolver_intro Resolver node
  *
  * The most important part of the network is the resolver node.
- * It is implemented in b0::resolver::Resolver and will provide following services to other nodes:
+ *
+ * The resolver node implements a part of the \ref protocol "protocol", with the other counterpart of the protocol implemented by the \ref b0::Node "node".
+ *
+ * The resolver node is implemented in b0::resolver::Resolver and will provide following services to other nodes:
  *
  * - node name resolution
  * - socket name resolution
@@ -188,5 +195,102 @@
  *
  * to run the publisher node.
  *
+ *
+ * \page protocol Protocol
+ *
+ * This page describes the BlueZero protocol. It is not required to use the BlueZero library,
+ * but serves as a specification for re-implementing BlueZero.
+ *
+ * \section protocol_intro Introduction
+ *
+ * The transport of messages exchanged between BlueZero nodes and the resolver node is
+ * implemented with ZeroMQ.
+ *
+ * The messages are defined using Google Protocol Buffers (see the 'protobuf' direcotry).
+ *
+ * Message payloads (used by BlueZero sockets) are wrapped in a MessageEnvelope message
+ * (see 'protobuf/envelope.proto').
+ *
+ * The network architecture is centralized, thus every node will talk only to the resolver node.
+ * The resolver node offers one service ('resolv'), and also runs a XPUB/XSUB proxy that allows
+ * each node to broadcast messages to any other node subscribing to the same topic, via Publisher
+ * and Subscriber sockets.
+ *
+ * There are three main phases of the lifetime of a node:
+ * - startup
+ * - normal lifetime
+ * - shutdown
+ *
+ * \section node_startup Node startup
+ *
+ * In the startup phase a node must announce its presence to the resolver node via the
+ * AnnounceNode message.
+ * The resolver will reply with the final node name (as it may be changed in case of a
+ * name clash) and important info for node communication, such as the XPUB/XSUB addresses.
+ *
+ * \mscfile node-startup.msc
+ *
+ * \subsection node_startup_topics Topics
+ *
+ * As part of the node graph protocol, if the node subscribes or publishes on some topic,
+ * it will inform the resolver node via the NodeTopic message.
+ *
+ * \mscfile graph-topic.msc
+ *
+ * \subsection node_startup_services Services
+ *
+ * If the node offers some service, it will announce each service name and address
+ * via the AnnounceService message.
+ *
+ * \mscfile node-startup-service.msc
+ *
+ * Additionally, as part of the node graph protocol, if the node offers or uses some service,
+ * it will inform the resolver node via the NodeService message.
+ *
+ * \mscfile graph-service.msc
+ *
+ * \section node_lifetime Normal node lifetime
+ *
+ * During node lifetime, a node will periodically send a heartbeat to allow the resolver node
+ * to track dead nodes.
+ *
+ * \mscfile node-lifetime.msc
+ *
+ * \subsection node_lifetime_topics Topics
+ *
+ * When a node wants to publish to some topic, it has to use the XPUB address given by resolver
+ * in the AnnounceNodeResponse message.
+ * The payload to write to the socket is a MessageEnvelope message.
+ *
+ * \mscfile topic-write.msc
+ *
+ * Similarly, when it wants to subscribe to some topic, the messages are read from the XSUB
+ * socket.
+ *
+ * \mscfile topic-read.msc
+ *
+ * \subsection node_lifetime_services Services
+ *
+ * When a node wants to use a service, it has to resolve the service name to an address,
+ * via the ResolveService message.
+ *
+ * \mscfile service-resolve.msc
+ *
+ * The request payload to write to the socket, as well as the response payload to be read
+ * from the socket, are a MessageEnvelope message.
+ *
+ * \mscfile service-call.msc
+ *
+ * \section node_shutdown Node shutdown
+ *
+ * When a node is shutdown, it will send a Shutdown message to inform the resolver node about that.
+ *
+ * \mscfile node-shutdown.msc
+ *
+ * Additionally, it will send NodeTopic and NodeService to inform about not using or offering the
+ * topics or services anymore.
+ *
+ * \mscfile graph-topic.msc
+ * \mscfile graph-service.msc
  */
 

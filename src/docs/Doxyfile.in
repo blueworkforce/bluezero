@@ -795,7 +795,6 @@ INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include/b0 \
                          @CMAKE_CURRENT_SOURCE_DIR@/include/b0/graph \
                          @CMAKE_CURRENT_SOURCE_DIR@/include/b0/logger \
                          @CMAKE_CURRENT_SOURCE_DIR@/include/b0/resolver \
-                         @CMAKE_CURRENT_SOURCE_DIR@/include/b0/socket \
                          @CMAKE_CURRENT_SOURCE_DIR@/include/b0/utils \
                          @CMAKE_CURRENT_SOURCE_DIR@/docs \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples \
@@ -939,7 +938,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@/design
+IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@/src/docs
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -2386,26 +2385,26 @@ INTERACTIVE_SVG        = NO
 # found. If left blank, it is assumed the dot tool can be found in the path.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_PATH               =
+DOT_PATH               = @CMAKE_CURRENT_SOURCE_DIR@/src/docs
 
 # The DOTFILE_DIRS tag can be used to specify one or more directories that
 # contain dot files that are included in the documentation (see the \dotfile
 # command).
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOTFILE_DIRS           =
+DOTFILE_DIRS           = @CMAKE_CURRENT_SOURCE_DIR@/src/docs
 
 # The MSCFILE_DIRS tag can be used to specify one or more directories that
 # contain msc files that are included in the documentation (see the \mscfile
 # command).
 
-MSCFILE_DIRS           =
+MSCFILE_DIRS           = @CMAKE_CURRENT_SOURCE_DIR@/src/docs
 
 # The DIAFILE_DIRS tag can be used to specify one or more directories that
 # contain dia files that are included in the documentation (see the \diafile
 # command).
 
-DIAFILE_DIRS           =
+DIAFILE_DIRS           = @CMAKE_CURRENT_SOURCE_DIR@/src/docs
 
 # When using plantuml, the PLANTUML_JAR_PATH tag should be used to specify the
 # path where java can find the plantuml.jar file. If left blank, it is assumed
