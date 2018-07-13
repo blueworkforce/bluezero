@@ -12,6 +12,7 @@ option(BUILD_TESTS "Build the testcases" ON)
 option(BUILD_GUI "Build gui programs" OFF)
 option(BINDINGS_BOOST_PYTHON "Compile python bindings (using boost::python)" OFF)
 option(BINDINGS_JAVA "Compile Java bindings (using JNI)" OFF)
+option(BINDINGS_LUA "Compile Lua bindings" OFF)
 option(BINDINGS_SWIG "Enable build of bindings using SWIG" OFF)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -142,6 +143,10 @@ if(BINDINGS_JAVA)
     find_package(JNI REQUIRED)
     include_directories(${JNI_INCLUDE_DIRS})
     set(B0_EXTRA_SOURCES ${B0_EXTRA_SOURCES} bindings/java/java.cpp)
+endif()
+
+if(BINDINGS_LUA)
+    set(B0_EXTRA_SOURCES ${B0_EXTRA_SOURCES} bindings/lua/lua.cpp)
 endif()
 
 protobuf_generate_cpp(
