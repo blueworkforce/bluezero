@@ -37,7 +37,7 @@ int64_t TimeSync::constantRateAdjustedOffset()
     int64_t offset_delta = target_offset_ - last_offset_value_;
     int64_t slope_time = abs(offset_delta) / max_slope_;
     int64_t t = hardwareTimeUSec() - last_offset_time_;
-    if(t > slope_time)
+    if(t >= slope_time)
         return target_offset_;
     else
         return last_offset_value_ + offset_delta * t / slope_time;
