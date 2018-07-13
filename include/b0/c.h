@@ -1,5 +1,5 @@
-#ifndef B0_C_H_INCLUDED
-#define B0_C_H_INCLUDED
+#ifndef B0__C_H__INCLUDED
+#define B0__C_H__INCLUDED
 
 #include <inttypes.h>
 
@@ -86,4 +86,4 @@ int b0_service_server_poll(b0_service_server *srv, long timeout);
 void * b0_service_server_read(b0_service_server *srv, size_t *size);
 void b0_service_server_write(b0_service_server *srv, const void *msg, size_t size);
 
-#endif // B0_C_H_INCLUDED
+#endif // B0__C_H__INCLUDED
