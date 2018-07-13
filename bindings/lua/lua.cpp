@@ -76,6 +76,21 @@ int B0_NODE_TIME_USEC_CALLBACK(lua_State* L)
 	return(retValCnt);
 }
 
+#define B0_NODE_HARDWARE_TIME_USEC_COMMAND "b0.node_hardware_time_usec"
+int B0_NODE_HARDWARE_TIME_USEC_CALLBACK(lua_State* L)
+{
+	int argCnt = lua_gettop(L);
+	int retValCnt = 0;
+	if ((argCnt >= 1) && lua_islightuserdata(L, 1))
+	{
+		b0_node* ptr = (b0_node*)lua_touserdata(L, 1);
+		long long t = b0_node_hardware_time_usec(ptr);
+		lua_pushnumber(L, (double)t);
+		retValCnt = 1;
+	}
+	return(retValCnt);
+}
+
 #define B0_SERVICE_CLIENT_NEW_EX_COMMAND "b0.service_client_new_ex"
 int B0_SERVICE_CLIENT_NEW_EX_CALLBACK(lua_State* L)
 {
@@ -314,6 +329,7 @@ int luaopen_b0(lua_State *L)
 	lua_registerN(L, B0_NODE_INIT_COMMAND, B0_NODE_INIT_CALLBACK);
 	lua_registerN(L, B0_NODE_SPIN_ONCE_COMMAND, B0_NODE_SPIN_ONCE_CALLBACK);
 	lua_registerN(L, B0_NODE_TIME_USEC_COMMAND, B0_NODE_TIME_USEC_CALLBACK);
+	lua_registerN(L, B0_NODE_HARDWARE_TIME_USEC_COMMAND, B0_NODE_HARDWARE_TIME_USEC_CALLBACK);
 
 	lua_registerN(L, B0_SERVICE_CLIENT_NEW_EX_COMMAND, B0_SERVICE_CLIENT_NEW_EX_CALLBACK);
 	lua_registerN(L, B0_SERVICE_CLIENT_DELETE_COMMAND, B0_SERVICE_CLIENT_DELETE_CALLBACK);

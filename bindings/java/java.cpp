@@ -26,6 +26,11 @@ JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0NodeTimeUsec(JNIEnv *env, jo
     return(b0_node_time_usec((b0_node*)node));
 }
 
+JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0NodeHardwareTimeUsec(JNIEnv *env, jobject obj, jlong node)
+{
+    return(b0_node_hardware_time_usec((b0_node*)node));
+}
+
 JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0PublisherNewEx(JNIEnv *env, jobject obj, jlong node, jstring topicName, jint managed, jint notifyGraph)
 {
     const char *_topicName = env->GetStringUTFChars(topicName, 0);
