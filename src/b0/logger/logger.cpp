@@ -3,6 +3,9 @@
 #include <b0/node.h>
 #include <b0/exception/argument_error.h>
 #include <b0/utils/thread_name.h>
+#include <b0/utils/env.h>
+
+#include <iostream>
 #include <iomanip>
 #include <chrono>
 
@@ -26,26 +29,19 @@ LocalLogger::LocalLogger(b0::Node *node)
     : node_(*node),
       color_(false)
 {
-    const char *log_level = std::getenv("B0_CONSOLE_LOGLEVEL");
-    if(log_level)
-    {
-        std::string log_level_str(log_level);
-        if(log_level_str == "trace") defaultOutputLevel_ = LogLevel::trace;
-        else if(log_level_str == "debug") defaultOutputLevel_ = LogLevel::debug;
-        else if(log_level_str == "info") defaultOutputLevel_ = LogLevel::info;
-        else if(log_level_str == "warn") defaultOutputLevel_ = LogLevel::warn;
-        else if(log_level_str == "error") defaultOutputLevel_ = LogLevel::error;
-        else if(log_level_str == "fatal") defaultOutputLevel_ = LogLevel::fatal;
-        else throw exception::ArgumentError(log_level_str, "log level");
-    }
+    std::string log_level = b0::env::get("B0_CONSOLE_LOGLEVEL");
+    if(log_level == "");
+    else if(log_level == "trace") defaultOutputLevel_ = LogLevel::trace;
+    else if(log_level == "debug") defaultOutputLevel_ = LogLevel::debug;
+    else if(log_level == "info")  defaultOutputLevel_ = LogLevel::info;
+    else if(log_level == "warn")  defaultOutputLevel_ = LogLevel::warn;
+    else if(log_level == "error") defaultOutputLevel_ = LogLevel::error;
+    else if(log_level == "fatal") defaultOutputLevel_ = LogLevel::fatal;
+    else throw exception::ArgumentError(log_level, "log level");
     outputLevel_ = defaultOutputLevel_;
 
-    const char *term = std::getenv("TERM");
-    if(term)
-    {
-        std::string term_str(term);
-        if(term_str == "xterm-color" || term_str == "xterm-256color") color_ = true;
-    }
+    std::string term = b0::env::get("TERM");
+    if(term == "xterm-color" || term == "xterm-256color") color_ = true;
 }
 
 LocalLogger::~LocalLogger()

@@ -7,6 +7,7 @@
 #include <b0/exceptions.h>
 #include <b0/logger/logger.h>
 #include <b0/utils/thread_name.h>
+#include <b0/utils/env.h>
 #include <b0/resolver/client.h>
 
 #include <iostream>
@@ -219,14 +220,14 @@ void Node::removeSocket(Socket *socket)
 
 std::string Node::hostname()
 {
-    const char *host_addr = std::getenv("BWF_HOST_ID");
-    if(host_addr)
+    std::string host_addr = b0::env::get("BWF_HOST_ID");
+    if(host_addr != "")
     {
         log(warn, "BWF_HOST_ID variable is deprecated. Use B0_HOST_ID instead.");
         return host_addr;
     }
-    host_addr = std::getenv("B0_HOST_ID");
-    if(host_addr)
+    host_addr = b0::env::get("B0_HOST_ID");
+    if(host_addr != "")
     {
         return host_addr;
     }

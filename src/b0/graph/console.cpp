@@ -6,6 +6,7 @@
 #include <b0/protobuf/subscriber.h>
 #include <b0/graph/graphviz.h>
 #include <b0/config.h>
+#include <b0/utils/env.h>
 #ifdef HAVE_BOOST_PROCESS
 #include <boost/process.hpp>
 #endif
@@ -85,9 +86,8 @@ public:
 
     bool termHasImageCapability()
     {
-        char *TERM_PROGRAM = std::getenv("TERM_PROGRAM");
-        return TERM_PROGRAM &&
-            std::string(TERM_PROGRAM) == "iTerm.app";
+        std::string TERM_PROGRAM = b0::env::get("TERM_PROGRAM");
+        return TERM_PROGRAM == "iTerm.app";
     }
 
     int displayInlineImage(std::string filename)
