@@ -77,6 +77,21 @@ public:
      */
     std::string getName() const;
 
+    /*!
+     * \brief Return the node owning this socket
+     */
+    Node & getNode() const;
+
+    /*!
+     * \brief Check if this socket name matches the specified pattern.
+     *
+     * A '*' pattern always matches.
+     * A '*.sockName' pattern always matches if sockName matches.
+     * A 'nodeName.*' pattern always matches if nodeName matches.
+     * A 'nodeName.sockName' pattern matches if bnoth the node name and the socket name match.
+     */
+    bool matchesPattern(const std::string &pattern) const;
+
 private:
     std::unique_ptr<SocketPrivate> private_;
 

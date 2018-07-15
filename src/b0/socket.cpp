@@ -9,6 +9,7 @@
 #include "envelope.pb.h"
 
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include <zmq.hpp>
 
@@ -71,6 +72,25 @@ void Socket::setRemoteAddress(std::string addr)
 std::string Socket::getName() const
 {
     return name_;
+}
+
+Node & Socket::getNode() const
+{
+    return node_;
+}
+
+bool Socket::matchesPattern(const std::string &pattern) const
+{
+    if(pattern == "*") return true;
+    size_t pos = pattern.find('.');
+    if(pos != std::string::npos)
+    {
+        std::string np = pattern.substr(0, pos);
+        std::string sp = pattern.substr(pos + 1);
+        return (np == "*" || np == getNode().getName())
+            && (sp == "*" || sp == getName());
+    }
+    return false;
 }
 
 void Socket::readRaw(std::string &msg)
