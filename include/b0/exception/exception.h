@@ -27,6 +27,7 @@ public:
     virtual const char * what() const noexcept;
 
 protected:
+    //! The exception message
     std::string message_;
 };
 

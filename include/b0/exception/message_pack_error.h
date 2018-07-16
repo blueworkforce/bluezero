@@ -10,32 +10,38 @@ namespace exception
 {
 
 /*!
- * \brief An exception thrown when writing to socket fails
+ * \brief An exception thrown when encoding/packing a message fails
  */
 class MessagePackError : public Exception
 {
 public:
     /*!
-     * \brief Construct an MessagePackError exception
+     * \brief Construct a MessagePackError exception
      */
     MessagePackError(std::string message = "");
 };
 
+/*!
+ * \brief An exception thrown when an error encoding the message headers occurs
+ */
 class EnvelopeEncodeError : public MessagePackError
 {
 public:
+    /*!
+     * \brief Construct a EnvelopeEncodeError exception
+     */
     EnvelopeEncodeError();
 };
 
-class ProtobufSerializeError : public MessagePackError
-{
-public:
-    ProtobufSerializeError();
-};
-
+/*!
+ * \brief An exception thrown when writing to socket fails
+ */
 class SocketWriteError : public MessagePackError
 {
 public:
+    /*!
+     * \brief Construct a SocketWriteError exception
+     */
     SocketWriteError();
 };
 
