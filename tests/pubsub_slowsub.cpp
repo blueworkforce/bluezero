@@ -1,3 +1,4 @@
+#include <iostream>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -71,14 +72,20 @@ void timeout_thread()
     boost::this_thread::sleep_for(boost::chrono::seconds{4});
     stop = true;
     boost::this_thread::sleep_for(boost::chrono::seconds{1});
-    bool passed = expect_failure ^ (fabs(exp_sum - sub_sum) / exp_sum < 0.1);
+    bool passed = false;
     static const char *bool2str[] = {"NO", "YES"};
     std::cout << "Finish:" << std::endl;
     std::cout << "    use_conflate = " << bool2str[enable_conflate] << std::endl;
     std::cout << "    pub_max      = " << pub_max << std::endl;
     std::cout << "    sub_num_recv = " << sub_num_recv << std::endl;
-    std::cout << "    sub_sum      = " << sub_sum << std::endl;
-    std::cout << "    exp_sum      = " << exp_sum << std::endl;
+    if(sub_num_recv)
+    {
+        std::cout << "    sub_sum      = " << sub_sum << std::endl;
+        std::cout << "    exp_sum      = " << exp_sum << std::endl;
+        double error = fabs(exp_sum - sub_sum) / (exp_sum + 0.001);
+        passed = expect_failure ^ (error < 0.1);
+        std::cout << "    error        = " << int(error * 100) << "%" << std::endl;
+    }
     std::cout << "    passed       = " << bool2str[passed] << std::endl;
     /*
      * Without conflate, messages will queue up regularly.
