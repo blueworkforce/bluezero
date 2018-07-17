@@ -8,6 +8,11 @@ target_link_libraries(pubsub_slowsub_conflate b0)
 add_test(pubsub_slowsub_conflate_0 pubsub_slowsub_conflate 0)
 add_test(pubsub_slowsub_conflate_1 pubsub_slowsub_conflate 1)
 
+add_executable(pubsub_slowsub_conflate_zmq pubsub_slowsub_zmq.cpp)
+target_link_libraries(pubsub_slowsub_conflate_zmq b0)
+add_test(pubsub_slowsub_conflate_zmq_0 pubsub_slowsub_conflate_zmq 0)
+add_test(pubsub_slowsub_conflate_zmq_1 pubsub_slowsub_conflate_zmq 1)
+
 add_executable(pubsub2 pubsub2.cpp)
 target_link_libraries(pubsub2 b0)
 add_test(pubsub2 pubsub2)
