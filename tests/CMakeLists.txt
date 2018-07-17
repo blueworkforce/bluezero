@@ -1,6 +1,7 @@
 add_executable(pubsub pubsub.cpp)
 target_link_libraries(pubsub b0)
-add_test(pubsub pubsub)
+add_test(pubsub pubsub 0)
+add_test(pubsub_with_compression pubsub 1)
 
 add_executable(pubsub_slowsub_conflate pubsub_slowsub.cpp)
 target_link_libraries(pubsub_slowsub_conflate b0)

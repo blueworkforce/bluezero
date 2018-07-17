@@ -1,3 +1,4 @@
+#include <iostream>
 #include <boost/thread.hpp>
 
 #include "resolver.pb.h"
@@ -5,6 +6,12 @@
 #include <b0/node.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
+
+int use_compression;
+
+std::string payload0("foo", 4);
+std::string payload1("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f", 16);
+std::string payload2("&CV^$%*&^VR%^v8b&^r5V#*&%*#76v58", 33);
 
 void resolver_thread()
 {
@@ -17,20 +24,34 @@ void pub_thread()
 {
     b0::Node node("pub");
     b0::Publisher pub(&node, "topic1");
-    pub.setCompression("zlib", 9);
+    if(use_compression)
+        pub.setCompression("zlib", 9);
     node.init();
-    std::string m = "foo";
-    for(;;) pub.publish(m);
+    for(;;)
+    {
+        pub.publish(payload0);
+        pub.publish(payload1);
+        pub.publish(payload2);
+    }
 }
 
 void sub_thread()
 {
+    int received[] = {0, 0, 0};
+
     b0::Node node("sub");
     b0::Subscriber sub(&node, "topic1");
     node.init();
-    std::string m;
-    sub.readRaw(m);
-    exit(m == "foo" ? 0 : 1);
+    while(1)
+    {
+        std::string m;
+        sub.readRaw(m);
+        if(payload0 == m) received[0]++;
+        if(payload1 == m) received[1]++;
+        if(payload2 == m) received[2]++;
+        if(received[0] && received[1] && received[2])
+            exit(0);
+    }
 }
 
 void timeout_thread()
@@ -41,6 +62,14 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    if(argc != 2)
+    {
+        std::cout << "usage: " << argv[0] << " <use-compression-0-or-1>" << std::endl;
+        exit(1);
+    }
+
+    use_compression = std::atoi(argv[1]);
+
     boost::thread t0(&timeout_thread);
     boost::thread t1(&resolver_thread);
     boost::this_thread::sleep_for(boost::chrono::seconds{1});
