@@ -313,7 +313,7 @@
  *
  * \dotfile graph-example.gv
  *
- * Black ovals are nodes, red diamonds are services, and blue boxes are topics.
+ * Black rectangles are nodes, red diamonds are services, and blue ovals are topics.
  *
  * An arrow from node to topic means a node is publishing to a topic. Vice-versa, an arrow from topic to node means a node is subscribing to a topic.
  *
