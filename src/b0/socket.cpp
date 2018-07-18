@@ -103,6 +103,7 @@ static void dumpPayload(const Socket &socket, const std::string &op, const std::
     // wildcards can be used (e.g.: *.sockName, nodeName.*, *.*, *)
     // multiple patterns can be specified, using ':' as a separator
     std::string debug_socket = b0::env::get("B0_DEBUG_SOCKET");
+    bool ext = b0::env::getBool("B0_DEBUG_SOCKET_EXTENDED");
     std::vector<std::string> debug_socket_v;
     boost::split(debug_socket_v, debug_socket, boost::is_any_of(":;"));
     bool debug_enabled = false;
@@ -110,20 +111,27 @@ static void dumpPayload(const Socket &socket, const std::string &op, const std::
     if(!debug_enabled) return;
 
     std::stringstream dbg;
-    dbg << "B0_DEBUG_SOCKET[sock=" << socket.getNode().getName() << "." << socket.getName() << ", op=" << op << ", len=" << payload.size() << "]: ";
-    for(size_t i = 0; i < payload.size(); i++)
+    if(ext)
     {
-        unsigned char c = payload[i];
-        if(c == '\n')
-            dbg << "\\n";
-        else if(c == '\r')
-            dbg << "\\r";
-        else if(c == '\t')
-            dbg << "\\t";
-        else if(c < 32 || c > 126)
-            dbg << boost::format("\\x%02x") % int(c);
-        else
-            dbg << char(c);
+        dbg << "socket " << socket.getNode().getName() << "." << socket.getName() << " " << op << " " << payload.size() << " bytes:" << std::endl << std::endl << payload << std::endl;
+    }
+    else
+    {
+        dbg << "B0_DEBUG_SOCKET[sock=" << socket.getNode().getName() << "." << socket.getName() << ", op=" << op << ", len=" << payload.size() << "]: ";
+        for(size_t i = 0; i < payload.size(); i++)
+        {
+            unsigned char c = payload[i];
+            if(c == '\n')
+                dbg << "\\n";
+            else if(c == '\r')
+                dbg << "\\r";
+            else if(c == '\t')
+                dbg << "\\t";
+            else if(c < 32 || c > 126)
+                dbg << boost::format("\\x%02x") % int(c);
+            else
+                dbg << char(c);
+        }
     }
     std::cout << dbg.str() << std::endl;
 }
