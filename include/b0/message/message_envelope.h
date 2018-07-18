@@ -19,19 +19,22 @@ namespace message
  */
 struct MessagePart
 {
-    //! Size of the payload (of the compressed payload, if compression is used)
+    //! \brief Size of the payload (of the compressed payload, if compression is used)
     size_t content_length;
 
-    //! An optional string indicating the type of the payload
+    //! \brief An optional string indicating the type of the payload
     std::string content_type;
 
-    //! Compression algorithm name, or blank if no compression
+    //! \brief Compression algorithm name, or blank if no compression
     std::string compression_algorithm;
 
-    //! Size of the uncompressed payload
+    //! \brief Compression level
+    int compression_level;
+
+    //! \brief Size of the uncompressed payload
     size_t uncompressed_content_length;
 
-    //! The payload
+    //! \brief The payload
     std::string payload;
 };
 

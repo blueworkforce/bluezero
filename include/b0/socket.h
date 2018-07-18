@@ -6,6 +6,7 @@
 #include <b0/user_data.h>
 #include <b0/logger/interface.h>
 #include <b0/message/message.h>
+#include <b0/message/message_envelope.h>
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
@@ -116,6 +117,16 @@ protected:
 
 public:
     /*!
+     * \brief Read a MessageEnvelope from the underlying ZeroMQ socket
+     */
+    virtual void readRaw(b0::message::MessageEnvelope &env);
+
+    /*!
+     * \brief Read a raw multipart payload from the underlying ZeroMQ socket
+     */
+    virtual void readRaw(std::vector<b0::message::MessagePart> &parts);
+
+    /*!
      * \brief Read a raw payload from the underlying ZeroMQ socket
      */
     virtual void readRaw(std::string &msg);
@@ -137,7 +148,17 @@ public:
     virtual bool poll(long timeout = 0);
 
     /*!
-     * \brief Write a raw payload
+     * \brief Write a MessageEnvelope to the underlying ZeroMQ socket
+     */
+    virtual void writeRaw(const b0::message::MessageEnvelope &env);
+
+    /*!
+     * \brief Write a raw multipart payload to the underlying ZeroMQ socket
+     */
+    virtual void writeRaw(const std::vector<b0::message::MessagePart> &parts);
+
+    /*!
+     * \brief Write a raw payload to the underlying ZeroMQ socket
      */
     virtual void writeRaw(const std::string &msg, const std::string &type = "");
 

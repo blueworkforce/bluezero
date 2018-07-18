@@ -2,7 +2,6 @@
 #include <b0/config.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
-#include <b0/message/message_envelope.h>
 #include <b0/compress/compress.h>
 #include <b0/utils/env.h>
 
@@ -91,12 +90,6 @@ bool Socket::matchesPattern(const std::string &pattern) const
     return false;
 }
 
-void Socket::readRaw(std::string &msg)
-{
-    std::string type;
-    readRaw(msg, type);
-}
-
 static void dumpPayload(const Socket &socket, const std::string &op, const std::string &payload)
 {
     // to enable debug for a socket, set B0_DEBUG_SOCKET to nodeName.sockName
@@ -136,32 +129,51 @@ static void dumpPayload(const Socket &socket, const std::string &op, const std::
     std::cout << dbg.str() << std::endl;
 }
 
-void Socket::readRaw(std::string &msg, std::string &type)
+void Socket::readRaw(b0::message::MessageEnvelope &env)
 {
     zmq::socket_t &socket_ = private_->socket_;
-
-    std::string hdr, payload;
-
-    // read payload
     zmq::message_t msg_payload;
+
     if(!socket_.recv(&msg_payload))
         throw exception::SocketReadError();
-    payload = std::string(static_cast<char*>(msg_payload.data()), msg_payload.size());
 
     // check zmq single-part
     if(msg_payload.more())
         throw exception::MessageTooManyPartsError();
 
+    std::string payload = std::string(static_cast<char*>(msg_payload.data()), msg_payload.size());
     dumpPayload(*this, "recv", payload);
-    b0::message::MessageEnvelope env;
     env.parseFromString(payload);
 
     // if necessary, check header
-    if(has_header_ && env.getHeader("Header") != name_)
+    std::string hdr = env.getHeader("Header", "");
+    if(has_header_ && hdr != name_)
         throw exception::HeaderMismatch(hdr, name_);
+}
 
-    msg = b0::compress::decompress(env.parts[0].compression_algorithm, env.parts[0].payload, env.parts[0].uncompressed_content_length);
-    type = env.parts[0].content_type;
+void Socket::readRaw(std::vector<b0::message::MessagePart> &parts)
+{
+    b0::message::MessageEnvelope env;
+    readRaw(env);
+    parts = env.parts;
+    for(auto &part : parts)
+    {
+        part.payload = b0::compress::decompress(part.compression_algorithm, part.payload, part.uncompressed_content_length);
+    }
+}
+
+void Socket::readRaw(std::string &msg)
+{
+    std::string type;
+    readRaw(msg, type);
+}
+
+void Socket::readRaw(std::string &msg, std::string &type)
+{
+    std::vector<b0::message::MessagePart> parts;
+    readRaw(parts);
+    msg = parts[0].payload;
+    type = parts[0].content_type;
 }
 
 void Socket::readMsg(b0::message::Message &msg)
@@ -185,21 +197,8 @@ bool Socket::poll(long timeout)
     return items[0].revents & ZMQ_POLLIN;
 }
 
-void Socket::writeRaw(const std::string &msg, const std::string &type)
+void Socket::writeRaw(const b0::message::MessageEnvelope &env)
 {
-    zmq::socket_t &socket_ = private_->socket_;
-
-    // create payload envelope
-    b0::message::MessageEnvelope env;
-    env.parts.resize(1);
-    env.parts[0].compression_algorithm = compression_algorithm_;
-    env.parts[0].payload = b0::compress::compress(compression_algorithm_, msg, compression_level_);
-    if(compression_algorithm_ != "")
-        env.parts[0].uncompressed_content_length = msg.size();
-    env.parts[0].content_length = env.parts[0].payload.size();
-    env.parts[0].content_type = type;
-    if(has_header_)
-        env.headers.emplace_back(std::numeric_limits<int>::min(), "Header: " + name_);
     std::string payload;
     env.serializeToString(payload);
     dumpPayload(*this, "send", payload);
@@ -207,8 +206,40 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
     // write payload
     zmq::message_t msg_payload(payload.size());
     std::memcpy(msg_payload.data(), payload.data(), payload.size());
+    zmq::socket_t &socket_ = private_->socket_;
     if(!socket_.send(msg_payload))
         throw exception::SocketWriteError();
+}
+
+void Socket::writeRaw(const std::vector<b0::message::MessagePart> &parts)
+{
+    b0::message::MessageEnvelope env;
+    env.parts = parts;
+    for(auto &part : env.parts)
+    {
+        if(part.compression_algorithm != "")
+        {
+            part.uncompressed_content_length = part.payload.size();
+            part.payload = b0::compress::compress(part.compression_algorithm, part.payload, part.compression_level);
+        }
+        part.content_length = part.payload.size();
+    }
+    if(has_header_)
+        env.headers.emplace_back(std::numeric_limits<int>::min(), "Header: " + name_);
+    writeRaw(env);
+}
+
+void Socket::writeRaw(const std::string &msg, const std::string &type)
+{
+    zmq::socket_t &socket_ = private_->socket_;
+
+    std::vector<b0::message::MessagePart> parts;
+    parts.resize(1);
+    parts[0].payload = msg;
+    parts[0].content_type = type;
+    parts[0].compression_algorithm = compression_algorithm_;
+    parts[0].compression_level = compression_level_;
+    writeRaw(parts);
 }
 
 void Socket::writeMsg(const b0::message::Message &msg)
