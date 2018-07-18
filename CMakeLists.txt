@@ -151,7 +151,6 @@ endif()
 add_library(
     b0
     SHARED
-    src/b0/c.cpp
     src/b0/node_state.cpp
     src/b0/node.cpp
     src/b0/socket.cpp
@@ -159,6 +158,7 @@ add_library(
     src/b0/subscriber.cpp
     src/b0/service_client.cpp
     src/b0/service_server.cpp
+    src/b0/bindings/c.cpp
     src/b0/compress/compress.cpp
     src/b0/compress/lz4.cpp
     src/b0/compress/zlib.cpp

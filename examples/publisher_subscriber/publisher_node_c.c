@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <b0/c.h>
+#include <b0/bindings/c.h>
 
 /*! \example publisher_node_c.c
  * This is an example of creating a simple node with one publisher

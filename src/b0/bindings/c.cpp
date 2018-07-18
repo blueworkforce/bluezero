@@ -2,7 +2,7 @@
 
 extern "C"
 {
-#include <b0/c.h>
+#include <b0/bindings/c.h>
 
 static b0::Node::LogLevel log_level_from_int(int level)
 {

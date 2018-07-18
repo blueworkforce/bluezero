@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <b0/c.h>
+#include <b0/bindings/c.h>
 
 /*! \example subscriber_node_c.c
  * This is an example of a simple node with one callback-based subscriber

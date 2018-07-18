@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <b0/c.h>
+#include <b0/bindings/c.h>
 
 /*! \example server_node_c.c
  * This is an example of a simple node with a service server.
