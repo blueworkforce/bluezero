@@ -9,9 +9,6 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-
 #include <b0/resolver/resolver.h>
 #include <b0/resolver/client.h>
 #include <b0/logger/logger.h>
@@ -27,18 +24,18 @@ namespace resolver
 {
 
 ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
-    : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(resolver, "resolv", &Resolver::handle, true, false),
+    : ServiceServer(resolver, "resolv", ServiceServer::CallbackWithType(), boost::bind(&Resolver::handle, resolver, _1, _2, _3, _4), true, false),
       resolver_(resolver)
 {
 }
 
 void ResolverServiceServer::announce()
 {
-    b0::resolver_msgs::AnnounceServiceRequest rq;
-    rq.set_node_name(node_.getName());
-    rq.set_service_name(name_);
-    rq.set_sock_addr(remote_addr_);
-    b0::resolver_msgs::AnnounceServiceResponse rsp;
+    b0::message::AnnounceServiceRequest rq;
+    rq.node_name = node_.getName();
+    rq.service_name = name_;
+    rq.sock_addr = remote_addr_;
+    b0::message::AnnounceServiceResponse rsp;
     resolver_->handleAnnounceService(rq, rsp);
     resolver_->onNodeServiceOfferStart(resolver_->getName(), name_);
 }
@@ -77,7 +74,7 @@ void Resolver::init()
     pub_proxy_thread_ = boost::thread(&Resolver::pubProxy, this, xsub_proxy_port_, xpub_proxy_port_);
 
     // run heartbeat sweeper (to detect when nodes go offline):
-    heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartBeatSweeper, this);
+    heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartbeatSweeper, this);
 
     // we have to manually call this because graph_pub_ doesn't send graph notify:
     // (has to be disabled because resolver is a special kind of node)
@@ -107,9 +104,9 @@ std::string Resolver::getXSUBSocketAddress() const
 void Resolver::announceNode()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
-    b0::resolver_msgs::AnnounceNodeRequest rq;
-    rq.set_node_name(getName());
-    b0::resolver_msgs::AnnounceNodeResponse rsp;
+    b0::message::AnnounceNodeRequest rq;
+    rq.node_name = getName();
+    b0::message::AnnounceNodeResponse rsp;
     handleAnnounceNode(rq, rsp);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
@@ -120,9 +117,9 @@ void Resolver::notifyShutdown()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
 #if 0
-    b0::resolver_msgs::ShutdownNodeRequest rq;
-    rq.set_node_name(getName());
-    b0::resolver_msgs::ShutdownNodeResponse rsp;
+    b0::message::ShutdownNodeRequest rq;
+    rq.node_name = getName();
+    b0::message::ShutdownNodeResponse rsp;
     handleShutdownNode(rq, rsp);
 #else
     // nothing to do really
@@ -304,31 +301,89 @@ resolver::ServiceEntry * Resolver::serviceByName(std::string service_name)
     return it == services_by_name_.end() ? 0 : it->second;
 }
 
-void Resolver::heartBeat(resolver::NodeEntry *node_entry)
+void Resolver::heartbeat(resolver::NodeEntry *node_entry)
 {
     node_entry->last_heartbeat = boost::posix_time::second_clock::local_time();
 }
 
-void Resolver::handle(const b0::resolver_msgs::Request &req, b0::resolver_msgs::Response &resp)
+void Resolver::handle(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype)
 {
-    if(req.has_announce_node())
-        handleAnnounceNode(req.announce_node(), *resp.mutable_announce_node());
-    else if(req.has_shutdown_node())
-        handleShutdownNode(req.shutdown_node(), *resp.mutable_shutdown_node());
-    else if(req.has_announce_service())
-        handleAnnounceService(req.announce_service(), *resp.mutable_announce_service());
-    else if(req.has_resolve())
-        handleResolveService(req.resolve(), *resp.mutable_resolve());
-    else if(req.has_heartbeat())
-        handleHeartBeat(req.heartbeat(), *resp.mutable_heartbeat());
-    else if(req.has_node_topic())
-        handleNodeTopic(req.node_topic(), *resp.mutable_node_topic());
-    else if(req.has_node_service())
-        handleNodeService(req.node_service(), *resp.mutable_node_service());
-    else if(req.has_get_graph())
-        handleGetGraph(req.get_graph(), *resp.mutable_get_graph());
+    if(reqtype == "AnnounceNodeRequest")
+    {
+        b0::message::AnnounceNodeRequest rq;
+        rq.parseFromString(req);
+        b0::message::AnnounceNodeResponse rsp;
+        handleAnnounceNode(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "ShutdownNodeRequest")
+    {
+        b0::message::ShutdownNodeRequest rq;
+        rq.parseFromString(req);
+        b0::message::ShutdownNodeResponse rsp;
+        handleShutdownNode(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "AnnounceServiceRequest")
+    {
+        b0::message::AnnounceServiceRequest rq;
+        rq.parseFromString(req);
+        b0::message::AnnounceServiceResponse rsp;
+        handleAnnounceService(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "ResolveServiceRequest")
+    {
+        b0::message::ResolveServiceRequest rq;
+        rq.parseFromString(req);
+        b0::message::ResolveServiceResponse rsp;
+        handleResolveService(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "HeartbeatRequest")
+    {
+        b0::message::HeartbeatRequest rq;
+        rq.parseFromString(req);
+        b0::message::HeartbeatResponse rsp;
+        handleHeartbeat(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "NodeTopicRequest")
+    {
+        b0::message::NodeTopicRequest rq;
+        rq.parseFromString(req);
+        b0::message::NodeTopicResponse rsp;
+        handleNodeTopic(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "NodeServiceRequest")
+    {
+        b0::message::NodeServiceRequest rq;
+        rq.parseFromString(req);
+        b0::message::NodeServiceResponse rsp;
+        handleNodeService(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
+    else if(reqtype == "GetGraphRequest")
+    {
+        b0::message::GetGraphRequest rq;
+        rq.parseFromString(req);
+        b0::message::GetGraphResponse rsp;
+        handleGetGraph(rq, rsp);
+        rsp.serializeToString(rep);
+        reptype = rsp.type();
+    }
     else
-        log(error, "received an unrecognized request: %s", req.DebugString());
+    {
+        log(error, "received an unrecognized request type: %s", reqtype);
+    }
 }
 
 std::string Resolver::makeUniqueNodeName(std::string nodeName)
@@ -343,86 +398,86 @@ std::string Resolver::makeUniqueNodeName(std::string nodeName)
     return uniqueNodeName;
 }
 
-void Resolver::handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &rq, b0::resolver_msgs::AnnounceNodeResponse &rsp)
+void Resolver::handleAnnounceNode(const b0::message::AnnounceNodeRequest &rq, b0::message::AnnounceNodeResponse &rsp)
 {
     log(trace, "Received a AnnounceNodeRequest");
-    std::string nodeName = makeUniqueNodeName(rq.node_name());
+    std::string nodeName = makeUniqueNodeName(rq.node_name);
     resolver::NodeEntry *e = new resolver::NodeEntry;
     e->name = nodeName;
-    heartBeat(e);
+    heartbeat(e);
     nodes_by_name_[nodeName] = e;
     onNodeConnected(nodeName);
     onGraphChanged();
-    rsp.set_node_name(e->name);
-    rsp.set_xsub_sock_addr(xsub_proxy_addr_);
-    rsp.set_xpub_sock_addr(xpub_proxy_addr_);
-    rsp.set_ok(true);
+    rsp.node_name = e->name;
+    rsp.xsub_sock_addr = xsub_proxy_addr_;
+    rsp.xpub_sock_addr = xpub_proxy_addr_;
+    rsp.ok = true;
     log(info, "New node has joined: '%s'", e->name);
 }
 
-void Resolver::handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &rq, b0::resolver_msgs::ShutdownNodeResponse &rsp)
+void Resolver::handleShutdownNode(const b0::message::ShutdownNodeRequest &rq, b0::message::ShutdownNodeResponse &rsp)
 {
-    resolver::NodeEntry *ne = nodeByName(rq.node_name());
+    resolver::NodeEntry *ne = nodeByName(rq.node_name);
     if(!ne)
     {
-        rsp.set_ok(false);
-        log(error, "Invalid node name: %s", rq.node_name());
+        rsp.ok = false;
+        log(error, "Invalid node name: %s", rq.node_name);
         return;
     }
     std::string node_name = ne->name;
     onNodeDisconnected(node_name);
     delete ne;
-    rsp.set_ok(true);
+    rsp.ok = true;
     log(info, "Node '%s' has left", node_name);
 }
 
-void Resolver::handleAnnounceService(const b0::resolver_msgs::AnnounceServiceRequest &rq, b0::resolver_msgs::AnnounceServiceResponse &rsp)
+void Resolver::handleAnnounceService(const b0::message::AnnounceServiceRequest &rq, b0::message::AnnounceServiceResponse &rsp)
 {
-    resolver::NodeEntry *ne = nodeByName(rq.node_name());
+    resolver::NodeEntry *ne = nodeByName(rq.node_name);
     if(!ne)
     {
-        rsp.set_ok(false);
-        log(error, "Invalid node name: %s", rq.node_name());
+        rsp.ok = false;
+        log(error, "Invalid node name: %s", rq.node_name);
         return;
     }
-    if(serviceByName(rq.service_name()))
+    if(serviceByName(rq.service_name))
     {
-        rsp.set_ok(false);
-        log(error, "A service with name '%s' already exists", rq.service_name());
+        rsp.ok = false;
+        log(error, "A service with name '%s' already exists", rq.service_name);
         return;
     }
     resolver::ServiceEntry *se = new resolver::ServiceEntry;
     se->node = ne;
-    se->name = rq.service_name();
-    se->addr = rq.sock_addr();
+    se->name = rq.service_name;
+    se->addr = rq.sock_addr;
     services_by_name_[se->name] = se;
     ne->services.push_back(se);
     //onNodeNewService(...);
-    rsp.set_ok(true);
-    log(info, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name(), rq.sock_addr());
+    rsp.ok = true;
+    log(info, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name, rq.sock_addr);
 }
 
-void Resolver::handleResolveService(const b0::resolver_msgs::ResolveServiceRequest &rq, b0::resolver_msgs::ResolveServiceResponse &rsp)
+void Resolver::handleResolveService(const b0::message::ResolveServiceRequest &rq, b0::message::ResolveServiceResponse &rsp)
 {
-    auto it = services_by_name_.find(rq.service_name());
+    auto it = services_by_name_.find(rq.service_name);
     if(it == services_by_name_.end())
     {
-        rsp.set_sock_addr("");
-        rsp.set_ok(false);
-        log(error, "Failed to resolve service '%s'", rq.service_name());
+        rsp.sock_addr = "";
+        rsp.ok = false;
+        log(error, "Failed to resolve service '%s'", rq.service_name);
         return;
     }
     resolver::ServiceEntry *se = it->second;
-    log(trace, "Resolution: '%s' -> %s", rq.service_name(), se->addr);
-    rsp.set_ok(true);
-    rsp.set_sock_addr(se->addr);
+    log(trace, "Resolution: '%s' -> %s", rq.service_name, se->addr);
+    rsp.ok = true;
+    rsp.sock_addr = se->addr;
 }
 
-void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0::resolver_msgs::HeartBeatResponse &rsp)
+void Resolver::handleHeartbeat(const b0::message::HeartbeatRequest &rq, b0::message::HeartbeatResponse &rsp)
 {
-    if(rq.node_name() == "resolver")
+    if(rq.node_name == "resolver")
     {
-        // a HeartBeatRequest from "resolver" means to actually perform
+        // a HeartbeatRequest from "resolver" means to actually perform
         // the detection and purging of dead nodes
         std::set<std::string> nodes_shutdown;
         for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); ++i)
@@ -442,110 +497,114 @@ void Resolver::handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0
     }
     else
     {
-        resolver::NodeEntry *ne = nodeByName(rq.node_name());
+        resolver::NodeEntry *ne = nodeByName(rq.node_name);
         if(!ne)
         {
-            rsp.set_ok(false);
-            log(error, "Received a heartbeat from an invalid node name: %s", rq.node_name());
+            rsp.ok = false;
+            log(error, "Received a heartbeat from an invalid node name: %s", rq.node_name);
             return;
         }
-        heartBeat(ne);
+        heartbeat(ne);
     }
-    rsp.set_ok(true);
-    rsp.set_time_usec(hardwareTimeUSec());
+    rsp.ok = true;
+    rsp.time_usec = hardwareTimeUSec();
 }
 
-void Resolver::handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp)
+void Resolver::handleNodeTopic(const b0::message::NodeTopicRequest &req, b0::message::NodeTopicResponse &resp)
 {
     size_t old_sz1 = node_publishes_topic_.size(), old_sz2 = node_subscribes_topic_.size();
-    if(req.reverse())
+    if(req.reverse)
     {
-        if(req.active())
-            onNodeTopicSubscribeStart(req.node_name(), req.topic_name());
+        if(req.active)
+            onNodeTopicSubscribeStart(req.node_name, req.topic_name);
         else
-            onNodeTopicSubscribeStop(req.node_name(), req.topic_name());
+            onNodeTopicSubscribeStop(req.node_name, req.topic_name);
     }
     else
     {
-        if(req.active())
-            onNodeTopicPublishStart(req.node_name(), req.topic_name());
+        if(req.active)
+            onNodeTopicPublishStart(req.node_name, req.topic_name);
         else
-            onNodeTopicPublishStop(req.node_name(), req.topic_name());
+            onNodeTopicPublishStop(req.node_name, req.topic_name);
     }
     if(old_sz1 != node_publishes_topic_.size() || old_sz2 != node_subscribes_topic_.size())
         onGraphChanged();
 }
 
-void Resolver::handleNodeService(const b0::resolver_msgs::NodeServiceRequest &req, b0::resolver_msgs::NodeServiceResponse &resp)
+void Resolver::handleNodeService(const b0::message::NodeServiceRequest &req, b0::message::NodeServiceResponse &resp)
 {
     size_t old_sz1 = node_offers_service_.size(), old_sz2 = node_uses_service_.size();
-    if(req.reverse())
+    if(req.reverse)
     {
-        if(req.active())
-            onNodeServiceUseStart(req.node_name(), req.service_name());
+        if(req.active)
+            onNodeServiceUseStart(req.node_name, req.service_name);
         else
-            onNodeServiceUseStop(req.node_name(), req.service_name());
+            onNodeServiceUseStop(req.node_name, req.service_name);
     }
     else
     {
-        if(req.active())
-            onNodeServiceOfferStart(req.node_name(), req.service_name());
+        if(req.active)
+            onNodeServiceOfferStart(req.node_name, req.service_name);
         else
-            onNodeServiceOfferStop(req.node_name(), req.service_name());
+            onNodeServiceOfferStop(req.node_name, req.service_name);
     }
     if(old_sz1 != node_offers_service_.size() || old_sz2 != node_uses_service_.size())
         onGraphChanged();
 }
 
-void Resolver::handleGetGraph(const b0::resolver_msgs::GetGraphRequest &req, b0::resolver_msgs::GetGraphResponse &resp)
+void Resolver::handleGetGraph(const b0::message::GetGraphRequest &req, b0::message::GetGraphResponse &resp)
 {
-    getGraph(*resp.mutable_graph());
+    getGraph(resp.graph);
 }
 
-void Resolver::getGraph(b0::resolver_msgs::Graph &graph)
+void Resolver::getGraph(b0::message::Graph &graph)
 {
     for(auto x : nodes_by_name_)
     {
-        graph.add_nodes(x.first);
+        graph.nodes.push_back(x.first);
     }
     for(auto x : node_publishes_topic_)
     {
-        b0::resolver_msgs::GraphLink *l = graph.add_node_topic();
-        l->set_a(x.first);
-        l->set_b(x.second);
-        l->set_reversed(false);
+        b0::message::GraphLink l;
+        l.node_name = x.first;
+        l.other_name = x.second;
+        l.reversed = false;
+        graph.node_topic.push_back(l);
     }
     for(auto x : node_subscribes_topic_)
     {
-        b0::resolver_msgs::GraphLink *l = graph.add_node_topic();
-        l->set_a(x.first);
-        l->set_b(x.second);
-        l->set_reversed(true);
+        b0::message::GraphLink l;
+        l.node_name = x.first;
+        l.other_name = x.second;
+        l.reversed = true;
+        graph.node_topic.push_back(l);
     }
     for(auto x : node_offers_service_)
     {
-        b0::resolver_msgs::GraphLink *l = graph.add_node_service();
-        l->set_a(x.first);
-        l->set_b(x.second);
-        l->set_reversed(false);
+        b0::message::GraphLink l;
+        l.node_name = x.first;
+        l.other_name = x.second;
+        l.reversed = false;
+        graph.node_service.push_back(l);
     }
     for(auto x : node_uses_service_)
     {
-        b0::resolver_msgs::GraphLink *l = graph.add_node_service();
-        l->set_a(x.first);
-        l->set_b(x.second);
-        l->set_reversed(true);
+        b0::message::GraphLink l;
+        l.node_name = x.first;
+        l.other_name = x.second;
+        l.reversed = true;
+        graph.node_service.push_back(l);
     }
 }
 
 void Resolver::onGraphChanged()
 {
-    b0::resolver_msgs::Graph g;
+    b0::message::Graph g;
     getGraph(g);
     graph_pub_.publish(g);
 }
 
-void Resolver::heartBeatSweeper()
+void Resolver::heartbeatSweeper()
 {
     set_thread_name("HBsweep");
 

@@ -2,8 +2,8 @@
 #define B0__LOGGER__CONSOLE_H__INCLUDED
 
 #include <b0/node.h>
-#include <b0/protobuf/subscriber.h>
-#include "logger.pb.h"
+#include <b0/subscriber.h>
+#include <b0/message/log_entry.h>
 
 #include <string>
 #include <boost/thread.hpp>
@@ -39,11 +39,11 @@ public:
     /*!
      * Log message event handler
      */
-    virtual void onLogMessage(const b0::logger_msgs::LogEntry &entry);
+    virtual void onLogMessage(const std::string &msg);
 
 protected:
     //! Subscriber to "log" topic
-    b0::protobuf::Subscriber<b0::logger_msgs::LogEntry> sub_;
+    b0::Subscriber sub_;
 
 private:
     //! A dummy logger to get formatting information from

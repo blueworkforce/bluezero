@@ -3,7 +3,8 @@
 #include <vector>
 
 #include <b0/node.h>
-#include <b0/protobuf/subscriber.h>
+#include <b0/subscriber.h>
+#include <b0/message/log_entry.h>
 
 #include <QRegExp>
 #include <QApplication>
@@ -19,8 +20,6 @@
 #include <QTimer>
 #include <QAction>
 #include <QClipboard>
-
-#include "logger.pb.h"
 
 class LogConsoleWindow : public QMainWindow
 {
@@ -59,12 +58,12 @@ public:
             centralWidget->setLayout(layout);
         }
 
-        comboLevel->addItem("TRACE", b0::logger_msgs::trace);
-        comboLevel->addItem("DEBUG", b0::logger_msgs::debug);
-        comboLevel->addItem("INFO",  b0::logger_msgs::info);
-        comboLevel->addItem("WARN",  b0::logger_msgs::warn);
-        comboLevel->addItem("ERROR", b0::logger_msgs::error);
-        comboLevel->addItem("FATAL", b0::logger_msgs::fatal);
+        comboLevel->addItem("TRACE", b0::message::LogLevel::trace);
+        comboLevel->addItem("DEBUG", b0::message::LogLevel::debug);
+        comboLevel->addItem("INFO",  b0::message::LogLevel::info);
+        comboLevel->addItem("WARN",  b0::message::LogLevel::warn);
+        comboLevel->addItem("ERROR", b0::message::LogLevel::error);
+        comboLevel->addItem("FATAL", b0::message::LogLevel::fatal);
         comboLevel->setCurrentIndex(0);
         connect(comboLevel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &LogConsoleWindow::comboLevelChanged);
         connect(textNode, &QLineEdit::textChanged, this, &LogConsoleWindow::textNodeChanged);
@@ -105,40 +104,43 @@ public:
         clipboard->setText(s);
     }
 
-    void onLogEntry(const b0::logger_msgs::LogEntry &entry)
+    void onLogEntry(const std::string &msg)
     {
+        b0::message::LogEntry entry;
+        entry.parseFromString(msg);
+
         all_entries_.push_back(entry);
         if(!filter(entry))
             addEntry(entry);
     }
 
-    void addEntry(const b0::logger_msgs::LogEntry &entry)
+    void addEntry(const b0::message::LogEntry &entry)
     {
         int n = tableWidget->rowCount();
         tableWidget->setRowCount(n + 1);
         tableWidget->setItem(n, 0, new QTableWidgetItem(QString::number(node_.timeUSec())));
-        tableWidget->setItem(n, 1, new QTableWidgetItem(QString::fromStdString(entry.node_name())));
-        tableWidget->setItem(n, 2, new QTableWidgetItem(levelStr(entry.level())));
-        tableWidget->setItem(n, 3, new QTableWidgetItem(QString::fromStdString(entry.msg())));
+        tableWidget->setItem(n, 1, new QTableWidgetItem(QString::fromStdString(entry.node_name)));
+        tableWidget->setItem(n, 2, new QTableWidgetItem(levelStr(entry.level)));
+        tableWidget->setItem(n, 3, new QTableWidgetItem(QString::fromStdString(entry.message)));
     }
 
-    QString levelStr(b0::logger_msgs::LogLevel level)
+    QString levelStr(b0::message::LogLevel level)
     {
         switch(level)
         {
-        case b0::logger_msgs::trace: return "TRACE";
-        case b0::logger_msgs::debug: return "DEBUG";
-        case b0::logger_msgs::info:  return "INFO";
-        case b0::logger_msgs::warn:  return "WARN";
-        case b0::logger_msgs::error: return "ERROR";
-        case b0::logger_msgs::fatal: return "FATAL";
+        case b0::message::LogLevel::trace: return "TRACE";
+        case b0::message::LogLevel::debug: return "DEBUG";
+        case b0::message::LogLevel::info:  return "INFO";
+        case b0::message::LogLevel::warn:  return "WARN";
+        case b0::message::LogLevel::error: return "ERROR";
+        case b0::message::LogLevel::fatal: return "FATAL";
         default: return "UNKNOWN";
         }
     }
 
     void comboLevelChanged(int newIndex)
     {
-        filterLevel = (b0::logger_msgs::LogLevel)comboLevel->currentData().toInt();
+        filterLevel = (b0::message::LogLevel)comboLevel->currentData().toInt();
         refilter();
     }
 
@@ -151,15 +153,15 @@ public:
         refilter();
     }
 
-    bool filter(const b0::logger_msgs::LogEntry &entry)
+    bool filter(const b0::message::LogEntry &entry)
     {
-        if(entry.level() < filterLevel) return true;
+        if(entry.level < filterLevel) return true;
 
         if(filterNodeNames.empty()) return false;
         else
         {
             for(std::string s : filterNodeNames)
-                if(entry.node_name().find(s) != std::string::npos) return false;
+                if(entry.node_name.find(s) != std::string::npos) return false;
             return true;
         }
     }
@@ -167,7 +169,7 @@ public:
     void refilter()
     {
         tableWidget->setRowCount(0);
-        for(b0::logger_msgs::LogEntry &entry : all_entries_)
+        for(b0::message::LogEntry &entry : all_entries_)
             if(!filter(entry))
                 addEntry(entry);
     }
@@ -177,9 +179,9 @@ private:
     QTableWidget *tableWidget;
     QComboBox *comboLevel;
     QLineEdit *textNode;
-    std::vector<b0::logger_msgs::LogEntry> all_entries_;
+    std::vector<b0::message::LogEntry> all_entries_;
     std::vector<std::string> filterNodeNames;
-    b0::logger_msgs::LogLevel filterLevel = b0::logger_msgs::trace;
+    b0::message::LogLevel filterLevel = b0::message::LogLevel::trace;
 };
 
 int main(int argc, char **argv)
@@ -190,7 +192,7 @@ int main(int argc, char **argv)
 
     LogConsoleWindow logConsoleWindow(logConsoleNode);
 
-    b0::protobuf::Subscriber<b0::logger_msgs::LogEntry> logSub(&logConsoleNode, "log", &LogConsoleWindow::onLogEntry, &logConsoleWindow);
+    b0::Subscriber logSub(&logConsoleNode, "log", boost::bind(&LogConsoleWindow::onLogEntry, &logConsoleWindow, _1));
 
     logConsoleNode.init();
 

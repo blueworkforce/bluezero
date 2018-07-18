@@ -14,7 +14,7 @@ class TestServerNode : public b0::Node
 public:
     TestServerNode()
         : Node("server"),
-          srv_(this, "control", &TestServerNode::on)
+          srv_(this, "control", boost::bind(&TestServerNode::on, this, _1, _2))
     {
     }
 

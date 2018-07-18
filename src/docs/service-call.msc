@@ -3,6 +3,6 @@ msc {
 
     n [ label="node" ], m [ label="server-node" ];
 
-    n->m [ label="b0::core_msgs::MessageEnvelope" ];
-    m->n [ label="b0::core_msgs::MessageEnvelope" ];
+    n->m [ label="b0::message::MessageEnvelope" ];
+    m->n [ label="b0::message::MessageEnvelope" ];
 }

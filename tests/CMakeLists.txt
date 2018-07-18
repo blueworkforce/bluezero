@@ -71,3 +71,6 @@ target_link_libraries(check_resolver_status b0)
 add_test(check_resolver_status_when_not_running check_resolver_status 0)
 add_test(check_resolver_status_when_running check_resolver_status 1)
 
+add_executable(protocol protocol.cpp)
+target_link_libraries(protocol b0)
+add_test(protocol protocol)

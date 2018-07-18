@@ -15,7 +15,7 @@ class TestSubscriberNode : public b0::Node
 public:
     TestSubscriberNode(std::string topic)
         : Node("subscriber"),
-          sub_(this, topic, &TestSubscriberNode::on)
+          sub_(this, topic, boost::bind(&TestSubscriberNode::on, this, _1))
     {
     }
 

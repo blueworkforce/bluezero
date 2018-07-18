@@ -2,12 +2,11 @@
 #include <b0/config.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
+#include <b0/message/message_envelope.h>
 #include <b0/compress/compress.h>
+#include <b0/utils/env.h>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-#include "envelope.pb.h"
-
+#include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -99,6 +98,37 @@ void Socket::readRaw(std::string &msg)
     readRaw(msg, type);
 }
 
+static void dumpPayload(const Socket &socket, const std::string &op, const std::string &payload)
+{
+    // to enable debug for a socket, set B0_DEBUG_SOCKET to nodeName.sockName
+    // wildcards can be used (e.g.: *.sockName, nodeName.*, *.*, *)
+    // multiple patterns can be specified, using ':' as a separator
+    std::string debug_socket = b0::env::get("B0_DEBUG_SOCKET");
+    std::vector<std::string> debug_socket_v;
+    boost::split(debug_socket_v, debug_socket, boost::is_any_of(":;"));
+    bool debug_enabled = false;
+    for(auto &x : debug_socket_v) if(socket.matchesPattern(x)) {debug_enabled = true; break;}
+    if(!debug_enabled) return;
+
+    std::stringstream dbg;
+    dbg << "B0_DEBUG_SOCKET[sock=" << socket.getNode().getName() << "." << socket.getName() << ", op=" << op << ", len=" << payload.size() << "]: ";
+    for(size_t i = 0; i < payload.size(); i++)
+    {
+        unsigned char c = payload[i];
+        if(c == '\n')
+            dbg << "\\n";
+        else if(c == '\r')
+            dbg << "\\r";
+        else if(c == '\t')
+            dbg << "\\t";
+        else if(c < 32 || c > 126)
+            dbg << boost::format("\\x%02x") % int(c);
+        else
+            dbg << char(c);
+    }
+    std::cout << dbg.str() << std::endl;
+}
+
 void Socket::readRaw(std::string &msg, std::string &type)
 {
     zmq::socket_t &socket_ = private_->socket_;
@@ -140,11 +170,20 @@ void Socket::readRaw(std::string &msg, std::string &type)
     if(has_header_ && hdr != name_)
         throw exception::HeaderMismatch(hdr, name_);
 
-    b0::core_msgs::MessageEnvelope env;
-    if(!env.ParseFromString(payload))
+    dumpPayload(*this, "recv", payload);
+    b0::message::MessageEnvelope env;
+    env.parseFromString(payload);
+    msg = b0::compress::decompress(env.compression_algorithm, env.payload, env.content_length);
+    type = env.content_type;
+}
+
+void Socket::readMsg(b0::message::Message &msg)
+{
+    std::string str, type;
+    readRaw(str, type);
+    if(type != msg.type())
         throw exception::EnvelopeDecodeError();
-    msg = b0::compress::decompress(env.compression_algorithm(), env.payload(), env.uncompressed_size());
-    type = env.type();
+    msg.parseFromString(str);
 }
 
 bool Socket::poll(long timeout)
@@ -173,20 +212,28 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
     }
 
     // create payload envelope
-    b0::core_msgs::MessageEnvelope env;
-    env.set_uncompressed_size(msg.size());
-    env.set_compression_algorithm(compression_algorithm_);
-    env.set_payload(b0::compress::compress(compression_algorithm_, msg, compression_level_));
-    env.set_type(type);
+    b0::message::MessageEnvelope env;
+    env.content_length = msg.size();
+    env.compression_algorithm = compression_algorithm_;
+    env.payload = b0::compress::compress(compression_algorithm_, msg, compression_level_);
+    env.content_type = type;
     std::string payload;
-    if(!env.SerializeToString(&payload))
-        throw exception::EnvelopeEncodeError();
+    env.serializeToString(payload);
+    dumpPayload(*this, "send", payload);
 
     // write payload
     zmq::message_t msg_payload(payload.size());
     std::memcpy(msg_payload.data(), payload.data(), payload.size());
     if(!socket_.send(msg_payload))
         throw exception::SocketWriteError();
+}
+
+void Socket::writeMsg(const b0::message::Message &msg)
+{
+    std::string str, type;
+    type = msg.type();
+    msg.serializeToString(str);
+    writeRaw(str, type);
 }
 
 void Socket::setCompression(std::string algorithm, int level)

@@ -1,9 +1,6 @@
 #include <b0/publisher.h>
 #include <b0/node.h>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-
 #include <zmq.hpp>
 
 namespace b0
@@ -49,9 +46,14 @@ std::string Publisher::getTopicName()
     return name_;
 }
 
-void Publisher::publish(const std::string &msg)
+void Publisher::publish(const std::string &msg, const std::string &type)
 {
-    writeRaw(msg);
+    writeRaw(msg, type);
+}
+
+void Publisher::publish(const b0::message::Message &msg)
+{
+    writeMsg(msg);
 }
 
 void Publisher::connect()

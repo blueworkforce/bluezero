@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>

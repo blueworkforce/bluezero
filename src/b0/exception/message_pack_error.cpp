@@ -12,12 +12,7 @@ MessagePackError::MessagePackError(std::string message)
 }
 
 EnvelopeEncodeError::EnvelopeEncodeError()
-    : MessagePackError("Failed to encode message envelope (Protobuf serialize error)")
-{
-}
-
-ProtobufSerializeError::ProtobufSerializeError()
-    : MessagePackError("Failed to encode payload (Protobuf serialize error)")
+    : MessagePackError("Failed to encode message envelope (serialize error)")
 {
 }
 

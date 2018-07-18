@@ -32,30 +32,30 @@ class Subscriber : public Socket
 public:
     using logger::LogInterface::log;
 
+    //! \cond HIDDEN_SYMBOLS
+
+    // needed to disambiguate the overloaded constructors
+    struct CallbackWithoutType {};
+    struct CallbackWithType {};
+
+    //! \endcond
+
     /*!
      * \brief Construct an Subscriber child of the specified Node, optionally using a boost::function as callback
      */
-    Subscriber(Node *node, std::string topic_name, boost::function<void(const std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, std::string topic_name, boost::function<void(const std::string&)> callback = 0, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, topic_name, CallbackWithoutType(), callback, managed, notify_graph)
+    {}
 
     /*!
-     * \brief Construct a Subscriber child of a specified Node, with a method (of the Node subclass) as a callback
+     * \brief Construct an Subscriber child of the specified Node, optionally using a boost::function as callback
      */
-    template<class TNode>
-    Subscriber(TNode *node, std::string topic_name, void (TNode::*callbackMethod)(const std::string&), bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, boost::bind(callbackMethod, node, _1), managed, notify_graph)
-    {
-        // delegate constructor. leave empty
-    }
+    Subscriber(Node *node, std::string topic_name, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief Construct a Subscriber child of a specified Node, with a method as a callback
+     * \brief Construct an Subscriber child of the specified Node, optionally using a boost::function as callback
      */
-    template<class T>
-    Subscriber(Node *node, std::string topic_name, void (T::*callbackMethod)(const std::string&), T *callbackObject, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, boost::bind(callbackMethod, callbackObject, _1), managed, notify_graph)
-    {
-        // delegate constructor. leave empty
-    }
+    Subscriber(Node *node, std::string topic_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Subscriber destructor
@@ -104,7 +104,12 @@ protected:
     /*!
      * \brief Callback which will be called when a new message is read from the socket
      */
-    boost::function<void(std::string&)> callback_;
+    boost::function<void(const std::string&)> callback_;
+
+    /*!
+     * \brief Callback which will be called when a new message is read from the socket
+     */
+    boost::function<void(const std::string&, const std::string&)> callback_with_type_;
 };
 
 } // namespace b0

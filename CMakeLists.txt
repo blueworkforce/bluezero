@@ -43,7 +43,7 @@ endif()
 find_package(Doxygen)
 find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization)
 find_package(ZMQ 4.1.4 REQUIRED)
-find_package(Protobuf 2.6 REQUIRED)
+find_package(jsoncpp REQUIRED)
 find_package(ZLIB)
 find_package(LZ4)
 
@@ -85,7 +85,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${ZMQ_INCLUDE_DIRS})
-include_directories(${PROTOBUF_INCLUDE_DIR})
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main.cpp "#include <boost/process.hpp>
 int main(){return 0;}")
@@ -149,13 +148,6 @@ if(BINDINGS_LUA)
     set(B0_EXTRA_SOURCES ${B0_EXTRA_SOURCES} bindings/lua/lua.cpp)
 endif()
 
-protobuf_generate_cpp(
-    B0_MSG_SOURCES
-    B0_MSG_HEADERS
-    protobuf/envelope.proto
-    protobuf/resolver.proto
-    protobuf/logger.proto
-)
 add_library(
     b0
     SHARED
@@ -177,17 +169,37 @@ add_library(
     src/b0/exception/message_unpack_error.cpp
     src/b0/exception/name_resolution_error.cpp
     src/b0/exception/unsupported_compression_algorithm.cpp
+    src/b0/message/heartbeat_response.cpp
+    src/b0/message/announce_node_response.cpp
+    src/b0/message/node_topic_response.cpp
+    src/b0/message/graph_link.cpp
+    src/b0/message/message_envelope.cpp
+    src/b0/message/heartbeat_request.cpp
+    src/b0/message/message.cpp
+    src/b0/message/log_entry.cpp
+    src/b0/message/announce_service_response.cpp
+    src/b0/message/resolve_service_response.cpp
+    src/b0/message/graph.cpp
+    src/b0/message/get_graph_response.cpp
+    src/b0/message/shutdown_node_response.cpp
+    src/b0/message/announce_service_request.cpp
+    src/b0/message/resolve_service_request.cpp
+    src/b0/message/node_service_response.cpp
+    src/b0/message/shutdown_node_request.cpp
+    src/b0/message/get_graph_request.cpp
+    src/b0/message/node_topic_request.cpp
+    src/b0/message/node_service_request.cpp
+    src/b0/message/announce_node_request.cpp
     src/b0/graph/graphviz.cpp
     src/b0/logger/logger.cpp
-    src/b0/protobuf/socket.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
+    src/b0/utils/env.cpp
     src/b0/utils/thread_name.cpp
     src/b0/utils/time_sync.cpp
-    ${B0_MSG_SOURCES}
     ${B0_EXTRA_SOURCES}
 )
-target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
+target_link_libraries(b0 jsoncpp ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
 if(WIN32)
     target_link_libraries(b0 wsock32 ws2_32)
 endif()

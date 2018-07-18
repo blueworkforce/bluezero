@@ -1,9 +1,8 @@
 #include <cstdlib>
 #include <iostream>
-#include "resolver.pb.h"
 #include <b0/node.h>
+#include <b0/subscriber.h>
 #include <b0/resolver/client.h>
-#include <b0/protobuf/subscriber.h>
 #include <b0/graph/graphviz.h>
 #include <b0/config.h>
 #include <b0/utils/env.h>
@@ -23,7 +22,7 @@ public:
     Console()
         : Node("graph_console"),
           resolv_cli_(this),
-          sub_(this, "graph", &Console::onGraphChanged)
+          sub_(this, "graph", boost::bind(&Console::onGraphChanged, this, _1))
     {
     }
 
@@ -45,18 +44,20 @@ public:
              *        is not received in the first 2 seconds, send an explicit request
              */
             log(info, "Requesting graph");
-            b0::resolver_msgs::Graph graph;
+            b0::message::Graph graph;
             resolv_cli_.getGraph(graph);
             printOrDisplayGraph("Current graph", graph);
         }
     }
 
-    void onGraphChanged(const b0::resolver_msgs::Graph &graph)
+    void onGraphChanged(const std::string &msg)
     {
+        b0::message::Graph graph;
+        graph.parseFromString(msg);
         printOrDisplayGraph("Graph has changed", graph);
     }
 
-    void printOrDisplayGraph(std::string message, const b0::resolver_msgs::Graph &graph)
+    void printOrDisplayGraph(std::string message, const b0::message::Graph &graph)
     {
         if(termHasImageCapability())
         {
@@ -65,11 +66,11 @@ public:
         }
         else
         {
-            log(info, "%s: %s", message, graph.DebugString());
+            log(info, "%s: %d nodes", message, graph.nodes.size());
         }
     }
 
-    void renderAndDisplayGraph(const b0::resolver_msgs::Graph &graph)
+    void renderAndDisplayGraph(const b0::message::Graph &graph)
     {
         toGraphviz(graph, "graph.gv", "white", "cyan", "red");
 
@@ -104,7 +105,7 @@ public:
 
 protected:
     b0::resolver::Client resolv_cli_;
-    b0::protobuf::Subscriber<b0::resolver_msgs::Graph> sub_;
+    b0::Subscriber sub_;
 };
 
 } // namespace graph

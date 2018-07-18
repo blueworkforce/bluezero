@@ -1,6 +1,5 @@
 #include <boost/thread.hpp>
 
-#include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/service_client.h>

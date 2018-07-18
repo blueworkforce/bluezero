@@ -4,6 +4,7 @@
 #include <string>
 
 #include <b0/socket.h>
+#include <b0/message/message.h>
 
 namespace b0
 {
@@ -56,7 +57,12 @@ public:
     /*!
      * \brief Publish a message
      */
-    virtual void publish(const std::string &msg);
+    virtual void publish(const std::string &msg, const std::string &type = "");
+
+    /*!
+     * \brief Publish a message
+     */
+    virtual void publish(const b0::message::Message &msg);
 
 protected:
     /*!

@@ -2,7 +2,6 @@
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "resolver.pb.h"
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/publisher.h>

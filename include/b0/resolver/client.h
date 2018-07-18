@@ -1,7 +1,8 @@
 #ifndef B0__RESOLVER__CLIENT_H__INCLUDED
 #define B0__RESOLVER__CLIENT_H__INCLUDED
 
-#include <b0/protobuf/service_client.h>
+#include <b0/service_client.h>
+#include <b0/message/graph.h>
 
 #include <cstdint>
 #include <string>
@@ -11,15 +12,6 @@ namespace b0
 
 class Node;
 
-namespace resolver_msgs
-{
-
-class Request;
-class Response;
-class Graph;
-
-} // namespace resolver_msgs
-
 namespace resolver
 {
 
@@ -28,7 +20,7 @@ namespace resolver
  *
  * Performs service name resolution.
  */
-class Client : public protobuf::ServiceClient<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
+class Client : public ServiceClient
 {
 public:
     /*!
@@ -86,7 +78,7 @@ public:
     /*!
      * \brief Request the node sockets graph
      */
-    virtual void getGraph(b0::resolver_msgs::Graph &graph);
+    virtual void getGraph(b0::message::Graph &graph);
 
 private:
     int announce_timeout_;

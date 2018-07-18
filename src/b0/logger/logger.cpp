@@ -1,5 +1,6 @@
-#include <b0/protobuf/publisher.h>
 #include <b0/logger/logger.h>
+#include <b0/publisher.h>
+#include <b0/message/log_entry.h>
 #include <b0/node.h>
 #include <b0/exception/argument_error.h>
 #include <b0/utils/thread_name.h>
@@ -8,9 +9,6 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
-
-#include "resolver.pb.h"
-#include "logger.pb.h"
 
 namespace b0
 {
@@ -104,7 +102,7 @@ struct LoggerPrivate
     {
     }
 
-    protobuf::Publisher<b0::logger_msgs::LogEntry> pub_;
+    Publisher pub_;
 };
 
 Logger::Logger(b0::Node *node)
@@ -134,19 +132,11 @@ void Logger::remoteLog(LogLevel level, std::string message) const
 {
     std::string name = node_.getName();
 
-    b0::logger_msgs::LogEntry e;
-    e.set_node_name(name);
-    switch(level)
-    {
-        case LogLevel::trace: e.set_level(b0::logger_msgs::trace); break;
-        case LogLevel::debug: e.set_level(b0::logger_msgs::debug); break;
-        case LogLevel::info:  e.set_level(b0::logger_msgs::info);  break;
-        case LogLevel::warn:  e.set_level(b0::logger_msgs::warn);  break;
-        case LogLevel::error: e.set_level(b0::logger_msgs::error); break;
-        case LogLevel::fatal: e.set_level(b0::logger_msgs::fatal); break;
-    }
-    e.set_msg(message);
-    e.set_time_usec(node_.timeUSec());
+    b0::message::LogEntry e;
+    e.node_name = name;
+    e.level = level;
+    e.message = message;
+    e.time_usec = node_.timeUSec();
     private_->pub_.publish(e);
 }
 

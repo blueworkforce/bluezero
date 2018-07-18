@@ -13,13 +13,6 @@ namespace b0
 
 class Node;
 
-namespace logger_msgs
-{
-
-class LogEntry;
-
-} // namespace logger_msgs
-
 namespace logger
 {
 

@@ -26,30 +26,30 @@ class ServiceServer : public Socket
 public:
     using logger::LogInterface::log;
 
-    /*!
-     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback
-     */
-    ServiceServer(Node *node, std::string service_name, boost::function<void(const std::string&, std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
+    //! \cond HIDDEN_SYMBOLS
+
+    // needed to disambiguate the overloaded constructors
+    struct CallbackWithoutType {};
+    struct CallbackWithType {};
+
+    //! \endcond
 
     /*!
-     * \brief Construct a ServiceServer child of a specific Node, using a method (of the Node subclass) as callback
+     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback (including type argument)
      */
-    template<class TNode>
-    ServiceServer(TNode *node, std::string service_name, void (TNode::*callbackMethod)(const std::string&, std::string&), bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, boost::bind(callbackMethod, node, _1, _2), managed, notify_graph)
-    {
-        // delegate constructor. leave empty
-    }
+    ServiceServer(Node *node, std::string service_name, boost::function<void(const std::string&, std::string&)> callback = 0, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, CallbackWithoutType(), callback, managed, notify_graph)
+    {}
 
     /*!
-     * \brief Construct a ServiceServer child of a specific Node, using a method as callback
+     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback (including type argument)
      */
-    template<class T>
-    ServiceServer(Node *node, std::string service_name, void (T::*callbackMethod)(const std::string&, std::string&), T *callbackObject, bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, boost::bind(callbackMethod, callbackObject, _1, _2), managed, notify_graph)
-    {
-        // delegate constructor. leave empty
-    }
+    ServiceServer(Node *node, std::string service_name, const CallbackWithoutType &_, boost::function<void(const std::string&, std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback (including type argument)
+     */
+    ServiceServer(Node *node, std::string service_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&, std::string&, std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief ServiceServer destructor
@@ -112,6 +112,11 @@ protected:
      * \brief Callback which will be called when a new message is read from the socket
      */
     boost::function<void(const std::string&, std::string&)> callback_;
+
+    /*!
+     * \brief Callback which will be called when a new message is read from the socket
+     */
+    boost::function<void(const std::string&, const std::string&, std::string&, std::string&)> callback_with_type_;
 };
 
 } // namespace b0

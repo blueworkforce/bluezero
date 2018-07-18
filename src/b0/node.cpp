@@ -20,9 +20,6 @@
 
 #include <zmq.hpp>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-
 namespace b0
 {
 

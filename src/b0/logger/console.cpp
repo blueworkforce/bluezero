@@ -21,7 +21,7 @@ namespace logger
 
 Console::Console()
     : Node("logger_console"),
-      sub_(this, "log", &Console::onLogMessage),
+      sub_(this, "log", boost::bind(&Console::onLogMessage, this, _1)),
       dummy_logger_(this)
 {
 }
@@ -30,20 +30,12 @@ Console::~Console()
 {
 }
 
-void Console::onLogMessage(const b0::logger_msgs::LogEntry &entry)
+void Console::onLogMessage(const std::string &msg)
 {
-    LogLevel level = LogLevel::info;
-    switch(entry.level())
-    {
-    case b0::logger_msgs::trace: level = LogLevel::trace; break;
-    case b0::logger_msgs::debug: level = LogLevel::debug; break;
-    case b0::logger_msgs::info:  level = LogLevel::info;  break;
-    case b0::logger_msgs::warn:  level = LogLevel::warn;  break;
-    case b0::logger_msgs::error: level = LogLevel::error; break;
-    case b0::logger_msgs::fatal: level = LogLevel::fatal; break;
-    }
-    LocalLogger::LevelInfo info = dummy_logger_.levelInfo(level);
-    std::cout << info.ansiEscape() << "[" << entry.node_name() << "] " << info.levelStr << ": " << entry.msg() << info.ansiReset() << std::endl;
+    b0::message::LogEntry entry;
+    entry.parseFromString(msg);
+    LocalLogger::LevelInfo info = dummy_logger_.levelInfo(entry.level);
+    std::cout << info.ansiEscape() << "[" << entry.node_name << "] " << info.levelStr << ": " << entry.message << info.ansiReset() << std::endl;
 }
 
 } // namespace logger

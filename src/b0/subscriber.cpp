@@ -1,18 +1,23 @@
 #include <b0/subscriber.h>
 #include <b0/node.h>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-
 #include <zmq.hpp>
 
 namespace b0
 {
 
-Subscriber::Subscriber(Node *node, std::string topic, boost::function<void(const std::string&)> callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, std::string topic, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic, managed),
       notify_graph_(notify_graph),
       callback_(callback)
+{
+    setHasHeader(true);
+}
+
+Subscriber::Subscriber(Node *node, std::string topic, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_SUB, topic, managed),
+      notify_graph_(notify_graph),
+      callback_with_type_(callback)
 {
     setHasHeader(true);
 }
@@ -47,13 +52,16 @@ void Subscriber::cleanup()
 
 void Subscriber::spinOnce()
 {
-    if(callback_.empty()) return;
+    if(callback_.empty() && callback_with_type_.empty()) return;
 
     while(poll())
     {
-        std::string msg;
-        readRaw(msg);
-        callback_(msg);
+        std::string msg, type;
+        readRaw(msg, type);
+        if(callback_)
+            callback_(msg);
+        if(callback_with_type_)
+            callback_with_type_(msg, type);
     }
 }
 

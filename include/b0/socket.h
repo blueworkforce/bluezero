@@ -5,6 +5,7 @@
 
 #include <b0/user_data.h>
 #include <b0/logger/interface.h>
+#include <b0/message/message.h>
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
@@ -24,7 +25,7 @@ struct SocketPrivate;
  * \brief The Socket class
  *
  * This class wraps a ZeroMQ socket. It provides wrappers for reading and writing
- * raw payloads, as well as google::protobuf messages.
+ * raw payloads, as well as b0::message::Message messages.
  *
  * \sa b0::Publisher, b0::Subscriber, b0::ServiceClient, b0::ServiceServer
  */
@@ -85,10 +86,11 @@ public:
     /*!
      * \brief Check if this socket name matches the specified pattern.
      *
-     * A '*' pattern always matches.
-     * A '*.sockName' pattern always matches if sockName matches.
-     * A 'nodeName.*' pattern always matches if nodeName matches.
-     * A 'nodeName.sockName' pattern matches if bnoth the node name and the socket name match.
+     *  Example of patterns:
+     *  - A `*` pattern always matches.
+     *  - A `*.sockName` pattern always matches if sockName matches.
+     *  - A `nodeName.*` pattern always matches if nodeName matches.
+     *  - A `nodeName.sockName` pattern matches if both the node name and the socket name match.
      */
     bool matchesPattern(const std::string &pattern) const;
 
@@ -124,6 +126,11 @@ public:
     virtual void readRaw(std::string &msg, std::string &type);
 
     /*!
+     * \brief Read a Message from the underlying ZeroMQ socket
+     */
+    virtual void readMsg(b0::message::Message &msg);
+
+    /*!
      * \brief Poll for messages. If timeout is 0 return immediately, otherwise wait
      *        for the specified amount of milliseconds.
      */
@@ -133,6 +140,11 @@ public:
      * \brief Write a raw payload
      */
     virtual void writeRaw(const std::string &msg, const std::string &type = "");
+
+    /*!
+     * \brief Write a Message to the underlying ZeroMQ socket
+     */
+    virtual void writeMsg(const b0::message::Message &msg);
 
 public:
     /*!

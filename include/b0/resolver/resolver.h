@@ -2,8 +2,9 @@
 #define B0__RESOLVER__RESOLVER_H__INCLUDED
 
 #include <b0/node.h>
-#include <b0/protobuf/service_server.h>
-#include <b0/protobuf/publisher.h>
+#include <b0/service_server.h>
+#include <b0/publisher.h>
+#include <b0/messages.h>
 
 #include <string>
 #include <vector>
@@ -40,7 +41,7 @@ struct ServiceEntry
 
 class Resolver;
 
-class ResolverServiceServer : public b0::protobuf::ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>
+class ResolverServiceServer : public b0::ServiceServer
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -60,7 +61,7 @@ protected:
 /*!
  * \brief The resolver node
  */
-class Resolver : public Node
+class Resolver : public b0::Node
 {
 public:
     /*!
@@ -196,12 +197,12 @@ public:
     /*!
      * \brief Update the NodeEntry timestamp
      */
-    virtual void heartBeat(resolver::NodeEntry *node_entry);
+    virtual void heartbeat(resolver::NodeEntry *node_entry);
 
     /*!
      * \brief Handle a service on the resolv service
      */
-    virtual void handle(const b0::resolver_msgs::Request &req, b0::resolver_msgs::Response &resp);
+    virtual void handle(const std::string &req, const std::string &reqtype, std::string &resp, std::string &resptype);
 
     /*!
      * \brief Adjust nodeName such that it is unique in the network (amongst the list of connected nodes)
@@ -211,47 +212,47 @@ public:
     /*!
      * \brief Handle the AnnounceNode request
      */
-    virtual void handleAnnounceNode(const b0::resolver_msgs::AnnounceNodeRequest &rq, b0::resolver_msgs::AnnounceNodeResponse &rsp);
+    virtual void handleAnnounceNode(const b0::message::AnnounceNodeRequest &rq, b0::message::AnnounceNodeResponse &rsp);
 
     /*!
      * \brief Handle the ShutdownNode request
      */
-    virtual void handleShutdownNode(const b0::resolver_msgs::ShutdownNodeRequest &rq, b0::resolver_msgs::ShutdownNodeResponse &rsp);
+    virtual void handleShutdownNode(const b0::message::ShutdownNodeRequest &rq, b0::message::ShutdownNodeResponse &rsp);
 
     /*!
      * \brief Handle the AnnounceService request
      */
-    virtual void handleAnnounceService(const b0::resolver_msgs::AnnounceServiceRequest &rq, b0::resolver_msgs::AnnounceServiceResponse &rsp);
+    virtual void handleAnnounceService(const b0::message::AnnounceServiceRequest &rq, b0::message::AnnounceServiceResponse &rsp);
 
     /*!
      * \brief Handle the ResolveService request
      */
-    virtual void handleResolveService(const b0::resolver_msgs::ResolveServiceRequest &rq, b0::resolver_msgs::ResolveServiceResponse &rsp);
+    virtual void handleResolveService(const b0::message::ResolveServiceRequest &rq, b0::message::ResolveServiceResponse &rsp);
 
     /*!
-     * \brief Handle the HeartBeat request
+     * \brief Handle the Heartbeat request
      */
-    virtual void handleHeartBeat(const b0::resolver_msgs::HeartBeatRequest &rq, b0::resolver_msgs::HeartBeatResponse &rsp);
+    virtual void handleHeartbeat(const b0::message::HeartbeatRequest &rq, b0::message::HeartbeatResponse &rsp);
 
     /*!
      * \brief Handle the NodeTopic request
      */
-    void handleNodeTopic(const b0::resolver_msgs::NodeTopicRequest &req, b0::resolver_msgs::NodeTopicResponse &resp);
+    void handleNodeTopic(const b0::message::NodeTopicRequest &req, b0::message::NodeTopicResponse &resp);
 
     /*!
      * \brief Handle the NodeService request
      */
-    void handleNodeService(const b0::resolver_msgs::NodeServiceRequest &req, b0::resolver_msgs::NodeServiceResponse &resp);
+    void handleNodeService(const b0::message::NodeServiceRequest &req, b0::message::NodeServiceResponse &resp);
 
     /*!
      * \brief Handle the GetGraph request
      */
-    void handleGetGraph(const b0::resolver_msgs::GetGraphRequest &req, b0::resolver_msgs::GetGraphResponse &resp);
+    void handleGetGraph(const b0::message::GetGraphRequest &req, b0::message::GetGraphResponse &resp);
 
     /*!
      * Retrieve the current Graph
      */
-    void getGraph(b0::resolver_msgs::Graph &graph);
+    void getGraph(b0::message::Graph &graph);
 
     /*!
      * \brief Called when the global graph changes
@@ -264,7 +265,7 @@ public:
     /*!
      * \brief Code to run in the heartbeat sweeper thread
      */
-    void heartBeatSweeper();
+    void heartbeatSweeper();
 
 protected:
     //! The ServiceServer serving the requests for the resolv protocol
@@ -304,7 +305,7 @@ protected:
     std::set<std::pair<std::string, std::string> > node_uses_service_;
 
     //! Publisher of the Graph message
-    b0::protobuf::Publisher<b0::resolver_msgs::Graph> graph_pub_;
+    b0::Publisher graph_pub_;
 };
 
 } // namespace resolver

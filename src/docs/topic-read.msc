@@ -3,5 +3,5 @@ msc {
 
     n [ label="node" ], p [ label="XSUB" ];
 
-    p->n [ label="b0::core_msgs::MessageEnvelope" ];
+    p->n [ label="b0::message::MessageEnvelope" ];
 }

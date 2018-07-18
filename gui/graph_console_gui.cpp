@@ -1,13 +1,12 @@
 #include <b0/node.h>
-#include <b0/protobuf/subscriber.h>
+#include <b0/subscriber.h>
+#include <b0/message/graph.h>
 #include <b0/graph/graphviz.h>
 
 #include <QApplication>
 #include <QMainWindow>
 #include <QLabel>
 #include <QTimer>
-
-#include "resolver.pb.h"
 
 class GraphConsoleWindow : public QMainWindow
 {
@@ -25,8 +24,11 @@ public:
         timer->start(100);
     }
 
-    void onGraphChanged(const b0::resolver_msgs::Graph &graph)
+    void onGraphChanged(const std::string &msg)
     {
+        b0::message::Graph graph;
+        graph.parseFromString(msg);
+
         b0::graph::toGraphviz(graph, "graph.gv");
 
         if(b0::graph::renderGraphviz("graph.gv", "graph.png") == 0)
@@ -49,7 +51,7 @@ int main(int argc, char **argv)
 
     GraphConsoleWindow graphConsoleWindow(graphConsoleNode);
 
-    b0::protobuf::Subscriber<b0::resolver_msgs::Graph> logSub(&graphConsoleNode, "graph", &GraphConsoleWindow::onGraphChanged, &graphConsoleWindow);
+    b0::Subscriber logSub(&graphConsoleNode, "graph", boost::bind(&GraphConsoleWindow::onGraphChanged, &graphConsoleWindow, _1));
 
     graphConsoleNode.init();
 

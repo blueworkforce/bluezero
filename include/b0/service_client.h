@@ -4,6 +4,7 @@
 #include <string>
 
 #include <b0/socket.h>
+#include <b0/message/message.h>
 
 namespace b0
 {
@@ -58,6 +59,18 @@ public:
      * \sa ServiceServer::read(), ServiceServer::write()
      */
     virtual void call(const std::string &req, std::string &rep);
+
+    /*!
+     * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
+     * \sa ServiceServer::read(), ServiceServer::write()
+     */
+    virtual void call(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype);
+
+    /*!
+     * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
+     * \sa ServiceServer::read(), ServiceServer::write()
+     */
+    virtual void call(const b0::message::Message &req, b0::message::Message &rep);
 
 protected:
     /*!

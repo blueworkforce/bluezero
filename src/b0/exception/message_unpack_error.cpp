@@ -29,12 +29,7 @@ HeaderMismatch::HeaderMismatch(std::string header, std::string expected_header)
 }
 
 EnvelopeDecodeError::EnvelopeDecodeError()
-    : MessageUnpackError("Failed to decode message envelope (Protobuf parse error)")
-{
-}
-
-ProtobufParseError::ProtobufParseError()
-    : MessageUnpackError("Failed to decode payload (Protobuf parse error)")
+    : MessageUnpackError("Failed to decode message envelope (parse error)")
 {
 }
 

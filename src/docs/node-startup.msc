@@ -3,6 +3,6 @@ msc {
 
     n [ label="node" ], r [ label="resolver" ];
 
-    n->r [ label="b0::resolver_msgs::AnnounceNodeRequest" ];
-    r->n [ label="b0::resolver_msgs::AnnounceNodeResponse" ];
+    n->r [ label="b0::message::AnnounceNodeRequest" ];
+    r->n [ label="b0::message::AnnounceNodeResponse" ];
 }

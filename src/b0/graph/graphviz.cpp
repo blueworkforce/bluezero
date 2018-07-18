@@ -1,10 +1,5 @@
-#ifndef B0__GRAPH__GRAPHVIZ_H
-#define B0__GRAPH__GRAPHVIZ_H
-
 #include <b0/graph/graphviz.h>
 #include <b0/config.h>
-
-#include "resolver.pb.h"
 
 #include <cstdlib>
 #include <fstream>
@@ -28,26 +23,26 @@ static std::string id(std::string t, std::string name)
     return (fmt % t % name).str();
 }
 
-void toGraphviz(const b0::resolver_msgs::Graph &graph, std::string filename, std::string outline_color, std::string topic_color, std::string service_color)
+void toGraphviz(const b0::message::Graph &graph, std::string filename, std::string outline_color, std::string topic_color, std::string service_color)
 {
     std::ofstream f;
     f.open(filename);
     std::set<std::string> nodes;
     std::set<std::string> topics;
     std::set<std::string> services;
-    for(auto x : graph.nodes())
+    for(auto x : graph.nodes)
     {
         nodes.insert(x);
     }
-    for(auto x : graph.node_topic())
+    for(auto x : graph.node_topic)
     {
-        nodes.insert(x.a());
-        topics.insert(x.b());
+        nodes.insert(x.node_name);
+        topics.insert(x.other_name);
     }
-    for(auto x : graph.node_service())
+    for(auto x : graph.node_service)
     {
-        nodes.insert(x.a());
-        services.insert(x.b());
+        nodes.insert(x.node_name);
+        services.insert(x.other_name);
     }
     f << "digraph G {" << std::endl;
     f << "    graph [overlap=false, splines=true, bgcolor=\"transparent\"];";
@@ -61,16 +56,16 @@ void toGraphviz(const b0::resolver_msgs::Graph &graph, std::string filename, std
     for(auto x : services) f << id("S", x) << " [label=\"" << x << "\", fontcolor=" << service_color << "];";
     f << std::endl;
     f << "    edge [color=" << outline_color << "];" << std::endl;
-    for(auto x : graph.node_topic())
-        if(x.reversed())
-            f << "    " << id("T", x.b()) << " -> " << id("N", x.a()) << ";" << std::endl;
+    for(auto x : graph.node_topic)
+        if(x.reversed)
+            f << "    " << id("T", x.other_name) << " -> " << id("N", x.node_name) << ";" << std::endl;
         else
-            f << "    " << id("N", x.a()) << " -> " << id("T", x.b()) << ";" << std::endl;
-    for(auto x : graph.node_service())
-        if(x.reversed())
-            f << "    " << id("S", x.b()) << " -> " << id("N", x.a()) << ";" << std::endl;
+            f << "    " << id("N", x.node_name) << " -> " << id("T", x.other_name) << ";" << std::endl;
+    for(auto x : graph.node_service)
+        if(x.reversed)
+            f << "    " << id("S", x.other_name) << " -> " << id("N", x.node_name) << ";" << std::endl;
         else
-            f << "    " << id("N", x.a()) << " -> " << id("S", x.b()) << ";" << std::endl;
+            f << "    " << id("N", x.node_name) << " -> " << id("S", x.other_name) << ";" << std::endl;
     f << "}" << std::endl;
     f.close();
 }
@@ -91,4 +86,3 @@ int renderGraphviz(std::string input, std::string output)
 
 } // namespace b0
 
-#endif // B0__GRAPH__GRAPHVIZ_H

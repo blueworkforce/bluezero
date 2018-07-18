@@ -1,19 +1,24 @@
 #include <b0/service_server.h>
 #include <b0/node.h>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-
 #include <zmq.hpp>
 
 namespace b0
 {
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, boost::function<void(const std::string&, std::string&)> callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, std::string service_name, const CallbackWithoutType &_, boost::function<void(const std::string&, std::string&)> callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),
       callback_(callback)
+{
+}
+
+ServiceServer::ServiceServer(Node *node, std::string service_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&, std::string&, std::string&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_REP, service_name, managed),
+      notify_graph_(notify_graph),
+      bind_addr_(""),
+      callback_with_type_(callback)
 {
 }
 
@@ -46,14 +51,17 @@ void ServiceServer::cleanup()
 
 void ServiceServer::spinOnce()
 {
-    if(callback_.empty()) return;
+    if(callback_.empty() && callback_with_type_.empty()) return;
 
     while(poll())
     {
-        std::string req, rep;
-        readRaw(req);
-        callback_(req, rep);
-        writeRaw(rep);
+        std::string req, reqtype, rep, reptype;
+        readRaw(req, reqtype);
+        if(callback_)
+            callback_(req, rep);
+        if(callback_with_type_)
+            callback_with_type_(req, reqtype, rep, reptype);
+        writeRaw(rep, reptype);
     }
 }
 

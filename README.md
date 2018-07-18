@@ -17,8 +17,8 @@ See [LICENSE.md](LICENSE.md).
 ### Required Libraries
 
  - ZeroMQ v4.1+
- - Protocol Buffers v2.6+
  - Boost v1.54+
+ - JsonCPP
 
 ### Optional Libraries
  - zlib (for compressing payloads)
@@ -31,8 +31,7 @@ See [LICENSE.md](LICENSE.md).
 
 Install the following apt packages:
 
- - libprotobuf-dev
- - protobuf-compiler
+ - libjsoncpp-dev
  - libzmq-dev
  - libboost-all-dev
 
@@ -42,9 +41,8 @@ Install the following apt packages:
 
  - libboost-all-dev
 
-The apt packages for Protobuf and ZeroMQ from apt repository are too old. Compile and install them from git repositories:
+The ZeroMQ apt package is too old. Compile and install it from the git repository:
 
- - https://github.com/google/protobuf
  - https://github.com/zeromq/libzmq
 
 ### macOS (homebrew)
@@ -52,7 +50,7 @@ The apt packages for Protobuf and ZeroMQ from apt repository are too old. Compil
 Install the following:
 
  - zeromq
- - protobuf
+ - jsoncpp
  - boost
  - lz4
 

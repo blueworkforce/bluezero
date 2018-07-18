@@ -1,9 +1,6 @@
 #include <b0/service_client.h>
 #include <b0/node.h>
 
-#include "resolver.pb.h"
-#include "logger.pb.h"
-
 #include <zmq.hpp>
 
 namespace b0
@@ -51,6 +48,18 @@ void ServiceClient::call(const std::string &req, std::string &rep)
 {
     writeRaw(req);
     readRaw(rep);
+}
+
+void ServiceClient::call(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype)
+{
+    writeRaw(req, reqtype);
+    readRaw(rep, reptype);
+}
+
+void ServiceClient::call(const b0::message::Message &req, b0::message::Message &rep)
+{
+    writeMsg(req);
+    readMsg(rep);
 }
 
 void ServiceClient::resolve()
