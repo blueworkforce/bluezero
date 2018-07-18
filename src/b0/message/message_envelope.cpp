@@ -58,10 +58,7 @@ void MessageEnvelope::serializeToString(std::string &s) const
         all_headers.emplace_back(100, "Content-type: " + content_type);
     if(compression_algorithm != "")
         all_headers.emplace_back(500, "Compression-algorithm: " + compression_algorithm);
-    std::sort(all_headers.begin(), all_headers.end(), [=](std::pair<int, std::string>& a, std::pair<int, std::string>& b)
-    {
-        return a.first < b.first;
-    });
+    std::sort(all_headers.begin(), all_headers.end());
     std::stringstream ss;
     for(auto &x : all_headers)
         ss << x.second << std::endl;
