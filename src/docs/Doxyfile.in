@@ -801,7 +801,12 @@ INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include/b0 \
                          @CMAKE_CURRENT_SOURCE_DIR@/docs \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber \
-                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber_c \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber_multi \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber_oop \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server_c \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server_oop \
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -920,7 +925,12 @@ EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           = @CMAKE_CURRENT_SOURCE_DIR@ \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples \
                          @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber \
-                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber_c \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber_multi \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/publisher_subscriber_oop \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server_c \
+                         @CMAKE_CURRENT_SOURCE_DIR@/examples/client_server_oop \
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
