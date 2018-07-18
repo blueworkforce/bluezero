@@ -148,7 +148,7 @@ void Socket::readRaw(std::string &msg, std::string &type)
         throw exception::SocketReadError();
     payload = std::string(static_cast<char*>(msg_payload.data()), msg_payload.size());
 
-    // read additional parts, and throw an error, because there shouldn't be any more parts
+    // check zmq single-part
     if(msg_payload.more())
         throw exception::MessageTooManyPartsError();
 
@@ -160,8 +160,8 @@ void Socket::readRaw(std::string &msg, std::string &type)
     if(has_header_ && env.getHeader("Header") != name_)
         throw exception::HeaderMismatch(hdr, name_);
 
-    msg = b0::compress::decompress(env.compression_algorithm, env.payload, env.content_length);
-    type = env.content_type;
+    msg = b0::compress::decompress(env.parts[0].compression_algorithm, env.parts[0].payload, env.parts[0].uncompressed_content_length);
+    type = env.parts[0].content_type;
 }
 
 void Socket::readMsg(b0::message::Message &msg)
@@ -191,10 +191,13 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
 
     // create payload envelope
     b0::message::MessageEnvelope env;
-    env.content_length = msg.size();
-    env.compression_algorithm = compression_algorithm_;
-    env.payload = b0::compress::compress(compression_algorithm_, msg, compression_level_);
-    env.content_type = type;
+    env.parts.resize(1);
+    env.parts[0].compression_algorithm = compression_algorithm_;
+    env.parts[0].payload = b0::compress::compress(compression_algorithm_, msg, compression_level_);
+    if(compression_algorithm_ != "")
+        env.parts[0].uncompressed_content_length = msg.size();
+    env.parts[0].content_length = env.parts[0].payload.size();
+    env.parts[0].content_type = type;
     if(has_header_)
         env.headers.emplace_back(std::numeric_limits<int>::min(), "Header: " + name_);
     std::string payload;
