@@ -33,12 +33,12 @@ void pub_thread(zmq::context_t &context)
     {
         if(stop) break;
         std::string m = boost::lexical_cast<std::string>(i);
-        zmq::message_t hdr(6);
-        memcpy(hdr.data(), "topic1", 6);
-        zmq::message_t msg(m.size());
-        memcpy(msg.data(), m.data(), m.size());
+        zmq::message_t msg(6 + m.size());
+        char *data = static_cast<char *>(msg.data());
+        memcpy(data, "topic1", 6);
+        memcpy(data + 6, m.data(), m.size());
         std::cout << "send: " << m << std::endl;
-        if(!pub.send(hdr, ZMQ_SNDMORE) || !pub.send(msg))
+        if(!pub.send(msg))
             std::cout << "send error" << std::endl;
         pub_max = i;
         i++;
@@ -68,10 +68,10 @@ void sub_thread(zmq::context_t &context)
     for(;;)
     {
         if(stop) break;
-        zmq::message_t hdr, msg;
-        if(!sub.recv(&hdr) || !hdr.more() || !sub.recv(&msg))
+        zmq::message_t msg;
+        if(!sub.recv(&msg))
             std::cout << "recv error" << std::endl;
-        std::string m(reinterpret_cast<const char*>(msg.data()), msg.size());
+        std::string m(reinterpret_cast<const char*>(msg.data()) + 6, msg.size() - 6);
         std::cout << "                recv: " << m << std::endl;
         long i = boost::lexical_cast<long>(m);
         sub_num_recv++;

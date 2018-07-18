@@ -74,13 +74,15 @@ void Subscriber::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
-    Socket::setsockopt(ZMQ_SUBSCRIBE, name_.data(), name_.size());
+    std::string subscription("Header: " + name_);
+    Socket::setsockopt(ZMQ_SUBSCRIBE, subscription.data(), subscription.size());
 }
 
 void Subscriber::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
-    Socket::setsockopt(ZMQ_UNSUBSCRIBE, name_.data(), name_.size());
+    std::string subscription("Header: " + name_);
+    Socket::setsockopt(ZMQ_UNSUBSCRIBE, subscription.data(), subscription.size());
     Socket::disconnect(remote_addr_);
 }
 

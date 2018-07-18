@@ -6,6 +6,7 @@
 #include <b0/compress/compress.h>
 #include <b0/utils/env.h>
 
+#include <limits>
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
@@ -135,17 +136,6 @@ void Socket::readRaw(std::string &msg, std::string &type)
 
     std::string hdr, payload;
 
-    // if necessary, read header (usually for topics, i.e. PUB/SUB)
-    if(has_header_)
-    {
-        zmq::message_t msg_hdr;
-        if(!socket_.recv(&msg_hdr))
-            throw exception::SocketReadError();
-        hdr = std::string(static_cast<char*>(msg_hdr.data()), msg_hdr.size());
-        if(!msg_hdr.more())
-            throw exception::MessageMissingHeaderError();
-    }
-    
     // read payload
     zmq::message_t msg_payload;
     if(!socket_.recv(&msg_payload))
@@ -154,25 +144,16 @@ void Socket::readRaw(std::string &msg, std::string &type)
 
     // read additional parts, and throw an error, because there shouldn't be any more parts
     if(msg_payload.more())
-    {
-        bool more = true;
-        while(more)
-        {
-            zmq::message_t msg_tmp;
-            if(!socket_.recv(&msg_tmp))
-                throw exception::SocketReadError();
-            more = msg_tmp.more();
-        }
         throw exception::MessageTooManyPartsError();
-    }
-
-    // if necessary, check header
-    if(has_header_ && hdr != name_)
-        throw exception::HeaderMismatch(hdr, name_);
 
     dumpPayload(*this, "recv", payload);
     b0::message::MessageEnvelope env;
     env.parseFromString(payload);
+
+    // if necessary, check header
+    if(has_header_ && env.getHeader("Header") != name_)
+        throw exception::HeaderMismatch(hdr, name_);
+
     msg = b0::compress::decompress(env.compression_algorithm, env.payload, env.content_length);
     type = env.content_type;
 }
@@ -202,21 +183,14 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
 {
     zmq::socket_t &socket_ = private_->socket_;
 
-    // if necessary, write header (usually for topics, i.e. PUB/SUB)
-    if(has_header_)
-    {
-        zmq::message_t msg_hdr(name_.size());
-        std::memcpy(msg_hdr.data(), name_.data(), name_.size());
-        if(!socket_.send(msg_hdr, ZMQ_SNDMORE))
-            throw exception::SocketWriteError();
-    }
-
     // create payload envelope
     b0::message::MessageEnvelope env;
     env.content_length = msg.size();
     env.compression_algorithm = compression_algorithm_;
     env.payload = b0::compress::compress(compression_algorithm_, msg, compression_level_);
     env.content_type = type;
+    if(has_header_)
+        env.headers.emplace_back(std::numeric_limits<int>::min(), "Header: " + name_);
     std::string payload;
     env.serializeToString(payload);
     dumpPayload(*this, "send", payload);

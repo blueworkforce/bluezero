@@ -1,7 +1,10 @@
 #ifndef B0__MESSAGE__MESSAGE_ENVELOPE_H__INCLUDED
 #define B0__MESSAGE__MESSAGE_ENVELOPE_H__INCLUDED
 
-#include <boost/serialization/string.hpp>
+#include <vector>
+#include <string>
+#include <utility>
+#include <boost/optional.hpp>
 
 #include <b0/message/message.h>
 
@@ -29,7 +32,13 @@ public:
     //! An optional string indicating the type of the payload
     std::string content_type;
 
+    //! Additional customized headers with priority (most negative appears first)
+    std::vector<std::pair<int, std::string> > headers;
+
 public:
+    //! \brief Get the value of some header
+    boost::optional<std::string> getHeader(const std::string &name);
+
     //! \brief Parse from a string
     void parseFromString(const std::string &s);
 
