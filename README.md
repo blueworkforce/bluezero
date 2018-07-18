@@ -4,6 +4,8 @@ BlueZero (in short, "B0") is a cross-platform middleware which provides tools fo
 
 It has some similarities with ROS, although it only focuses on providing communication paradigms (client/server and publisher/subscriber) and message transport (based on ZeroMQ), while being agnostic to message serialization format or common protocols and data structures.
 
+This project uses [semantic versioning](https://semver.org).
+
 ## Documentation
 
 See the generated [`docs/index.html`](https://blueworkforce.github.io/bluezero/) for the documentation.
