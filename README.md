@@ -6,6 +6,10 @@ It has some similarities with ROS, although it only focuses on providing communi
 
 This project uses [semantic versioning](https://semver.org).
 
+## Download
+
+Go to https://github.com/blueworkforce/bluezero/releases to download a source tarball.
+
 ## Documentation
 
 See the generated [`docs/index.html`](https://blueworkforce.github.io/bluezero/) for the documentation.
