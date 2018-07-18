@@ -44,7 +44,7 @@ std::string zlib_wrapper(const std::string &str, bool compress, int level, size_
     if(compress) deflateEnd(&zs); else inflateEnd(&zs);
     delete[] outbuf;
     if(ret != Z_STREAM_END)
-        throw exception::Exception((boost::format("zlib %s error %d: %s") % method % ret % zs.msg).str());
+        throw exception::Exception((boost::format("zlib %s error %d%s%s") % method % ret % (zs.msg ? ": " : "") % (zs.msg ? zs.msg : "")).str());
     return outstr;
 }
 
