@@ -13,6 +13,14 @@ target_link_libraries(pubsub_slowsub_conflate_zmq b0)
 add_test(pubsub_slowsub_conflate_zmq_0 pubsub_slowsub_conflate_zmq 0)
 add_test(pubsub_slowsub_conflate_zmq_1 pubsub_slowsub_conflate_zmq 1)
 
+# this test is known to fail because of a limitation in libzmq:
+# "ZMQ_CONFLATE: [...] Does not supports multi-part messages, [...]"
+# http://api.zeromq.org/4-2:zmq-setsockopt
+#add_executable(pubsub_slowsub_conflate_zmq_multipart pubsub_slowsub_zmq_multipart.cpp)
+#target_link_libraries(pubsub_slowsub_conflate_zmq_multipart b0)
+#add_test(pubsub_slowsub_conflate_zmq_multipart_0 pubsub_slowsub_conflate_zmq_multipart 0)
+#add_test(pubsub_slowsub_conflate_zmq_multipart_1 pubsub_slowsub_conflate_zmq_multipart 1)
+
 add_executable(pubsub2 pubsub2.cpp)
 target_link_libraries(pubsub2 b0)
 add_test(pubsub2 pubsub2)
