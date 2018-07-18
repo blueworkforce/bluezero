@@ -4,7 +4,7 @@
 #include <iostream>
 #include <zmq.hpp>
 
-#define USE_PROXY
+//#define USE_PROXY
 
 #ifdef USE_PROXY
 boost::format xpub_proxy_addr("tcp://%s:38921");
@@ -54,17 +54,17 @@ std::atomic<long> exp_sum{0};
 void sub_thread(zmq::context_t &context)
 {
     zmq::socket_t sub(context, zmq::socket_type::sub);
+    if(enable_conflate)
+    {
+        const int v_true = 1;
+        sub.setsockopt(ZMQ_CONFLATE, &v_true, sizeof(v_true));
+    }
 #ifdef USE_PROXY
     sub.connect((xpub_proxy_addr % "localhost").str());
 #else
     sub.connect((pub_addr % "localhost").str());
 #endif
     sub.setsockopt(ZMQ_SUBSCRIBE, "topic1", 6);
-    if(enable_conflate)
-    {
-        const int v_true = 1;
-        sub.setsockopt(ZMQ_CONFLATE, &v_true, sizeof(v_true));
-    }
     for(;;)
     {
         if(stop) break;
