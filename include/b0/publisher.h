@@ -55,7 +55,12 @@ public:
     std::string getTopicName();
 
     /*!
-     * \brief Publish a message
+     * \brief Publish a raw multipart message
+     */
+    virtual void publish(const std::vector<b0::message::MessagePart> &parts);
+
+    /*!
+     * \brief Publish a raw message
      */
     virtual void publish(const std::string &msg, const std::string &type = "");
 

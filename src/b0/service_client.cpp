@@ -56,6 +56,12 @@ void ServiceClient::call(const std::string &req, const std::string &reqtype, std
     readRaw(rep, reptype);
 }
 
+void ServiceClient::call(const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts)
+{
+    writeRaw(reqparts);
+    readRaw(repparts);
+}
+
 void ServiceClient::call(const b0::message::Message &req, b0::message::Message &rep)
 {
     writeMsg(req);

@@ -37,6 +37,7 @@ public:
     // needed to disambiguate the overloaded constructors
     struct CallbackWithoutType {};
     struct CallbackWithType {};
+    struct CallbackRawParts {};
 
     //! \endcond
 
@@ -48,14 +49,19 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, optionally using a boost::function as callback
+     * \brief Construct an Subscriber child of the specified Node, using a boost::function as callback (raw msg)
      */
-    Subscriber(Node *node, std::string topic_name, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, std::string topic_name, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, optionally using a boost::function as callback
+     * \brief Construct an Subscriber child of the specified Node, using a boost::function as callback (raw msg with type)
      */
-    Subscriber(Node *node, std::string topic_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback = 0, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, std::string topic_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback, bool managed = true, bool notify_graph = true);
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a boost::function as callback (raw multipart)
+     */
+    Subscriber(Node *node, std::string topic_name, const CallbackRawParts &_, boost::function<void(const std::vector<b0::message::MessagePart>&)> callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Subscriber destructor
@@ -102,14 +108,19 @@ protected:
     const bool notify_graph_;
 
     /*!
-     * \brief Callback which will be called when a new message is read from the socket
+     * \brief Callback which will be called when a new message is read from the socket (raw)
      */
     boost::function<void(const std::string&)> callback_;
 
     /*!
-     * \brief Callback which will be called when a new message is read from the socket
+     * \brief Callback which will be called when a new message is read from the socket (raw with type)
      */
     boost::function<void(const std::string&, const std::string&)> callback_with_type_;
+
+    /*!
+     * \brief Callback which will be called when a new message is read from the socket (raw multipart)
+     */
+    boost::function<void(const std::vector<b0::message::MessagePart>&)> callback_multipart_;
 };
 
 } // namespace b0

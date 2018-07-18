@@ -46,6 +46,11 @@ std::string Publisher::getTopicName()
     return name_;
 }
 
+void Publisher::publish(const std::vector<b0::message::MessagePart> &parts)
+{
+    writeRaw(parts);
+}
+
 void Publisher::publish(const std::string &msg, const std::string &type)
 {
     writeRaw(msg, type);

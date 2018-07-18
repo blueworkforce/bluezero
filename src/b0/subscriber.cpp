@@ -6,18 +6,26 @@
 namespace b0
 {
 
-Subscriber::Subscriber(Node *node, std::string topic, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback, bool managed, bool notify_graph)
-    : Socket(node, ZMQ_SUB, topic, managed),
+Subscriber::Subscriber(Node *node, std::string topic_name, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_(callback)
 {
     setHasHeader(true);
 }
 
-Subscriber::Subscriber(Node *node, std::string topic, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback, bool managed, bool notify_graph)
-    : Socket(node, ZMQ_SUB, topic, managed),
+Subscriber::Subscriber(Node *node, std::string topic_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_with_type_(callback)
+{
+    setHasHeader(true);
+}
+
+Subscriber::Subscriber(Node *node, std::string topic_name, const CallbackRawParts &_, boost::function<void(const std::vector<b0::message::MessagePart>&)> callback, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_SUB, topic_name, managed),
+      notify_graph_(notify_graph),
+      callback_multipart_(callback)
 {
     setHasHeader(true);
 }
@@ -52,16 +60,28 @@ void Subscriber::cleanup()
 
 void Subscriber::spinOnce()
 {
-    if(callback_.empty() && callback_with_type_.empty()) return;
+    if(!callback_ && !callback_with_type_ && !callback_multipart_) return;
 
     while(poll())
     {
-        std::string msg, type;
-        readRaw(msg, type);
         if(callback_)
+        {
+            std::string msg;
+            readRaw(msg);
             callback_(msg);
+        }
         if(callback_with_type_)
+        {
+            std::string msg, type;
+            readRaw(msg, type);
             callback_with_type_(msg, type);
+        }
+        if(callback_multipart_)
+        {
+            std::vector<b0::message::MessagePart> parts;
+            readRaw(parts);
+            callback_multipart_(parts);
+        }
     }
 }
 

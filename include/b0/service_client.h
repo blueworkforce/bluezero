@@ -70,6 +70,12 @@ public:
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
      * \sa ServiceServer::read(), ServiceServer::write()
      */
+    virtual void call(const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts);
+
+    /*!
+     * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
+     * \sa ServiceServer::read(), ServiceServer::write()
+     */
     virtual void call(const b0::message::Message &req, b0::message::Message &rep);
 
 protected:
