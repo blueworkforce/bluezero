@@ -22,7 +22,7 @@ public:
     Console()
         : Node("graph_console"),
           resolv_cli_(this),
-          sub_(this, "graph", boost::bind(&Console::onGraphChanged, this, _1))
+          sub_(this, "graph", &Console::onGraphChanged, this)
     {
     }
 
@@ -50,10 +50,8 @@ public:
         }
     }
 
-    void onGraphChanged(const std::string &msg)
+    void onGraphChanged(const b0::message::Graph &graph)
     {
-        b0::message::Graph graph;
-        graph.parseFromString(msg);
         printOrDisplayGraph("Graph has changed", graph);
     }
 

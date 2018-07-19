@@ -24,7 +24,7 @@ namespace resolver
 {
 
 ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
-    : ServiceServer(resolver, "resolv", ServiceServer::CallbackWithType(), boost::bind(&Resolver::handle, resolver, _1, _2, _3, _4), true, false),
+    : ServiceServer(resolver, "resolv", &Resolver::handle, resolver, true, false),
       resolver_(resolver)
 {
 }

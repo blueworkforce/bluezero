@@ -24,11 +24,8 @@ public:
         timer->start(100);
     }
 
-    void onGraphChanged(const std::string &msg)
+    void onGraphChanged(const b0::message::Graph &graph)
     {
-        b0::message::Graph graph;
-        graph.parseFromString(msg);
-
         b0::graph::toGraphviz(graph, "graph.gv");
 
         if(b0::graph::renderGraphviz("graph.gv", "graph.png") == 0)
@@ -51,7 +48,7 @@ int main(int argc, char **argv)
 
     GraphConsoleWindow graphConsoleWindow(graphConsoleNode);
 
-    b0::Subscriber logSub(&graphConsoleNode, "graph", boost::bind(&GraphConsoleWindow::onGraphChanged, &graphConsoleWindow, _1));
+    b0::Subscriber logSub(&graphConsoleNode, "graph", &GraphConsoleWindow::onGraphChanged, &graphConsoleWindow);
 
     graphConsoleNode.init();
 

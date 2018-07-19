@@ -21,7 +21,7 @@ namespace logger
 
 Console::Console()
     : Node("logger_console"),
-      sub_(this, "log", boost::bind(&Console::onLogMessage, this, _1)),
+      sub_(this, "log", &Console::onLogMessage, this),
       dummy_logger_(this)
 {
 }
@@ -30,10 +30,8 @@ Console::~Console()
 {
 }
 
-void Console::onLogMessage(const std::string &msg)
+void Console::onLogMessage(const b0::message::LogEntry &entry)
 {
-    b0::message::LogEntry entry;
-    entry.parseFromString(msg);
     LocalLogger::LevelInfo info = dummy_logger_.levelInfo(entry.level);
     std::cout << info.ansiEscape() << "[" << entry.node_name << "] " << info.levelStr << ": " << entry.message << info.ansiReset() << std::endl;
 }

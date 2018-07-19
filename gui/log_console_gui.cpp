@@ -104,11 +104,8 @@ public:
         clipboard->setText(s);
     }
 
-    void onLogEntry(const std::string &msg)
+    void onLogEntry(const b0::message::LogEntry &entry)
     {
-        b0::message::LogEntry entry;
-        entry.parseFromString(msg);
-
         all_entries_.push_back(entry);
         if(!filter(entry))
             addEntry(entry);
@@ -192,7 +189,7 @@ int main(int argc, char **argv)
 
     LogConsoleWindow logConsoleWindow(logConsoleNode);
 
-    b0::Subscriber logSub(&logConsoleNode, "log", boost::bind(&LogConsoleWindow::onLogEntry, &logConsoleWindow, _1));
+    b0::Subscriber logSub(&logConsoleNode, "log", &LogConsoleWindow::onLogEntry, &logConsoleWindow);
 
     logConsoleNode.init();
 

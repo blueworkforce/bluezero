@@ -39,7 +39,7 @@ public:
     /*!
      * Log message event handler
      */
-    virtual void onLogMessage(const std::string &msg);
+    virtual void onLogMessage(const b0::message::LogEntry &msg);
 
 protected:
     //! Subscriber to "log" topic

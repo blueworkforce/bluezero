@@ -7,6 +7,7 @@
 #include <boost/bind.hpp>
 
 #include <b0/socket.h>
+#include <b0/message/message_envelope.h>
 
 namespace b0
 {
@@ -26,36 +27,119 @@ class ServiceServer : public Socket
 public:
     using logger::LogInterface::log;
 
-    //! \cond HIDDEN_SYMBOLS
+    //! \brief Alias for function
+    template<typename T> using function = boost::function<T>;
 
-    // needed to disambiguate the overloaded constructors
-    struct CallbackWithoutType {};
-    struct CallbackWithType {};
-    struct CallbackRawParts {};
+    //! \brief Alias for callback raw without type
+    using CallbackWithoutType = function<void(const std::string&, std::string&)>;
 
-    //! \endcond
+    //! \brief Alias for callback raw with type
+    using CallbackWithType = function<void(const std::string&, const std::string&, std::string&, std::string&)>;
+
+    //! \brief Alias for callback raw message parts
+    using CallbackRawParts = function<void(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&)>;
+
+    //! \brief Alias for callback message class
+    template<class TReq, class TRep> using CallbackTypedMsg = function<void(const TReq&, TRep&)>;
 
     /*!
-     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback
+     * \brief Construct an ServiceServer child of the specified Node, without a callback
      */
-    ServiceServer(Node *node, std::string service_name, boost::function<void(const std::string&, std::string&)> callback = 0, bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, CallbackWithoutType(), callback, managed, notify_graph)
+    ServiceServer(Node *node, std::string service_name, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, CallbackWithoutType{}, managed, notify_graph)
     {}
 
     /*!
-     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw without type)
      */
-    ServiceServer(Node *node, std::string service_name, const CallbackWithoutType &_, boost::function<void(const std::string&, std::string&)> callback, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, std::string service_name, CallbackWithoutType callback, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback (including type argument)
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw with type)
      */
-    ServiceServer(Node *node, std::string service_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&, std::string&, std::string&)> callback, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, std::string service_name, CallbackWithType callback, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief Construct an ServiceServer child of the specified Node, optionally using a boost::function as a callback (raw message parts)
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw message parts)
      */
-    ServiceServer(Node *node, std::string service_name, const CallbackRawParts &_, boost::function<void(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&)> callback, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, std::string service_name, CallbackRawParts callback, bool managed = true, bool notify_graph = true);
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (message class)
+     */
+    template<class TReq, class TRep>
+    ServiceServer(Node *node, std::string service_name, CallbackTypedMsg<TReq, TRep> callback, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name,
+                static_cast<CallbackRawParts>([&, callback](const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts) {
+                    TReq req; TRep rep;
+                    req.parseFromString(reqparts[0].payload);
+                    callback(req, rep);
+                    repparts.resize(1);
+                    rep.serializeToString(repparts[0].payload);
+                    repparts[0].content_type = rep.type();
+                }), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw without type, function ptr)
+     */
+    ServiceServer(Node *node, std::string service_name, void (*callback)(const std::string&, std::string&), bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackWithoutType>(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw with type, function ptr)
+     */
+    ServiceServer(Node *node, std::string service_name, void (*callback)(const std::string&, const std::string&, std::string&, std::string&), bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackWithType>(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw message parts, function ptr)
+     */
+    ServiceServer(Node *node, std::string service_name, void (*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackRawParts>(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (message class, function ptr)
+     */
+    template<class TReq, class TRep>
+    ServiceServer(Node *node, std::string service_name, void (*callback)(const TReq&, TRep&), bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackTypedMsg<TReq, TRep> >(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw without type, method ptr)
+     */
+    template<class T>
+    ServiceServer(Node *node, std::string service_name, void (T::*callback)(const std::string&, std::string&), T *obj, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackWithoutType>(boost::bind(callback, obj, _1, _2)), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw with type, method ptr)
+     */
+    template<class T>
+    ServiceServer(Node *node, std::string service_name, void (T::*callback)(const std::string&, const std::string&, std::string&, std::string&), T *obj, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackWithType>(boost::bind(callback, obj, _1, _2, _3, _4)), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw message parts, method ptr)
+     */
+    template<class T>
+    ServiceServer(Node *node, std::string service_name, void (T::*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackRawParts>(boost::bind(callback, obj, _1, _2)), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (message class, method ptr)
+     */
+    template<class T, class TReq, class TRep>
+    ServiceServer(Node *node, std::string service_name, void (T::*callback)(const TReq&, TRep&), T *obj, bool managed = true, bool notify_graph = true)
+        : ServiceServer(node, service_name, static_cast<CallbackTypedMsg<TReq, TRep> >(boost::bind(callback, obj, _1, _2)), managed, notify_graph)
+    {}
 
     /*!
      * \brief ServiceServer destructor
@@ -117,17 +201,17 @@ protected:
     /*!
      * \brief Callback which will be called when a new message is read from the socket (raw)
      */
-    boost::function<void(const std::string&, std::string&)> callback_;
+    CallbackWithoutType callback_;
 
     /*!
      * \brief Callback which will be called when a new message is read from the socket (raw with type)
      */
-    boost::function<void(const std::string&, const std::string&, std::string&, std::string&)> callback_with_type_;
+    CallbackWithType callback_with_type_;
 
     /*!
      * \brief Callback which will be called when a new message is read from the socket (raw multipart)
      */
-    boost::function<void(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&)> callback_multipart_;
+    CallbackRawParts callback_multipart_;
 };
 
 } // namespace b0

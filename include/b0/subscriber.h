@@ -7,6 +7,7 @@
 #include <boost/bind.hpp>
 
 #include <b0/socket.h>
+#include <b0/message/message_envelope.h>
 
 namespace b0
 {
@@ -32,36 +33,116 @@ class Subscriber : public Socket
 public:
     using logger::LogInterface::log;
 
-    //! \cond HIDDEN_SYMBOLS
+    //! \brief Alias for function
+    template<typename T> using function = boost::function<T>;
 
-    // needed to disambiguate the overloaded constructors
-    struct CallbackWithoutType {};
-    struct CallbackWithType {};
-    struct CallbackRawParts {};
+    //! \brief Alias for callback raw without type
+    using CallbackWithoutType = function<void(const std::string&)>;
 
-    //! \endcond
+    //! \brief Alias for callback raw with type
+    using CallbackWithType = function<void(const std::string&, const std::string&)>;
+
+    //! \brief Alias for callback raw message parts
+    using CallbackRawParts = function<void(const std::vector<b0::message::MessagePart>&)>;
+
+    //! \brief Alias for callback message class
+    template<class TMsg> using CallbackTypedMsg = function<void(const TMsg&)>;
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, optionally using a boost::function as callback
+     * \brief Construct an Subscriber child of the specified Node without a callback
      */
-    Subscriber(Node *node, std::string topic_name, boost::function<void(const std::string&)> callback = 0, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, CallbackWithoutType(), callback, managed, notify_graph)
+    Subscriber(Node *node, std::string topic_name, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, topic_name, CallbackWithoutType{}, managed, notify_graph)
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a boost::function as callback (raw msg)
+     * \brief Construct an Subscriber child of the specified Node, optionally using a function as callback (raw without type)
      */
-    Subscriber(Node *node, std::string topic_name, const CallbackWithoutType &_, boost::function<void(const std::string&)> callback, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, std::string topic_name, CallbackWithoutType callback, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a boost::function as callback (raw msg with type)
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw with type)
      */
-    Subscriber(Node *node, std::string topic_name, const CallbackWithType &_, boost::function<void(const std::string&, const std::string&)> callback, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, std::string topic_name, CallbackWithType callback, bool managed = true, bool notify_graph = true);
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a boost::function as callback (raw multipart)
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw message parts)
      */
-    Subscriber(Node *node, std::string topic_name, const CallbackRawParts &_, boost::function<void(const std::vector<b0::message::MessagePart>&)> callback, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, std::string topic_name, CallbackRawParts callback, bool managed = true, bool notify_graph = true);
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class)
+     */
+    template<class TMsg>
+    Subscriber(Node *node, std::string service_name, CallbackTypedMsg<TMsg> callback, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name,
+                static_cast<CallbackRawParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
+                    TMsg msg;
+                    msg.parseFromString(parts[0].payload);
+                    callback(msg);
+                }), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw without type, function ptr)
+     */
+    Subscriber(Node *node, std::string service_name, void (*callback)(const std::string&), bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackWithoutType>(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw with type, function ptr)
+     */
+    Subscriber(Node *node, std::string service_name, void (*callback)(const std::string&, const std::string&), bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackWithType>(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw message parts, function ptr)
+     */
+    Subscriber(Node *node, std::string service_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackRawParts>(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class, function ptr)
+     */
+    template<class TMsg>
+    Subscriber(Node *node, std::string service_name, void (*callback)(const TMsg&), bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackTypedMsg<TMsg> >(callback), managed, notify_graph)
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw without type, method ptr)
+     */
+    template<class T>
+    Subscriber(Node *node, std::string service_name, void (T::*callback)(const std::string&), T *obj, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackWithoutType>(boost::bind(callback, obj, _1)))
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw with type, method ptr)
+     */
+    template<class T>
+    Subscriber(Node *node, std::string service_name, void (T::*callback)(const std::string&, const std::string&), T *obj, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackWithType>(boost::bind(callback, obj, _1, _2)))
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw message parts, method ptr)
+     */
+    template<class T>
+    Subscriber(Node *node, std::string service_name, void (T::*callback)(const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackWithType>(boost::bind(callback, obj, _1, _2)))
+    {}
+
+    /*!
+     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class, method ptr)
+     */
+    template<class T, class TMsg>
+    Subscriber(Node *node, std::string service_name, void (T::*callback)(const TMsg&), T *obj, bool managed = true, bool notify_graph = true)
+        : Subscriber(node, service_name, static_cast<CallbackTypedMsg<TMsg> >(boost::bind(callback, obj, _1)))
+    {}
 
     /*!
      * \brief Subscriber destructor
@@ -110,17 +191,17 @@ protected:
     /*!
      * \brief Callback which will be called when a new message is read from the socket (raw)
      */
-    boost::function<void(const std::string&)> callback_;
+    CallbackWithoutType callback_;
 
     /*!
      * \brief Callback which will be called when a new message is read from the socket (raw with type)
      */
-    boost::function<void(const std::string&, const std::string&)> callback_with_type_;
+    CallbackWithType callback_with_type_;
 
     /*!
      * \brief Callback which will be called when a new message is read from the socket (raw multipart)
      */
-    boost::function<void(const std::vector<b0::message::MessagePart>&)> callback_multipart_;
+    CallbackRawParts callback_multipart_;
 };
 
 } // namespace b0
