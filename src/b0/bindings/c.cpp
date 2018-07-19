@@ -214,6 +214,11 @@ void * b0_subscriber_read(b0_subscriber *sub, size_t *size)
     return ret;
 }
 
+void b0_subscriber_set_conflate(b0_subscriber *sub, int conflate)
+{
+    reinterpret_cast<b0::Subscriber*>(sub)->setConflate(!!conflate);
+}
+
 b0_service_client * b0_service_client_new_ex(b0_node *node, const char *service_name, int managed, int notify_graph)
 {
     return reinterpret_cast<b0_service_client*>(new b0::ServiceClient(reinterpret_cast<b0::Node*>(node), service_name, managed, notify_graph));
