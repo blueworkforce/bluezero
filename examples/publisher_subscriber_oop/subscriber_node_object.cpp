@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example subscriber_node_object.cpp
+/*! \example publisher_subscriber_oop/subscriber_node_object.cpp
  * This is an example of creating a node by subclassing b0::Node.
  * Useful for overriding some node's behavior.
  */

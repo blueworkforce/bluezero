@@ -5,7 +5,7 @@
 
 #include "msg.h"
 
-/*! \example server_node.cpp
+/*! \example client_server_msg/server_node_msg.cpp
  * This is an example of a simple node with a service server.
  */
 

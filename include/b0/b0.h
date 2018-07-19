@@ -67,31 +67,31 @@
  *
  * You can have multiple publishers and subscribers as well:
  *
- * \ref multi_publisher.cpp "Node with multiple publishers"
+ * \ref publisher_subscriber_multi/multi_publisher.cpp "Node with multiple publishers"
  *
- * \ref multi_subscriber.cpp "Node with multiple subscribers"
+ * \ref publisher_subscriber_multi/multi_subscriber.cpp "Node with multiple subscribers"
  *
  * And following is an example of using it in a more object-oriented way:
  *
- * \ref publisher_node_object.cpp "OOP publisher node"
+ * \ref publisher_subscriber_oop/publisher_node_object.cpp "OOP publisher node"
  *
- * \ref subscriber_node_object.cpp "OOP subscriber node"
+ * \ref publisher_subscriber_oop/subscriber_node_object.cpp "OOP subscriber node"
  *
  * \subsection example_clisrv Services (Client/Server)
  *
  * Example of how to create a simple node with a service client:
  *
- * \include client_node.cpp
+ * \include examples/client_server/client_node.cpp
  *
  * And the corresponding example of a simple node with a service server:
  *
- * \include server_node.cpp
+ * \include examples/client_server/server_node.cpp
  *
  * And the same thing, object-oriented:
  *
- * \ref client_node_object.cpp "OOP client node"
+ * \ref client_server_oop/client_node_object.cpp "OOP client node"
  *
- * \ref server_node_object.cpp "OOP server node"
+ * \ref client_server_oop/server_node_object.cpp "OOP server node"
  *
  *
  * \page remote_nodes Connecting remote nodes

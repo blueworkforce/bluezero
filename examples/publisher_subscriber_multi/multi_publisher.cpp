@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example multi_publisher.cpp
+/*! \example publisher_subscriber_multi/multi_publisher.cpp
  * This is an example of having multiple publishers in one node
  */
 

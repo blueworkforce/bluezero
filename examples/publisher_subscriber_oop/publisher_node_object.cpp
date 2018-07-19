@@ -4,7 +4,7 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 
-/*! \example publisher_node_object.cpp
+/*! \example publisher_subscriber_oop/publisher_node_object.cpp
  * This is an example of creating a node by subclassing b0::Node.
  * Useful for overriding some node's behavior.
  */

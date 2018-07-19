@@ -4,7 +4,7 @@
 #include <string.h>
 #include <b0/bindings/c.h>
 
-/*! \example publisher_node_c.c
+/*! \example publisher_subscriber_c/publisher_node_c.c
  * This is an example of creating a simple node with one publisher
  * using the C API
  */

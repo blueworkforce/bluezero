@@ -4,6 +4,12 @@
 #include <string>
 #include <b0/message/message.h>
 
+/*!
+ * \example publisher_subscriber_msg/msg.h
+ */
+
+//! \cond HIDDEN_SYMBOLS
+
 class MyMsg : public b0::message::Message
 {
 public:
@@ -23,5 +29,7 @@ private:
         fields.map("n", &n);
     }
 };
+
+//! \endcond
 
 #endif // B0__EXAMPLES__PUBLISHER_SUBSCRIBER_MSG__MSG_H__INCLUDED

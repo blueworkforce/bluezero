@@ -5,7 +5,7 @@
 
 #include "msg.h"
 
-/*! \example subscriber_node.cpp
+/*! \example publisher_subscriber_msg/subscriber_node_msg.cpp
  * This is an example of a simple node with one callback-based subscriber
  */
 

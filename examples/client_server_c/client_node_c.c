@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <b0/bindings/c.h>
 
-/*! \example client_node_c.c
+/*! \example client_server_c/client_node_c.c
  * This is an example of a simple node with a service client
  * using the C API
  */

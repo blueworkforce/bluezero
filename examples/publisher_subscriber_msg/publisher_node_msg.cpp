@@ -5,7 +5,7 @@
 
 #include "msg.h"
 
-/*! \example publisher_node.cpp
+/*! \example publisher_subscriber_msg/publisher_node_msg.cpp
  * This is an example of creating a simple node with one publisher
  */
 

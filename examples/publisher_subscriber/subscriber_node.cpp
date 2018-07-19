@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example subscriber_node.cpp
+/*! \example publisher_subscriber/subscriber_node.cpp
  * This is an example of a simple node with one callback-based subscriber
  */
 

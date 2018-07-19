@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example multi_subscriber.cpp
+/*! \example publisher_subscriber_multi/multi_subscriber.cpp
  * This is an example of having multiple subscribers inside one node
  */
 

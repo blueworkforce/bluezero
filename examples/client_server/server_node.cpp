@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example server_node.cpp
+/*! \example client_server/server_node.cpp
  * This is an example of a simple node with a service server.
  */
 

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example client_node_object.cpp
+/*! \example client_server_oop/client_node_object.cpp
  * This is an example of creating a node with a service client by subclassing b0::Node
  */
 

@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <b0/bindings/c.h>
 
-/*! \example subscriber_node_c.c
+/*! \example publisher_subscriber_c/subscriber_node_c.c
  * This is an example of a simple node with one callback-based subscriber
  * using the C API
  */

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-/*! \example subscriber_node_object_manual.cpp
+/*! \example publisher_subscriber/subscriber_node_object_manual.cpp
  * This is an advanced usage example of manually reading from a subscriber
  */
 
