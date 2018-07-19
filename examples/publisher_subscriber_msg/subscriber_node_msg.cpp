@@ -1,8 +1,9 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
-#include <b0/message/log_entry.h>
 
 #include <iostream>
+
+#include "msg.h"
 
 /*! \example subscriber_node.cpp
  * This is an example of a simple node with one callback-based subscriber
@@ -14,9 +15,9 @@
  * This callback will be called whenever a message is received on any
  * of the subscribed topics
  */
-void callback(const b0::message::LogEntry &msg)
+void callback(const MyMsg &msg)
 {
-    std::cout << "Received: " << msg.message << std::endl;
+    std::cout << "Received: " << msg.greeting << msg.n << std::endl;
 }
 
 int main(int argc, char **argv)

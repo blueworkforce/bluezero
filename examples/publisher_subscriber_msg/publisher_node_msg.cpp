@@ -1,8 +1,9 @@
 #include <b0/node.h>
 #include <b0/publisher.h>
-#include <b0/message/log_entry.h>
 
 #include <iostream>
+
+#include "msg.h"
 
 /*! \example publisher_node.cpp
  * This is an example of creating a simple node with one publisher
@@ -38,14 +39,15 @@ int main(int argc, char **argv)
         /*
          * Create a message to send
          */
-        b0::message::LogEntry e;
-        e.message = "Hello, world!";
+        MyMsg msg;
+        msg.greeting = "Hello, world!";
+        msg.n = 6345;
 
         /*
          * Send the message on the "A" topic
          */
-        std::cout << "Sending: " << e.message << std::endl;
-        pub.publish(e);
+        std::cout << "Sending: " << msg.greeting << msg.n << std::endl;
+        pub.publish(msg);
 
         /*
          * Wait some time
