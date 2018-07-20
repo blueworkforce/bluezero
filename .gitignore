@@ -1,6 +1,6 @@
 .DS_Store
 .clang_complete
-build
+/build
 *.pyc
 .*.swp
-docs
+/docs
