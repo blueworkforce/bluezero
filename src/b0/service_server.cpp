@@ -6,7 +6,7 @@
 namespace b0
 {
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackWithoutType callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRaw callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),
@@ -14,7 +14,7 @@ ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackWitho
 {
 }
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackWithType callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRawType callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),
@@ -22,7 +22,7 @@ ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackWithT
 {
 }
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRawParts callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackParts callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),

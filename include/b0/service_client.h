@@ -78,6 +78,12 @@ public:
      */
     virtual void call(const b0::message::Message &req, b0::message::Message &rep);
 
+    /*!
+     * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
+     * \sa ServiceServer::read(), ServiceServer::write()
+     */
+    virtual void call(const b0::message::Message &req, const std::vector<b0::message::MessagePart> &reqparts, b0::message::Message &rep, std::vector<b0::message::MessagePart> &repparts);
+
 protected:
     /*!
      * \brief Perform service address resolution

@@ -6,7 +6,7 @@
 namespace b0
 {
 
-Subscriber::Subscriber(Node *node, std::string topic_name, CallbackWithoutType callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRaw callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_(callback)
@@ -14,7 +14,7 @@ Subscriber::Subscriber(Node *node, std::string topic_name, CallbackWithoutType c
     setHasHeader(true);
 }
 
-Subscriber::Subscriber(Node *node, std::string topic_name, CallbackWithType callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRawType callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_with_type_(callback)
@@ -22,7 +22,7 @@ Subscriber::Subscriber(Node *node, std::string topic_name, CallbackWithType call
     setHasHeader(true);
 }
 
-Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRawParts callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, std::string topic_name, CallbackParts callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_multipart_(callback)

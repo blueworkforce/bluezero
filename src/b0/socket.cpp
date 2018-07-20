@@ -183,6 +183,15 @@ void Socket::readMsg(b0::message::Message &msg)
     msg.parseFromString(str);
 }
 
+void Socket::readMsg(b0::message::Message &msg, std::vector<b0::message::MessagePart> &parts)
+{
+    readRaw(parts);
+    if(parts[0].content_type != msg.type())
+        throw exception::EnvelopeDecodeError();
+    msg.parseFromString(parts[0].payload);
+    parts.erase(parts.begin());
+}
+
 bool Socket::poll(long timeout)
 {
     zmq::socket_t &socket_ = private_->socket_;
@@ -237,6 +246,18 @@ void Socket::writeMsg(const b0::message::Message &msg)
     type = msg.type();
     msg.serializeToString(str);
     writeRaw(str, type);
+}
+
+void Socket::writeMsg(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts)
+{
+    std::vector<b0::message::MessagePart> parts1(parts);
+    b0::message::MessagePart part0;
+    msg.serializeToString(part0.payload);
+    part0.content_type = msg.type();
+    part0.compression_algorithm = compression_algorithm_;
+    part0.compression_level = compression_level_;
+    parts1.insert(parts1.begin(), part0);
+    writeRaw(parts1);
 }
 
 void Socket::setCompression(std::string algorithm, int level)

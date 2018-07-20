@@ -69,6 +69,11 @@ public:
      */
     virtual void publish(const b0::message::Message &msg);
 
+    /*!
+     * \brief Publish a message and any additional raw parts
+     */
+    virtual void publish(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts);
+
 protected:
     /*!
      * \brief Connect to the remote address

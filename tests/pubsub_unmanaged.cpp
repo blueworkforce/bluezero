@@ -25,7 +25,7 @@ void sub_thread()
 {
     b0::Node node("sub");
     node.init();
-    b0::Subscriber sub(&node, "topic1", b0::Subscriber::CallbackWithoutType{}, false);
+    b0::Subscriber sub(&node, "topic1", false);
     sub.init();
     std::string m;
     sub.readRaw(m);

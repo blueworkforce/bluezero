@@ -68,6 +68,12 @@ void ServiceClient::call(const b0::message::Message &req, b0::message::Message &
     readMsg(rep);
 }
 
+void ServiceClient::call(const b0::message::Message &req, const std::vector<b0::message::MessagePart> &reqparts, b0::message::Message &rep, std::vector<b0::message::MessagePart> &repparts)
+{
+    writeMsg(req, reqparts);
+    readMsg(rep, repparts);
+}
+
 void ServiceClient::resolve()
 {
     if(!remote_addr_.empty())

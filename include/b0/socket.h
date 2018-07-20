@@ -142,6 +142,11 @@ public:
     virtual void readMsg(b0::message::Message &msg);
 
     /*!
+     * \brief Read a Message and any other part from the underlying ZeroMQ socket
+     */
+    virtual void readMsg(b0::message::Message &msg, std::vector<b0::message::MessagePart> &parts);
+
+    /*!
      * \brief Poll for messages. If timeout is 0 return immediately, otherwise wait
      *        for the specified amount of milliseconds.
      */
@@ -166,6 +171,11 @@ public:
      * \brief Write a Message to the underlying ZeroMQ socket
      */
     virtual void writeMsg(const b0::message::Message &msg);
+
+    /*!
+     * \brief Write a Message and any other parts to the underlying ZeroMQ socket
+     */
+    virtual void writeMsg(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts);
 
 public:
     /*!
