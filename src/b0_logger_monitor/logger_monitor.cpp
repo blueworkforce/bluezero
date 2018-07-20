@@ -16,7 +16,7 @@ class Console : public Node
 {
 public:
     Console()
-        : Node("logger_console"),
+        : Node("logger_monitor"),
           sub_(this, "log", &Console::onLogMessage, this),
           dummy_logger_(this)
     {
@@ -24,11 +24,6 @@ public:
 
     ~Console()
     {
-    }
-
-    std::string getName() const
-    {
-        return "console";
     }
 
     void onLogMessage(const b0::message::LogEntry &entry)

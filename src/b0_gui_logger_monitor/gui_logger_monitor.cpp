@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    b0::Node logConsoleNode("log_console_gui");
+    b0::Node logConsoleNode("gui_logger_monitor");
 
     LogConsoleWindow logConsoleWindow(logConsoleNode);
 

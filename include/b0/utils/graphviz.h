@@ -1,5 +1,5 @@
-#ifndef B0__GRAPH__GRAPHVIZ_H
-#define B0__GRAPH__GRAPHVIZ_H
+#ifndef B0__UTILS__GRAPHVIZ_H
+#define B0__UTILS__GRAPHVIZ_H
 
 #include <string>
 
@@ -19,4 +19,4 @@ int renderGraphviz(std::string input, std::string output);
 
 } // namespace b0
 
-#endif // B0__GRAPH__GRAPHVIZ_H
+#endif // B0__UTILS__GRAPHVIZ_H

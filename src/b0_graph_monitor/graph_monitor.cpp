@@ -3,7 +3,7 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
 #include <b0/resolver/client.h>
-#include <b0/graph/graphviz.h>
+#include <b0/utils/graphviz.h>
 #include <b0/config.h>
 #include <b0/utils/env.h>
 #ifdef HAVE_BOOST_PROCESS
@@ -20,7 +20,7 @@ class Console : public b0::Node
 {
 public:
     Console()
-        : Node("graph_console"),
+        : Node("graph_monitor"),
           resolv_cli_(this),
           sub_(this, "graph", &Console::onGraphChanged, this)
     {

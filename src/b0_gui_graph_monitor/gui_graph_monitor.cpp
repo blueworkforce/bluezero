@@ -1,7 +1,7 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
 #include <b0/message/graph.h>
-#include <b0/graph/graphviz.h>
+#include <b0/utils/graphviz.h>
 
 #include <QApplication>
 #include <QMainWindow>
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    b0::Node graphConsoleNode("graph_console_gui");
+    b0::Node graphConsoleNode("gui_graph_monitor");
 
     GraphConsoleWindow graphConsoleWindow(graphConsoleNode);
 

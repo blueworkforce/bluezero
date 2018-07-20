@@ -190,13 +190,13 @@ add_library(
     src/b0/message/node_topic_request.cpp
     src/b0/message/node_service_request.cpp
     src/b0/message/announce_node_request.cpp
-    src/b0/graph/graphviz.cpp
     src/b0/logger/logger.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
     src/b0/utils/env.cpp
     src/b0/utils/thread_name.cpp
     src/b0/utils/time_sync.cpp
+    src/b0/utils/graphviz.cpp
     ${B0_EXTRA_SOURCES}
 )
 target_link_libraries(b0 jsoncpp ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
@@ -226,14 +226,41 @@ set_target_properties(b0
     "
 )
 
-add_executable(b0_resolver src/b0/resolver/resolver.cpp src/b0/resolver/resolver_main.cpp)
+add_executable(
+    b0_resolver
+    src/b0_resolver/resolver_main.cpp
+)
 target_link_libraries(b0_resolver b0)
 
-add_executable(b0_logger_console src/b0/logger/console.cpp)
-target_link_libraries(b0_logger_console b0)
+add_executable(
+    b0_logger_monitor
+    src/b0_logger_monitor/logger_monitor.cpp
+)
+target_link_libraries(b0_logger_monitor b0)
 
-add_executable(b0_graph_console src/b0/graph/console.cpp)
-target_link_libraries(b0_graph_console b0)
+add_executable(
+    b0_graph_monitor
+    src/b0_graph_monitor/graph_monitor.cpp
+)
+target_link_libraries(b0_graph_monitor b0)
+
+if(BUILD_GUI)
+    find_package(Qt5Core REQUIRED)
+    find_package(Qt5Gui REQUIRED)
+    find_package(Qt5Widgets REQUIRED)
+
+    add_executable(
+        b0_gui_logger_monitor
+        src/b0_gui_logger_monitor/gui_logger_monitor.cpp
+    )
+    target_link_libraries(b0_gui_logger_monitor b0 Qt5::Core Qt5::Gui Qt5::Widgets)
+
+    add_executable(
+        b0_gui_graph_monitor
+        src/b0_gui_graph_monitor/gui_graph_monitor.cpp
+    )
+    target_link_libraries(b0_gui_graph_monitor b0 Qt5::Core Qt5::Gui Qt5::Widgets)
+endif()
 
 install(TARGETS b0
     RUNTIME DESTINATION bin
@@ -249,10 +276,6 @@ endif()
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
-endif()
-
-if(BUILD_GUI)
-    add_subdirectory(gui)
 endif()
 
 if(BINDINGS_BOOST_PYTHON)

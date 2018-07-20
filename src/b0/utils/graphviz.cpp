@@ -1,4 +1,4 @@
-#include <b0/graph/graphviz.h>
+#include <b0/utils/graphviz.h>
 #include <b0/config.h>
 
 #include <cstdlib>
