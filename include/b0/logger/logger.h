@@ -33,7 +33,7 @@ public:
     /*!
      * Log a message to the local console logger (i.e. using std::cout)
      */
-    virtual void log(LogLevel level, std::string message) const override;
+    virtual void log(LogLevel level, const std::string &message) const override;
 
 private:
     struct LevelInfo
@@ -96,15 +96,15 @@ public:
     /*!
      * Connect the underlying ZeroMQ PUB socket to the given address
      */
-    void connect(std::string addr);
+    void connect(const std::string &addr);
 
-    void log(LogLevel level, std::string message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
 protected:
     /*!
      * Log a message to the remote logger (i.e. using the log publisher)
      */
-    virtual void remoteLog(LogLevel level, std::string message) const;
+    virtual void remoteLog(LogLevel level, const std::string &message) const;
 
 private:
     mutable std::unique_ptr<LoggerPrivate> private_;

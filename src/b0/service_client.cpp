@@ -6,7 +6,7 @@
 namespace b0
 {
 
-ServiceClient::ServiceClient(Node *node, std::string service_name, bool managed, bool notify_graph)
+ServiceClient::ServiceClient(Node *node, const std::string &service_name, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REQ, service_name, managed),
       notify_graph_(notify_graph)
 {
@@ -16,7 +16,7 @@ ServiceClient::~ServiceClient()
 {
 }
 
-void ServiceClient::log(LogLevel level, std::string message) const
+void ServiceClient::log(LogLevel level, const std::string &message) const
 {
     boost::format fmt("ServiceClient(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());

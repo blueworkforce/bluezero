@@ -26,7 +26,7 @@ struct SocketPrivate
     zmq::socket_t socket_;
 };
 
-Socket::Socket(Node *node, int type, std::string name, bool managed)
+Socket::Socket(Node *node, int type, const std::string &name, bool managed)
     : private_(new SocketPrivate(node, *reinterpret_cast<zmq::context_t*>(node->getContext()), type)),
       node_(*node),
       name_(name),
@@ -54,13 +54,13 @@ void Socket::setHasHeader(bool has_header)
     has_header_ = has_header;
 }
 
-void Socket::log(LogLevel level, std::string message) const
+void Socket::log(LogLevel level, const std::string &message) const
 {
     if(boost::lexical_cast<std::string>(boost::this_thread::get_id()) == node_.threadID())
         node_.log(level, message);
 }
 
-void Socket::setRemoteAddress(std::string addr)
+void Socket::setRemoteAddress(const std::string &addr)
 {
     remote_addr_ = addr;
 }
@@ -260,7 +260,7 @@ void Socket::writeMsg(const b0::message::Message &msg, const std::vector<b0::mes
     writeRaw(parts1);
 }
 
-void Socket::setCompression(std::string algorithm, int level)
+void Socket::setCompression(const std::string &algorithm, int level)
 {
     compression_algorithm_ = algorithm;
     compression_level_ = level;
@@ -346,25 +346,25 @@ void Socket::setWriteHWM(int n)
     setIntOption(ZMQ_SNDHWM, n);
 }
 
-void Socket::connect(std::string const &addr)
+void Socket::connect(const std::string &addr)
 {
     zmq::socket_t &socket_ = private_->socket_;
     socket_.connect(addr);
 }
 
-void Socket::disconnect(std::string const &addr)
+void Socket::disconnect(const std::string &addr)
 {
     zmq::socket_t &socket_ = private_->socket_;
     socket_.disconnect(addr);
 }
 
-void Socket::bind(std::string const &addr)
+void Socket::bind(const std::string &addr)
 {
     zmq::socket_t &socket_ = private_->socket_;
     socket_.bind(addr);
 }
 
-void Socket::unbind(std::string const &addr)
+void Socket::unbind(const std::string &addr)
 {
     zmq::socket_t &socket_ = private_->socket_;
     socket_.unbind(addr);

@@ -6,8 +6,8 @@
 namespace b0
 {
 
-Publisher::Publisher(Node *node, std::string topic, bool managed, bool notify_graph)
-    : Socket(node, ZMQ_PUB, topic, managed),
+Publisher::Publisher(Node *node, const std::string &topic_name, bool managed, bool notify_graph)
+    : Socket(node, ZMQ_PUB, topic_name, managed),
       notify_graph_(notify_graph)
 {
     setHasHeader(true);
@@ -17,7 +17,7 @@ Publisher::~Publisher()
 {
 }
 
-void Publisher::log(LogLevel level, std::string message) const
+void Publisher::log(LogLevel level, const std::string &message) const
 {
     boost::format fmt("Publisher(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());

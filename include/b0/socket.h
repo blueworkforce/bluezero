@@ -36,7 +36,7 @@ public:
     /*!
      * \brief Construct a Socket
      */
-    Socket(Node *node, int type, std::string name, bool managed = true);
+    Socket(Node *node, int type, const std::string &name, bool managed = true);
 
     /*!
      * \brief Socket destructor
@@ -52,7 +52,7 @@ public:
     /*!
      * \brief Log a message to the default logger of this node
      */
-    void log(LogLevel level, std::string message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization (resolve name, connect socket, set subscription)
@@ -72,7 +72,7 @@ public:
     /*!
      * \brief Set the remote address the socket will connect to
      */
-    void setRemoteAddress(std::string addr);
+    void setRemoteAddress(const std::string &addr);
 
     /*!
      * \brief Return the name of the socket bus
@@ -185,7 +185,7 @@ public:
      * This has no effect on received messages, which will be automatically decompressed
      * using the algorithm specified in the message envelope.
      */
-    void setCompression(std::string algorithm, int level = -1);
+    void setCompression(const std::string &algorithm, int level = -1);
 
 private:
     //! If set, payloads will be encoded using the specified compression algorithm
@@ -247,16 +247,16 @@ public:
 
 protected:
     //! Wrapper to zmq::socket_t::connect
-    void connect(std::string const &addr);
+    void connect(const std::string &addr);
 
     //! Wrapper to zmq::socket_t::disconnect
-    void disconnect(std::string const &addr);
+    void disconnect(const std::string &addr);
 
     //! Wrapper to zmq::socket_t::bind
-    void bind(std::string const &addr);
+    void bind(const std::string &addr);
 
     //! Wrapper to zmq::socket_t::unbind
-    void unbind(std::string const &addr);
+    void unbind(const std::string &addr);
 
     //! Wrapper to zmq::socket_t::setsockopt
     void setsockopt(int option, const void *optval, size_t optvallen);

@@ -27,7 +27,7 @@ public:
     /*!
      * \brief Construct an Publisher child of the specified Node
      */
-    Publisher(Node *node, std::string topic, bool managed = true, bool notify_graph = true);
+    Publisher(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Publisher destructor
@@ -37,7 +37,7 @@ public:
     /*!
      * \brief Log a message using node's logger, prepending this publisher informations
      */
-    void log(LogLevel level, std::string message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify

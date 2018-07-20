@@ -39,7 +39,7 @@ public:
     /*!
      * \brief Log a message to the remote logger, with a specified level
      */
-    virtual void log(LogLevel level, std::string message) const = 0;
+    virtual void log(LogLevel level, const std::string &message) const = 0;
 
     /*!
      * \brief Log a message using a format string

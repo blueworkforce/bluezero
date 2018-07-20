@@ -27,7 +27,7 @@ public:
     /*!
      * \brief Construct an ServiceClient child of the specified Node
      */
-    ServiceClient(Node *node, std::string service_name, bool managed = true, bool notify_graph = true);
+    ServiceClient(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief ServiceClient destructor
@@ -37,7 +37,7 @@ public:
     /*!
      * \brief Log a message using node's logger, prepending this service client informations
      */
-    void log(LogLevel level, std::string message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify

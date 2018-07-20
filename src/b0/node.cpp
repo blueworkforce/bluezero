@@ -47,7 +47,7 @@ struct NodePrivate2
     resolver::Client resolv_cli_;
 };
 
-Node::Node(std::string nodeName)
+Node::Node(const std::string &nodeName)
     : private_(new NodePrivate(this, 1)),
       private2_(new NodePrivate2(this)),
       name_(nodeName),
@@ -161,7 +161,7 @@ void Node::cleanup()
     state_ = NodeState::Terminated;
 }
 
-void Node::log(LogLevel level, std::string message) const
+void Node::log(LogLevel level, const std::string &message) const
 {
     if(boost::this_thread::get_id() != thread_id_)
         throw exception::Exception("cannot call Node::log() from another thread");
@@ -250,25 +250,25 @@ int Node::freeTCPPort()
     return socket.local_endpoint().port();
 }
 
-void Node::notifyTopic(std::string topic_name, bool reverse, bool active)
+void Node::notifyTopic(const std::string &topic_name, bool reverse, bool active)
 {
     resolver::Client &resolv_cli_ = private2_->resolv_cli_;
     resolv_cli_.notifyTopic(topic_name, reverse, active);
 }
 
-void Node::notifyService(std::string service_name, bool reverse, bool active)
+void Node::notifyService(const std::string &service_name, bool reverse, bool active)
 {
     resolver::Client &resolv_cli_ = private2_->resolv_cli_;
     resolv_cli_.notifyService(service_name, reverse, active);
 }
 
-void Node::announceService(std::string service_name, std::string addr)
+void Node::announceService(const std::string &service_name, const std::string &addr)
 {
     resolver::Client &resolv_cli_ = private2_->resolv_cli_;
     resolv_cli_.announceService(service_name, addr);
 }
 
-void Node::resolveService(std::string service_name, std::string &addr)
+void Node::resolveService(const std::string &service_name, std::string &addr)
 {
     resolver::Client &resolv_cli_ = private2_->resolv_cli_;
     resolv_cli_.resolveService(service_name, addr);

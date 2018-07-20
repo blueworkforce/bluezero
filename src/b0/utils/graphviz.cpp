@@ -16,14 +16,13 @@ namespace b0
 namespace graph
 {
 
-static std::string id(std::string t, std::string name)
+static std::string id(const std::string &t, const std::string &name)
 {
     boost::format fmt("%s_%s");
-    boost::replace_all(name, "-", "_");
-    return (fmt % t % name).str();
+    return (fmt % t % boost::replace_all_copy(name, "-", "_")).str();
 }
 
-void toGraphviz(const b0::message::Graph &graph, std::string filename, std::string outline_color, std::string topic_color, std::string service_color)
+void toGraphviz(const b0::message::Graph &graph, const std::string &filename, const std::string &outline_color, const std::string &topic_color, const std::string &service_color)
 {
     std::ofstream f;
     f.open(filename);
@@ -70,7 +69,7 @@ void toGraphviz(const b0::message::Graph &graph, std::string filename, std::stri
     f.close();
 }
 
-int renderGraphviz(std::string input, std::string output)
+int renderGraphviz(const std::string &input, const std::string &output)
 {
 #ifdef HAVE_BOOST_PROCESS
     boost::process::child c(boost::process::search_path("neato"), "-Tpng", boost::process::std_out > output, boost::process::std_in < input);

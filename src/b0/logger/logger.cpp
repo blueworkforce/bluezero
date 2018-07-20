@@ -46,7 +46,7 @@ LocalLogger::~LocalLogger()
 {
 }
 
-void LocalLogger::log(LogLevel level, std::string message) const
+void LocalLogger::log(LogLevel level, const std::string &message) const
 {
     if(level < outputLevel_) return;
 
@@ -115,20 +115,20 @@ Logger::~Logger()
 {
 }
 
-void Logger::connect(std::string addr)
+void Logger::connect(const std::string &addr)
 {
     private_->pub_.setRemoteAddress(addr);
     private_->pub_.init();
 }
 
-void Logger::log(LogLevel level, std::string message) const
+void Logger::log(LogLevel level, const std::string &message) const
 {
     LocalLogger::log(level, message);
 
     remoteLog(level, message);
 }
 
-void Logger::remoteLog(LogLevel level, std::string message) const
+void Logger::remoteLog(LogLevel level, const std::string &message) const
 {
     std::string name = node_.getName();
 

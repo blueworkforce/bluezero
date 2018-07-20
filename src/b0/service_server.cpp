@@ -6,7 +6,7 @@
 namespace b0
 {
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRaw callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, CallbackRaw callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),
@@ -14,7 +14,7 @@ ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRaw c
 {
 }
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRawType callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, CallbackRawType callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),
@@ -22,7 +22,7 @@ ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackRawTy
 {
 }
 
-ServiceServer::ServiceServer(Node *node, std::string service_name, CallbackParts callback, bool managed, bool notify_graph)
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, CallbackParts callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
       bind_addr_(""),
@@ -34,7 +34,7 @@ ServiceServer::~ServiceServer()
 {
 }
 
-void ServiceServer::log(LogLevel level, std::string message) const
+void ServiceServer::log(LogLevel level, const std::string &message) const
 {
     boost::format fmt("ServiceServer(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
@@ -114,7 +114,7 @@ void ServiceServer::announce()
     node_.announceService(name_, remote_addr_);
 }
 
-void ServiceServer::bind(std::string address)
+void ServiceServer::bind(const std::string &address)
 {
     Socket::bind(address);
     log(debug, "Bound to additional address %s", address);

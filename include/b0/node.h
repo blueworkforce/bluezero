@@ -55,7 +55,7 @@ public:
      *
      * The heartbeat thread will be started to let resolver track the online status of this node.
      */
-    Node(std::string nodeName = "");
+    Node(const std::string &nodeName = "");
 
     /*!
      * \brief Destruct this node
@@ -124,7 +124,7 @@ public:
     /*!
      * \brief Log a message to the default logger of this node
      */
-    void log(LogLevel level, std::string message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Get the name assigned by resolver to this node
@@ -186,22 +186,22 @@ public:
     /*!
      * \brief Notify topic publishing/subscription start or end
      */
-    virtual void notifyTopic(std::string topic_name, bool reverse, bool active);
+    virtual void notifyTopic(const std::string &topic_name, bool reverse, bool active);
 
     /*!
      * \brief Notify service advertising/use start or end
      */
-    virtual void notifyService(std::string service_name, bool reverse, bool active);
+    virtual void notifyService(const std::string &service_name, bool reverse, bool active);
 
     /*!
      * \brief Announce service address
      */
-    virtual void announceService(std::string service_name, std::string addr);
+    virtual void announceService(const std::string &service_name, const std::string &addr);
 
     /*!
      * \brief Resolve service address by name
      */
-    virtual void resolveService(std::string service_name, std::string &addr);
+    virtual void resolveService(const std::string &service_name, std::string &addr);
 
     /*!
      * \brief Set the timeout for the announce phase. See b0::resolver::Client::setAnnounceTimeout()

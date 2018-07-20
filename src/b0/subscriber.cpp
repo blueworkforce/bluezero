@@ -6,7 +6,7 @@
 namespace b0
 {
 
-Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRaw callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackRaw callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_(callback)
@@ -14,7 +14,7 @@ Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRaw callback,
     setHasHeader(true);
 }
 
-Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRawType callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackRawType callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_with_type_(callback)
@@ -22,7 +22,7 @@ Subscriber::Subscriber(Node *node, std::string topic_name, CallbackRawType callb
     setHasHeader(true);
 }
 
-Subscriber::Subscriber(Node *node, std::string topic_name, CallbackParts callback, bool managed, bool notify_graph)
+Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackParts callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_multipart_(callback)
@@ -34,7 +34,7 @@ Subscriber::~Subscriber()
 {
 }
 
-void Subscriber::log(LogLevel level, std::string message) const
+void Subscriber::log(LogLevel level, const std::string &message) const
 {
     boost::format fmt("Subscriber(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
