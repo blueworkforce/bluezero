@@ -41,7 +41,33 @@ struct MessagePart
 };
 
 /*!
- * \brief A message envelope used to wrap (optionally: compress) the real message payload
+ * \brief A message envelope used to wrap (optionally: compress) the real message payload(s)
+ *
+ * A MessageEnvelope consists of a sequence of headers (one per line) followed by
+ * a blank line and by a sequence of payloads.
+ *
+ * The `Part-count` header tells how many MessagePart are contained in the message.
+ *
+ * Each MessagePart has its own `Content-length` and `Content-type` headers, and can be
+ * independently compressed.
+ *
+ * Example message:
+ *
+ *     Header: myTopic
+ *     Part-count: 2
+ *     Content-length-0: 5
+ *     Content-type-0: MessageA
+ *     Content-length-1: 10
+ *     Content-type-1: MessageB
+ *     
+ *     aaaaabbbbbbbbbb
+ *
+ * The only mandatory fields are `Part-count` and `Content-length-#` which are required
+ * to disassemble the individual message parts. The payload size (15) is the sum of the
+ * individual payloads.
+ *
+ * If the `Header` header is present (used with Publisher and Subscriber sockets) it must
+ * be the first header.
  */
 class MessageEnvelope final
 {
