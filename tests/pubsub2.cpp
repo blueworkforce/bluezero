@@ -18,13 +18,16 @@ void pub_thread()
     b0::Node node("pub2");
     b0::Publisher pub(&node, "topic2");
     node.init();
-    std::string m = "foo";
-    for(;;) pub.publish(m);
+    std::vector<b0::message::MessagePart> parts;
+    parts.resize(2);
+    parts[0].payload = "foo";
+    parts[1].payload = "bar";
+    for(;;) pub.publish(parts);
 }
 
-void sub_callback(const std::string &msg)
+void sub_callback(const std::vector<b0::message::MessagePart> &parts)
 {
-    exit(msg == "foo" ? 0 : 1);
+    exit(parts.size() == 2 && parts[0].payload == "foo" && parts[1].payload == "bar" ? 0 : 1);
 }
 
 void sub_thread()
