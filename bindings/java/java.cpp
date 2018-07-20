@@ -58,6 +58,11 @@ JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0PublisherPublish(JNIEnv *env,
     env->ReleaseByteArrayElements(data,bufferPtr,0);
 }
 
+JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0PublisherSetOption(JNIEnv *env, jobject obj, jlong pub, jlong option, jlong value)
+{
+    b0_publisher_set_option((b0_publisher*)pub, option, value);
+}
+
 JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0SubscriberNewEx(JNIEnv *env, jobject obj, jlong node, jstring topicName, jint managed, jint notifyGraph)
 {
     const char *_topicName = env->GetStringUTFChars(topicName, 0);
@@ -92,6 +97,11 @@ JNIEXPORT jbyteArray JNICALL Java_coppelia_b0RemoteApi_b0SubscriberRead(JNIEnv *
     return(jarray);
 }
 
+JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0SubscriberSetOption(JNIEnv *env, jobject obj, jlong sub, jlong option, jlong value)
+{
+    b0_subscriber_set_option((b0_subscriber*)sub, option, value);
+}
+
 JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0ServiceClientNewEx(JNIEnv *env, jobject obj, jlong node, jstring serviceName, jint managed, jint notifyGraph)
 {
     const char *_serviceName = env->GetStringUTFChars(serviceName, 0);
@@ -120,6 +130,11 @@ JNIEXPORT jbyteArray JNICALL Java_coppelia_b0RemoteApi_b0ServiceClientCall(JNIEn
     b0_buffer_delete(outData);
     env->ReleaseByteArrayElements(data, inBufferPtr, 0);
     return(jarray);
+}
+
+JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0ServiceClientSetOption(JNIEnv *env, jobject obj, jlong cli, jlong option, jlong value)
+{
+    b0_service_client_set_option((b0_service_client*)cli, option, value);
 }
 
 } // extern "C"
