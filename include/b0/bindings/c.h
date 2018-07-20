@@ -76,7 +76,6 @@ void b0_subscriber_log(b0_subscriber *sub, int level, const char *message);
 int b0_subscriber_poll(b0_subscriber *sub, long timeout);
 void * b0_subscriber_read(b0_subscriber *sub, size_t *size);
 void b0_subscriber_set_option(b0_subscriber *sub, int option, int value);
-void b0_subscriber_set_conflate(b0_subscriber *sub, int conflate);
 
 b0_service_client * b0_service_client_new_ex(b0_node *node, const char *service_name, int managed, int notify_graph);
 b0_service_client * b0_service_client_new(b0_node *node, const char *service_name);
