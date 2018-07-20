@@ -98,10 +98,12 @@ void MessageEnvelope::serializeToString(std::string &s) const
 
     ss << "Part-count: " << parts.size() << std::endl;
     std::vector<std::string> compressed_payloads;
+    int total_length = 0;
     for(size_t i = 0; i < parts.size(); i++)
     {
         std::string compressed_payload = b0::compress::compress(parts[i].compression_algorithm, parts[i].payload, parts[i].compression_level);
         compressed_payloads.push_back(compressed_payload);
+        total_length += compressed_payload.size();
 
         ss << "Content-length-" << i << ": " << compressed_payload.size() << std::endl;
         if(parts[i].content_type != "")
@@ -114,6 +116,7 @@ void MessageEnvelope::serializeToString(std::string &s) const
                 ss << "Compression-level-" << i << ": " << parts[i].compression_level << std::endl;
         }
     }
+    ss << "Content-length: " << total_length << std::endl;
 
     for(auto &pair : headers)
         if(pair.first != "Header")

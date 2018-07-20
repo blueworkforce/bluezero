@@ -53,12 +53,13 @@ struct MessagePart
  *     Content-type-0: MessageA
  *     Content-length-1: 10
  *     Content-type-1: MessageB
+ *     Content-length: 15
  *     
  *     aaaaabbbbbbbbbb
  *
  * The only mandatory fields are `Part-count` and `Content-length-#` which are required
  * to disassemble the individual message parts. The payload size (15) is the sum of the
- * individual payloads.
+ * individual (compressed) payloads.
  *
  * If the `Header` header is present (used with Publisher and Subscriber sockets) it must
  * be the first header.
