@@ -1,4 +1,39 @@
 #include <b0/b0.h>
+extern "C"
+{
+#include <b0/bindings/c.h>
+}
+
+static void b0_socket_set_option(b0::Socket *psock, int option, int value)
+{
+    switch(option)
+    {
+    case B0_SOCK_OPT_LINGERPERIOD:
+        psock->setLingerPeriod(value);
+        break;
+    case B0_SOCK_OPT_BACKLOG:
+        psock->setBacklog(value);
+        break;
+    case B0_SOCK_OPT_READTIMEOUT:
+        psock->setReadTimeout(value);
+        break;
+    case B0_SOCK_OPT_WRITETIMEOUT:
+        psock->setWriteTimeout(value);
+        break;
+    case B0_SOCK_OPT_IMMEDIATE:
+        psock->setImmediate(value);
+        break;
+    case B0_SOCK_OPT_CONFLATE:
+        psock->setConflate(value);
+        break;
+    case B0_SOCK_OPT_READHWM:
+        psock->setReadHWM(value);
+        break;
+    case B0_SOCK_OPT_WRITEHWM:
+        psock->setWriteHWM(value);
+        break;
+    }
+}
 
 extern "C"
 {
@@ -151,6 +186,11 @@ void b0_publisher_log(b0_publisher *pub, int level, const char *message)
     reinterpret_cast<b0::Publisher*>(pub)->log(log_level_from_int(level), message);
 }
 
+void b0_publisher_set_option(b0_publisher *pub, int option, int value)
+{
+    b0_socket_set_option(reinterpret_cast<b0::Publisher*>(pub), option, value);
+}
+
 void b0_subscriber_callback_wrapper(const std::string &msg, void (*callback)(const void *, size_t))
 {
     (*callback)(msg.data(), msg.size());
@@ -214,6 +254,11 @@ void * b0_subscriber_read(b0_subscriber *sub, size_t *size)
     return ret;
 }
 
+void b0_subscriber_set_option(b0_subscriber *sub, int option, int value)
+{
+    b0_socket_set_option(reinterpret_cast<b0::Subscriber*>(sub), option, value);
+}
+
 void b0_subscriber_set_conflate(b0_subscriber *sub, int conflate)
 {
     reinterpret_cast<b0::Subscriber*>(sub)->setConflate(!!conflate);
@@ -268,6 +313,11 @@ void * b0_service_client_call(b0_service_client *cli, const void *data, size_t s
 void b0_service_client_log(b0_service_client *cli, int level, const char *message)
 {
     reinterpret_cast<b0::ServiceClient*>(cli)->log(log_level_from_int(level), message);
+}
+
+void b0_service_client_set_option(b0_service_client *cli, int option, int value)
+{
+    b0_socket_set_option(reinterpret_cast<b0::ServiceClient*>(cli), option, value);
 }
 
 void b0_service_server_callback_wrapper(const std::string &req, std::string &rep, void * (*callback)(const void *, size_t, size_t *))
@@ -339,6 +389,11 @@ void * b0_service_server_read(b0_service_server *srv, size_t *size)
 void b0_service_server_write(b0_service_server *srv, const void *msg, size_t size)
 {
     reinterpret_cast<b0::ServiceServer*>(srv)->writeRaw(std::string(reinterpret_cast<const char *>(msg), size));
+}
+
+void b0_service_server_set_option(b0_service_server *srv, int option, int value)
+{
+    b0_socket_set_option(reinterpret_cast<b0::ServiceServer*>(srv), option, value);
 }
 
 }
