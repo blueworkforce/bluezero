@@ -102,28 +102,28 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw without type, function ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw without type)
      */
     Subscriber(Node *node, std::string service_name, void (*callback)(const std::string&), bool managed = true, bool notify_graph = true)
         : Subscriber(node, service_name, static_cast<CallbackRaw>(callback), managed, notify_graph)
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw with type, function ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw with type)
      */
     Subscriber(Node *node, std::string service_name, void (*callback)(const std::string&, const std::string&), bool managed = true, bool notify_graph = true)
         : Subscriber(node, service_name, static_cast<CallbackRawType>(callback), managed, notify_graph)
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw message parts, function ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw message parts)
      */
     Subscriber(Node *node, std::string service_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
         : Subscriber(node, service_name, static_cast<CallbackParts>(callback), managed, notify_graph)
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class, function ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (message class)
      */
     template<class TMsg>
     Subscriber(Node *node, std::string service_name, void (*callback)(const TMsg&), bool managed = true, bool notify_graph = true)
@@ -131,7 +131,7 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class and raw extra parts, function ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (message class and raw extra parts)
      */
     template<class TMsg>
     Subscriber(Node *node, std::string service_name, void (*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
@@ -139,7 +139,7 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw without type, method ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (raw without type)
      */
     template<class T>
     Subscriber(Node *node, std::string service_name, void (T::*callback)(const std::string&), T *obj, bool managed = true, bool notify_graph = true)
@@ -147,7 +147,7 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw with type, method ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (raw with type)
      */
     template<class T>
     Subscriber(Node *node, std::string service_name, void (T::*callback)(const std::string&, const std::string&), T *obj, bool managed = true, bool notify_graph = true)
@@ -155,7 +155,7 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw message parts, method ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (raw message parts)
      */
     template<class T>
     Subscriber(Node *node, std::string service_name, void (T::*callback)(const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true)
@@ -163,7 +163,7 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class, method ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (message class)
      */
     template<class T, class TMsg>
     Subscriber(Node *node, std::string service_name, void (T::*callback)(const TMsg&), T *obj, bool managed = true, bool notify_graph = true)
@@ -171,7 +171,7 @@ public:
     {}
 
     /*!
-     * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class and raw extra parts, method ptr)
+     * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (message class and raw extra parts)
      */
     template<class T, class TMsg>
     Subscriber(Node *node, std::string service_name, void (T::*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true)
