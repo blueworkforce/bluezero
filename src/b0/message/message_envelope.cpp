@@ -1,5 +1,6 @@
 #include <b0/message/message_envelope.h>
 #include <b0/exception/message_unpack_error.h>
+#include <b0/compress/compress.h>
 
 #include <vector>
 #include <boost/format.hpp>
@@ -12,23 +13,6 @@ namespace b0
 namespace message
 {
 
-boost::optional<std::string> MessageEnvelope::getHeader(const std::string &name)
-{
-    for(auto &x : headers)
-    {
-        size_t delim_pos = x.second.find(": ");
-        if(delim_pos != std::string::npos && x.second.substr(0, delim_pos) == name)
-            return x.second.substr(delim_pos + 2);
-    }
-    return {};
-}
-
-std::string MessageEnvelope::getHeader(const std::string &name, const std::string &def)
-{
-    boost::optional<std::string> v = getHeader(name);
-    return v ? *v : def;
-}
-
 void MessageEnvelope::parseFromString(const std::string &s)
 {
     size_t content_begin = s.find("\n\n");
@@ -38,7 +22,6 @@ void MessageEnvelope::parseFromString(const std::string &s)
     std::string payload = s.substr(content_begin + 2);
     std::vector<std::string> headers_split;
     boost::split(headers_split, message_headers, boost::is_any_of("\n"));
-    int part_count = 0;
     for(auto &header_line : headers_split)
     {
         size_t delim_pos = header_line.find(": ");
@@ -46,47 +29,101 @@ void MessageEnvelope::parseFromString(const std::string &s)
             throw exception::EnvelopeDecodeError();
         std::string key = header_line.substr(0, delim_pos),
             value = header_line.substr(delim_pos + 2);
-        if(key == "Part-count")
-            part_count = boost::lexical_cast<int>(value);
-        else
-            headers.emplace_back(0, header_line);
+        headers[key] = value;
     }
-    parts.resize(part_count);
-    int part_start = 0;
-    for(int i = 0; i < part_count; i++)
+    try
     {
-        parts[i].content_length = boost::lexical_cast<int>(getHeader((boost::format("Content-length-%d") % i).str(), "0"));
-        parts[i].content_type = getHeader((boost::format("Content-type-%d") % i).str(), "");
-        parts[i].compression_algorithm = getHeader((boost::format("Compression-algorithm-%d") % i).str(), "");
-        parts[i].uncompressed_content_length = boost::lexical_cast<int>(getHeader((boost::format("Uncompressed-content-length-%d") % i).str(), "0"));
-        if(!parts[i].uncompressed_content_length)
-            parts[i].uncompressed_content_length = parts[i].content_length;
-        parts[i].payload = payload.substr(part_start, parts[i].content_length);
-        part_start += parts[i].content_length;
+        auto part_count_it = headers.find("Part-count");
+        if(part_count_it == headers.end()) throw;
+        int part_count = boost::lexical_cast<int>(part_count_it->second);
+        headers.erase(part_count_it);
+        parts.resize(part_count);
+    }
+    catch(...) {throw exception::EnvelopeDecodeError();}
+    int part_start = 0;
+    for(int i = 0; i < parts.size(); i++)
+    {
+        auto content_type_it = headers.find((boost::format("Content-type-%d") % i).str());
+        if(content_type_it != headers.end())
+        {
+            parts[i].content_type = content_type_it->second;
+            headers.erase(content_type_it);
+        }
+
+        auto compression_algorithm_it = headers.find((boost::format("Compression-algorithm-%d") % i).str());
+        if(compression_algorithm_it != headers.end())
+        {
+            parts[i].compression_algorithm = compression_algorithm_it->second;
+            headers.erase(compression_algorithm_it);
+        }
+
+        auto compression_level_it = headers.find((boost::format("Compression-level-%d") % i).str());
+        if(compression_level_it != headers.end())
+        {
+            parts[i].compression_level = boost::lexical_cast<int>(compression_level_it->second);
+            headers.erase(compression_level_it);
+        }
+
+        auto uncompressed_content_length_it = headers.find((boost::format("Uncompressed-content-length-%d") % i).str());
+        int uncompressed_content_length = -1;
+        if(uncompressed_content_length_it != headers.end())
+        {
+            uncompressed_content_length = boost::lexical_cast<int>(uncompressed_content_length_it->second);
+            headers.erase(uncompressed_content_length_it);
+        }
+
+        auto content_length_it = headers.find((boost::format("Content-length-%d") % i).str());
+        int content_length = -1;
+        if(content_length_it != headers.end())
+        {
+            content_length = boost::lexical_cast<int>(content_length_it->second);
+            headers.erase(content_length_it);
+        }
+
+        if(content_length == -1)
+            throw exception::EnvelopeDecodeError();
+
+        parts[i].payload = b0::compress::decompress(parts[i].compression_algorithm, payload.substr(part_start, content_length), uncompressed_content_length);
+        part_start += content_length;
     }
 }
 
 void MessageEnvelope::serializeToString(std::string &s) const
 {
-    std::vector<std::pair<int, std::string> > all_headers(headers);
-    all_headers.emplace_back(-10, "Part-count: " + boost::lexical_cast<std::string>(parts.size()));
+    std::stringstream ss;
+
+    auto header_it = headers.find("Header");
+    if(header_it != headers.end())
+        ss << "Header: " << header_it->second << std::endl;
+
+    ss << "Part-count: " << parts.size() << std::endl;
+    std::vector<std::string> compressed_payloads;
     for(size_t i = 0; i < parts.size(); i++)
     {
-        all_headers.emplace_back(0 + i, (boost::format("Content-length-%d: %d") % i % parts[i].content_length).str());
+        std::string compressed_payload = b0::compress::compress(parts[i].compression_algorithm, parts[i].payload, parts[i].compression_level);
+        compressed_payloads.push_back(compressed_payload);
+
+        ss << "Content-length-" << i << ": " << compressed_payload.size() << std::endl;
         if(parts[i].content_type != "")
-            all_headers.emplace_back(100 + i, (boost::format("Content-type-%d: %s") % i % parts[i].content_type).str());
-        if(parts[i].uncompressed_content_length)
-            all_headers.emplace_back(500 + i, (boost::format("Uncompressed-content-length-%d: %d") % i % parts[i].uncompressed_content_length).str());
+            ss << "Content-type-" << i << ": " << parts[i].content_type << std::endl;
         if(parts[i].compression_algorithm != "")
-            all_headers.emplace_back(500 + i, (boost::format("Compression-algorithm-%d: %s") % i % parts[i].compression_algorithm).str());
+        {
+            ss << "Compression-algorithm-" << i << ": " << parts[i].compression_algorithm << std::endl;
+            ss << "Uncompressed-content-length-" << i << ": " << parts[i].payload.size() << std::endl;
+            if(parts[i].compression_level > 0)
+                ss << "Compression-level-" << i << ": " << parts[i].compression_level << std::endl;
+        }
     }
-    std::sort(all_headers.begin(), all_headers.end());
-    std::stringstream ss;
-    for(auto &x : all_headers)
-        ss << x.second << std::endl;
+
+    for(auto &pair : headers)
+        if(pair.first != "Header")
+            ss << pair.first << ": " << pair.second << std::endl;
+
     ss << std::endl;
-    for(auto &part : parts)
-        ss << part.payload;
+
+    for(auto &payload : compressed_payloads)
+        ss << payload;
+
     s = ss.str();
 }
 

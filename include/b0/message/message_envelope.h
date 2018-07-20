@@ -21,20 +21,14 @@ namespace message
  */
 struct MessagePart
 {
-    //! \brief Size of the payload (of the compressed payload, if compression is used)
-    size_t content_length;
-
     //! \brief An optional string indicating the type of the payload
     std::string content_type;
 
     //! \brief Compression algorithm name, or blank if no compression
     std::string compression_algorithm;
 
-    //! \brief Compression level
+    //! \brief Compression level, or 0 if no compression
     int compression_level;
-
-    //! \brief Size of the uncompressed payload
-    size_t uncompressed_content_length;
 
     //! \brief The payload
     std::string payload;
@@ -75,16 +69,10 @@ public:
     //! The message parts
     std::vector<MessagePart> parts;
 
-    //! Additional customized headers with priority (most negative appears first)
-    std::vector<std::pair<int, std::string> > headers;
+    //! Additional customized headers
+    std::map<std::string, std::string> headers;
 
 public:
-    //! \brief Get the value of some header
-    boost::optional<std::string> getHeader(const std::string &name);
-
-    //! \brief Get the value of some header, or get a default value
-    std::string getHeader(const std::string &name, const std::string &def);
-
     //! \brief Parse from a string
     void parseFromString(const std::string &s);
 

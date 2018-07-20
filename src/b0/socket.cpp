@@ -2,7 +2,6 @@
 #include <b0/config.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
-#include <b0/compress/compress.h>
 #include <b0/utils/env.h>
 
 #include <limits>
@@ -146,9 +145,12 @@ void Socket::readRaw(b0::message::MessageEnvelope &env)
     env.parseFromString(payload);
 
     // if necessary, check header
-    std::string hdr = env.getHeader("Header", "");
-    if(has_header_ && hdr != name_)
-        throw exception::HeaderMismatch(hdr, name_);
+    if(has_header_)
+    {
+        std::string hdr = env.headers.at("Header");
+        if(hdr != name_)
+            throw exception::HeaderMismatch(hdr, name_);
+    }
 }
 
 void Socket::readRaw(std::vector<b0::message::MessagePart> &parts)
@@ -156,10 +158,6 @@ void Socket::readRaw(std::vector<b0::message::MessagePart> &parts)
     b0::message::MessageEnvelope env;
     readRaw(env);
     parts = env.parts;
-    for(auto &part : parts)
-    {
-        part.payload = b0::compress::decompress(part.compression_algorithm, part.payload, part.uncompressed_content_length);
-    }
 }
 
 void Socket::readRaw(std::string &msg)
@@ -215,17 +213,8 @@ void Socket::writeRaw(const std::vector<b0::message::MessagePart> &parts)
 {
     b0::message::MessageEnvelope env;
     env.parts = parts;
-    for(auto &part : env.parts)
-    {
-        if(part.compression_algorithm != "")
-        {
-            part.uncompressed_content_length = part.payload.size();
-            part.payload = b0::compress::compress(part.compression_algorithm, part.payload, part.compression_level);
-        }
-        part.content_length = part.payload.size();
-    }
     if(has_header_)
-        env.headers.emplace_back(std::numeric_limits<int>::min(), "Header: " + name_);
+        env.headers["Header"] = name_;
     writeRaw(env);
 }
 
