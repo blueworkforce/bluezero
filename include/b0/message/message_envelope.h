@@ -16,6 +16,8 @@ namespace message
 
 /*!
  * \brief A structure to represent a message part
+ *
+ * \sa MessageEnvelope
  */
 struct MessagePart
 {
