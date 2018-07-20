@@ -142,7 +142,7 @@ public:
     virtual void readMsg(b0::message::Message &msg);
 
     /*!
-     * \brief Read a Message and any other part from the underlying ZeroMQ socket
+     * \brief Read a (multipart) Message from the underlying ZeroMQ socket
      */
     virtual void readMsg(b0::message::Message &msg, std::vector<b0::message::MessagePart> &parts);
 
@@ -173,7 +173,7 @@ public:
     virtual void writeMsg(const b0::message::Message &msg);
 
     /*!
-     * \brief Write a Message and any other parts to the underlying ZeroMQ socket
+     * \brief Write a (multipart) Message to the underlying ZeroMQ socket
      */
     virtual void writeMsg(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts);
 
