@@ -72,14 +72,17 @@ public:
 
     //! Additional customized headers
     std::map<std::string, std::string> headers;
-
-public:
-    //! \brief Parse from a string
-    void parseFromString(const std::string &s);
-
-    //! \brief Serialize to a string
-    void serializeToString(std::string &s) const;
 };
+
+/*!
+ * \brief Parse a message envelope from a string
+ */
+void parse(MessageEnvelope &env, const std::string &s);
+
+/*!
+ * \brief Serialize a message envelope to a string
+ */
+void serialize(const MessageEnvelope &msg, std::string &s);
 
 } // namespace message
 

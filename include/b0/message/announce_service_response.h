@@ -23,14 +23,38 @@ public:
     bool ok;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "AnnounceServiceResponse";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::AnnounceServiceResponse;
+
+template <>
+struct default_codec_t<AnnounceServiceResponse>
+{
+    static codec::object_t<AnnounceServiceResponse> codec()
+    {
+        auto codec = codec::object<AnnounceServiceResponse>();
+        codec.required("ok", &AnnounceServiceResponse::ok);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED

@@ -7,6 +7,7 @@
 #include <b0/logger/interface.h>
 #include <b0/message/message.h>
 #include <b0/message/message_envelope.h>
+#include <b0/exception/message_unpack_error.h>
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
@@ -139,12 +140,24 @@ public:
     /*!
      * \brief Read a Message from the underlying ZeroMQ socket
      */
-    virtual void readMsg(b0::message::Message &msg);
+    template<class TMsg>
+    void readMsg(TMsg &msg)
+    {
+        std::string str, type;
+        readRaw(str, type);
+        parse(msg, str, type);
+    }
 
     /*!
      * \brief Read a (multipart) Message from the underlying ZeroMQ socket
      */
-    virtual void readMsg(b0::message::Message &msg, std::vector<b0::message::MessagePart> &parts);
+    template<class TMsg>
+    void readMsg(TMsg &msg, std::vector<b0::message::MessagePart> &parts)
+    {
+        readRaw(parts);
+        parse(msg, parts[0].payload, parts[0].content_type);
+        parts.erase(parts.begin());
+    }
 
     /*!
      * \brief Poll for messages. If timeout is 0 return immediately, otherwise wait
@@ -170,12 +183,29 @@ public:
     /*!
      * \brief Write a Message to the underlying ZeroMQ socket
      */
-    virtual void writeMsg(const b0::message::Message &msg);
+    template<class TMsg>
+    void writeMsg(const TMsg &msg)
+    {
+        std::string str, type;
+        serialize(msg, str, type);
+        writeRaw(str, type);
+    }
 
     /*!
      * \brief Write a (multipart) Message to the underlying ZeroMQ socket
      */
-    virtual void writeMsg(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts);
+    template<class TMsg>
+    void writeMsg(const TMsg &msg, const std::vector<b0::message::MessagePart> &parts)
+    {
+        std::vector<b0::message::MessagePart> parts1(parts);
+        b0::message::MessagePart part0;
+        serialize(msg, part0.payload, part0.content_type);
+        part0.compression_algorithm = compression_algorithm_;
+        part0.compression_level = compression_level_;
+        parts1.insert(parts1.begin(), part0);
+        writeRaw(parts1);
+    }
+
 
 public:
     /*!

@@ -24,14 +24,38 @@ public:
     Graph graph;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "GetGraphResponse";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::GetGraphResponse;
+
+template <>
+struct default_codec_t<GetGraphResponse>
+{
+    static codec::object_t<GetGraphResponse> codec()
+    {
+        auto codec = codec::object<GetGraphResponse>();
+        codec.required("graph", &GetGraphResponse::graph);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__GET_GRAPH_RESPONSE_H__INCLUDED

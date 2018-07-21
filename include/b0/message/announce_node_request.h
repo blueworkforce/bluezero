@@ -27,14 +27,38 @@ public:
     std::string node_name;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "AnnounceNodeRequest";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::AnnounceNodeRequest;
+
+template <>
+struct default_codec_t<AnnounceNodeRequest>
+{
+    static codec::object_t<AnnounceNodeRequest> codec()
+    {
+        auto codec = codec::object<AnnounceNodeRequest>();
+        codec.required("node_name", &AnnounceNodeRequest::node_name);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__ANNOUNCE_NODE_REQUEST_H__INCLUDED

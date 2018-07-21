@@ -67,12 +67,20 @@ public:
     /*!
      * \brief Publish a message
      */
-    virtual void publish(const b0::message::Message &msg);
+    template<class TMsg>
+    void publish(const TMsg &msg)
+    {
+        writeMsg(msg);
+    }
 
     /*!
      * \brief Publish a message and any additional raw parts
      */
-    virtual void publish(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts);
+    template<class TMsg>
+    void publish(const TMsg &msg, const std::vector<b0::message::MessagePart> &parts)
+    {
+        writeMsg(msg, parts);
+    }
 
 protected:
     /*!

@@ -85,6 +85,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${ZMQ_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/double-conversion)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/spotify-json/include)
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/test_have_boost_process/main.cpp "#include <boost/process.hpp>
 int main(){return 0;}")
@@ -169,27 +171,8 @@ add_library(
     src/b0/exception/message_unpack_error.cpp
     src/b0/exception/name_resolution_error.cpp
     src/b0/exception/unsupported_compression_algorithm.cpp
-    src/b0/message/heartbeat_response.cpp
-    src/b0/message/announce_node_response.cpp
-    src/b0/message/node_topic_response.cpp
-    src/b0/message/graph_link.cpp
     src/b0/message/message_envelope.cpp
-    src/b0/message/heartbeat_request.cpp
     src/b0/message/message.cpp
-    src/b0/message/log_entry.cpp
-    src/b0/message/announce_service_response.cpp
-    src/b0/message/resolve_service_response.cpp
-    src/b0/message/graph.cpp
-    src/b0/message/get_graph_response.cpp
-    src/b0/message/shutdown_node_response.cpp
-    src/b0/message/announce_service_request.cpp
-    src/b0/message/resolve_service_request.cpp
-    src/b0/message/node_service_response.cpp
-    src/b0/message/shutdown_node_request.cpp
-    src/b0/message/get_graph_request.cpp
-    src/b0/message/node_topic_request.cpp
-    src/b0/message/node_service_request.cpp
-    src/b0/message/announce_node_request.cpp
     src/b0/logger/logger.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
@@ -198,6 +181,22 @@ add_library(
     src/b0/utils/time_sync.cpp
     src/b0/utils/graphviz.cpp
     ${B0_EXTRA_SOURCES}
+
+    include/double-conversion/double-conversion/bignum-dtoa.cc
+    include/double-conversion/double-conversion/bignum.cc
+    include/double-conversion/double-conversion/cached-powers.cc
+    include/double-conversion/double-conversion/diy-fp.cc
+    include/double-conversion/double-conversion/double-conversion.cc
+    include/double-conversion/double-conversion/fast-dtoa.cc
+    include/double-conversion/double-conversion/fixed-dtoa.cc
+    include/double-conversion/double-conversion/strtod.cc
+
+    include/spotify-json/src/detail/encode_integer.cpp
+    include/spotify-json/src/detail/escape.cpp
+    include/spotify-json/src/detail/escape_sse42.cpp
+    include/spotify-json/src/detail/skip_chars.cpp
+    include/spotify-json/src/detail/skip_chars_sse42.cpp
+    include/spotify-json/src/detail/skip_value.cpp
 )
 target_link_libraries(b0 jsoncpp ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
 if(WIN32)

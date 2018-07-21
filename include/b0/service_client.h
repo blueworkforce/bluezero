@@ -76,13 +76,23 @@ public:
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
      * \sa ServiceServer::read(), ServiceServer::write()
      */
-    virtual void call(const b0::message::Message &req, b0::message::Message &rep);
+    template<class TReq, class TRep>
+    void call(const TReq &req, TRep &rep)
+    {
+        writeMsg(req);
+        readMsg(rep);
+    }
 
     /*!
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
      * \sa ServiceServer::read(), ServiceServer::write()
      */
-    virtual void call(const b0::message::Message &req, const std::vector<b0::message::MessagePart> &reqparts, b0::message::Message &rep, std::vector<b0::message::MessagePart> &repparts);
+    template<class TReq, class TRep>
+    void call(const TReq &req, const std::vector<b0::message::MessagePart> &reqparts, TRep &rep, std::vector<b0::message::MessagePart> &repparts)
+    {
+        writeMsg(req, reqparts);
+        readMsg(rep, repparts);
+    }
 
 protected:
     /*!

@@ -200,6 +200,19 @@ public:
     virtual void heartbeat(resolver::NodeEntry *node_entry);
 
     /*!
+     * \brief Handle a service on the resolv service (using message classes)
+     */
+    template<class TReq, class TRep>
+    void handle(void (Resolver::*f)(const TReq&, TRep&), const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype)
+    {
+        TReq rq;
+        parse(rq, req, reqtype);
+        TRep rsp;
+        (this->*f)(rq, rsp);
+        serialize(rsp, rep, reptype);
+    }
+
+    /*!
      * \brief Handle a service on the resolv service
      */
     virtual void handle(const std::string &req, const std::string &reqtype, std::string &resp, std::string &resptype);

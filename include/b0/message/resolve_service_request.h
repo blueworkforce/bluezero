@@ -25,14 +25,38 @@ public:
     std::string service_name;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "ResolveServiceRequest";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::ResolveServiceRequest;
+
+template <>
+struct default_codec_t<ResolveServiceRequest>
+{
+    static codec::object_t<ResolveServiceRequest> codec()
+    {
+        auto codec = codec::object<ResolveServiceRequest>();
+        codec.required("service_name", &ResolveServiceRequest::service_name);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__RESOLVE_SERVICE_REQUEST_H__INCLUDED

@@ -24,7 +24,10 @@ public:
     std::string node_name;
 
     //! Severity of the message
-    LogLevel level;
+    union {
+        LogLevel level;
+        int level_int;
+    };
 
     //! Content of the message
     std::string message;
@@ -33,14 +36,41 @@ public:
     int64_t time_usec;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "LogEntry";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::LogEntry;
+
+template <>
+struct default_codec_t<LogEntry>
+{
+    static codec::object_t<LogEntry> codec()
+    {
+        auto codec = codec::object<LogEntry>();
+        codec.required("node_name", &LogEntry::node_name);
+        codec.required("level", &LogEntry::level_int);
+        codec.required("message", &LogEntry::message);
+        codec.required("time_usec", &LogEntry::time_usec);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__LOG_ENTRY_H__INCLUDED

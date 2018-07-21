@@ -16,19 +16,28 @@ public:
     std::string greeting;
     int n;
 
-public:
-    std::string type() const override
-    {
-        return "MyMsg";
-    }
+    std::string type() const override {return "MyMsg";}
+};
 
-private:
-    void serialize(b0::message::serialization::MessageFields &fields) const override
-    {
-        fields.map("greeting", &greeting);
-        fields.map("n", &n);
+namespace spotify
+{
+
+namespace json
+{
+
+template <>
+struct default_codec_t<MyMsg> {
+    static codec::object_t<MyMsg> codec() {
+        auto codec = codec::object<MyMsg>();
+        codec.required("greeting", &MyMsg::greeting);
+        codec.required("n", &MyMsg::n);
+        return codec;
     }
 };
+
+} // namespace json
+
+} // namespace spotify
 
 //! \endcond
 

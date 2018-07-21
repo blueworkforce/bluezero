@@ -309,81 +309,23 @@ void Resolver::heartbeat(resolver::NodeEntry *node_entry)
 void Resolver::handle(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype)
 {
     if(reqtype == "AnnounceNodeRequest")
-    {
-        b0::message::AnnounceNodeRequest rq;
-        rq.parseFromString(req);
-        b0::message::AnnounceNodeResponse rsp;
-        handleAnnounceNode(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleAnnounceNode, req, reqtype, rep, reptype);
     else if(reqtype == "ShutdownNodeRequest")
-    {
-        b0::message::ShutdownNodeRequest rq;
-        rq.parseFromString(req);
-        b0::message::ShutdownNodeResponse rsp;
-        handleShutdownNode(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleShutdownNode, req, reqtype, rep, reptype);
     else if(reqtype == "AnnounceServiceRequest")
-    {
-        b0::message::AnnounceServiceRequest rq;
-        rq.parseFromString(req);
-        b0::message::AnnounceServiceResponse rsp;
-        handleAnnounceService(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleAnnounceService, req, reqtype, rep, reptype);
     else if(reqtype == "ResolveServiceRequest")
-    {
-        b0::message::ResolveServiceRequest rq;
-        rq.parseFromString(req);
-        b0::message::ResolveServiceResponse rsp;
-        handleResolveService(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleResolveService, req, reqtype, rep, reptype);
     else if(reqtype == "HeartbeatRequest")
-    {
-        b0::message::HeartbeatRequest rq;
-        rq.parseFromString(req);
-        b0::message::HeartbeatResponse rsp;
-        handleHeartbeat(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleHeartbeat, req, reqtype, rep, reptype);
     else if(reqtype == "NodeTopicRequest")
-    {
-        b0::message::NodeTopicRequest rq;
-        rq.parseFromString(req);
-        b0::message::NodeTopicResponse rsp;
-        handleNodeTopic(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleNodeTopic, req, reqtype, rep, reptype);
     else if(reqtype == "NodeServiceRequest")
-    {
-        b0::message::NodeServiceRequest rq;
-        rq.parseFromString(req);
-        b0::message::NodeServiceResponse rsp;
-        handleNodeService(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleNodeService, req, reqtype, rep, reptype);
     else if(reqtype == "GetGraphRequest")
-    {
-        b0::message::GetGraphRequest rq;
-        rq.parseFromString(req);
-        b0::message::GetGraphResponse rsp;
-        handleGetGraph(rq, rsp);
-        rsp.serializeToString(rep);
-        reptype = rsp.type();
-    }
+        handle(&Resolver::handleGetGraph, req, reqtype, rep, reptype);
     else
-    {
         log(error, "received an unrecognized request type: %s", reqtype);
-    }
 }
 
 std::string Resolver::makeUniqueNodeName(std::string nodeName)

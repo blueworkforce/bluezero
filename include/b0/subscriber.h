@@ -81,7 +81,7 @@ public:
         : Subscriber(node, topic_name,
                 static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
                     TMsg msg;
-                    msg.parseFromString(parts[0].payload);
+                    parse(msg, parts[0].payload, parts[0].content_type);
                     callback(msg);
                 }), managed, notify_graph)
     {}
@@ -95,7 +95,7 @@ public:
                 static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
                     std::vector<b0::message::MessagePart> parts1(parts);
                     TMsg msg;
-                    msg.parseFromString(parts1[0].payload);
+                    parse(msg, parts1[0].payload, parts1[0].content_type);
                     parts1.erase(parts1.begin());
                     callback(msg, parts1);
                 }), managed, notify_graph)

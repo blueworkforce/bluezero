@@ -28,14 +28,39 @@ public:
     std::string sock_addr;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "ResolveServiceResponse";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::ResolveServiceResponse;
+
+template <>
+struct default_codec_t<ResolveServiceResponse>
+{
+    static codec::object_t<ResolveServiceResponse> codec()
+    {
+        auto codec = codec::object<ResolveServiceResponse>();
+        codec.required("ok", &ResolveServiceResponse::ok);
+        codec.required("sock_addr", &ResolveServiceResponse::sock_addr);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__RESOLVE_SERVICE_RESPONSE_H__INCLUDED

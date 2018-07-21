@@ -75,11 +75,10 @@ public:
         : ServiceServer(node, service_name,
                 static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts) {
                     TReq req; TRep rep;
-                    req.parseFromString(reqparts[0].payload);
+                    parse(req, reqparts[0].payload, reqparts[0].content_type);
                     callback(req, rep);
                     repparts.resize(1);
-                    rep.serializeToString(repparts[0].payload);
-                    repparts[0].content_type = rep.type();
+                    serialize(rep, repparts[0].payload, repparts[0].content_type);
                 }), managed, notify_graph)
     {}
 
@@ -92,14 +91,13 @@ public:
                 static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts) {
                     std::vector<b0::message::MessagePart> reqparts1(reqparts);
                     TReq req;
-                    req.parseFromString(reqparts1[0].payload);
+                    parse(req, reqparts1[0].payload, reqparts1[0].content_type);
                     reqparts1.erase(reqparts1.begin());
                     TRep rep;
                     std::vector<b0::message::MessagePart> repparts1;
                     callback(req, reqparts1, rep, repparts);
                     b0::message::MessagePart reppart0;
-                    rep.serializeToString(reppart0.payload);
-                    reppart0.content_type = rep.type();
+                    serialize(rep, reppart0.payload, reppart0.content_type);
                     repparts.insert(repparts.begin(), reppart0);
                 }), managed, notify_graph)
     {}

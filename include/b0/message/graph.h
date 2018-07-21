@@ -31,14 +31,40 @@ public:
     std::vector<GraphLink> node_service;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "Graph";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::Graph;
+
+template <>
+struct default_codec_t<Graph>
+{
+    static codec::object_t<Graph> codec()
+    {
+        auto codec = codec::object<Graph>();
+        codec.required("nodes", &Graph::nodes);
+        codec.required("node_topic", &Graph::node_topic);
+        codec.required("node_service", &Graph::node_service);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__GRAPH_H__INCLUDED

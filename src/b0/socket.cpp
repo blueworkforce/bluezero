@@ -142,7 +142,7 @@ void Socket::readRaw(b0::message::MessageEnvelope &env)
 
     std::string payload = std::string(static_cast<char*>(msg_payload.data()), msg_payload.size());
     dumpPayload(*this, "recv", payload);
-    env.parseFromString(payload);
+    parse(env, payload);
 
     // if necessary, check header
     if(has_header_)
@@ -174,24 +174,6 @@ void Socket::readRaw(std::string &msg, std::string &type)
     type = parts[0].content_type;
 }
 
-void Socket::readMsg(b0::message::Message &msg)
-{
-    std::string str, type;
-    readRaw(str, type);
-    if(type != msg.type())
-        throw exception::EnvelopeDecodeError();
-    msg.parseFromString(str);
-}
-
-void Socket::readMsg(b0::message::Message &msg, std::vector<b0::message::MessagePart> &parts)
-{
-    readRaw(parts);
-    if(parts[0].content_type != msg.type())
-        throw exception::EnvelopeDecodeError();
-    msg.parseFromString(parts[0].payload);
-    parts.erase(parts.begin());
-}
-
 bool Socket::poll(long timeout)
 {
     zmq::socket_t &socket_ = private_->socket_;
@@ -207,7 +189,7 @@ bool Socket::poll(long timeout)
 void Socket::writeRaw(const b0::message::MessageEnvelope &env)
 {
     std::string payload;
-    env.serializeToString(payload);
+    serialize(env, payload);
     dumpPayload(*this, "send", payload);
 
     // write payload
@@ -238,26 +220,6 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
     parts[0].compression_algorithm = compression_algorithm_;
     parts[0].compression_level = compression_level_;
     writeRaw(parts);
-}
-
-void Socket::writeMsg(const b0::message::Message &msg)
-{
-    std::string str, type;
-    type = msg.type();
-    msg.serializeToString(str);
-    writeRaw(str, type);
-}
-
-void Socket::writeMsg(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts)
-{
-    std::vector<b0::message::MessagePart> parts1(parts);
-    b0::message::MessagePart part0;
-    msg.serializeToString(part0.payload);
-    part0.content_type = msg.type();
-    part0.compression_algorithm = compression_algorithm_;
-    part0.compression_level = compression_level_;
-    parts1.insert(parts1.begin(), part0);
-    writeRaw(parts1);
 }
 
 void Socket::setCompression(const std::string &algorithm, int level)

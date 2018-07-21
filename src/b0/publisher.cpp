@@ -56,16 +56,6 @@ void Publisher::publish(const std::string &msg, const std::string &type)
     writeRaw(msg, type);
 }
 
-void Publisher::publish(const b0::message::Message &msg)
-{
-    writeMsg(msg);
-}
-
-void Publisher::publish(const b0::message::Message &msg, const std::vector<b0::message::MessagePart> &parts)
-{
-    writeMsg(msg, parts);
-}
-
 void Publisher::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);

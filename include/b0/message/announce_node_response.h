@@ -36,14 +36,41 @@ public:
     std::string xpub_sock_addr;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "AnnounceNodeResponse";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::AnnounceNodeResponse;
+
+template <>
+struct default_codec_t<AnnounceNodeResponse>
+{
+    static codec::object_t<AnnounceNodeResponse> codec()
+    {
+        auto codec = codec::object<AnnounceNodeResponse>();
+        codec.required("ok", &AnnounceNodeResponse::ok);
+        codec.required("node_name", &AnnounceNodeResponse::node_name);
+        codec.required("xsub_sock_addr", &AnnounceNodeResponse::xsub_sock_addr);
+        codec.optional("xpub_sock_addr", &AnnounceNodeResponse::xpub_sock_addr);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__ANNOUNCE_NODE_RESPONSE_H__INCLUDED

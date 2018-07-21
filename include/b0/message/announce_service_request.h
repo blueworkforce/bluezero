@@ -33,14 +33,40 @@ public:
     std::string sock_addr;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "AnnounceServiceRequest";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::AnnounceServiceRequest;
+
+template <>
+struct default_codec_t<AnnounceServiceRequest>
+{
+    static codec::object_t<AnnounceServiceRequest> codec()
+    {
+        auto codec = codec::object<AnnounceServiceRequest>();
+        codec.required("node_name", &AnnounceServiceRequest::node_name);
+        codec.required("service_name", &AnnounceServiceRequest::service_name);
+        codec.required("sock_addr", &AnnounceServiceRequest::sock_addr);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED

@@ -21,14 +21,37 @@ class GetGraphRequest : public Message
 public:
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "GetGraphRequest";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::GetGraphRequest;
+
+template <>
+struct default_codec_t<GetGraphRequest>
+{
+    static codec::object_t<GetGraphRequest> codec()
+    {
+        auto codec = codec::object<GetGraphRequest>();
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__GET_GRAPH_REQUEST_H__INCLUDED

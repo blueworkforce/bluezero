@@ -2,21 +2,19 @@
 
 #include <b0/messages.h>
 
-#define ASSERT(cond,desc) if(!(cond)) {std::cerr << "Assertion " #cond " failed: " desc << std::endl; exit(1);}
-
 bool verbose = true;
 
 template<typename T>
 void test(const T &msg)
 {
     std::string serialized;
-    msg.serializeToString(serialized);
+    serialize(msg, serialized);
     if(verbose)
         std::cout << msg.type() << ": serialized: " << serialized << std::endl;
     T msg2;
-    msg2.parseFromString(serialized);
+    parse(msg2, serialized);
     std::string reserialized;
-    msg2.serializeToString(reserialized);
+    serialize(msg2, reserialized);
     if(verbose)
         std::cout << msg.type() << ": re-serialized: " << reserialized << std::endl;
     if(serialized != reserialized)

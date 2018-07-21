@@ -34,14 +34,41 @@ public:
     bool active;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "NodeServiceRequest";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::NodeServiceRequest;
+
+template <>
+struct default_codec_t<NodeServiceRequest>
+{
+    static codec::object_t<NodeServiceRequest> codec()
+    {
+        auto codec = codec::object<NodeServiceRequest>();
+        codec.required("node_name", &NodeServiceRequest::node_name);
+        codec.required("service_name", &NodeServiceRequest::service_name);
+        codec.required("reverse", &NodeServiceRequest::reverse);
+        codec.required("active", &NodeServiceRequest::active);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__NODE_SERVICE_REQUEST_H__INCLUDED

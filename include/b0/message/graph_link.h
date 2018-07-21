@@ -29,14 +29,40 @@ public:
     bool reversed;
 
 public:
-    std::string type() const override;
-
-private:
-    void serialize(serialization::MessageFields &fields) const override;
+    std::string type() const override {return "GraphLink";}
 };
 
 } // namespace message
 
 } // namespace b0
+
+//! \cond HIDDEN_SYMBOLS
+
+namespace spotify
+{
+
+namespace json
+{
+
+using b0::message::GraphLink;
+
+template <>
+struct default_codec_t<GraphLink>
+{
+    static codec::object_t<GraphLink> codec()
+    {
+        auto codec = codec::object<GraphLink>();
+        codec.required("node_name", &GraphLink::node_name);
+        codec.required("other_name", &GraphLink::other_name);
+        codec.required("reversed", &GraphLink::reversed);
+        return codec;
+    }
+};
+
+} // namespace json
+
+} // namespace spotify
+
+//! \endcond
 
 #endif // B0__MESSAGE__GRAPH_LINK_H__INCLUDED
