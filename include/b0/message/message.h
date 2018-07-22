@@ -2,6 +2,7 @@
 #define B0__MESSAGE__MESSAGE_H__INCLUDED
 
 #include <string>
+#include <boost/format.hpp>
 #include <spotify/json.hpp>
 #include <spotify/json/codec/boost.hpp>
 
@@ -45,7 +46,7 @@ template<class TMsg>
 void parse(TMsg &msg, const std::string &s, const std::string &type)
 {
     if(type != msg.type())
-        throw exception::MessageUnpackError("bad content type");
+        throw exception::MessageUnpackError((boost::format("bad content type: got %s, expected %s") % type % msg.type()).str());
     if(!spotify::json::try_decode(msg, s))
         throw exception::MessageUnpackError("json parse error");
 }

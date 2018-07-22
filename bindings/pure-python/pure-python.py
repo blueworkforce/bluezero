@@ -58,6 +58,14 @@ class Socket:
         if managed: self.node.add_socket(self)
         ctx = zmq.Context.instance()
         self.socket = ctx.socket(sock_type)
+    def get_free_addr(self):
+        import socket
+        host_id = os.environ.get('B0_HOST_ID', 'localhost')
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(('', 0))
+        free_port = s.getsockname()[1]
+        s.close()
+        return host_id, free_port
     def spin_once(self):
         pass
     def poll(self):
@@ -92,14 +100,11 @@ class Socket:
         env.parts[0].content_type = msgtype
         self.write_envelope(env)
     def notify_topic(self, reverse, active):
-        self._send_notify('topic', reverse, active)
+        self.node.resolv_call({'node_topic': {'node_name': self.node.name, 'topic_name': self.name,
+            'reverse': reverse, 'active': active}})
     def notify_service(self, reverse, active):
-        self._send_notify('service', reverse, active)
-    def _send_notify(self, what, reverse, active):
-        self.node.resolv_cli.call({
-            'node_name': self.node.name, '%s_name' % what: self.name,
-            'reverse': reverse,          'active': active
-        }, {'topic': 'NodeTopicRequest', 'service': 'NodeServiceRequest'}[what])
+        self.node.resolv_call({'node_service': {'node_name': self.node.name, 'service_name': self.name,
+            'reverse': reverse, 'active': active}})
 
 class Publisher(Socket):
     def __init__(self, node, name, managed=True, notify_graph=True):
@@ -137,7 +142,7 @@ class ServiceClient(Socket):
         self.socket.connect(self.remote_addr or self.resolve_service(self.name))
         if self.notify_graph: self.notify_service(True, True)
     def resolve_service(self, name):
-        rep, reptype = self.node.resolv_cli.call({'service_name': name}, 'ResolveServiceRequest')
+        rep, reptype = self.node.resolv_call({'resolve_service': {'service_name': name}})
         if not rep['ok']: raise RuntimeError('failed resolve service')
         return rep['sock_addr']
     def call(self, req, reqtype):
@@ -152,25 +157,14 @@ class ServiceServer(Socket):
         super().__init__(node, zmq.REP, name, managed, notify_graph)
         if not callable(callback): raise TypeError('callback is not callable')
         self.callback = callback
-    def get_free_addr(self):
-        import socket
-        host_id = os.environ.get('B0_HOST_ID', 'localhost')
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('', 0))
-        free_port = s.getsockname()[1]
-        s.close()
-        return host_id, free_port
     def init(self):
         hostname, free_port = self.get_free_addr()
         self.socket.bind('tcp://*:%d' % free_port)
         self.announce_service('tcp://%s:%d' % (hostname, free_port))
         if self.notify_graph: self.notify_service(False, True)
     def announce_service(self, addr):
-        rep, reptype = self.node.resolv_cli.call({
-            'node_name': self.node.name,
-            'service_name': self.name,
-            'sock_addr': addr
-        }, 'AnnounceServiceRequest')
+        rep, reptype = self.node.resolv_call({'announce_service': {'node_name': self.node.name,
+            'service_name': self.name, 'sock_addr': addr}})
         if not rep['ok']: raise TypeError('announce service failed')
     def spin_once(self):
         while self.poll():
@@ -191,6 +185,9 @@ class Node:
         if self.state != 'created':
             raise RuntimeError('cannot add socket to an already initialized node')
         self.sockets.append(socket)
+    def resolv_call(self, req):
+        rep, reptype = self.resolv_cli.call(req, 'ResolvRequest')
+        return rep[list(req.keys())[0]], reptype
     def init(self):
         if self.state != 'created': raise RuntimeError('invalid state')
         self.resolv_cli.remote_addr = os.environ.get('B0_RESOLVER', 'tcp://127.0.0.1:22000')
@@ -199,15 +196,13 @@ class Node:
         for socket in self.sockets: socket.init()
         self.state = 'ready'
     def announce_node(self):
-        rep, reptype = self.resolv_cli.call({
-            'node_name': self.name
-        }, 'AnnounceNodeRequest')
+        rep, reptype = self.resolv_call({'announce_node': {'node_name': self.name}})
         if not rep['ok']: raise RuntimeError('announce node failed')
         self.xpub_addr = rep['xpub_sock_addr']
         self.xsub_addr = rep['xsub_sock_addr']
         self.name = rep['node_name']
     def send_heartbeat(self):
-        rep, reptype = self.resolv_cli.call({'node_name': self.name})
+        rep, reptype = self.resolv_call({'heartbeat': {'node_name': self.name}})
     def spin_once(self):
         if self.state != 'ready': raise RuntimeError('invalid state')
         for socket in self.sockets: socket.spin_once()
@@ -222,7 +217,7 @@ class Node:
         self.notify_shutdown()
         for socket in self.sockets: socket.cleanup()
     def notify_shutdown(self):
-        rep, reptype = self.resolv_cli.call({'node_name': self.name}, 'ShutdownNodeRequest')
+        rep, reptype = self.resolv_call({'shutdown_node': {'node_name': self.name}})
 
 def run_pub():
     node = Node('python-publisher-node')

@@ -4,7 +4,8 @@
 #include <b0/node.h>
 #include <b0/service_server.h>
 #include <b0/publisher.h>
-#include <b0/messages.h>
+#include <b0/message/resolv_request.h>
+#include <b0/message/resolv_response.h>
 
 #include <string>
 #include <vector>
@@ -200,22 +201,9 @@ public:
     virtual void heartbeat(resolver::NodeEntry *node_entry);
 
     /*!
-     * \brief Handle a service on the resolv service (using message classes)
-     */
-    template<class TReq, class TRep>
-    void handle(void (Resolver::*f)(const TReq&, TRep&), const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype)
-    {
-        TReq rq;
-        parse(rq, req, reqtype);
-        TRep rsp;
-        (this->*f)(rq, rsp);
-        serialize(rsp, rep, reptype);
-    }
-
-    /*!
      * \brief Handle a service on the resolv service
      */
-    virtual void handle(const std::string &req, const std::string &reqtype, std::string &resp, std::string &resptype);
+    virtual void handle(const b0::message::ResolvRequest &rq, b0::message::ResolvResponse &rsp);
 
     /*!
      * \brief Adjust nodeName such that it is unique in the network (amongst the list of connected nodes)

@@ -306,26 +306,19 @@ void Resolver::heartbeat(resolver::NodeEntry *node_entry)
     node_entry->last_heartbeat = boost::posix_time::second_clock::local_time();
 }
 
-void Resolver::handle(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype)
+void Resolver::handle(const b0::message::ResolvRequest &rq, b0::message::ResolvResponse &rsp)
 {
-    if(reqtype == "AnnounceNodeRequest")
-        handle(&Resolver::handleAnnounceNode, req, reqtype, rep, reptype);
-    else if(reqtype == "ShutdownNodeRequest")
-        handle(&Resolver::handleShutdownNode, req, reqtype, rep, reptype);
-    else if(reqtype == "AnnounceServiceRequest")
-        handle(&Resolver::handleAnnounceService, req, reqtype, rep, reptype);
-    else if(reqtype == "ResolveServiceRequest")
-        handle(&Resolver::handleResolveService, req, reqtype, rep, reptype);
-    else if(reqtype == "HeartbeatRequest")
-        handle(&Resolver::handleHeartbeat, req, reqtype, rep, reptype);
-    else if(reqtype == "NodeTopicRequest")
-        handle(&Resolver::handleNodeTopic, req, reqtype, rep, reptype);
-    else if(reqtype == "NodeServiceRequest")
-        handle(&Resolver::handleNodeService, req, reqtype, rep, reptype);
-    else if(reqtype == "GetGraphRequest")
-        handle(&Resolver::handleGetGraph, req, reqtype, rep, reptype);
-    else
-        log(error, "received an unrecognized request type: %s", reqtype);
+#define MAP_METHOD(m, f) \
+    if(rq.f) { rsp.f.emplace(); handle##m(*rq.f, *rsp.f); }
+    MAP_METHOD(AnnounceNode, announce_node)
+    MAP_METHOD(ShutdownNode, shutdown_node)
+    MAP_METHOD(AnnounceService, announce_service)
+    MAP_METHOD(ResolveService, resolve_service)
+    MAP_METHOD(Heartbeat, heartbeat)
+    MAP_METHOD(NodeTopic, node_topic)
+    MAP_METHOD(NodeService, node_service)
+    MAP_METHOD(GetGraph, get_graph)
+#undef MAP_METHOD
 }
 
 std::string Resolver::makeUniqueNodeName(std::string nodeName)
