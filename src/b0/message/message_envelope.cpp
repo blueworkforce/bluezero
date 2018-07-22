@@ -22,6 +22,8 @@ void parse(MessageEnvelope &env, const std::string &s)
     std::string payload = s.substr(content_begin + 2);
     std::vector<std::string> headers_split;
     boost::split(headers_split, message_headers, boost::is_any_of("\n"));
+    env.header0 = headers_split.at(0);
+    headers_split.erase(headers_split.begin());
     for(auto &header_line : headers_split)
     {
         size_t delim_pos = header_line.find(": ");
@@ -92,10 +94,7 @@ void serialize(const MessageEnvelope &env, std::string &s)
 {
     std::stringstream ss;
 
-    auto header_it = env.headers.find("Header");
-    if(header_it != env.headers.end())
-        ss << "Header: " << header_it->second << std::endl;
-
+    ss << env.header0 << std::endl;
     ss << "Part-count: " << env.parts.size() << std::endl;
     std::vector<std::string> compressed_payloads;
     int total_length = 0;
@@ -119,8 +118,7 @@ void serialize(const MessageEnvelope &env, std::string &s)
     ss << "Content-length: " << total_length << std::endl;
 
     for(auto &pair : env.headers)
-        if(pair.first != "Header")
-            ss << pair.first << ": " << pair.second << std::endl;
+        ss << pair.first << ": " << pair.second << std::endl;
 
     ss << std::endl;
 

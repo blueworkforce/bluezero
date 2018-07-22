@@ -30,7 +30,6 @@ Socket::Socket(Node *node, int type, const std::string &name, bool managed)
     : private_(new SocketPrivate(node, *reinterpret_cast<zmq::context_t*>(node->getContext()), type)),
       node_(*node),
       name_(name),
-      has_header_(false),
       managed_(managed)
 {
     setLingerPeriod(5000);
@@ -47,11 +46,6 @@ Socket::~Socket()
 
 void Socket::spinOnce()
 {
-}
-
-void Socket::setHasHeader(bool has_header)
-{
-    has_header_ = has_header;
 }
 
 void Socket::log(LogLevel level, const std::string &message) const
@@ -144,13 +138,8 @@ void Socket::readRaw(b0::message::MessageEnvelope &env)
     dumpPayload(*this, "recv", payload);
     parse(env, payload);
 
-    // if necessary, check header
-    if(has_header_)
-    {
-        std::string hdr = env.headers.at("Header");
-        if(hdr != name_)
-            throw exception::HeaderMismatch(hdr, name_);
-    }
+    if(env.header0 != name_)
+        throw exception::HeaderMismatch(env.header0, name_);
 }
 
 void Socket::readRaw(std::vector<b0::message::MessagePart> &parts)
@@ -204,8 +193,7 @@ void Socket::writeRaw(const std::vector<b0::message::MessagePart> &parts)
 {
     b0::message::MessageEnvelope env;
     env.parts = parts;
-    if(has_header_)
-        env.headers["Header"] = name_;
+    env.header0 = name_;
     writeRaw(env);
 }
 

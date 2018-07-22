@@ -45,12 +45,6 @@ public:
     virtual ~Socket();
 
     /*!
-     * \brief Set the has_header_ flag which specifies if this socket require a message part
-     *        with the address (usually for publish/subscribe pattern).
-     */
-    void setHasHeader(bool has_header);
-
-    /*!
      * \brief Log a message to the default logger of this node
      */
     void log(LogLevel level, const std::string &message) const override;
@@ -105,10 +99,6 @@ protected:
 
     //! This socket bus name
     std::string name_;
-
-    //! \brief True if the payload has a header part (i.e. topic).
-    //! If true, the envelope with this socket name will be prepended to the payload.
-    bool has_header_;
 
     //! True if this socket is managed (init(), cleanup() are called by the owner Node)
     const bool managed_;

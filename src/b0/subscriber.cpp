@@ -11,7 +11,6 @@ Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackRaw ca
       notify_graph_(notify_graph),
       callback_(callback)
 {
-    setHasHeader(true);
 }
 
 Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackRawType callback, bool managed, bool notify_graph)
@@ -19,7 +18,6 @@ Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackRawTyp
       notify_graph_(notify_graph),
       callback_with_type_(callback)
 {
-    setHasHeader(true);
 }
 
 Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackParts callback, bool managed, bool notify_graph)
@@ -27,7 +25,6 @@ Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackParts 
       notify_graph_(notify_graph),
       callback_multipart_(callback)
 {
-    setHasHeader(true);
 }
 
 Subscriber::~Subscriber()
@@ -94,15 +91,13 @@ void Subscriber::connect()
 {
     log(trace, "Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
-    std::string subscription("Header: " + name_);
-    Socket::setsockopt(ZMQ_SUBSCRIBE, subscription.data(), subscription.size());
+    Socket::setsockopt(ZMQ_SUBSCRIBE, name_.data(), name_.size());
 }
 
 void Subscriber::disconnect()
 {
     log(trace, "Disconnecting from %s...", remote_addr_);
-    std::string subscription("Header: " + name_);
-    Socket::setsockopt(ZMQ_UNSUBSCRIBE, subscription.data(), subscription.size());
+    Socket::setsockopt(ZMQ_UNSUBSCRIBE, name_.data(), name_.size());
     Socket::disconnect(remote_addr_);
 }
 

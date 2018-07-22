@@ -10,7 +10,6 @@ Publisher::Publisher(Node *node, const std::string &topic_name, bool managed, bo
     : Socket(node, ZMQ_PUB, topic_name, managed),
       notify_graph_(notify_graph)
 {
-    setHasHeader(true);
 }
 
 Publisher::~Publisher()

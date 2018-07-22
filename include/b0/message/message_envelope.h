@@ -67,6 +67,9 @@ struct MessagePart
 class MessageEnvelope final
 {
 public:
+    //! The very first line of the message envelope, used for routing (topics, services)
+    std::string header0;
+
     //! The message parts
     std::vector<MessagePart> parts;
 
