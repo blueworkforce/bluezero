@@ -1,78 +1,64 @@
 import json
 import time
+import os
 import zmq
 
 class MessagePart:
+    __slots__ = 'content_type', 'compression_algorithm', 'compression_level', 'payload'
     def __init__(self):
-        self.content_type = ''
-        self.compression_algorithm = ''
+        for f in ('content_type', 'compression_algorithm', 'payload'): setattr(self, f, '')
         self.compression_level = 0
-        self.payload = ''
+    def parse(self, i, last_start, headers, payload):
+        content_length = int(headers.pop('Content-length-%d' % i, 0))
+        self.content_type = headers.pop('Content-type-%d' % i, '')
+        self.compression_algorithm = headers.pop('Compression-algorithm-%d' % i, '')
+        self.compression_level = int(headers.pop('Compression-level-%d' % i, 0))
+        uncompressed_content_length = int(headers.pop('Uncompressed-content-length-%d' % i, 0))
+        if self.compression_algorithm: raise RuntimeError('compression not supported')
+        self.payload = payload[last_start:last_start+content_length]
+        return last_start + content_length
+    def serialize_headers(self, i):
+        h = [('Content-length-%d', len(self.payload))]
+        if self.content_type: h.append(('Content-type-%d', self.content_type))
+        if self.compression_algorithm: raise RuntimeError('compression not supported')
+        #    h.append(('Compression-algorithm-%d', self.compression_algorithm))
+        #    if self.compression_level: h.append(('Compression-level-%d', self.compression_level))
+        #    uncompressed_content_length = 0
+        #    h.append(('Uncompressed-content-length-%d', uncompressed_content_length))
+        return ''.join('%s: %s\n' % ((k % i), v) for k, v in h)
 
 class MessageEnvelope:
+    __slots__ = 'header0', 'parts', 'headers'
     def __init__(self):
-        self.parts = []
-        self.headers = {}
+        self.header0, self.parts, self.headers = '', [], {}
+    def pop_header(key, value_type=str, default_value=''):
+        return value_type(self.headers.pop(key, default_value))
     def parse(self, s):
         headers_txt, payload = s.split('\n\n', 1)
-        for line in headers_txt.splitlines():
-            key, value = line.split(': ', 1)
-            self.headers[key] = value
-        part_count = int(self.headers['Part-count'])
-        last_start = 0
+        self.header0, *header_lines = headers_txt.splitlines()
+        self.headers = {k: v for line in header_lines for (k, v) in [line.split(': ', 1)]}
+        part_count, self.parts, last_start = int(self.headers.pop('Part-count')), [], 0
         for i in range(part_count):
             part = MessagePart()
-            k = 'Content-length-%d' % i
-            part.content_length = int(self.headers[k])
-            del self.headers[k]
-            k = 'Content-type-%d' % i
-            if k in self.headers:
-                part.content_type = self.headers[k]
-                del self.headers[k]
-            k = 'Compression-algorithm-%d' % i
-            if k in self.headers:
-                raise RuntimeError('compression not supported')
-                part.compression_algorithm = self.headers.get('Compression-algorithm-%d' % i, '')
-                del self.headers[k]
-            part.payload = payload[last_start:last_start+part.content_length]
-            last_start += part.content_length
+            last_start = part.parse(i, last_start, self.headers, payload)
             self.parts.append(part)
     def serialize(self):
-        s = ''
-        if 'Header' in self.headers:
-            s += 'Header: %s\n' % self.headers["Header"]
+        s = self.header0 + '\n'
+        s += 'Content-length: %d\n' % sum(len(part.payload) for part in self.parts)
         s += 'Part-count: %d\n' % len(self.parts)
-        content_length = 0
-        for i, part in enumerate(self.parts):
-            s += 'Content-length-%d: %d\n' % (i, len(part.payload))
-            if part.content_type:
-                s += 'Content-type-%d: %s\n' % (i, part.content_type)
-            if part.compression_algorithm:
-                raise RuntimeError('compression not supported')
-            content_length += len(part.payload)
-        s += 'Content-length: %d\n' % content_length
-        for key, value in self.headers.items():
-            s += '%s: %s\n' % (key, value)
+        s += ''.join(part.serialize_headers(i) for i, part in enumerate(self.parts))
+        s += ''.join('%s: %s\n' % (key, value) for key, value in self.headers.items())
         s += '\n'
-        for part in self.parts:
-            s += part.payload
+        for part in self.parts: s += part.payload
         return s
 
 class Socket:
     def __init__(self, node, sock_type, name, managed=True, notify_graph=False):
-        self.node = node
-        self.name = name
-        self.notify_graph = notify_graph
-        self.has_header = False
-        self.remote_addr = ''
+        self.node, self.name, self.notify_graph, self.remote_addr = node, name, notify_graph, ''
         if managed: self.node.add_socket(self)
         ctx = zmq.Context.instance()
         self.socket = ctx.socket(sock_type)
-    def init(self):
-        pass
     def spin_once(self):
-        pass
-    def cleanup():
         pass
     def poll(self):
         poller = zmq.Poller()
@@ -83,6 +69,8 @@ class Socket:
         data = self.socket.recv_string()
         env = MessageEnvelope()
         env.parse(data)
+        if env.header0 != self.name:
+            raise TypeError('bad header: got %s, expected %s' % (env.header0, self.name))
         return env
     def read_msg(self):
         env = self.read_envelope()
@@ -94,11 +82,11 @@ class Socket:
         except: pass
         return msg, env.parts[0].content_type
     def write_envelope(self, env):
-        if self.has_header: env.headers['Header'] = self.name
         data = env.serialize()
         return self.socket.send_string(data)
     def write_msg(self, msg, msgtype):
         env = MessageEnvelope()
+        env.header0 = self.name
         env.parts = [MessagePart()]
         env.parts[0].payload = json.dumps(msg) if isinstance(msg, dict) else msg
         env.parts[0].content_type = msgtype
@@ -109,20 +97,15 @@ class Socket:
         self._send_notify('service', reverse, active)
     def _send_notify(self, what, reverse, active):
         self.node.resolv_cli.call({
-            'node_name': self.node.name,
-            '%s_name' % what: self.name,
-            'reverse': reverse,
-            'active': active
+            'node_name': self.node.name, '%s_name' % what: self.name,
+            'reverse': reverse,          'active': active
         }, {'topic': 'NodeTopicRequest', 'service': 'NodeServiceRequest'}[what])
 
 class Publisher(Socket):
     def __init__(self, node, name, managed=True, notify_graph=True):
         super().__init__(node, zmq.PUB, name, managed, notify_graph)
-        self.has_header = True
     def init(self):
-        if not self.remote_addr:
-            self.remote_addr = self.node.xsub_addr
-        self.socket.connect(self.remote_addr)
+        self.socket.connect(self.remote_addr or self.node.xsub_addr)
         if self.notify_graph: self.notify_topic(False, True)
     def publish(self, msg, msgtype):
         self.write_msg(msg, msgtype)
@@ -133,14 +116,11 @@ class Publisher(Socket):
 class Subscriber(Socket):
     def __init__(self, node, name, callback, managed=True, notify_graph=True):
         super().__init__(node, zmq.SUB, name, managed, notify_graph)
-        if not callable(callback):
-            raise TypeError('callback is not callable')
+        if not callable(callback): raise TypeError('callback is not callable')
         self.callback = callback
     def init(self):
-        if not self.remote_addr:
-            self.remote_addr = self.node.xpub_addr
-        self.socket.connect(self.remote_addr)
-        self.socket.setsockopt_string(zmq.SUBSCRIBE, 'Header: %s' % self.name)
+        self.socket.connect(self.remote_addr or self.node.xpub_addr)
+        self.socket.setsockopt_string(zmq.SUBSCRIBE, self.name)
         if self.notify_graph: self.notify_topic(True, True)
     def spin_once(self):
         while self.poll():
@@ -154,14 +134,10 @@ class ServiceClient(Socket):
     def __init__(self, node, name, managed=True, notify_graph=True):
         super().__init__(node, zmq.REQ, name, managed, notify_graph)
     def init(self):
-        if not self.remote_addr:
-            self.remote_addr = self.resolve_service(self.name)
-        self.socket.connect(self.remote_addr)
+        self.socket.connect(self.remote_addr or self.resolve_service(self.name))
         if self.notify_graph: self.notify_service(True, True)
     def resolve_service(self, name):
-        rep, reptype = self.node.resolv_cli.call({
-            'service_name': name
-        }, 'ResolveServiceRequest')
+        rep, reptype = self.node.resolv_cli.call({'service_name': name}, 'ResolveServiceRequest')
         if not rep['ok']: raise RuntimeError('failed resolve service')
         return rep['sock_addr']
     def call(self, req, reqtype):
@@ -174,16 +150,18 @@ class ServiceClient(Socket):
 class ServiceServer(Socket):
     def __init__(self, node, name, callback, managed=True, notify_graph=True):
         super().__init__(node, zmq.REP, name, managed, notify_graph)
-        if not callable(callback):
-            raise TypeError('callback is not callable')
+        if not callable(callback): raise TypeError('callback is not callable')
         self.callback = callback
-    def init(self):
-        import socket, os
-        hostname = os.environ.get('B0_HOST_ID', 'localhost')
+    def get_free_addr(self):
+        import socket
+        host_id = os.environ.get('B0_HOST_ID', 'localhost')
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('', 0))
         free_port = s.getsockname()[1]
         s.close()
+        return host_id, free_port
+    def init(self):
+        hostname, free_port = self.get_free_addr()
         self.socket.bind('tcp://*:%d' % free_port)
         self.announce_service('tcp://%s:%d' % (hostname, free_port))
         if self.notify_graph: self.notify_service(False, True)
@@ -215,11 +193,10 @@ class Node:
         self.sockets.append(socket)
     def init(self):
         if self.state != 'created': raise RuntimeError('invalid state')
-        self.resolv_cli.remote_addr = 'tcp://127.0.0.1:22000'
+        self.resolv_cli.remote_addr = os.environ.get('B0_RESOLVER', 'tcp://127.0.0.1:22000')
         self.resolv_cli.init() # this socket is not managed
         self.announce_node()
-        for socket in self.sockets:
-            socket.init()
+        for socket in self.sockets: socket.init()
         self.state = 'ready'
     def announce_node(self):
         rep, reptype = self.resolv_cli.call({
@@ -230,13 +207,10 @@ class Node:
         self.xsub_addr = rep['xsub_sock_addr']
         self.name = rep['node_name']
     def send_heartbeat(self):
-        rep, reptype = self.resolv_cli.call({
-            'node_name': self.name
-        })
+        rep, reptype = self.resolv_cli.call({'node_name': self.name})
     def spin_once(self):
         if self.state != 'ready': raise RuntimeError('invalid state')
-        for socket in self.sockets:
-            socket.spin_once()
+        for socket in self.sockets: socket.spin_once()
     def spin(self, rate = 10):
         while not self.shutdown_flag:
             self.spin_once()
@@ -246,12 +220,9 @@ class Node:
         if self.state != 'ready': raise RuntimeError('invalid state')
         self.state = 'terminated'
         self.notify_shutdown()
-        for socket in self.sockets:
-            socket.cleanup()
+        for socket in self.sockets: socket.cleanup()
     def notify_shutdown(self):
-        rep, reptype = self.resolv_cli.call({
-            'node_name': self.name
-        }, 'ShutdownRequest')
+        rep, reptype = self.resolv_cli.call({'node_name': self.name}, 'ShutdownNodeRequest')
 
 def run_pub():
     node = Node('python-publisher-node')
