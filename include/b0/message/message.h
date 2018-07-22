@@ -3,6 +3,7 @@
 
 #include <string>
 #include <spotify/json.hpp>
+#include <spotify/json/codec/boost.hpp>
 
 #include <b0/exception/message_unpack_error.h>
 
