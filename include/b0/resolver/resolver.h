@@ -106,6 +106,11 @@ public:
     virtual void notifyShutdown() override;
 
     /*!
+     * \brief Catch and print exceptions in spinOnce
+     */
+    virtual void spinOnce() override;
+
+    /*!
      * Called when a new node has connected
      */
     void onNodeConnected(std::string name);

@@ -126,6 +126,18 @@ void Resolver::notifyShutdown()
 #endif
 }
 
+void Resolver::spinOnce()
+{
+    try
+    {
+        Node::spinOnce();
+    }
+    catch(std::exception &ex)
+    {
+        log(error, "Exception in Resolver::spinOnce(): %s", ex.what());
+    }
+}
+
 void Resolver::onNodeConnected(std::string name)
 {
 }
