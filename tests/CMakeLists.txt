@@ -82,3 +82,7 @@ add_test(check_resolver_status_when_running check_resolver_status 1)
 add_executable(protocol protocol.cpp)
 target_link_libraries(protocol b0)
 add_test(protocol protocol)
+
+add_executable(json json.cpp)
+target_link_libraries(json b0)
+add_test(json json)
