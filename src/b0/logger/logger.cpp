@@ -1,6 +1,6 @@
 #include <b0/logger/logger.h>
 #include <b0/publisher.h>
-#include <b0/message/log_entry.h>
+#include <b0/message/log/log_entry.h>
 #include <b0/node.h>
 #include <b0/exception/argument_error.h>
 #include <b0/utils/thread_name.h>
@@ -132,7 +132,7 @@ void Logger::remoteLog(LogLevel level, const std::string &message) const
 {
     std::string name = node_.getName();
 
-    b0::message::LogEntry e;
+    b0::message::log::LogEntry e;
     e.node_name = name;
     e.level = level;
     e.message = message;

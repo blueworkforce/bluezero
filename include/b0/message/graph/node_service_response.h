@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__NODE_SERVICE_RESPONSE_H__INCLUDED
-#define B0__MESSAGE__NODE_SERVICE_RESPONSE_H__INCLUDED
+#ifndef B0__MESSAGE__GRAPH__NODE_SERVICE_RESPONSE_H__INCLUDED
+#define B0__MESSAGE__GRAPH__NODE_SERVICE_RESPONSE_H__INCLUDED
 
 #include <b0/message/message.h>
 
@@ -7,6 +7,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace graph
 {
 
 /*!
@@ -21,8 +24,10 @@ class NodeServiceResponse : public Message
 public:
 
 public:
-    std::string type() const override {return "NodeServiceResponse";}
+    std::string type() const override {return "b0.message.graph.NodeServiceResponse";}
 };
+
+} // namespace graph
 
 } // namespace message
 
@@ -36,7 +41,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::NodeServiceResponse;
+using b0::message::graph::NodeServiceResponse;
 
 template <>
 struct default_codec_t<NodeServiceResponse>
@@ -54,4 +59,4 @@ struct default_codec_t<NodeServiceResponse>
 
 //! \endcond
 
-#endif // B0__MESSAGE__NODE_SERVICE_RESPONSE_H__INCLUDED
+#endif // B0__MESSAGE__GRAPH__NODE_SERVICE_RESPONSE_H__INCLUDED

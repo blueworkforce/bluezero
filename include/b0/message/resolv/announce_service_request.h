@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED
-#define B0__MESSAGE__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED
+#define B0__MESSAGE__RESOLV__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -9,6 +9,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -33,8 +36,10 @@ public:
     std::string sock_addr;
 
 public:
-    std::string type() const override {return "AnnounceServiceRequest";}
+    std::string type() const override {return "b0.message.resolv.AnnounceServiceRequest";}
 };
+
+} // namespace resolv
 
 } // namespace message
 
@@ -48,7 +53,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::AnnounceServiceRequest;
+using b0::message::resolv::AnnounceServiceRequest;
 
 template <>
 struct default_codec_t<AnnounceServiceRequest>
@@ -69,4 +74,4 @@ struct default_codec_t<AnnounceServiceRequest>
 
 //! \endcond
 
-#endif // B0__MESSAGE__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__ANNOUNCE_SERVICE_REQUEST_H__INCLUDED

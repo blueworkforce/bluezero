@@ -1,6 +1,6 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
-#include <b0/message/graph.h>
+#include <b0/message/graph/graph.h>
 #include <b0/utils/graphviz.h>
 
 #include <QApplication>
@@ -24,7 +24,7 @@ public:
         timer->start(100);
     }
 
-    void onGraphChanged(const b0::message::Graph &graph)
+    void onGraphChanged(const b0::message::graph::Graph &graph)
     {
         b0::graph::toGraphviz(graph, "graph.gv");
 

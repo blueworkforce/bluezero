@@ -1,6 +1,9 @@
 #include <iostream>
 
-#include <b0/messages.h>
+#include <b0/message/resolv/announce_node_request.h>
+#include <b0/message/log/log_entry.h>
+#include <b0/message/graph/graph.h>
+#include <b0/message/graph/graph_link.h>
 
 bool verbose = true;
 
@@ -27,36 +30,36 @@ void test(const T &msg)
 int main(int argc, char **argv)
 {
     {
-        b0::message::AnnounceNodeRequest msg;
+        b0::message::resolv::AnnounceNodeRequest msg;
         msg.node_name = "foo";
         test(msg);
     }
 
     {
-        b0::message::LogEntry msg;
+        b0::message::log::LogEntry msg;
         msg.node_name = "foo";
-        msg.level = b0::message::LogLevel::warn;
+        msg.level = b0::message::log::LogLevel::warn;
         msg.message = "Hello \x01\xff world";
         msg.time_usec = (uint64_t(1) << 60) + 5978629785;
         test(msg);
     }
 
     {
-        b0::message::Graph g1;
+        b0::message::graph::Graph g1;
         g1.nodes.push_back("a");
         g1.nodes.push_back("b");
         g1.nodes.push_back("c");
-        b0::message::GraphLink l1;
+        b0::message::graph::GraphLink l1;
         l1.node_name = "a";
         l1.other_name = "t";
         l1.reversed = false;
         g1.node_topic.push_back(l1);
-        b0::message::GraphLink l2;
+        b0::message::graph::GraphLink l2;
         l2.node_name = "b";
         l2.other_name = "t";
         l2.reversed = true;
         g1.node_topic.push_back(l2);
-        b0::message::GraphLink l3;
+        b0::message::graph::GraphLink l3;
         l3.node_name = "c";
         l3.other_name = "t";
         l3.reversed = true;

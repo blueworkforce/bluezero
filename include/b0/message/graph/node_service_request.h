@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__NODE_SERVICE_REQUEST_H__INCLUDED
-#define B0__MESSAGE__NODE_SERVICE_REQUEST_H__INCLUDED
+#ifndef B0__MESSAGE__GRAPH__NODE_SERVICE_REQUEST_H__INCLUDED
+#define B0__MESSAGE__GRAPH__NODE_SERVICE_REQUEST_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -9,6 +9,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace graph
 {
 
 /*!
@@ -34,8 +37,10 @@ public:
     bool active;
 
 public:
-    std::string type() const override {return "NodeServiceRequest";}
+    std::string type() const override {return "b0.message.graph.NodeServiceRequest";}
 };
+
+} // namespace graph
 
 } // namespace message
 
@@ -49,7 +54,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::NodeServiceRequest;
+using b0::message::graph::NodeServiceRequest;
 
 template <>
 struct default_codec_t<NodeServiceRequest>
@@ -71,4 +76,4 @@ struct default_codec_t<NodeServiceRequest>
 
 //! \endcond
 
-#endif // B0__MESSAGE__NODE_SERVICE_REQUEST_H__INCLUDED
+#endif // B0__MESSAGE__GRAPH__NODE_SERVICE_REQUEST_H__INCLUDED

@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__ANNOUNCE_NODE_REQUEST_H__INCLUDED
-#define B0__MESSAGE__ANNOUNCE_NODE_REQUEST_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__ANNOUNCE_NODE_REQUEST_H__INCLUDED
+#define B0__MESSAGE__RESOLV__ANNOUNCE_NODE_REQUEST_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -9,6 +9,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -27,8 +30,10 @@ public:
     std::string node_name;
 
 public:
-    std::string type() const override {return "AnnounceNodeRequest";}
+    std::string type() const override {return "b0.message.resolv.AnnounceNodeRequest";}
 };
+
+} // namespace resolv
 
 } // namespace message
 
@@ -42,7 +47,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::AnnounceNodeRequest;
+using b0::message::resolv::AnnounceNodeRequest;
 
 template <>
 struct default_codec_t<AnnounceNodeRequest>
@@ -61,4 +66,4 @@ struct default_codec_t<AnnounceNodeRequest>
 
 //! \endcond
 
-#endif // B0__MESSAGE__ANNOUNCE_NODE_REQUEST_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__ANNOUNCE_NODE_REQUEST_H__INCLUDED

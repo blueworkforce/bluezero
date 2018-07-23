@@ -44,18 +44,18 @@ public:
              *        is not received in the first 2 seconds, send an explicit request
              */
             log(info, "Requesting graph");
-            b0::message::Graph graph;
+            b0::message::graph::Graph graph;
             resolv_cli_.getGraph(graph);
             printOrDisplayGraph("Current graph", graph);
         }
     }
 
-    void onGraphChanged(const b0::message::Graph &graph)
+    void onGraphChanged(const b0::message::graph::Graph &graph)
     {
         printOrDisplayGraph("Graph has changed", graph);
     }
 
-    void printOrDisplayGraph(std::string message, const b0::message::Graph &graph)
+    void printOrDisplayGraph(std::string message, const b0::message::graph::Graph &graph)
     {
         if(termHasImageCapability())
         {
@@ -68,7 +68,7 @@ public:
         }
     }
 
-    void renderAndDisplayGraph(const b0::message::Graph &graph)
+    void renderAndDisplayGraph(const b0::message::graph::Graph &graph)
     {
         toGraphviz(graph, "graph.gv", "white", "cyan", "red");
 

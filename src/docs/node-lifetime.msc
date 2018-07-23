@@ -3,6 +3,6 @@ msc {
 
     n [ label="node" ], r [ label="resolver" ];
 
-    n->r [ label="b0::message::HeartBeatRequest" ];
-    r->n [ label="b0::message::HeartBeatResponse" ];
+    n->r [ label="b0::message::resolv::HeartBeatRequest" ];
+    r->n [ label="b0::message::resolv::HeartBeatResponse" ];
 }

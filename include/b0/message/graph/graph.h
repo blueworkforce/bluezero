@@ -1,16 +1,19 @@
-#ifndef B0__MESSAGE__GRAPH_H__INCLUDED
-#define B0__MESSAGE__GRAPH_H__INCLUDED
+#ifndef B0__MESSAGE__GRAPH__GRAPH_H__INCLUDED
+#define B0__MESSAGE__GRAPH__GRAPH_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/vector.hpp>
 
 #include <b0/message/message.h>
-#include <b0/message/graph_link.h>
+#include <b0/message/graph/graph_link.h>
 
 namespace b0
 {
 
 namespace message
+{
+
+namespace graph
 {
 
 /*!
@@ -31,8 +34,10 @@ public:
     std::vector<GraphLink> node_service;
 
 public:
-    std::string type() const override {return "Graph";}
+    std::string type() const override {return "b0.message.graph.Graph";}
 };
+
+} // namespace graph
 
 } // namespace message
 
@@ -46,7 +51,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::Graph;
+using b0::message::graph::Graph;
 
 template <>
 struct default_codec_t<Graph>
@@ -67,4 +72,4 @@ struct default_codec_t<Graph>
 
 //! \endcond
 
-#endif // B0__MESSAGE__GRAPH_H__INCLUDED
+#endif // B0__MESSAGE__GRAPH__GRAPH_H__INCLUDED

@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED
-#define B0__MESSAGE__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED
+#define B0__MESSAGE__RESOLV__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED
 
 #include <b0/message/message.h>
 
@@ -7,6 +7,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -23,8 +26,10 @@ public:
     bool ok;
 
 public:
-    std::string type() const override {return "AnnounceServiceResponse";}
+    std::string type() const override {return "b0.message.resolv.AnnounceServiceResponse";}
 };
+
+} // namespace resolv
 
 } // namespace message
 
@@ -38,7 +43,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::AnnounceServiceResponse;
+using b0::message::resolv::AnnounceServiceResponse;
 
 template <>
 struct default_codec_t<AnnounceServiceResponse>
@@ -57,4 +62,4 @@ struct default_codec_t<AnnounceServiceResponse>
 
 //! \endcond
 
-#endif // B0__MESSAGE__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__ANNOUNCE_SERVICE_RESPONSE_H__INCLUDED

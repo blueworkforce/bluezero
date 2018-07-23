@@ -31,11 +31,11 @@ ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
 
 void ResolverServiceServer::announce()
 {
-    b0::message::AnnounceServiceRequest rq;
+    b0::message::resolv::AnnounceServiceRequest rq;
     rq.node_name = node_.getName();
     rq.service_name = name_;
     rq.sock_addr = remote_addr_;
-    b0::message::AnnounceServiceResponse rsp;
+    b0::message::resolv::AnnounceServiceResponse rsp;
     resolver_->handleAnnounceService(rq, rsp);
     resolver_->onNodeServiceOfferStart(resolver_->getName(), name_);
 }
@@ -104,9 +104,9 @@ std::string Resolver::getXSUBSocketAddress() const
 void Resolver::announceNode()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
-    b0::message::AnnounceNodeRequest rq;
+    b0::message::resolv::AnnounceNodeRequest rq;
     rq.node_name = getName();
-    b0::message::AnnounceNodeResponse rsp;
+    b0::message::resolv::AnnounceNodeResponse rsp;
     handleAnnounceNode(rq, rsp);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
@@ -117,9 +117,9 @@ void Resolver::notifyShutdown()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
 #if 0
-    b0::message::ShutdownNodeRequest rq;
+    b0::message::resolv::ShutdownNodeRequest rq;
     rq.node_name = getName();
-    b0::message::ShutdownNodeResponse rsp;
+    b0::message::resolv::ShutdownNodeResponse rsp;
     handleShutdownNode(rq, rsp);
 #else
     // nothing to do really
@@ -318,7 +318,7 @@ void Resolver::heartbeat(resolver::NodeEntry *node_entry)
     node_entry->last_heartbeat = boost::posix_time::second_clock::local_time();
 }
 
-void Resolver::handle(const b0::message::ResolvRequest &rq, b0::message::ResolvResponse &rsp)
+void Resolver::handle(const b0::message::resolv::Request &rq, b0::message::resolv::Response &rsp)
 {
 #define MAP_METHOD(m, f) \
     if(rq.f) { rsp.f.emplace(); handle##m(*rq.f, *rsp.f); }
@@ -345,7 +345,7 @@ std::string Resolver::makeUniqueNodeName(std::string nodeName)
     return uniqueNodeName;
 }
 
-void Resolver::handleAnnounceNode(const b0::message::AnnounceNodeRequest &rq, b0::message::AnnounceNodeResponse &rsp)
+void Resolver::handleAnnounceNode(const b0::message::resolv::AnnounceNodeRequest &rq, b0::message::resolv::AnnounceNodeResponse &rsp)
 {
     log(trace, "Received a AnnounceNodeRequest");
     std::string nodeName = makeUniqueNodeName(rq.node_name);
@@ -362,7 +362,7 @@ void Resolver::handleAnnounceNode(const b0::message::AnnounceNodeRequest &rq, b0
     log(info, "New node has joined: '%s'", e->name);
 }
 
-void Resolver::handleShutdownNode(const b0::message::ShutdownNodeRequest &rq, b0::message::ShutdownNodeResponse &rsp)
+void Resolver::handleShutdownNode(const b0::message::resolv::ShutdownNodeRequest &rq, b0::message::resolv::ShutdownNodeResponse &rsp)
 {
     resolver::NodeEntry *ne = nodeByName(rq.node_name);
     if(!ne)
@@ -378,7 +378,7 @@ void Resolver::handleShutdownNode(const b0::message::ShutdownNodeRequest &rq, b0
     log(info, "Node '%s' has left", node_name);
 }
 
-void Resolver::handleAnnounceService(const b0::message::AnnounceServiceRequest &rq, b0::message::AnnounceServiceResponse &rsp)
+void Resolver::handleAnnounceService(const b0::message::resolv::AnnounceServiceRequest &rq, b0::message::resolv::AnnounceServiceResponse &rsp)
 {
     resolver::NodeEntry *ne = nodeByName(rq.node_name);
     if(!ne)
@@ -404,7 +404,7 @@ void Resolver::handleAnnounceService(const b0::message::AnnounceServiceRequest &
     log(info, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name, rq.sock_addr);
 }
 
-void Resolver::handleResolveService(const b0::message::ResolveServiceRequest &rq, b0::message::ResolveServiceResponse &rsp)
+void Resolver::handleResolveService(const b0::message::resolv::ResolveServiceRequest &rq, b0::message::resolv::ResolveServiceResponse &rsp)
 {
     auto it = services_by_name_.find(rq.service_name);
     if(it == services_by_name_.end())
@@ -420,7 +420,7 @@ void Resolver::handleResolveService(const b0::message::ResolveServiceRequest &rq
     rsp.sock_addr = se->addr;
 }
 
-void Resolver::handleHeartbeat(const b0::message::HeartbeatRequest &rq, b0::message::HeartbeatResponse &rsp)
+void Resolver::handleHeartbeat(const b0::message::resolv::HeartbeatRequest &rq, b0::message::resolv::HeartbeatResponse &rsp)
 {
     if(rq.node_name == "resolver")
     {
@@ -457,7 +457,7 @@ void Resolver::handleHeartbeat(const b0::message::HeartbeatRequest &rq, b0::mess
     rsp.time_usec = hardwareTimeUSec();
 }
 
-void Resolver::handleNodeTopic(const b0::message::NodeTopicRequest &req, b0::message::NodeTopicResponse &resp)
+void Resolver::handleNodeTopic(const b0::message::graph::NodeTopicRequest &req, b0::message::graph::NodeTopicResponse &resp)
 {
     size_t old_sz1 = node_publishes_topic_.size(), old_sz2 = node_subscribes_topic_.size();
     if(req.reverse)
@@ -478,7 +478,7 @@ void Resolver::handleNodeTopic(const b0::message::NodeTopicRequest &req, b0::mes
         onGraphChanged();
 }
 
-void Resolver::handleNodeService(const b0::message::NodeServiceRequest &req, b0::message::NodeServiceResponse &resp)
+void Resolver::handleNodeService(const b0::message::graph::NodeServiceRequest &req, b0::message::graph::NodeServiceResponse &resp)
 {
     size_t old_sz1 = node_offers_service_.size(), old_sz2 = node_uses_service_.size();
     if(req.reverse)
@@ -499,12 +499,12 @@ void Resolver::handleNodeService(const b0::message::NodeServiceRequest &req, b0:
         onGraphChanged();
 }
 
-void Resolver::handleGetGraph(const b0::message::GetGraphRequest &req, b0::message::GetGraphResponse &resp)
+void Resolver::handleGetGraph(const b0::message::graph::GetGraphRequest &req, b0::message::graph::GetGraphResponse &resp)
 {
     getGraph(resp.graph);
 }
 
-void Resolver::getGraph(b0::message::Graph &graph)
+void Resolver::getGraph(b0::message::graph::Graph &graph)
 {
     for(auto x : nodes_by_name_)
     {
@@ -512,7 +512,7 @@ void Resolver::getGraph(b0::message::Graph &graph)
     }
     for(auto x : node_publishes_topic_)
     {
-        b0::message::GraphLink l;
+        b0::message::graph::GraphLink l;
         l.node_name = x.first;
         l.other_name = x.second;
         l.reversed = false;
@@ -520,7 +520,7 @@ void Resolver::getGraph(b0::message::Graph &graph)
     }
     for(auto x : node_subscribes_topic_)
     {
-        b0::message::GraphLink l;
+        b0::message::graph::GraphLink l;
         l.node_name = x.first;
         l.other_name = x.second;
         l.reversed = true;
@@ -528,7 +528,7 @@ void Resolver::getGraph(b0::message::Graph &graph)
     }
     for(auto x : node_offers_service_)
     {
-        b0::message::GraphLink l;
+        b0::message::graph::GraphLink l;
         l.node_name = x.first;
         l.other_name = x.second;
         l.reversed = false;
@@ -536,7 +536,7 @@ void Resolver::getGraph(b0::message::Graph &graph)
     }
     for(auto x : node_uses_service_)
     {
-        b0::message::GraphLink l;
+        b0::message::graph::GraphLink l;
         l.node_name = x.first;
         l.other_name = x.second;
         l.reversed = true;
@@ -546,7 +546,7 @@ void Resolver::getGraph(b0::message::Graph &graph)
 
 void Resolver::onGraphChanged()
 {
-    b0::message::Graph g;
+    b0::message::graph::Graph g;
     getGraph(g);
     graph_pub_.publish(g);
 }

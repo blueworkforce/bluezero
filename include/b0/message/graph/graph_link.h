@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__GRAPH_LINK_H__INCLUDED
-#define B0__MESSAGE__GRAPH_LINK_H__INCLUDED
+#ifndef B0__MESSAGE__GRAPH__GRAPH_LINK_H__INCLUDED
+#define B0__MESSAGE__GRAPH__GRAPH_LINK_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -9,6 +9,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace graph
 {
 
 /*!
@@ -29,8 +32,10 @@ public:
     bool reversed;
 
 public:
-    std::string type() const override {return "GraphLink";}
+    std::string type() const override {return "b0.message.graph.GraphLink";}
 };
+
+} // namespace graph
 
 } // namespace message
 
@@ -44,7 +49,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::GraphLink;
+using b0::message::graph::GraphLink;
 
 template <>
 struct default_codec_t<GraphLink>
@@ -65,4 +70,4 @@ struct default_codec_t<GraphLink>
 
 //! \endcond
 
-#endif // B0__MESSAGE__GRAPH_LINK_H__INCLUDED
+#endif // B0__MESSAGE__GRAPH__GRAPH_LINK_H__INCLUDED

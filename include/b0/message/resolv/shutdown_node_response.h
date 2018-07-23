@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
-#define B0__MESSAGE__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
+#define B0__MESSAGE__RESOLV__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
 
 #include <b0/message/message.h>
 
@@ -7,6 +7,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -23,8 +26,10 @@ public:
     bool ok;
 
 public:
-    std::string type() const override {return "ShutdownNodeResponse";}
+    std::string type() const override {return "b0.message.resolv.ShutdownNodeResponse";}
 };
+
+} // namespace resolv
 
 } // namespace message
 
@@ -38,7 +43,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::ShutdownNodeResponse;
+using b0::message::resolv::ShutdownNodeResponse;
 
 template <>
 struct default_codec_t<ShutdownNodeResponse>
@@ -57,4 +62,4 @@ struct default_codec_t<ShutdownNodeResponse>
 
 //! \endcond
 
-#endif // B0__MESSAGE__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__SHUTDOWN_NODE_RESPONSE_H__INCLUDED

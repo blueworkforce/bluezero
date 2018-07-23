@@ -1,13 +1,16 @@
-#ifndef B0__MESSAGE__GET_GRAPH_RESPONSE_H__INCLUDED
-#define B0__MESSAGE__GET_GRAPH_RESPONSE_H__INCLUDED
+#ifndef B0__MESSAGE__GRAPH__GET_GRAPH_RESPONSE_H__INCLUDED
+#define B0__MESSAGE__GRAPH__GET_GRAPH_RESPONSE_H__INCLUDED
 
 #include <b0/message/message.h>
-#include <b0/message/graph.h>
+#include <b0/message/graph/graph.h>
 
 namespace b0
 {
 
 namespace message
+{
+
+namespace graph
 {
 
 /*!
@@ -24,8 +27,10 @@ public:
     Graph graph;
 
 public:
-    std::string type() const override {return "GetGraphResponse";}
+    std::string type() const override {return "b0.message.graph.GetGraphResponse";}
 };
+
+} // namespace graph
 
 } // namespace message
 
@@ -39,7 +44,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::GetGraphResponse;
+using b0::message::graph::GetGraphResponse;
 
 template <>
 struct default_codec_t<GetGraphResponse>
@@ -58,4 +63,4 @@ struct default_codec_t<GetGraphResponse>
 
 //! \endcond
 
-#endif // B0__MESSAGE__GET_GRAPH_RESPONSE_H__INCLUDED
+#endif // B0__MESSAGE__GRAPH__GET_GRAPH_RESPONSE_H__INCLUDED

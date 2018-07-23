@@ -4,8 +4,9 @@
 #include <b0/node.h>
 #include <b0/service_server.h>
 #include <b0/publisher.h>
-#include <b0/message/resolv_request.h>
-#include <b0/message/resolv_response.h>
+#include <b0/message/resolv/request.h>
+#include <b0/message/resolv/response.h>
+#include <b0/message/graph/graph.h>
 
 #include <string>
 #include <vector>
@@ -208,7 +209,7 @@ public:
     /*!
      * \brief Handle a service on the resolv service
      */
-    virtual void handle(const b0::message::ResolvRequest &rq, b0::message::ResolvResponse &rsp);
+    virtual void handle(const b0::message::resolv::Request &rq, b0::message::resolv::Response &rsp);
 
     /*!
      * \brief Adjust nodeName such that it is unique in the network (amongst the list of connected nodes)
@@ -218,47 +219,47 @@ public:
     /*!
      * \brief Handle the AnnounceNode request
      */
-    virtual void handleAnnounceNode(const b0::message::AnnounceNodeRequest &rq, b0::message::AnnounceNodeResponse &rsp);
+    virtual void handleAnnounceNode(const b0::message::resolv::AnnounceNodeRequest &rq, b0::message::resolv::AnnounceNodeResponse &rsp);
 
     /*!
      * \brief Handle the ShutdownNode request
      */
-    virtual void handleShutdownNode(const b0::message::ShutdownNodeRequest &rq, b0::message::ShutdownNodeResponse &rsp);
+    virtual void handleShutdownNode(const b0::message::resolv::ShutdownNodeRequest &rq, b0::message::resolv::ShutdownNodeResponse &rsp);
 
     /*!
      * \brief Handle the AnnounceService request
      */
-    virtual void handleAnnounceService(const b0::message::AnnounceServiceRequest &rq, b0::message::AnnounceServiceResponse &rsp);
+    virtual void handleAnnounceService(const b0::message::resolv::AnnounceServiceRequest &rq, b0::message::resolv::AnnounceServiceResponse &rsp);
 
     /*!
      * \brief Handle the ResolveService request
      */
-    virtual void handleResolveService(const b0::message::ResolveServiceRequest &rq, b0::message::ResolveServiceResponse &rsp);
+    virtual void handleResolveService(const b0::message::resolv::ResolveServiceRequest &rq, b0::message::resolv::ResolveServiceResponse &rsp);
 
     /*!
      * \brief Handle the Heartbeat request
      */
-    virtual void handleHeartbeat(const b0::message::HeartbeatRequest &rq, b0::message::HeartbeatResponse &rsp);
+    virtual void handleHeartbeat(const b0::message::resolv::HeartbeatRequest &rq, b0::message::resolv::HeartbeatResponse &rsp);
 
     /*!
      * \brief Handle the NodeTopic request
      */
-    void handleNodeTopic(const b0::message::NodeTopicRequest &req, b0::message::NodeTopicResponse &resp);
+    void handleNodeTopic(const b0::message::graph::NodeTopicRequest &req, b0::message::graph::NodeTopicResponse &resp);
 
     /*!
      * \brief Handle the NodeService request
      */
-    void handleNodeService(const b0::message::NodeServiceRequest &req, b0::message::NodeServiceResponse &resp);
+    void handleNodeService(const b0::message::graph::NodeServiceRequest &req, b0::message::graph::NodeServiceResponse &resp);
 
     /*!
      * \brief Handle the GetGraph request
      */
-    void handleGetGraph(const b0::message::GetGraphRequest &req, b0::message::GetGraphResponse &resp);
+    void handleGetGraph(const b0::message::graph::GetGraphRequest &req, b0::message::graph::GetGraphResponse &resp);
 
     /*!
      * Retrieve the current Graph
      */
-    void getGraph(b0::message::Graph &graph);
+    void getGraph(b0::message::graph::Graph &graph);
 
     /*!
      * \brief Called when the global graph changes

@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__RESOLVE_SERVICE_RESPONSE_H__INCLUDED
-#define B0__MESSAGE__RESOLVE_SERVICE_RESPONSE_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__RESOLVE_SERVICE_RESPONSE_H__INCLUDED
+#define B0__MESSAGE__RESOLV__RESOLVE_SERVICE_RESPONSE_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -9,6 +9,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -31,6 +34,8 @@ public:
     std::string type() const override {return "ResolveServiceResponse";}
 };
 
+} // namespace resolv
+
 } // namespace message
 
 } // namespace b0
@@ -43,7 +48,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::ResolveServiceResponse;
+using b0::message::resolv::ResolveServiceResponse;
 
 template <>
 struct default_codec_t<ResolveServiceResponse>
@@ -63,4 +68,4 @@ struct default_codec_t<ResolveServiceResponse>
 
 //! \endcond
 
-#endif // B0__MESSAGE__RESOLVE_SERVICE_RESPONSE_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__RESOLVE_SERVICE_RESPONSE_H__INCLUDED

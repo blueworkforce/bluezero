@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__HEARTBEAT_RESPONSE_H__INCLUDED
-#define B0__MESSAGE__HEARTBEAT_RESPONSE_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__HEARTBEAT_RESPONSE_H__INCLUDED
+#define B0__MESSAGE__RESOLV__HEARTBEAT_RESPONSE_H__INCLUDED
 
 #include <b0/message/message.h>
 
@@ -7,6 +7,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -26,8 +29,10 @@ public:
     int64_t time_usec;
 
 public:
-    std::string type() const override {return "HeartbeatResponse";}
+    std::string type() const override {return "b0.message.resolv.HeartbeatResponse";}
 };
+
+} // namespace resolv
 
 } // namespace message
 
@@ -41,7 +46,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::HeartbeatResponse;
+using b0::message::resolv::HeartbeatResponse;
 
 template <>
 struct default_codec_t<HeartbeatResponse>
@@ -61,4 +66,4 @@ struct default_codec_t<HeartbeatResponse>
 
 //! \endcond
 
-#endif // B0__MESSAGE__HEARTBEAT_RESPONSE_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__HEARTBEAT_RESPONSE_H__INCLUDED

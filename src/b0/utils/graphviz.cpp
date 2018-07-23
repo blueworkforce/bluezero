@@ -22,7 +22,7 @@ static std::string id(const std::string &t, const std::string &name)
     return (fmt % t % boost::replace_all_copy(name, "-", "_")).str();
 }
 
-void toGraphviz(const b0::message::Graph &graph, const std::string &filename, const std::string &outline_color, const std::string &topic_color, const std::string &service_color)
+void toGraphviz(const b0::message::graph::Graph &graph, const std::string &filename, const std::string &outline_color, const std::string &topic_color, const std::string &service_color)
 {
     std::ofstream f;
     f.open(filename);

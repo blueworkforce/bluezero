@@ -4,7 +4,7 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
 #include <b0/logger/logger.h>
-#include <b0/message/log_entry.h>
+#include <b0/message/log/log_entry.h>
 
 namespace b0
 {
@@ -26,7 +26,7 @@ public:
     {
     }
 
-    void onLogMessage(const b0::message::LogEntry &entry)
+    void onLogMessage(const b0::message::log::LogEntry &entry)
     {
         LocalLogger::LevelInfo info = dummy_logger_.levelInfo(entry.level);
         std::cout << info.ansiEscape() << "[" << entry.node_name << "] " << info.levelStr << ": " << entry.message << info.ansiReset() << std::endl;

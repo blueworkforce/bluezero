@@ -3,6 +3,6 @@ msc {
 
     n [ label="node" ], r [ label="resolver" ];
 
-    n->r [ label="b0::message::ShutdownNodeRequest" ];
-    r->n [ label="b0::message::ShutdownNodeResponse" ];
+    n->r [ label="b0::message::resolv::ShutdownNodeRequest" ];
+    r->n [ label="b0::message::resolv::ShutdownNodeResponse" ];
 }

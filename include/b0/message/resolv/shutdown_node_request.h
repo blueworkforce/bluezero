@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__SHUTDOWN_NODE_REQUEST_H__INCLUDED
-#define B0__MESSAGE__SHUTDOWN_NODE_REQUEST_H__INCLUDED
+#ifndef B0__MESSAGE__RESOLV__SHUTDOWN_NODE_REQUEST_H__INCLUDED
+#define B0__MESSAGE__RESOLV__SHUTDOWN_NODE_REQUEST_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -9,6 +9,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace resolv
 {
 
 /*!
@@ -27,8 +30,10 @@ public:
     std::string node_name;
 
 public:
-    std::string type() const override {return "ShutdownNodeRequest";}
+    std::string type() const override {return "b0.message.resolv.ShutdownNodeRequest";}
 };
+
+} // namespace resolv
 
 } // namespace message
 
@@ -42,7 +47,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::ShutdownNodeRequest;
+using b0::message::resolv::ShutdownNodeRequest;
 
 template <>
 struct default_codec_t<ShutdownNodeRequest>
@@ -61,4 +66,4 @@ struct default_codec_t<ShutdownNodeRequest>
 
 //! \endcond
 
-#endif // B0__MESSAGE__SHUTDOWN_NODE_REQUEST_H__INCLUDED
+#endif // B0__MESSAGE__RESOLV__SHUTDOWN_NODE_REQUEST_H__INCLUDED

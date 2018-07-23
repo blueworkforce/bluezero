@@ -1,5 +1,5 @@
-#ifndef B0__MESSAGE__LOG_ENTRY_H__INCLUDED
-#define B0__MESSAGE__LOG_ENTRY_H__INCLUDED
+#ifndef B0__MESSAGE__LOG__LOG_ENTRY_H__INCLUDED
+#define B0__MESSAGE__LOG__LOG_ENTRY_H__INCLUDED
 
 #include <boost/serialization/string.hpp>
 
@@ -10,6 +10,9 @@ namespace b0
 {
 
 namespace message
+{
+
+namespace log
 {
 
 using LogLevel = ::b0::logger::LogInterface::LogLevel;
@@ -36,8 +39,10 @@ public:
     int64_t time_usec;
 
 public:
-    std::string type() const override {return "LogEntry";}
+    std::string type() const override {return "b0.message.log.LogEntry";}
 };
+
+} // namespace log
 
 } // namespace message
 
@@ -51,7 +56,7 @@ namespace spotify
 namespace json
 {
 
-using b0::message::LogEntry;
+using b0::message::log::LogEntry;
 
 template <>
 struct default_codec_t<LogEntry>
@@ -73,4 +78,4 @@ struct default_codec_t<LogEntry>
 
 //! \endcond
 
-#endif // B0__MESSAGE__LOG_ENTRY_H__INCLUDED
+#endif // B0__MESSAGE__LOG__LOG_ENTRY_H__INCLUDED

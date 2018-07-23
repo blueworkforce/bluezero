@@ -2,7 +2,7 @@
 #define B0__RESOLVER__CLIENT_H__INCLUDED
 
 #include <b0/service_client.h>
-#include <b0/message/graph.h>
+#include <b0/message/graph/graph.h>
 
 #include <cstdint>
 #include <string>
@@ -78,7 +78,7 @@ public:
     /*!
      * \brief Request the node sockets graph
      */
-    virtual void getGraph(b0::message::Graph &graph);
+    virtual void getGraph(b0::message::graph::Graph &graph);
 
 private:
     int announce_timeout_;
