@@ -75,29 +75,13 @@ public:
      * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class)
      */
     template<class TMsg>
-    Subscriber(Node *node, const std::string &topic_name, CallbackMsg<TMsg> callback, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name,
-                static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
-                    TMsg msg;
-                    parse(msg, parts[0].payload, parts[0].content_type);
-                    callback(msg);
-                }), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, CallbackMsg<TMsg> callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class and raw extra parts)
      */
     template<class TMsg>
-    Subscriber(Node *node, const std::string &topic_name, CallbackMsgParts<TMsg> callback, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name,
-                static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
-                    std::vector<b0::message::MessagePart> parts1(parts);
-                    TMsg msg;
-                    parse(msg, parts1[0].payload, parts1[0].content_type);
-                    parts1.erase(parts1.begin());
-                    callback(msg, parts1);
-                }), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, CallbackMsgParts<TMsg> callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw without type)
@@ -118,57 +102,43 @@ public:
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (message class)
      */
     template<class TMsg>
-    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const TMsg&), bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackMsg<TMsg> >(callback), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const TMsg&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (message class and raw extra parts)
      */
     template<class TMsg>
-    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackMsgParts<TMsg> >(callback), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (raw without type)
      */
     template<class T>
-    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::string&), T *obj, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackRaw>(boost::bind(callback, obj, _1)))
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::string&), T *obj, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (raw with type)
      */
     template<class T>
-    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::string&, const std::string&), T *obj, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackRawType>(boost::bind(callback, obj, _1, _2)))
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::string&, const std::string&), T *obj, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (raw message parts)
      */
     template<class T>
-    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackRawType>(boost::bind(callback, obj, _1, _2)))
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (message class)
      */
     template<class T, class TMsg>
-    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const TMsg&), T *obj, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackMsg<TMsg> >(boost::bind(callback, obj, _1)))
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const TMsg&), T *obj, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a method ptr as callback (message class and raw extra parts)
      */
     template<class T, class TMsg>
-    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackMsgParts<TMsg> >(boost::bind(callback, obj, _1)))
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), T *obj, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Subscriber destructor
@@ -229,6 +199,63 @@ protected:
      */
     CallbackParts callback_multipart_;
 };
+
+template<class TMsg>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackMsg<TMsg> callback, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name,
+            static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
+                TMsg msg;
+                parse(msg, parts[0].payload, parts[0].content_type);
+                callback(msg);
+            }), managed, notify_graph)
+{}
+
+template<class TMsg>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackMsgParts<TMsg> callback, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name,
+            static_cast<CallbackParts>([&, callback](const std::vector<b0::message::MessagePart> &parts) {
+                std::vector<b0::message::MessagePart> parts1(parts);
+                TMsg msg;
+                parse(msg, parts1[0].payload, parts1[0].content_type);
+                parts1.erase(parts1.begin());
+                callback(msg, parts1);
+            }), managed, notify_graph)
+{}
+
+template<class TMsg>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (*callback)(const TMsg&), bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackMsg<TMsg> >(callback), managed, notify_graph)
+{}
+
+template<class TMsg>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackMsgParts<TMsg> >(callback), managed, notify_graph)
+{}
+
+template<class T>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::string&), T *obj, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackRaw>(boost::bind(callback, obj, _1)))
+{}
+
+template<class T>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::string&, const std::string&), T *obj, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackRawType>(boost::bind(callback, obj, _1, _2)))
+{}
+
+template<class T>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const std::vector<b0::message::MessagePart>&), T *obj, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackRawType>(boost::bind(callback, obj, _1, _2)))
+{}
+
+template<class T, class TMsg>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const TMsg&), T *obj, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackMsg<TMsg> >(boost::bind(callback, obj, _1)))
+{}
+
+template<class T, class TMsg>
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (T::*callback)(const TMsg&, const std::vector<b0::message::MessagePart>&), T *obj, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackMsgParts<TMsg> >(boost::bind(callback, obj, _1)))
+{}
 
 } // namespace b0
 
