@@ -26,7 +26,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # gcc
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # visual c++
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4101")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /wd4101")
 endif()
 set(CMAKE_AUTOMOC ON)
 
