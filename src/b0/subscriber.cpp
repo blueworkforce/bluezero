@@ -6,6 +6,11 @@
 namespace b0
 {
 
+Subscriber::Subscriber(Node *node, const std::string &topic_name, bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, CallbackRaw{}, managed, notify_graph)
+{
+}
+
 Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackRaw callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
@@ -24,6 +29,21 @@ Subscriber::Subscriber(Node *node, const std::string &topic_name, CallbackParts 
     : Socket(node, ZMQ_SUB, topic_name, managed),
       notify_graph_(notify_graph),
       callback_multipart_(callback)
+{
+}
+
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&), bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackRaw>(callback), managed, notify_graph)
+{
+}
+
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&, const std::string&), bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackRawType>(callback), managed, notify_graph)
+{
+}
+
+Subscriber::Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed, bool notify_graph)
+    : Subscriber(node, topic_name, static_cast<CallbackParts>(callback), managed, notify_graph)
 {
 }
 

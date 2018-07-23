@@ -54,9 +54,7 @@ public:
     /*!
      * \brief Construct an Subscriber child of the specified Node without a callback
      */
-    Subscriber(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, CallbackRaw{}, managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, optionally using a function as callback (raw without type)
@@ -104,23 +102,17 @@ public:
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw without type)
      */
-    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&), bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackRaw>(callback), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw with type)
      */
-    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&, const std::string&), bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackRawType>(callback), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&, const std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw message parts)
      */
-    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
-        : Subscriber(node, topic_name, static_cast<CallbackParts>(callback), managed, notify_graph)
-    {}
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (message class)

@@ -48,9 +48,7 @@ public:
     /*!
      * \brief Construct an ServiceServer child of the specified Node, without a callback
      */
-    ServiceServer(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, CallbackRaw{}, managed, notify_graph)
-    {}
+    ServiceServer(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw without type)
@@ -105,23 +103,17 @@ public:
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (raw without type)
      */
-    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, std::string&), bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, static_cast<CallbackRaw>(callback), managed, notify_graph)
-    {}
+    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (raw with type)
      */
-    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, const std::string&, std::string&, std::string&), bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, static_cast<CallbackRawType>(callback), managed, notify_graph)
-    {}
+    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, const std::string&, std::string&, std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (raw message parts)
      */
-    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true)
-        : ServiceServer(node, service_name, static_cast<CallbackParts>(callback), managed, notify_graph)
-    {}
+    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (message class)

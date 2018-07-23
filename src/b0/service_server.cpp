@@ -6,6 +6,11 @@
 namespace b0
 {
 
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, bool managed, bool notify_graph)
+    : ServiceServer(node, service_name, CallbackRaw{}, managed, notify_graph)
+{
+}
+
 ServiceServer::ServiceServer(Node *node, const std::string &service_name, CallbackRaw callback, bool managed, bool notify_graph)
     : Socket(node, ZMQ_REP, service_name, managed),
       notify_graph_(notify_graph),
@@ -27,6 +32,21 @@ ServiceServer::ServiceServer(Node *node, const std::string &service_name, Callba
       notify_graph_(notify_graph),
       bind_addr_(""),
       callback_multipart_(callback)
+{
+}
+
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, std::string&), bool managed, bool notify_graph)
+    : ServiceServer(node, service_name, static_cast<CallbackRaw>(callback), managed, notify_graph)
+{
+}
+
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, const std::string&, std::string&, std::string&), bool managed, bool notify_graph)
+    : ServiceServer(node, service_name, static_cast<CallbackRawType>(callback), managed, notify_graph)
+{
+}
+
+ServiceServer::ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), bool managed, bool notify_graph)
+    : ServiceServer(node, service_name, static_cast<CallbackParts>(callback), managed, notify_graph)
 {
 }
 
