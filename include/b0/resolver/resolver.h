@@ -1,6 +1,7 @@
 #ifndef B0__RESOLVER__RESOLVER_H__INCLUDED
 #define B0__RESOLVER__RESOLVER_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/node.h>
 #include <b0/service_server.h>
 #include <b0/publisher.h>
@@ -24,7 +25,7 @@ namespace resolver
 
 struct ServiceEntry;
 
-struct NodeEntry
+B0_EXPORT struct NodeEntry
 {
     std::string host_id;
     int process_id;
@@ -34,7 +35,7 @@ struct NodeEntry
     std::vector<ServiceEntry*> services;
 };
 
-struct ServiceEntry
+B0_EXPORT struct ServiceEntry
 {
     NodeEntry *node;
     std::string name;
@@ -43,7 +44,7 @@ struct ServiceEntry
 
 class Resolver;
 
-class ResolverServiceServer : public b0::ServiceServer
+B0_EXPORT class ResolverServiceServer : public b0::ServiceServer
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -63,7 +64,7 @@ protected:
 /*!
  * \brief The resolver node
  */
-class Resolver : public b0::Node
+B0_EXPORT class Resolver : public b0::Node
 {
 public:
     /*!

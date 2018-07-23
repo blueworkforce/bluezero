@@ -1,6 +1,7 @@
 #ifndef B0__RESOLVER__CLIENT_H__INCLUDED
 #define B0__RESOLVER__CLIENT_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/service_client.h>
 #include <b0/message/graph/graph.h>
 
@@ -20,7 +21,7 @@ namespace resolver
  *
  * Performs service name resolution.
  */
-class Client : public ServiceClient
+B0_EXPORT class Client : public ServiceClient
 {
 public:
     /*!

@@ -1,6 +1,7 @@
 #ifndef B0__LOGGER__LOGGER_H__INCLUDED
 #define B0__LOGGER__LOGGER_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/logger/interface.h>
 
 #include <string>
@@ -19,7 +20,7 @@ namespace logger
 /*!
  * \brief A logger which prints messages to local console.
  */
-class LocalLogger : public LogInterface
+B0_EXPORT class LocalLogger : public LogInterface
 {
 public:
     using LogInterface::log;
@@ -78,7 +79,7 @@ struct LoggerPrivate;
 /*!
  * \brief A subclass of LocalLogger which also sends log messages remotely, via a ZeroMQ PUB socket
  */
-class Logger : public LocalLogger
+B0_EXPORT class Logger : public LocalLogger
 {
 public:
     using LocalLogger::log;

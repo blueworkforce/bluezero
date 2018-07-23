@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <b0/config.h>
+#include <b0/b0.h>
 
 namespace b0
 {
@@ -13,8 +13,8 @@ namespace compress
 
 #ifdef LZ4_FOUND
 
-std::string lz4_compress(const std::string &str, int level = -1);
-std::string lz4_decompress(const std::string &str, size_t size = 0);
+B0_EXPORT std::string lz4_compress(const std::string &str, int level = -1);
+B0_EXPORT std::string lz4_decompress(const std::string &str, size_t size = 0);
 
 #endif
 

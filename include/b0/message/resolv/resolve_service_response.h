@@ -3,6 +3,7 @@
 
 #include <boost/serialization/string.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -21,7 +22,7 @@ namespace resolv
  *
  * \sa ResolveServiceRequest, \ref protocol
  */
-class ResolveServiceResponse : public Message
+B0_EXPORT class ResolveServiceResponse : public Message
 {
 public:
     //! True if successful, false if error (i.e. does not exist)

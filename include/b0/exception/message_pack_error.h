@@ -1,6 +1,7 @@
 #ifndef B0__EXCEPTION__MESSAGE_PACK_ERROR_H__INCLUDED
 #define B0__EXCEPTION__MESSAGE_PACK_ERROR_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/exception/exception.h>
 
 namespace b0
@@ -12,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when encoding/packing a message fails
  */
-class MessagePackError : public Exception
+B0_EXPORT class MessagePackError : public Exception
 {
 public:
     /*!
@@ -24,7 +25,7 @@ public:
 /*!
  * \brief An exception thrown when an error encoding the message headers occurs
  */
-class EnvelopeEncodeError : public MessagePackError
+B0_EXPORT class EnvelopeEncodeError : public MessagePackError
 {
 public:
     /*!
@@ -36,7 +37,7 @@ public:
 /*!
  * \brief An exception thrown when writing to socket fails
  */
-class SocketWriteError : public MessagePackError
+B0_EXPORT class SocketWriteError : public MessagePackError
 {
 public:
     /*!

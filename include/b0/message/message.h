@@ -6,6 +6,7 @@
 #include <spotify/json.hpp>
 #include <spotify/json/codec/boost.hpp>
 
+#include <b0/b0.h>
 #include <b0/exception/message_unpack_error.h>
 
 namespace b0
@@ -19,7 +20,7 @@ namespace message
  *
  * It contains some utility methods for string serialization/parsing.
  */
-class Message
+B0_EXPORT class Message
 {
 public:
     //! \brief destructor

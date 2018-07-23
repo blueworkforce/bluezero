@@ -3,6 +3,7 @@
 
 #include <boost/serialization/string.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 #include <b0/message/resolv/announce_node_request.h>
 #include <b0/message/resolv/shutdown_node_request.h>
@@ -27,7 +28,7 @@ namespace resolv
  *
  * \sa Response, \ref protocol
  */
-class Request : public Message
+B0_EXPORT class Request : public Message
 {
 public:
     //! \brief Message for the AnnounceNodeRequest

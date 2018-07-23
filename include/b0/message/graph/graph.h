@@ -4,6 +4,7 @@
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/vector.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 #include <b0/message/graph/graph_link.h>
 
@@ -21,7 +22,7 @@ namespace graph
  *
  * \sa GraphLink, \ref protocol, \ref graph
  */
-class Graph : public Message
+B0_EXPORT class Graph : public Message
 {
 public:
     //! List of node names

@@ -6,6 +6,7 @@
 #include <utility>
 #include <boost/optional.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -64,7 +65,7 @@ struct MessagePart
  * If the `Header` header is present (used with Publisher and Subscriber sockets) it must
  * be the first header.
  */
-class MessageEnvelope final
+B0_EXPORT class MessageEnvelope final
 {
 public:
     //! The very first line of the message envelope, used for routing (topics, services)

@@ -1,6 +1,8 @@
 #ifndef B0__EXCEPTION__EXCEPTION_H__INCLUDED
 #define B0__EXCEPTION__EXCEPTION_H__INCLUDED
 
+#include <b0/b0.h>
+
 #include <string>
 #include <stdexcept>
 
@@ -13,7 +15,7 @@ namespace exception
 /*!
  * \brief The base exception class
  */
-class Exception : public std::exception
+B0_EXPORT class Exception : public std::exception
 {
 public:
     /*!

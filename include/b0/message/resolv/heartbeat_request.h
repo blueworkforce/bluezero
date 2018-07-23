@@ -3,6 +3,7 @@
 
 #include <boost/serialization/string.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -21,7 +22,7 @@ namespace resolv
  *
  * \sa HeartBeatResponse, \ref protocol
  */
-class HeartbeatRequest : public Message
+B0_EXPORT class HeartbeatRequest : public Message
 {
 public:
     //! The name of the node

@@ -3,6 +3,7 @@
 
 #include <boost/serialization/string.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -23,7 +24,7 @@ namespace resolv
  *
  * \sa AnnounceNodeRequest, \ref protocol
  */
-class AnnounceNodeResponse : public Message
+B0_EXPORT class AnnounceNodeResponse : public Message
 {
 public:
     //! True if successful, false if error. Should abort if false.

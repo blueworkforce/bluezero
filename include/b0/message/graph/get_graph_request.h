@@ -1,6 +1,7 @@
 #ifndef B0__MESSAGE__GRAPH__GET_GRAPH_REQUEST_H__INCLUDED
 #define B0__MESSAGE__GRAPH__GET_GRAPH_REQUEST_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -19,7 +20,7 @@ namespace graph
  *
  * \sa GetGraphResponse, \ref protocol, \ref graph
  */
-class GetGraphRequest : public Message
+B0_EXPORT class GetGraphRequest : public Message
 {
 public:
 

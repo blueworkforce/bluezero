@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <b0/b0.h>
 #include <b0/socket.h>
 #include <b0/message/message.h>
 
@@ -19,7 +20,7 @@ class Node;
  *
  * \sa b0::ServiceClient, b0::ServiceServer
  */
-class ServiceClient : public Socket
+B0_EXPORT class ServiceClient : public Socket
 {
 public:
     using logger::LogInterface::log;
@@ -27,50 +28,50 @@ public:
     /*!
      * \brief Construct an ServiceClient child of the specified Node
      */
-    ServiceClient(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true);
+    B0_EXPORT ServiceClient(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief ServiceClient destructor
      */
-    virtual ~ServiceClient();
+    B0_EXPORT virtual ~ServiceClient();
 
     /*!
      * \brief Log a message using node's logger, prepending this service client informations
      */
-    void log(LogLevel level, const std::string &message) const override;
+    B0_EXPORT void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify
      */
-    virtual void init() override;
+    B0_EXPORT virtual void init() override;
 
     /*!
      * \brief Perform cleanup and optionally send graph notify
      */
-    virtual void cleanup() override;
+    B0_EXPORT virtual void cleanup() override;
 
     /*!
      * \brief Return the name of this client's service
      */
-    std::string getServiceName();
+    B0_EXPORT std::string getServiceName();
 
     /*!
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
      * \sa ServiceServer::read(), ServiceServer::write()
      */
-    virtual void call(const std::string &req, std::string &rep);
+    B0_EXPORT virtual void call(const std::string &req, std::string &rep);
 
     /*!
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
      * \sa ServiceServer::read(), ServiceServer::write()
      */
-    virtual void call(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype);
+    B0_EXPORT virtual void call(const std::string &req, const std::string &reqtype, std::string &rep, std::string &reptype);
 
     /*!
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
      * \sa ServiceServer::read(), ServiceServer::write()
      */
-    virtual void call(const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts);
+    B0_EXPORT virtual void call(const std::vector<b0::message::MessagePart> &reqparts, std::vector<b0::message::MessagePart> &repparts);
 
     /*!
      * \brief Write a request and read a reply from the underlying ZeroMQ REQ socket
@@ -98,17 +99,17 @@ protected:
     /*!
      * \brief Perform service address resolution
      */
-    virtual void resolve();
+    B0_EXPORT virtual void resolve();
 
     /*!
      * \brief Connect to service server endpoint
      */
-    virtual void connect();
+    B0_EXPORT virtual void connect();
 
     /*!
      * \brief Disconnect from service server endpoint
      */
-    virtual void disconnect();
+    B0_EXPORT virtual void disconnect();
 
     //! If false this socket will not send announcement to resolv (i.e. it will be "invisible")
     const bool notify_graph_;

@@ -3,6 +3,7 @@
 
 #include <boost/serialization/string.hpp>
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 #include <b0/logger/interface.h>
 
@@ -20,7 +21,7 @@ using LogLevel = ::b0::logger::LogInterface::LogLevel;
 /*!
  * \brief A log message sent by node to the 'log' topic
  */
-class LogEntry : public Message
+B0_EXPORT class LogEntry : public Message
 {
 public:
     //! The name of the node

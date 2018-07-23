@@ -1,6 +1,7 @@
 #ifndef B0__MESSAGE__GRAPH__GET_GRAPH_RESPONSE_H__INCLUDED
 #define B0__MESSAGE__GRAPH__GET_GRAPH_RESPONSE_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 #include <b0/message/graph/graph.h>
 
@@ -20,7 +21,7 @@ namespace graph
  *
  * \sa GetGraphRequest, \ref protocol, \ref graph
  */
-class GetGraphResponse : public Message
+B0_EXPORT class GetGraphResponse : public Message
 {
 public:
     //! The graph of the network

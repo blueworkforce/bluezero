@@ -37,7 +37,7 @@ struct NodePrivate2;
  * You must create at most one node per thread.
  * You can have many nodes in one process by creating several threads.
  */
-class Node : public logger::LogInterface, public UserData
+B0_EXPORT class Node : public logger::LogInterface, public UserData
 {
 public:
     using logger::LogInterface::log;

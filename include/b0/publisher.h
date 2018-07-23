@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <b0/b0.h>
 #include <b0/socket.h>
 #include <b0/message/message.h>
 
@@ -27,42 +28,42 @@ public:
     /*!
      * \brief Construct an Publisher child of the specified Node
      */
-    Publisher(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true);
+    B0_EXPORT Publisher(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Publisher destructor
      */
-    virtual ~Publisher();
+    B0_EXPORT virtual ~Publisher();
 
     /*!
      * \brief Log a message using node's logger, prepending this publisher informations
      */
-    void log(LogLevel level, const std::string &message) const override;
+    B0_EXPORT void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify
      */
-    virtual void init() override;
+    B0_EXPORT virtual void init() override;
 
     /*!
      * \brief Perform cleanup and optionally send graph notify
      */
-    virtual void cleanup() override;
+    B0_EXPORT virtual void cleanup() override;
 
     /*!
      * \brief Return the name of this publisher's topic
      */
-    std::string getTopicName();
+    B0_EXPORT std::string getTopicName();
 
     /*!
      * \brief Publish a raw multipart message
      */
-    virtual void publish(const std::vector<b0::message::MessagePart> &parts);
+    B0_EXPORT virtual void publish(const std::vector<b0::message::MessagePart> &parts);
 
     /*!
      * \brief Publish a raw message
      */
-    virtual void publish(const std::string &msg, const std::string &type = "");
+    B0_EXPORT virtual void publish(const std::string &msg, const std::string &type = "");
 
     /*!
      * \brief Publish a message
@@ -86,12 +87,12 @@ protected:
     /*!
      * \brief Connect to the remote address
      */
-    virtual void connect();
+    B0_EXPORT virtual void connect();
 
     /*!
      * \brief Disconnect from the remote address
      */
-    virtual void disconnect();
+    B0_EXPORT virtual void disconnect();
 
     //! If false this socket will not send announcement to resolv (i.e. it will be "invisible")
     const bool notify_graph_;

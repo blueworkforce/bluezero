@@ -1,6 +1,7 @@
 #ifndef B0__MESSAGE__GRAPH__NODE_SERVICE_RESPONSE_H__INCLUDED
 #define B0__MESSAGE__GRAPH__NODE_SERVICE_RESPONSE_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -19,7 +20,7 @@ namespace graph
  *
  * \sa NodeServiceRequest, \ref protocol, \ref graph
  */
-class NodeServiceResponse : public Message
+B0_EXPORT class NodeServiceResponse : public Message
 {
 public:
 

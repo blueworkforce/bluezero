@@ -1,6 +1,7 @@
 #ifndef B0__EXCEPTION__MESSAGE_UNPACK_ERROR_H__INCLUDED
 #define B0__EXCEPTION__MESSAGE_UNPACK_ERROR_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/exception/exception.h>
 
 namespace b0
@@ -12,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when unpacking/decoding a message fails
  */
-class MessageUnpackError : public Exception
+B0_EXPORT class MessageUnpackError : public Exception
 {
 public:
     /*!
@@ -24,7 +25,7 @@ public:
 /*!
  * \brief An exception thrown when a single part message is received, but a multipart message was expected
  */
-class MessageMissingHeaderError : public MessageUnpackError
+B0_EXPORT class MessageMissingHeaderError : public MessageUnpackError
 {
 public:
     /*!
@@ -36,7 +37,7 @@ public:
 /*!
  * \brief An exception thrown when a message has too many parts (zmq multipart)
  */
-class MessageTooManyPartsError : public MessageUnpackError
+B0_EXPORT class MessageTooManyPartsError : public MessageUnpackError
 {
 public:
     /*!
@@ -48,7 +49,7 @@ public:
 /*!
  * \brief An exception thrown when the zmq header (first part of a multipart message) is not of the expected value
  */
-class HeaderMismatch : public MessageUnpackError
+B0_EXPORT class HeaderMismatch : public MessageUnpackError
 {
 public:
     /*!
@@ -60,7 +61,7 @@ public:
 /*!
  * \brief An exception thrown when an error decoding the message headers occurs
  */
-class EnvelopeDecodeError : public MessageUnpackError
+B0_EXPORT class EnvelopeDecodeError : public MessageUnpackError
 {
 public:
     /*!
@@ -72,7 +73,7 @@ public:
 /*!
  * \brief An exception thrown when reading from socket fails
  */
-class SocketReadError : public MessageUnpackError
+B0_EXPORT class SocketReadError : public MessageUnpackError
 {
 public:
     /*!
@@ -84,7 +85,7 @@ public:
 /*!
  * \brief An exception thrown when a message of an unexpected type is received
  */
-class MessageTypeMismatch : public MessageUnpackError
+B0_EXPORT class MessageTypeMismatch : public MessageUnpackError
 {
 public:
     /*!

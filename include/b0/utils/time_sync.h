@@ -5,6 +5,8 @@
 
 #include <boost/thread/mutex.hpp>
 
+#include <b0/b0.h>
+
 /*!
  * \page timesync Time Synchronization
  *
@@ -57,7 +59,7 @@ namespace b0
  *
  * Handles the time synchronization aspects of the Node class.
  */
-class TimeSync
+B0_EXPORT class TimeSync
 {
 public:
     /*!

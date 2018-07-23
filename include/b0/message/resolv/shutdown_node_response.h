@@ -1,6 +1,7 @@
 #ifndef B0__MESSAGE__RESOLV__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
 #define B0__MESSAGE__RESOLV__SHUTDOWN_NODE_RESPONSE_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/message/message.h>
 
 namespace b0
@@ -19,7 +20,7 @@ namespace resolv
  *
  * \sa ShutdownNodeRequest, \ref protocol
  */
-class ShutdownNodeResponse : public Message
+B0_EXPORT class ShutdownNodeResponse : public Message
 {
 public:
     //! True fi successful, false if error

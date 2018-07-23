@@ -31,7 +31,6 @@ endif()
 set(CMAKE_AUTOMOC ON)
 
 if(WIN32)
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
     set(Boost_USE_STATIC_LIBS OFF)
     set(Boost_USE_MULTITHREADED ON)
     set(Boost_USE_STATIC_RUNTIME OFF)
@@ -203,6 +202,7 @@ add_library(
     include/spotify-json/src/detail/skip_chars_sse42.cpp
     include/spotify-json/src/detail/skip_value.cpp
 )
+target_compile_definitions(b0 PRIVATE -DB0_LIBRARY)
 target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
 if(WIN32)
     target_link_libraries(b0 wsock32 ws2_32)
