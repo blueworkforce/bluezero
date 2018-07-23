@@ -26,6 +26,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # gcc
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # visual c++
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4101")
 endif()
 set(CMAKE_AUTOMOC ON)
 
@@ -42,7 +43,12 @@ endif()
 
 find_package(Doxygen)
 find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization)
+if(WIN32)
+find_package(ZeroMQ CONFIG REQUIRED)
+set(ZMQ_LIBRARY libzmq)
+else()
 find_package(ZMQ 4.1.4 REQUIRED)
+endif()
 find_package(ZLIB)
 find_package(LZ4)
 
