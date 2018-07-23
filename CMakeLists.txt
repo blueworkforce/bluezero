@@ -43,7 +43,6 @@ endif()
 find_package(Doxygen)
 find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization)
 find_package(ZMQ 4.1.4 REQUIRED)
-find_package(jsoncpp REQUIRED)
 find_package(ZLIB)
 find_package(LZ4)
 
@@ -198,7 +197,7 @@ add_library(
     include/spotify-json/src/detail/skip_chars_sse42.cpp
     include/spotify-json/src/detail/skip_value.cpp
 )
-target_link_libraries(b0 jsoncpp ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
+target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
 if(WIN32)
     target_link_libraries(b0 wsock32 ws2_32)
 endif()

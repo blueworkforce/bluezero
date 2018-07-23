@@ -24,7 +24,6 @@ See [LICENSE.md](LICENSE.md).
 
  - ZeroMQ v4.1+
  - Boost v1.54+
- - JsonCPP
 
 ### Optional Libraries
  - zlib (for compressing payloads)
@@ -37,7 +36,6 @@ See [LICENSE.md](LICENSE.md).
 
 Install the following apt packages:
 
- - libjsoncpp-dev
  - libzmq-dev
  - libboost-all-dev
 
@@ -56,7 +54,6 @@ The ZeroMQ apt package is too old. Compile and install it from the git repositor
 Install the following:
 
  - zeromq
- - jsoncpp
  - boost
  - lz4
 
