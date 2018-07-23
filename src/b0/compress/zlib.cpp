@@ -3,7 +3,6 @@
 
 #include <boost/format.hpp>
 
-#include <b0/config.h>
 #include <b0/exceptions.h>
 #include <b0/compress/zlib.h>
 

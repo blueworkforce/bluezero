@@ -4,7 +4,6 @@
 #include <b0/subscriber.h>
 #include <b0/resolver/client.h>
 #include <b0/utils/graphviz.h>
-#include <b0/config.h>
 #include <b0/utils/env.h>
 #ifdef HAVE_BOOST_PROCESS
 #include <boost/process.hpp>

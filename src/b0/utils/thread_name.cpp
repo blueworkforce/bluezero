@@ -1,4 +1,3 @@
-#include <b0/config.h>
 #include <b0/utils/thread_name.h>
 
 #ifdef _WIN32

@@ -1,5 +1,4 @@
 #include <b0/socket.h>
-#include <b0/config.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
 #include <b0/utils/env.h>

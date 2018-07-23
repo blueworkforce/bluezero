@@ -1,5 +1,4 @@
 #include <b0/node.h>
-#include <b0/config.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
 #include <b0/service_client.h>

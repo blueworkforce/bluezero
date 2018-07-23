@@ -20,7 +20,7 @@ class Node;
  *
  * \sa b0::ServiceClient, b0::ServiceServer
  */
-B0_EXPORT class ServiceClient : public Socket
+class ServiceClient : public Socket
 {
 public:
     using logger::LogInterface::log;

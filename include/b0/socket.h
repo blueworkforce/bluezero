@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <b0/b0.h>
 #include <b0/user_data.h>
 #include <b0/logger/interface.h>
 #include <b0/message/message.h>

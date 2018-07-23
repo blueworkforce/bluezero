@@ -326,8 +326,6 @@
  * Nodes have an implicit connection to the 'resolv' service, however it is not shown in the graph.
  */
 
-#endif // B0__B0_H__INCLUDED
-
 #ifndef B0_EXPORT
 #ifdef _WIN32
 #ifdef B0_LIBRARY
@@ -339,3 +337,5 @@
 #define B0_EXPORT
 #endif // _WIN32
 #endif // B0_EXPORT
+
+#endif // B0__B0_H__INCLUDED

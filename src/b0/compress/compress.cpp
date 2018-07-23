@@ -1,5 +1,4 @@
 
-#include <b0/config.h>
 #include <b0/exceptions.h>
 #include <b0/compress/zlib.h>
 #include <b0/compress/lz4.h>

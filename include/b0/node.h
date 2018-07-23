@@ -1,6 +1,7 @@
 #ifndef B0__NODE_H__INCLUDED
 #define B0__NODE_H__INCLUDED
 
+#include <b0/b0.h>
 #include <b0/user_data.h>
 #include <b0/node_state.h>
 #include <b0/socket.h>
