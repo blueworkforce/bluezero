@@ -21,7 +21,7 @@ namespace resolver
  *
  * Performs service name resolution.
  */
-B0_EXPORT class Client : public ServiceClient
+class B0_EXPORT Client : public ServiceClient
 {
 public:
     /*!

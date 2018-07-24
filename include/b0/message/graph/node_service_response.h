@@ -20,7 +20,7 @@ namespace graph
  *
  * \sa NodeServiceRequest, \ref protocol, \ref graph
  */
-B0_EXPORT class NodeServiceResponse : public Message
+class B0_EXPORT NodeServiceResponse : public Message
 {
 public:
 

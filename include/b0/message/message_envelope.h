@@ -65,7 +65,7 @@ struct MessagePart
  * If the `Header` header is present (used with Publisher and Subscriber sockets) it must
  * be the first header.
  */
-B0_EXPORT class MessageEnvelope final
+class B0_EXPORT MessageEnvelope final
 {
 public:
     //! The very first line of the message envelope, used for routing (topics, services)

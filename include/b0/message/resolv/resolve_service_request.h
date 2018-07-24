@@ -22,7 +22,7 @@ namespace resolv
  *
  * \sa ResolveServiceResponse, \ref protocol
  */
-B0_EXPORT class ResolveServiceRequest : public Message
+class B0_EXPORT ResolveServiceRequest : public Message
 {
 public:
     //! The name of the service to be resolved

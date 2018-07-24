@@ -13,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when a socket name (service) fails to resolve (on the client side)
  */
-B0_EXPORT class NameResolutionError : public Exception
+class B0_EXPORT NameResolutionError : public Exception
 {
 public:
     /*!

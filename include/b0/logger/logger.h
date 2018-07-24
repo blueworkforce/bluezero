@@ -20,7 +20,7 @@ namespace logger
 /*!
  * \brief A logger which prints messages to local console.
  */
-B0_EXPORT class LocalLogger : public LogInterface
+class B0_EXPORT LocalLogger : public LogInterface
 {
 public:
     using LogInterface::log;
@@ -79,7 +79,7 @@ struct LoggerPrivate;
 /*!
  * \brief A subclass of LocalLogger which also sends log messages remotely, via a ZeroMQ PUB socket
  */
-B0_EXPORT class Logger : public LocalLogger
+class B0_EXPORT Logger : public LocalLogger
 {
 public:
     using LocalLogger::log;

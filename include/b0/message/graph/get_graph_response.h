@@ -21,7 +21,7 @@ namespace graph
  *
  * \sa GetGraphRequest, \ref protocol, \ref graph
  */
-B0_EXPORT class GetGraphResponse : public Message
+class B0_EXPORT GetGraphResponse : public Message
 {
 public:
     //! The graph of the network

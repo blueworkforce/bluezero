@@ -44,7 +44,7 @@ B0_EXPORT struct ServiceEntry
 
 class Resolver;
 
-B0_EXPORT class ResolverServiceServer : public b0::ServiceServer
+class B0_EXPORT ResolverServiceServer : public b0::ServiceServer
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -64,7 +64,7 @@ protected:
 /*!
  * \brief The resolver node
  */
-B0_EXPORT class Resolver : public b0::Node
+class B0_EXPORT Resolver : public b0::Node
 {
 public:
     /*!

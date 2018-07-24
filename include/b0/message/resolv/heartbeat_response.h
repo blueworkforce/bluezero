@@ -20,7 +20,7 @@ namespace resolv
  *
  * \sa HeartBeatRequest, \ref protocol
  */
-B0_EXPORT class HeartbeatResponse : public Message
+class B0_EXPORT HeartbeatResponse : public Message
 {
 public:
     //! True if successful, false if error

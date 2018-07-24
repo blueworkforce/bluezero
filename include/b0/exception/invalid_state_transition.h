@@ -14,7 +14,7 @@ namespace exception
 /*!
  * \brief An exception thrown when an invalid method for the current object state is called
  */
-B0_EXPORT class InvalidStateTransition : public Exception
+class B0_EXPORT InvalidStateTransition : public Exception
 {
 public:
     /*!

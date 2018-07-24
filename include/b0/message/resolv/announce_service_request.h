@@ -24,7 +24,7 @@ namespace resolv
  *
  * \sa AnnounceServiceResponse, \ref protocol
  */
-B0_EXPORT class AnnounceServiceRequest : public Message
+class B0_EXPORT AnnounceServiceRequest : public Message
 {
 public:
     //! The name of the node
