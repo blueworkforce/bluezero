@@ -7,7 +7,7 @@
 #include <boost/optional.hpp>
 
 #include <b0/b0.h>
-#include <b0/message/message.h>
+#include <b0/message/message_part.h>
 
 namespace b0
 {
@@ -16,30 +16,12 @@ namespace message
 {
 
 /*!
- * \brief A structure to represent a message part
- *
- * \sa MessageEnvelope
- */
-struct MessagePart
-{
-    //! \brief An optional string indicating the type of the payload
-    std::string content_type;
-
-    //! \brief Compression algorithm name, or blank if no compression
-    std::string compression_algorithm;
-
-    //! \brief Compression level, or 0 if no compression
-    int compression_level;
-
-    //! \brief The payload
-    std::string payload;
-};
-
-/*!
  * \brief A message envelope used to wrap (optionally: compress) the real message payload(s)
  *
  * A MessageEnvelope consists of a sequence of headers (one per line) followed by
  * a blank line and by a sequence of payloads.
+ *
+ * The first line is an address used for prefix-based routing (typically in topics).
  *
  * The `Part-count` header tells how many MessagePart are contained in the message.
  *
@@ -60,12 +42,10 @@ struct MessagePart
  *
  * The only mandatory fields are `Part-count` and `Content-length-#` which are required
  * to disassemble the individual message parts. The payload size (15) is the sum of the
- * individual (compressed) payloads.
- *
- * If the `Header` header is present (used with Publisher and Subscriber sockets) it must
- * be the first header.
+ * individual (compressed) payloads. When a part is compressed, a Compression-algorithm-#
+ * header will be present.
  */
-class MessageEnvelope final
+class MessageEnvelope
 {
 public:
     //! The very first line of the message envelope, used for routing (topics, services)
