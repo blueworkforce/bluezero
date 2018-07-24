@@ -5,6 +5,8 @@
 
 #include <boost/format.hpp>
 
+#include <b0/b0.h>
+
 namespace b0
 {
 
@@ -39,7 +41,7 @@ public:
     /*!
      * \brief Log a message to the remote logger, with a specified level
      */
-    virtual void log(LogLevel level, const std::string &message) const = 0;
+    B0_EXPORT virtual void log(LogLevel level, const std::string &message) const = 0;
 
     /*!
      * \brief Log a message using a format string
@@ -63,7 +65,7 @@ public:
 protected:
     //! \cond HIDDEN_SYMBOLS
 
-    virtual void log_helper(LogLevel level, boost::format &format) const;
+	B0_EXPORT virtual void log_helper(LogLevel level, boost::format &format) const;
 
     template<class T, class... Args>
     void log_helper(LogLevel level, boost::format &format, T &&t, Args&&... args) const

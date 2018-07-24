@@ -81,12 +81,12 @@ public:
 /*!
  * \brief Parse a message envelope from a string
  */
-void parse(MessageEnvelope &env, const std::string &s);
+B0_EXPORT void parse(MessageEnvelope &env, const std::string &s);
 
 /*!
  * \brief Serialize a message envelope to a string
  */
-void serialize(const MessageEnvelope &msg, std::string &s);
+B0_EXPORT void serialize(const MessageEnvelope &msg, std::string &s);
 
 } // namespace message
 

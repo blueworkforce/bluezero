@@ -37,7 +37,7 @@ public:
     virtual void log(LogLevel level, const std::string &message) const override;
 
 private:
-    struct LevelInfo
+    struct B0_EXPORT LevelInfo
     {
         std::string levelStr;
         int attr;
