@@ -42,7 +42,7 @@ endif()
 
 find_package(Doxygen)
 find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization)
-if(WIN32)
+if(VCPKG_TOOLCHAIN)
 find_package(ZeroMQ CONFIG REQUIRED)
 set(ZMQ_LIBRARY libzmq)
 else()
