@@ -241,6 +241,11 @@ public:
      */
     int64_t timeUSec();
 
+	/*!
+	 * \brief Sleep for the specified amount of microseconds
+	 */
+	void sleepUSec(int64_t usec);
+
 private:
     std::unique_ptr<NodePrivate> private_;
     std::unique_ptr<NodePrivate2> private2_;

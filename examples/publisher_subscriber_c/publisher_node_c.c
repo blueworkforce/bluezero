@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <b0/bindings/c.h>
 
@@ -51,7 +50,7 @@ int main(int argc, char **argv)
         /*
          * Wait some time
          */
-        sleep(1);
+        b0_node_sleep_usec(node, 1000000);
     }
 
     /*

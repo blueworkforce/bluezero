@@ -140,6 +140,11 @@ int64_t b0_node_time_usec(b0_node *node)
     return reinterpret_cast<b0::Node*>(node)->timeUSec();
 }
 
+void b0_node_sleep_usec(b0_node *node, int64_t usec)
+{
+	reinterpret_cast<b0::Node*>(node)->sleepUSec(usec);
+}
+
 void b0_node_log(b0_node *node, int level, const char *message)
 {
     reinterpret_cast<b0::Node*>(node)->log(log_level_from_int(level), message);

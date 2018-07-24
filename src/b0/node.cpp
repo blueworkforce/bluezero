@@ -334,6 +334,11 @@ int64_t Node::timeUSec()
     return time_sync_.timeUSec();
 }
 
+void Node::sleepUSec(int64_t usec)
+{
+	boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
+}
+
 void Node::signalHandler(int s)
 {
     quit_flag_.store(true);

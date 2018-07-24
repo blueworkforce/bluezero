@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <b0/bindings/c.h>
 
 /*! \example publisher_subscriber_c/subscriber_node_c.c

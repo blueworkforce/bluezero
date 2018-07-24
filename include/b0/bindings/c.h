@@ -53,6 +53,7 @@ int b0_node_get_state(b0_node *node);
 void * b0_node_get_context(b0_node *node);
 int64_t b0_node_hardware_time_usec(b0_node *node);
 int64_t b0_node_time_usec(b0_node *node);
+void b0_node_sleep_usec(b0_node *node, int64_t usec);
 void b0_node_log(b0_node *node, int level, const char *message);
 
 b0_publisher * b0_publisher_new_ex(b0_node *node, const char *topic_name, int managed, int notify_graph);
