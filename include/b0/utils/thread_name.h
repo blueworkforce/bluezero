@@ -1,6 +1,8 @@
 #ifndef B0__UTILS__THREAD_NAME_H__INCLUDED
 #define B0__UTILS__THREAD_NAME_H__INCLUDED
 
+#include <b0/b0.h>
+
 #include <string>
 //#include <thread>
 

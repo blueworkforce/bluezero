@@ -1,4 +1,9 @@
 #include <b0/b0.h>
+#include <b0/node.h>
+#include <b0/publisher.h>
+#include <b0/subscriber.h>
+#include <b0/service_client.h>
+#include <b0/service_server.h>
 extern "C"
 {
 #include <b0/bindings/c.h>

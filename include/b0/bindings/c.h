@@ -1,6 +1,7 @@
 #ifndef B0__C_H__INCLUDED
 #define B0__C_H__INCLUDED
 
+#include <stddef.h>
 #include <inttypes.h>
 
 // logger level:
