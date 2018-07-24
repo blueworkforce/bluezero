@@ -131,7 +131,7 @@ void Node::spin(double spinRate)
         // FIXME: use sleep_until to effectively spin at spinRate Hz...
         // FIXME: ...i.e.: compensate for the time elapsed in spinOnce()
         long usec = 1000000. / spinRate;
-        boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
+        sleepUSec(usec);
     }
 
     log(info, "spin() finished");
@@ -313,7 +313,7 @@ void Node::heartbeatLoop()
             int64_t time_usec;
             resolv_cli.sendHeartbeat(&time_usec);
             time_sync_.updateTime(time_usec);
-            boost::this_thread::sleep_for(boost::chrono::seconds{1});
+            sleepUSec(1000000);
         }
 
         resolv_cli.cleanup();

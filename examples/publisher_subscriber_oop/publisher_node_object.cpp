@@ -31,7 +31,7 @@ public:
             std::cout << "Sending: " << msg << std::endl;
             pub_.publish(msg);
 
-            boost::this_thread::sleep_for(boost::chrono::seconds(1));
+            sleepUSec(1000000);
         }
     }
 

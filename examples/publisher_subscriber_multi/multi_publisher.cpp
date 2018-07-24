@@ -52,7 +52,7 @@ int main(int argc, char **argv)
         /*
          * Wait some time (simulate I/O wait...)
          */
-        boost::this_thread::sleep_for(boost::chrono::milliseconds(500));
+        node.sleepUSec(500000);
     }
 
     /*

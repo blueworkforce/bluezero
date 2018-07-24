@@ -563,7 +563,7 @@ void Resolver::heartbeatSweeper()
     {
         // send a heartbeat to resolv itself trigger the sweeping:
         resolv_cli.sendHeartbeat(nullptr);
-        boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
+        sleepUSec(500000);
     }
 
     resolv_cli.cleanup();
