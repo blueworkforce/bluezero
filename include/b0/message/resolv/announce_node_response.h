@@ -24,7 +24,7 @@ namespace resolv
  *
  * \sa AnnounceNodeRequest, \ref protocol
  */
-class B0_EXPORT AnnounceNodeResponse : public Message
+class AnnounceNodeResponse : public Message
 {
 public:
     //! True if successful, false if error. Should abort if false.

@@ -49,22 +49,22 @@ public:
     /*!
      * \brief Construct an ServiceServer child of the specified Node, without a callback
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw without type)
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, CallbackRaw callback, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, CallbackRaw callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw with type)
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, CallbackRawType callback, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, CallbackRawType callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (raw message parts)
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, CallbackParts callback, bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, CallbackParts callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function as a callback (message class)
@@ -81,17 +81,17 @@ public:
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (raw without type)
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, std::string&), bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (raw with type)
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, const std::string&, std::string&, std::string&), bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::string&, const std::string&, std::string&, std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (raw message parts)
      */
-    B0_EXPORT ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
+    ServiceServer(Node *node, const std::string &service_name, void (*callback)(const std::vector<b0::message::MessagePart>&, std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an ServiceServer child of the specified Node, using a function ptr as a callback (message class)
@@ -138,53 +138,53 @@ public:
     /*!
      * \brief ServiceServer destructor
      */
-    B0_EXPORT virtual ~ServiceServer();
+    virtual ~ServiceServer();
 
     /*!
      * \brief Log a message using node's logger, prepending this service server informations
      */
-    B0_EXPORT void log(LogLevel level, const std::string &message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify
      */
-    B0_EXPORT virtual void init() override;
+    virtual void init() override;
 
     /*!
      * \brief Perform cleanup and optionally send graph notify
      */
-    B0_EXPORT virtual void cleanup() override;
+    virtual void cleanup() override;
 
     /*!
      * \brief Poll and read incoming messages, and dispatch them (called by b0::Node::spinOnce())
      */
-    B0_EXPORT virtual void spinOnce() override;
+    virtual void spinOnce() override;
 
     /*!
      * \brief Return the name of this server's service
      */
-    B0_EXPORT std::string getServiceName();
+    std::string getServiceName();
 
     /*!
      * \brief Bind to an additional address
      */
-    B0_EXPORT virtual void bind(const std::string &address);
+    virtual void bind(const std::string &address);
 
 protected:
     /*!
      * \brief Bind socket to the address
      */
-    B0_EXPORT virtual void bind();
+    virtual void bind();
 
     /*!
      * \brief Unbind socket from the address
      */
-    B0_EXPORT virtual void unbind();
+    virtual void unbind();
 
     /*!
      * \brief Announce service to resolver
      */
-    B0_EXPORT virtual void announce();
+    virtual void announce();
 
     //! The ZeroMQ address to bind the service socket on
     std::string bind_addr_;

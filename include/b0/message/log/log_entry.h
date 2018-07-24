@@ -21,7 +21,7 @@ using LogLevel = ::b0::logger::LogInterface::LogLevel;
 /*!
  * \brief A log message sent by node to the 'log' topic
  */
-class B0_EXPORT LogEntry : public Message
+class LogEntry : public Message
 {
 public:
     //! The name of the node

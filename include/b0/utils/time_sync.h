@@ -59,7 +59,7 @@ namespace b0
  *
  * Handles the time synchronization aspects of the Node class.
  */
-class B0_EXPORT TimeSync
+class TimeSync
 {
 public:
     /*!

@@ -41,7 +41,7 @@ public:
     /*!
      * \brief Log a message to the remote logger, with a specified level
      */
-    B0_EXPORT virtual void log(LogLevel level, const std::string &message) const = 0;
+    virtual void log(LogLevel level, const std::string &message) const = 0;
 
     /*!
      * \brief Log a message using a format string
@@ -65,7 +65,7 @@ public:
 protected:
     //! \cond HIDDEN_SYMBOLS
 
-	B0_EXPORT virtual void log_helper(LogLevel level, boost::format &format) const;
+	virtual void log_helper(LogLevel level, boost::format &format) const;
 
     template<class T, class... Args>
     void log_helper(LogLevel level, boost::format &format, T &&t, Args&&... args) const

@@ -20,7 +20,7 @@ namespace graph
  *
  * \sa GetGraphResponse, \ref protocol, \ref graph
  */
-class B0_EXPORT GetGraphRequest : public Message
+class GetGraphRequest : public Message
 {
 public:
 

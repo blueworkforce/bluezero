@@ -20,7 +20,7 @@ namespace message
  *
  * It contains some utility methods for string serialization/parsing.
  */
-class B0_EXPORT Message
+class Message
 {
 public:
     //! \brief destructor

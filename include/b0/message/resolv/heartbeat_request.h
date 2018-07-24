@@ -22,7 +22,7 @@ namespace resolv
  *
  * \sa HeartBeatResponse, \ref protocol
  */
-class B0_EXPORT HeartbeatRequest : public Message
+class HeartbeatRequest : public Message
 {
 public:
     //! The name of the node

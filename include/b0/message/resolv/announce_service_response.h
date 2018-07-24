@@ -20,7 +20,7 @@ namespace resolv
  *
  * \sa AnnounceServiceRequest, \ref protocol
  */
-class B0_EXPORT AnnounceServiceResponse : public Message
+class AnnounceServiceResponse : public Message
 {
 public:
     //! True if successful, false if error

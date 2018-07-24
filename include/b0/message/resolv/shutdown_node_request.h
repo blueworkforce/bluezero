@@ -24,7 +24,7 @@ namespace resolv
  *
  * \sa ShutdownNodeResponse, \ref protocol
  */
-class B0_EXPORT ShutdownNodeRequest : public Message
+class ShutdownNodeRequest : public Message
 {
 public:
     //! The name of the node

@@ -38,47 +38,47 @@ public:
     /*!
      * \brief Construct a Socket
      */
-    B0_EXPORT Socket(Node *node, int type, const std::string &name, bool managed = true);
+    Socket(Node *node, int type, const std::string &name, bool managed = true);
 
     /*!
      * \brief Socket destructor
      */
-    B0_EXPORT virtual ~Socket();
+    virtual ~Socket();
 
     /*!
      * \brief Log a message to the default logger of this node
      */
-    B0_EXPORT void log(LogLevel level, const std::string &message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization (resolve name, connect socket, set subscription)
      */
-    B0_EXPORT virtual void init() = 0;
+    virtual void init() = 0;
 
     /*!
      * \brief Perform cleanup (clear subscription, disconnect socket)
      */
-    B0_EXPORT virtual void cleanup() = 0;
+    virtual void cleanup() = 0;
 
     /*!
      * \brief Process incoming messages and call callbacks
      */
-    B0_EXPORT virtual void spinOnce();
+    virtual void spinOnce();
 
     /*!
      * \brief Set the remote address the socket will connect to
      */
-    B0_EXPORT void setRemoteAddress(const std::string &addr);
+    void setRemoteAddress(const std::string &addr);
 
     /*!
      * \brief Return the name of the socket bus
      */
-    B0_EXPORT std::string getName() const;
+    std::string getName() const;
 
     /*!
      * \brief Return the node owning this socket
      */
-    B0_EXPORT Node & getNode() const;
+    Node & getNode() const;
 
     /*!
      * \brief Check if this socket name matches the specified pattern.
@@ -89,7 +89,7 @@ public:
      *  - A `nodeName.*` pattern always matches if nodeName matches.
      *  - A `nodeName.sockName` pattern matches if both the node name and the socket name match.
      */
-    B0_EXPORT bool matchesPattern(const std::string &pattern) const;
+    bool matchesPattern(const std::string &pattern) const;
 
 private:
     std::unique_ptr<SocketPrivate> private_;
@@ -111,22 +111,22 @@ public:
     /*!
      * \brief Read a MessageEnvelope from the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void readRaw(b0::message::MessageEnvelope &env);
+    virtual void readRaw(b0::message::MessageEnvelope &env);
 
     /*!
      * \brief Read a raw multipart payload from the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void readRaw(std::vector<b0::message::MessagePart> &parts);
+    virtual void readRaw(std::vector<b0::message::MessagePart> &parts);
 
     /*!
      * \brief Read a raw payload from the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void readRaw(std::string &msg);
+    virtual void readRaw(std::string &msg);
 
     /*!
      * \brief Read a raw payload with type from the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void readRaw(std::string &msg, std::string &type);
+    virtual void readRaw(std::string &msg, std::string &type);
 
     /*!
      * \brief Read a Message from the underlying ZeroMQ socket
@@ -154,22 +154,22 @@ public:
      * \brief Poll for messages. If timeout is 0 return immediately, otherwise wait
      *        for the specified amount of milliseconds.
      */
-    B0_EXPORT virtual bool poll(long timeout = 0);
+    virtual bool poll(long timeout = 0);
 
     /*!
      * \brief Write a MessageEnvelope to the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void writeRaw(const b0::message::MessageEnvelope &env);
+    virtual void writeRaw(const b0::message::MessageEnvelope &env);
 
     /*!
      * \brief Write a raw multipart payload to the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void writeRaw(const std::vector<b0::message::MessagePart> &parts);
+    virtual void writeRaw(const std::vector<b0::message::MessagePart> &parts);
 
     /*!
      * \brief Write a raw payload to the underlying ZeroMQ socket
      */
-    B0_EXPORT virtual void writeRaw(const std::string &msg, const std::string &type = "");
+    virtual void writeRaw(const std::string &msg, const std::string &type = "");
 
     /*!
      * \brief Write a Message to the underlying ZeroMQ socket
@@ -206,7 +206,7 @@ public:
      * This has no effect on received messages, which will be automatically decompressed
      * using the algorithm specified in the message envelope.
      */
-    B0_EXPORT void setCompression(const std::string &algorithm, int level = -1);
+    void setCompression(const std::string &algorithm, int level = -1);
 
 private:
     //! If set, payloads will be encoded using the specified compression algorithm

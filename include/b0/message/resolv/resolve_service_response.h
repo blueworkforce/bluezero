@@ -22,7 +22,7 @@ namespace resolv
  *
  * \sa ResolveServiceRequest, \ref protocol
  */
-class B0_EXPORT ResolveServiceResponse : public Message
+class ResolveServiceResponse : public Message
 {
 public:
     //! True if successful, false if error (i.e. does not exist)

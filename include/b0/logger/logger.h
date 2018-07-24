@@ -20,7 +20,7 @@ namespace logger
 /*!
  * \brief A logger which prints messages to local console.
  */
-class B0_EXPORT LocalLogger : public LogInterface
+class LocalLogger : public LogInterface
 {
 public:
     using LogInterface::log;
@@ -37,7 +37,7 @@ public:
     virtual void log(LogLevel level, const std::string &message) const override;
 
 private:
-    struct B0_EXPORT LevelInfo
+    struct LevelInfo
     {
         std::string levelStr;
         int attr;
@@ -79,7 +79,7 @@ struct LoggerPrivate;
 /*!
  * \brief A subclass of LocalLogger which also sends log messages remotely, via a ZeroMQ PUB socket
  */
-class B0_EXPORT Logger : public LocalLogger
+class Logger : public LocalLogger
 {
 public:
     using LocalLogger::log;

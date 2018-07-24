@@ -65,7 +65,7 @@ struct MessagePart
  * If the `Header` header is present (used with Publisher and Subscriber sockets) it must
  * be the first header.
  */
-class B0_EXPORT MessageEnvelope final
+class MessageEnvelope final
 {
 public:
     //! The very first line of the message envelope, used for routing (topics, services)
@@ -81,12 +81,12 @@ public:
 /*!
  * \brief Parse a message envelope from a string
  */
-B0_EXPORT void parse(MessageEnvelope &env, const std::string &s);
+void parse(MessageEnvelope &env, const std::string &s);
 
 /*!
  * \brief Serialize a message envelope to a string
  */
-B0_EXPORT void serialize(const MessageEnvelope &msg, std::string &s);
+void serialize(const MessageEnvelope &msg, std::string &s);
 
 } // namespace message
 

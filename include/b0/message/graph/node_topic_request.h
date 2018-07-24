@@ -22,7 +22,7 @@ namespace graph
  *
  * \sa NodeTopicResponse, \ref protocol, \ref graph
  */
-class B0_EXPORT NodeTopicRequest : public Message
+class NodeTopicRequest : public Message
 {
 public:
     //! The name of the node

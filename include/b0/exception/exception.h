@@ -15,7 +15,7 @@ namespace exception
 /*!
  * \brief The base exception class
  */
-class B0_EXPORT Exception : public std::exception
+class Exception : public std::exception
 {
 public:
     /*!

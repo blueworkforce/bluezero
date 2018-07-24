@@ -11,8 +11,8 @@ namespace b0
 namespace compress
 {
 
-B0_EXPORT std::string compress(const std::string &algorithm, const std::string &str, int level = -1);
-B0_EXPORT std::string decompress(const std::string &algorithm, const std::string &str, size_t size = 0);
+std::string compress(const std::string &algorithm, const std::string &str, int level = -1);
+std::string decompress(const std::string &algorithm, const std::string &str, size_t size = 0);
 
 } // namespace compress
 

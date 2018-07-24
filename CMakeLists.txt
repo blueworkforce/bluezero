@@ -154,9 +154,8 @@ if(BINDINGS_LUA)
     set(B0_EXTRA_SOURCES ${B0_EXTRA_SOURCES} bindings/lua/lua.cpp)
 endif()
 
-add_library(
-    b0
-    SHARED
+set(
+    B0_SOURCES
     src/b0/node_state.cpp
     src/b0/node.cpp
     src/b0/socket.cpp
@@ -185,7 +184,9 @@ add_library(
     src/b0/utils/time_sync.cpp
     src/b0/utils/graphviz.cpp
     ${B0_EXTRA_SOURCES}
-
+)
+set(
+    DOUBLE_CONVERSION_SOURCES
     include/double-conversion/double-conversion/bignum-dtoa.cc
     include/double-conversion/double-conversion/bignum.cc
     include/double-conversion/double-conversion/cached-powers.cc
@@ -194,7 +195,9 @@ add_library(
     include/double-conversion/double-conversion/fast-dtoa.cc
     include/double-conversion/double-conversion/fixed-dtoa.cc
     include/double-conversion/double-conversion/strtod.cc
-
+)
+set(
+    SPOTIFY_JSON_SOURCES
     include/spotify-json/src/detail/encode_integer.cpp
     include/spotify-json/src/detail/escape.cpp
     include/spotify-json/src/detail/escape_sse42.cpp
@@ -202,51 +205,83 @@ add_library(
     include/spotify-json/src/detail/skip_chars_sse42.cpp
     include/spotify-json/src/detail/skip_value.cpp
 )
-target_compile_definitions(b0 PRIVATE -DB0_LIBRARY)
-target_link_libraries(b0 ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
+
+set(B0_LIBRARY_SHARED b0)
+add_library(
+    ${B0_LIBRARY_SHARED}
+    SHARED
+    ${B0_SOURCES}
+    ${DOUBLE_CONVERSION_SOURCES}
+    ${SPOTIFY_JSON_SOURCES}
+)
+target_compile_definitions(${B0_LIBRARY_SHARED} PRIVATE -DB0_LIBRARY)
+target_link_libraries(${B0_LIBRARY_SHARED} ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
 if(WIN32)
-    target_link_libraries(b0 wsock32 ws2_32)
+    target_link_libraries(${B0_LIBRARY_SHARED} wsock32 ws2_32)
+endif()
+
+set(B0_LIBRARY_STATIC b0-static)
+add_library(
+    ${B0_LIBRARY_STATIC}
+    STATIC
+    ${B0_SOURCES}
+    ${DOUBLE_CONVERSION_SOURCES}
+    ${SPOTIFY_JSON_SOURCES}
+)
+target_compile_definitions(${B0_LIBRARY_STATIC} PRIVATE -DB0_LIBRARY)
+target_link_libraries(${B0_LIBRARY_STATIC} ${ZMQ_LIBRARY} ${Boost_LIBRARIES})
+if(WIN32)
+    target_link_libraries(${B0_LIBRARY_STATIC} wsock32 ws2_32)
+endif()
+
+if(WIN32)
+    set(B0_LIBRARY ${B0_LIBRARY_STATIC})
+else()
+    set(B0_LIBRARY ${B0_LIBRARY_SHARED})
 endif()
 
 if(ZLIB_FOUND)
     include_directories(${ZLIB_INCLUDE_DIRS})
-    target_link_libraries(b0 ${ZLIB_LIBRARIES})
+    target_link_libraries(${B0_LIBRARY_SHARED} ${ZLIB_LIBRARIES})
+    target_link_libraries(${B0_LIBRARY_STATIC} ${ZLIB_LIBRARIES})
 endif()
 if(LZ4_FOUND)
     include_directories(${LZ4_INCLUDE_DIR})
-    target_link_libraries(b0 ${LZ4_LIBRARY})
+    target_link_libraries(${B0_LIBRARY_SHARED} ${LZ4_LIBRARY})
+    target_link_libraries(${B0_LIBRARY_STATIC} ${LZ4_LIBRARY})
 endif()
 
-set_target_properties(b0
-    PROPERTIES
-    PUBLIC_HEADER
-    "
-    include/b0/b0.h
-    include/b0/node.h
-    include/b0/publisher.h
-    include/b0/subscriber.h
-    include/b0/service_client.h
-    include/b0/service_server.h
-    "
-)
+#set_target_properties(
+#    b0
+#    PROPERTIES
+#    PUBLIC_HEADER
+#    "
+#    include/b0/b0.h
+#    include/b0/node.h
+#    include/b0/publisher.h
+#    include/b0/subscriber.h
+#    include/b0/service_client.h
+#    include/b0/service_server.h
+#    "
+#)
 
 add_executable(
     b0_resolver
     src/b0_resolver/resolver_main.cpp
 )
-target_link_libraries(b0_resolver b0)
+target_link_libraries(b0_resolver ${B0_LIBRARY})
 
 add_executable(
     b0_logger_monitor
     src/b0_logger_monitor/logger_monitor.cpp
 )
-target_link_libraries(b0_logger_monitor b0)
+target_link_libraries(b0_logger_monitor ${B0_LIBRARY})
 
 add_executable(
     b0_graph_monitor
     src/b0_graph_monitor/graph_monitor.cpp
 )
-target_link_libraries(b0_graph_monitor b0)
+target_link_libraries(b0_graph_monitor ${B0_LIBRARY})
 
 if(BUILD_GUI)
     find_package(Qt5Core REQUIRED)
@@ -257,21 +292,22 @@ if(BUILD_GUI)
         b0_gui_logger_monitor
         src/b0_gui_logger_monitor/gui_logger_monitor.cpp
     )
-    target_link_libraries(b0_gui_logger_monitor b0 Qt5::Core Qt5::Gui Qt5::Widgets)
+    target_link_libraries(b0_gui_logger_monitor ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
 
     add_executable(
         b0_gui_graph_monitor
         src/b0_gui_graph_monitor/gui_graph_monitor.cpp
     )
-    target_link_libraries(b0_gui_graph_monitor b0 Qt5::Core Qt5::Gui Qt5::Widgets)
+    target_link_libraries(b0_gui_graph_monitor ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
 endif()
 
-install(TARGETS b0
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib/static
-    PUBLIC_HEADER DESTINATION include
-)
+#install(
+#    TARGETS b0
+#    RUNTIME DESTINATION bin
+#    LIBRARY DESTINATION lib
+#    ARCHIVE DESTINATION lib/static
+#    PUBLIC_HEADER DESTINATION include
+#)
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)

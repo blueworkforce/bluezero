@@ -11,11 +11,11 @@ namespace b0
 namespace env
 {
 
-B0_EXPORT std::string get(const std::string &var, const std::string &def = "");
+std::string get(const std::string &var, const std::string &def = "");
 
-B0_EXPORT bool getBool(const std::string &var, bool def = false);
+bool getBool(const std::string &var, bool def = false);
 
-B0_EXPORT int getInt(const std::string &var, int def = 0);
+int getInt(const std::string &var, int def = 0);
 
 } // namespace env
 

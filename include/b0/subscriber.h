@@ -55,22 +55,22 @@ public:
     /*!
      * \brief Construct an Subscriber child of the specified Node without a callback
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, optionally using a function as callback (raw without type)
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, CallbackRaw callback, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, CallbackRaw callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw with type)
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, CallbackRawType callback, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, CallbackRawType callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function as callback (raw message parts)
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, CallbackParts callback, bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, CallbackParts callback, bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function as callback (message class)
@@ -87,17 +87,17 @@ public:
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw without type)
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&), bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw with type)
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&, const std::string&), bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::string&, const std::string&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (raw message parts)
      */
-    B0_EXPORT Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
+    Subscriber(Node *node, const std::string &topic_name, void (*callback)(const std::vector<b0::message::MessagePart>&), bool managed = true, bool notify_graph = true);
 
     /*!
      * \brief Construct an Subscriber child of the specified Node, using a function ptr as callback (message class)
@@ -144,43 +144,43 @@ public:
     /*!
      * \brief Subscriber destructor
      */
-    B0_EXPORT virtual ~Subscriber();
+    virtual ~Subscriber();
 
     /*!
      * \brief Log a message using node's logger, prepending this subscriber informations
      */
-    B0_EXPORT void log(LogLevel level, const std::string &message) const override;
+    void log(LogLevel level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify
      */
-    B0_EXPORT virtual void init() override;
+    virtual void init() override;
 
     /*!
      * \brief Perform cleanup and optionally send graph notify
      */
-    B0_EXPORT virtual void cleanup() override;
+    virtual void cleanup() override;
 
     /*!
      * \brief Process incoming messages and call callbacks
      */
-    B0_EXPORT virtual void spinOnce() override;
+    virtual void spinOnce() override;
 
     /*!
      * \brief Return the name of this subscriber's topic
      */
-    B0_EXPORT std::string getTopicName();
+    std::string getTopicName();
 
 protected:
     /*!
      * \brief Connect to the remote address
      */
-    B0_EXPORT virtual void connect();
+    virtual void connect();
 
     /*!
      * \brief Disconnect from the remote address
      */
-    B0_EXPORT virtual void disconnect();
+    virtual void disconnect();
 
     //! If false this socket will not send announcement to resolv (i.e. it will be "invisible")
     const bool notify_graph_;

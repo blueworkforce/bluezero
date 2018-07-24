@@ -25,7 +25,7 @@ namespace resolver
 
 struct ServiceEntry;
 
-B0_EXPORT struct NodeEntry
+struct NodeEntry
 {
     std::string host_id;
     int process_id;
@@ -35,7 +35,7 @@ B0_EXPORT struct NodeEntry
     std::vector<ServiceEntry*> services;
 };
 
-B0_EXPORT struct ServiceEntry
+struct ServiceEntry
 {
     NodeEntry *node;
     std::string name;
@@ -44,7 +44,7 @@ B0_EXPORT struct ServiceEntry
 
 class Resolver;
 
-class B0_EXPORT ResolverServiceServer : public b0::ServiceServer
+class ResolverServiceServer : public b0::ServiceServer
 {
 public:
     ResolverServiceServer(Resolver *resolver);
@@ -64,7 +64,7 @@ protected:
 /*!
  * \brief The resolver node
  */
-class B0_EXPORT Resolver : public b0::Node
+class Resolver : public b0::Node
 {
 public:
     /*!

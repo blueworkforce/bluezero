@@ -22,7 +22,7 @@ namespace graph
  *
  * \sa GraphLink, \ref protocol, \ref graph
  */
-class B0_EXPORT Graph : public Message
+class Graph : public Message
 {
 public:
     //! List of node names

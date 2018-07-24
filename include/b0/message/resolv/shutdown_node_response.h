@@ -20,7 +20,7 @@ namespace resolv
  *
  * \sa ShutdownNodeRequest, \ref protocol
  */
-class B0_EXPORT ShutdownNodeResponse : public Message
+class ShutdownNodeResponse : public Message
 {
 public:
     //! True fi successful, false if error

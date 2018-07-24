@@ -13,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when an invalid argument or parameter is supplied
  */
-class B0_EXPORT ArgumentError : public Exception
+class ArgumentError : public Exception
 {
 public:
     /*!

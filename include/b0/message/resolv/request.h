@@ -28,7 +28,7 @@ namespace resolv
  *
  * \sa Response, \ref protocol
  */
-class B0_EXPORT Request : public Message
+class Request : public Message
 {
 public:
     //! \brief Message for the AnnounceNodeRequest

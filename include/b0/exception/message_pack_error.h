@@ -13,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when encoding/packing a message fails
  */
-class B0_EXPORT MessagePackError : public Exception
+class MessagePackError : public Exception
 {
 public:
     /*!
@@ -25,7 +25,7 @@ public:
 /*!
  * \brief An exception thrown when an error encoding the message headers occurs
  */
-class B0_EXPORT EnvelopeEncodeError : public MessagePackError
+class EnvelopeEncodeError : public MessagePackError
 {
 public:
     /*!
@@ -37,7 +37,7 @@ public:
 /*!
  * \brief An exception thrown when writing to socket fails
  */
-class B0_EXPORT SocketWriteError : public MessagePackError
+class SocketWriteError : public MessagePackError
 {
 public:
     /*!

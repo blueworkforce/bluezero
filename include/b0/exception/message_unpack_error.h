@@ -13,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when unpacking/decoding a message fails
  */
-class B0_EXPORT MessageUnpackError : public Exception
+class MessageUnpackError : public Exception
 {
 public:
     /*!
@@ -25,7 +25,7 @@ public:
 /*!
  * \brief An exception thrown when a single part message is received, but a multipart message was expected
  */
-class B0_EXPORT MessageMissingHeaderError : public MessageUnpackError
+class MessageMissingHeaderError : public MessageUnpackError
 {
 public:
     /*!
@@ -37,7 +37,7 @@ public:
 /*!
  * \brief An exception thrown when a message has too many parts (zmq multipart)
  */
-class B0_EXPORT MessageTooManyPartsError : public MessageUnpackError
+class MessageTooManyPartsError : public MessageUnpackError
 {
 public:
     /*!
@@ -49,7 +49,7 @@ public:
 /*!
  * \brief An exception thrown when the zmq header (first part of a multipart message) is not of the expected value
  */
-class B0_EXPORT HeaderMismatch : public MessageUnpackError
+class HeaderMismatch : public MessageUnpackError
 {
 public:
     /*!
@@ -61,7 +61,7 @@ public:
 /*!
  * \brief An exception thrown when an error decoding the message headers occurs
  */
-class B0_EXPORT EnvelopeDecodeError : public MessageUnpackError
+class EnvelopeDecodeError : public MessageUnpackError
 {
 public:
     /*!
@@ -73,7 +73,7 @@ public:
 /*!
  * \brief An exception thrown when reading from socket fails
  */
-class B0_EXPORT SocketReadError : public MessageUnpackError
+class SocketReadError : public MessageUnpackError
 {
 public:
     /*!
@@ -85,7 +85,7 @@ public:
 /*!
  * \brief An exception thrown when a message of an unexpected type is received
  */
-class B0_EXPORT MessageTypeMismatch : public MessageUnpackError
+class MessageTypeMismatch : public MessageUnpackError
 {
 public:
     /*!

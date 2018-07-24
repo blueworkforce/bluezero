@@ -13,8 +13,8 @@ namespace compress
 
 #ifdef LZ4_FOUND
 
-B0_EXPORT std::string lz4_compress(const std::string &str, int level = -1);
-B0_EXPORT std::string lz4_decompress(const std::string &str, size_t size = 0);
+std::string lz4_compress(const std::string &str, int level = -1);
+std::string lz4_decompress(const std::string &str, size_t size = 0);
 
 #endif
 

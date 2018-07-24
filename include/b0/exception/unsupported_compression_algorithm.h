@@ -13,7 +13,7 @@ namespace exception
 /*!
  * \brief An exception thrown when an unsupported compression algorithm is specified or used
  */
-class B0_EXPORT UnsupportedCompressionAlgorithm : public Exception
+class UnsupportedCompressionAlgorithm : public Exception
 {
 public:
     /*!

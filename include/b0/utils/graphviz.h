@@ -12,9 +12,9 @@ namespace b0
 namespace graph
 {
 
-B0_EXPORT void toGraphviz(const b0::message::graph::Graph &graph, const std::string &filename, const std::string &outline_color = "black", const std::string &topic_color = "blue", const std::string &service_color = "red");
+void toGraphviz(const b0::message::graph::Graph &graph, const std::string &filename, const std::string &outline_color = "black", const std::string &topic_color = "blue", const std::string &service_color = "red");
 
-B0_EXPORT int renderGraphviz(const std::string &input, const std::string &output);
+int renderGraphviz(const std::string &input, const std::string &output);
 
 } // namespace graph
 
