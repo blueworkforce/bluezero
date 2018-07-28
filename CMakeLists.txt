@@ -87,9 +87,18 @@ else()
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif()
 
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/cppzmq/zmq.hpp)
-    execute_process(COMMAND git submodule init WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    execute_process(COMMAND git submodule update WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
+    find_package(Git)
+    if(GIT_FOUND)
+        if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/cppzmq/zmq.hpp
+                OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/double-conversion
+                OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/spotify-json)
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+            execute_process(COMMAND git submodule update WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+        endif()
+    endif()
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
