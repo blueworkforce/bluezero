@@ -90,9 +90,9 @@ endif()
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
     find_package(Git)
     if(GIT_FOUND)
-        if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/cppzmq/zmq.hpp
-                OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/double-conversion
-                OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/spotify-json)
+        if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/cppzmq/CMakeLists.txt
+                OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/double-conversion/CMakeLists.txt
+                OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/spotify-json/CMakeLists.txt)
             execute_process(
                 COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
