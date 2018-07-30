@@ -182,6 +182,7 @@ add_library(
     src/b0/protobuf/socket.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
+    src/b0/utils/env.cpp
     src/b0/utils/thread_name.cpp
     src/b0/utils/time_sync.cpp
     ${B0_MSG_SOURCES}
