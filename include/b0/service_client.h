@@ -5,7 +5,7 @@
 
 #include <b0/b0.h>
 #include <b0/socket.h>
-#include <b0/message/message.h>
+#include <b0/message/message_part.h>
 
 namespace b0
 {

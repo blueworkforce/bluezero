@@ -6,7 +6,7 @@
 #include <b0/b0.h>
 #include <b0/user_data.h>
 #include <b0/logger/interface.h>
-#include <b0/message/message.h>
+#include <b0/message/message_part.h>
 #include <b0/message/message_envelope.h>
 #include <b0/exception/message_unpack_error.h>
 
