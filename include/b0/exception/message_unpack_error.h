@@ -70,6 +70,15 @@ public:
 };
 
 /*!
+ * \brief An exception thrown when an error parsing the protobuf payload occurs
+ */
+class ProtobufParseError : public MessageUnpackError
+{
+public:
+    ProtobufParseError();
+};
+
+/*!
  * \brief An exception thrown when reading from socket fails
  */
 class SocketReadError : public MessageUnpackError

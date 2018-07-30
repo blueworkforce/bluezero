@@ -34,6 +34,15 @@ public:
 };
 
 /*!
+ * \brief An exception thrown when an error serializing the protobuf occurs
+ */
+class ProtobufSerializeError : public MessagePackError
+{
+public:
+    ProtobufSerializeError();
+};
+
+/*!
  * \brief An exception thrown when writing to socket fails
  */
 class SocketWriteError : public MessagePackError
