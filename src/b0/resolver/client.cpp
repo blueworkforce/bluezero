@@ -20,16 +20,8 @@ Client::Client(b0::Node *node)
     if(!node)
         throw exception::Exception("node cannot be null");
 
-    std::string resolver_addr = b0::env::get("BWF_RESOLVER");
-    if(resolver_addr != "")
-    {
-        log(warn, "BWF_RESOLVER variable is deprecated. Use B0_RESOLVER instead.");
-    }
-    else
-    {
-        resolver_addr = b0::env::get("B0_RESOLVER");
-    }
-    setRemoteAddress(resolver_addr != "" ? resolver_addr : "tcp://localhost:22000");
+    std::string resolver_addr = b0::env::get("B0_RESOLVER", "tcp://localhost:22000");
+    setRemoteAddress(resolver_addr);
 }
 
 Client::~Client()

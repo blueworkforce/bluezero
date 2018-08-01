@@ -260,18 +260,7 @@ bool Resolver::nodeNameExists(std::string name)
 
 int Resolver::resolverPort() const
 {
-    int resolver_port = b0::env::getInt("BWF_RESOLVER_PORT");
-    if(resolver_port)
-    {
-        log(warn, "BWF_RESOLVER_PORT variable is deprecated. Use B0_RESOLVER_PORT instead.");
-        return resolver_port;
-    }
-    resolver_port = b0::env::getInt("B0_RESOLVER_PORT");
-    if(resolver_port)
-    {
-        return resolver_port;
-    }
-    return 22000;
+    return b0::env::getInt("B0_RESOLVER_PORT", 22000);
 }
 
 std::string Resolver::address(std::string host, int port)
