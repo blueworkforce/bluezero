@@ -164,11 +164,6 @@ public:
     bool nodeNameExists(std::string name);
 
     /*!
-     * \brief Return this host name or IP address
-     */
-    virtual std::string hostAddress();
-
-    /*!
      * \brief Return the port number of the resolver socket
      */
     virtual int resolverPort() const;
