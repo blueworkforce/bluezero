@@ -65,10 +65,10 @@ void Resolver::init()
     // setup XPUB-XSUB proxy addresses
     // those will be sent to nodes in response to announce
     int xsub_proxy_port_ = freeTCPPort();
-    xsub_proxy_addr_ = address(hostAddress(), xsub_proxy_port_);
+    xsub_proxy_addr_ = address(hostname(), xsub_proxy_port_);
     log(trace, "XSUB address is %s", xsub_proxy_addr_);
     int xpub_proxy_port_ = freeTCPPort();
-    xpub_proxy_addr_ = address(hostAddress(), xpub_proxy_port_);
+    xpub_proxy_addr_ = address(hostname(), xpub_proxy_port_);
     log(trace, "XPUB address is %s", xpub_proxy_addr_);
     // run XPUB-XSUB proxy:
     pub_proxy_thread_ = boost::thread(&Resolver::pubProxy, this, xsub_proxy_port_, xpub_proxy_port_);
@@ -256,22 +256,6 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 bool Resolver::nodeNameExists(std::string name)
 {
     return name == "node" || nodes_by_name_.find(name) != nodes_by_name_.end();
-}
-
-std::string Resolver::hostAddress()
-{
-    std::string host_addr = b0::env::get("BWF_HOST_ID");
-    if(host_addr != "")
-    {
-        log(warn, "BWF_HOST_ID varable is deprecated. Use B0_HOST_ID instead.");
-        return host_addr;
-    }
-    host_addr = b0::env::get("B0_HOST_ID");
-    if(host_addr != "")
-    {
-        return host_addr;
-    }
-    return boost::asio::ip::host_name();
 }
 
 int Resolver::resolverPort() const
