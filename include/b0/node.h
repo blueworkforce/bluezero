@@ -67,6 +67,11 @@ public:
     virtual ~Node();
 
     /*!
+     * \brief Specify a different value for the resolver address. Otherwise B0_RESOLVER env var is used.
+     */
+    void setResolverAddress(const std::string &addr);
+
+    /*!
      * \brief Initialize the node (connect to resolve, start heartbeat, announce node name)
      *
      * If you need to extend the init phase, when overriding it in your
