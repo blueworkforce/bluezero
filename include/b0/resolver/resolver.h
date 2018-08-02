@@ -45,6 +45,16 @@ class ResolverServiceServer : public b0::protobuf::ServiceServer<b0::resolver_ms
 public:
     ResolverServiceServer(Resolver *resolver);
 
+    /*!
+     * \brief Set the port number to bind to (call before initialization)
+     */
+    void setPort(int port);
+
+    /*!
+     * \brief Return the port number to bind to
+     */
+    int port() const;
+
 protected:
     /*!
      * \brief Hijack the announce step
@@ -53,6 +63,9 @@ protected:
 
     //! \brief Pointer to resolver node
     Resolver *resolver_;
+
+    //! \brief Port number to bind to
+    int port_;
 };
 
 //! \endcond
@@ -164,9 +177,9 @@ public:
     bool nodeNameExists(std::string name);
 
     /*!
-     * \brief Return the port number of the resolver socket
+     * \brief Set a specific port number to use (otherwise B0_RESOLVER_PORT will be used).
      */
-    virtual int resolverPort() const;
+    virtual void setResolverPort(int port);
 
     /*!
      * \brief Format a tcp:// address

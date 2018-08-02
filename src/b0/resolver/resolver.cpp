@@ -30,6 +30,7 @@ ResolverServiceServer::ResolverServiceServer(Resolver *resolver)
     : ServiceServer<b0::resolver_msgs::Request, b0::resolver_msgs::Response>(resolver, "resolv", &Resolver::handle, true, false),
       resolver_(resolver)
 {
+    setPort(-1);
 }
 
 void ResolverServiceServer::announce()
@@ -41,6 +42,19 @@ void ResolverServiceServer::announce()
     b0::resolver_msgs::AnnounceServiceResponse rsp;
     resolver_->handleAnnounceService(rq, rsp);
     resolver_->onNodeServiceOfferStart(resolver_->getName(), name_);
+}
+
+void ResolverServiceServer::setPort(int port)
+{
+    if(port == -1)
+        port_ = b0::env::getInt("B0_RESOLVER_PORT", 22000);
+    else
+        port_ = port;
+}
+
+int ResolverServiceServer::port() const
+{
+    return port_;
 }
 
 Resolver::Resolver()
@@ -58,7 +72,7 @@ Resolver::~Resolver()
 
 void Resolver::init()
 {
-    setResolverAddress(address(hostname(), resolverPort()));
+    setResolverAddress(address(hostname(), resolv_server_.port()));
 
     // setup XPUB-XSUB proxy addresses
     // those will be sent to nodes in response to announce
@@ -73,7 +87,7 @@ void Resolver::init()
 
     Node::init();
 
-    resolv_server_.bind(address("*", resolverPort()));
+    resolv_server_.bind(address("*", resolv_server_.port()));
 
     // run heartbeat sweeper (to detect when nodes go offline):
     heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartBeatSweeper, this);
@@ -246,20 +260,9 @@ bool Resolver::nodeNameExists(std::string name)
     return name == "node" || nodes_by_name_.find(name) != nodes_by_name_.end();
 }
 
-int Resolver::resolverPort() const
+void Resolver::setResolverPort(int port)
 {
-    int resolver_port = b0::env::getInt("BWF_RESOLVER_PORT");
-    if(resolver_port)
-    {
-        log(warn, "BWF_RESOLVER_PORT variable is deprecated. Use B0_RESOLVER_PORT instead.");
-        return resolver_port;
-    }
-    resolver_port = b0::env::getInt("B0_RESOLVER_PORT");
-    if(resolver_port)
-    {
-        return resolver_port;
-    }
-    return 22000;
+    return resolv_server_.setPort(port);
 }
 
 std::string Resolver::address(std::string host, int port)
