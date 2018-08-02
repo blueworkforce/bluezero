@@ -70,15 +70,21 @@ Node::~Node()
         delete p_logger;
 }
 
+void Node::setResolverAddress(const std::string &addr)
+{
+    // This is mostly needed for implementing the resolver node;
+    // but can be used to connect to a different resolver as well.
+    // Use this before Node::init().
+    resolv_addr_ = addr;
+    if(!resolv_addr_.empty()) private2_->resolv_cli_.setRemoteAddress(resolv_addr_);
+}
+
 void Node::init()
 {
     if(state_ != NodeState::Created)
         throw exception::InvalidStateTransition("init", state_);
 
     log(debug, "Initialization...");
-
-    // this hack is needed for implementing the resolver node:
-    if(!resolv_addr_.empty()) private2_->resolv_cli_.setRemoteAddress(resolv_addr_);
 
     private2_->resolv_cli_.init(); // resolv_cli_ is not managed
 

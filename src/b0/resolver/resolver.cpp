@@ -58,7 +58,7 @@ Resolver::~Resolver()
 
 void Resolver::init()
 {
-    resolv_addr_ = address(hostname(), resolverPort());
+    setResolverAddress(address(hostname(), resolverPort()));
 
     // setup XPUB-XSUB proxy addresses
     // those will be sent to nodes in response to announce
