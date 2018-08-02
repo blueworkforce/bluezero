@@ -55,12 +55,7 @@ Resolver::~Resolver()
 
 void Resolver::init()
 {
-    resolv_addr_ = "inproc://resolv";
-
-    Node::init();
-
-    resolv_server_.bind((boost::format("tcp://*:%s") % resolverPort()).str());
-    resolv_server_.bind("inproc://resolv"); // for socket to self
+    resolv_addr_ = address(hostname(), resolverPort());
 
     // setup XPUB-XSUB proxy addresses
     // those will be sent to nodes in response to announce
@@ -72,6 +67,10 @@ void Resolver::init()
     log(trace, "XPUB address is %s", xpub_proxy_addr_);
     // run XPUB-XSUB proxy:
     pub_proxy_thread_ = boost::thread(&Resolver::pubProxy, this, xsub_proxy_port_, xpub_proxy_port_);
+
+    Node::init();
+
+    resolv_server_.bind(address("*", resolverPort()));
 
     // run heartbeat sweeper (to detect when nodes go offline):
     heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartbeatSweeper, this);
@@ -93,12 +92,12 @@ void Resolver::shutdown()
 
 std::string Resolver::getXPUBSocketAddress() const
 {
-    return "inproc://xpub_proxy";
+    return xpub_proxy_addr_;
 }
 
 std::string Resolver::getXSUBSocketAddress() const
 {
-    return "inproc://xsub_proxy";
+    return xsub_proxy_addr_;
 }
 
 void Resolver::announceNode()
@@ -110,7 +109,7 @@ void Resolver::announceNode()
     handleAnnounceNode(rq, rsp);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
-        p_logger->connect("inproc://xsub_proxy");
+        p_logger->connect(xsub_proxy_addr_);
 }
 
 void Resolver::notifyShutdown()
@@ -233,12 +232,10 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     zmq::socket_t proxy_in_sock_(context_, ZMQ_XSUB);
     std::string xsub_proxy_addr = address(xsub_proxy_port);
     proxy_in_sock_.bind(xsub_proxy_addr);
-    proxy_in_sock_.bind("inproc://xsub_proxy");
 
     zmq::socket_t proxy_out_sock_(context_, ZMQ_XPUB);
     std::string xpub_proxy_addr = address(xpub_proxy_port);
     proxy_out_sock_.bind(xpub_proxy_addr);
-    proxy_out_sock_.bind("inproc://xpub_proxy");
 
     try
     {
@@ -529,7 +526,6 @@ void Resolver::heartbeatSweeper()
     set_thread_name("HBsweep");
 
     resolver::Client resolv_cli(this);
-    resolv_cli.setRemoteAddress("inproc://resolv");
     resolv_cli.init();
 
     while(!shutdownRequested())
