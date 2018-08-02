@@ -86,3 +86,7 @@ add_test(protocol protocol)
 add_executable(json json.cpp)
 target_link_libraries(json ${B0_LIBRARY})
 add_test(json json)
+
+add_executable(multi_resolver multi_resolver.cpp)
+target_link_libraries(multi_resolver ${B0_LIBRARY})
+add_test(multi_resolver multi_resolver)
