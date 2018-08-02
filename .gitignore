@@ -1,6 +1,7 @@
 .DS_Store
 /.clang_complete
 /build
+/build.master
 /build.devel
 *.pyc
 .*.swp
