@@ -45,6 +45,7 @@ _("b0_node_get_state", ct.c_int, ct.c_void_p)
 _("b0_node_get_context", ct.c_void_p, ct.c_void_p)
 _("b0_node_hardware_time_usec", ct.c_longlong, ct.c_void_p)
 _("b0_node_time_usec", ct.c_longlong, ct.c_void_p)
+_("b0_node_sleep_usec", None, ct.c_void_p, ct.c_longlong)
 _("b0_node_log", None, ct.c_void_p, ct.c_int, str)
 _("b0_publisher_new_ex", ct.c_void_p, ct.c_void_p, str, ct.c_int, ct.c_int)
 _("b0_publisher_new", ct.c_void_p, ct.c_void_p, str)
@@ -55,6 +56,7 @@ _("b0_publisher_spin_once", None, ct.c_void_p)
 _("b0_publisher_get_topic_name", str, ct.c_void_p)
 _("b0_publisher_publish", None, ct.c_void_p, ct.c_void_p, ct.c_size_t)
 _("b0_publisher_log", None, ct.c_void_p, ct.c_int, str)
+_("b0_publisher_set_option", ct.c_void_p, ct.c_int, ct.c_int)
 _("b0_subscriber_new_ex", ct.c_void_p, ct.c_void_p, str, ct.c_void_p, ct.c_int, ct.c_int)
 _("b0_subscriber_new", ct.c_void_p, ct.c_void_p, str, ct.c_void_p)
 _("b0_subscriber_delete", None, ct.c_void_p)
@@ -65,6 +67,7 @@ _("b0_subscriber_get_topic_name", str, ct.c_void_p)
 _("b0_subscriber_log", None, ct.c_void_p, ct.c_int, str)
 _("b0_subscriber_poll", ct.c_int, ct.c_void_p, ct.c_long)
 _("b0_subscriber_read", ct.c_void_p, ct.c_void_p, ct.POINTER(ct.c_size_t))
+_("b0_subscriber_set_option", ct.c_void_p, ct.c_int, ct.c_int)
 _("b0_service_client_new_ex", ct.c_void_p, ct.c_void_p, str, ct.c_int, ct.c_int)
 _("b0_service_client_new", ct.c_void_p, ct.c_void_p, str)
 _("b0_service_client_delete", None, ct.c_void_p)
@@ -74,6 +77,7 @@ _("b0_service_client_spin_once", None, ct.c_void_p)
 _("b0_service_client_get_service_name", str, ct.c_void_p)
 _("b0_service_client_call", ct.c_void_p, ct.c_void_p, ct.c_void_p, ct.c_size_t, ct.POINTER(ct.c_size_t))
 _("b0_service_client_log", None, ct.c_void_p, ct.c_int, str)
+_("b0_service_client_set_option", ct.c_void_p, ct.c_int, ct.c_int)
 _("b0_service_server_new_ex", ct.c_void_p, ct.c_void_p, str, ct.c_void_p, ct.c_int, ct.c_int)
 _("b0_service_server_new", ct.c_void_p, ct.c_void_p, str, ct.c_void_p)
 _("b0_service_server_delete", None, ct.c_void_p)
@@ -82,6 +86,7 @@ _("b0_service_server_cleanup", None, ct.c_void_p)
 _("b0_service_server_spin_once", None, ct.c_void_p)
 _("b0_service_server_get_service_name", str, ct.c_void_p)
 _("b0_service_server_log", None, ct.c_void_p, ct.c_int, str)
+_("b0_service_server_set_option", ct.c_void_p, ct.c_int, ct.c_int)
 
 class Node:
     def __init__(self, name='node'):
@@ -123,6 +128,9 @@ class Node:
     def time_usec(self):
         return b0_node_time_usec(self._node)
 
+    def sleep_usec(self, usec):
+        b0_node_sleep_usec(self._node, usec);
+
     def log(self, level, message):
         b0_node_log(self._node, level, message)
 
@@ -152,6 +160,9 @@ class Publisher:
     def log(self, level, message):
         b0_publisher_log(self._pub, level, message)
 
+    def set_option(self, option, value):
+        b0_publisher_set_option(self._pub, option, value)
+
 class Subscriber:
     def __init__(self, node, topic_name, callback, managed=1, notify_graph=1):
         def w(data, size):
@@ -178,8 +189,8 @@ class Subscriber:
     def log(self, level, message):
         b0_subscriber_log(self._sub, level, message)
 
-    def poll(self,timeout):
-        return b0_subscriber_poll(self._sub,timeout)
+    def poll(self, timeout):
+        return b0_subscriber_poll(self._sub, timeout)
         
     def read(self):
         outsz = ct.c_size_t()
@@ -187,6 +198,9 @@ class Subscriber:
         outarr = ct.cast(outbuf, ct.POINTER(ct.c_ubyte * outsz.value))
         rep_bytes = bytearray(outarr.contents)
         return rep_bytes
+
+    def set_option(self, option, value):
+        b0_subscriber_set_option(self._sub, option, value)
         
 class ServiceClient:
     def __init__(self, node, topic_name, managed=1, notify_graph=1):
@@ -219,6 +233,9 @@ class ServiceClient:
     def log(self, level, message):
         b0_service_client_log(self._cli, level, message)
 
+    def set_option(self, option, value):
+        b0_service_client_set_option(self._cli, option, value)
+
 class ServiceServer:
     def __init__(self, node, topic_name, callback, managed=1, notify_graph=1):
         def w(data, size, outsize):
@@ -250,4 +267,7 @@ class ServiceServer:
 
     def log(self, level, message):
         b0_service_server_log(self._srv, level, message)
+
+    def set_option(self, option, value):
+        b0_service_server_set_option(self._srv, option, value)
 
