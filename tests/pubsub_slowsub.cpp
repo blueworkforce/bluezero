@@ -1,3 +1,4 @@
+#include <atomic>
 #include <iostream>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>

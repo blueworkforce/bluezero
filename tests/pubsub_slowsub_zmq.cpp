@@ -1,7 +1,8 @@
+#include <atomic>
+#include <iostream>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
-#include <iostream>
 #include <zmq.hpp>
 
 #define USE_PROXY
