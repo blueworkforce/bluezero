@@ -94,3 +94,7 @@ add_test(multi_resolver multi_resolver)
 add_executable(many_nodes many_nodes.cpp)
 target_link_libraries(many_nodes ${B0_LIBRARY})
 add_test(many_nodes many_nodes)
+
+add_executable(resolver_shutdown resolver_shutdown.cpp)
+target_link_libraries(resolver_shutdown ${B0_LIBRARY})
+add_test(resolver_shutdown resolver_shutdown)
