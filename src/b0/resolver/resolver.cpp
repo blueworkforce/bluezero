@@ -536,14 +536,23 @@ void Resolver::heartBeatSweeper()
     resolver::Client resolv_cli(this);
     resolv_cli.init();
 
-    while(!shutdownRequested())
+    try
     {
-        // send a heartbeat to resolv itself trigger the sweeping:
-        resolv_cli.sendHeartbeat(nullptr);
-        boost::this_thread::sleep_for(boost::chrono::milliseconds{500});
-    }
+        while(!shutdownRequested())
+        {
+            // send a heartbeat to resolv itself trigger the sweeping:
+            resolv_cli.sendHeartbeat(nullptr);
+            sleepUSec(500000);
+        }
 
-    resolv_cli.cleanup();
+        resolv_cli.cleanup();
+    }
+    catch(zmq::error_t &err)
+    {
+        // A zmq error happens when the zmq context is terminated
+        // from the main thread.
+        // There's nothing to do in that case.
+    }
 }
 
 } // namespace resolver
