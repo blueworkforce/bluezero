@@ -49,13 +49,23 @@ The ZeroMQ apt package is too old. Compile and install it from the git repositor
 
  - https://github.com/zeromq/libzmq
 
+### Windows (vcpkg)
+
+Install the following vcpkg packages:
+
+ - cmake
+ - boost
+ - zlib
+ - zeromq
+
 ### macOS (homebrew)
 
 Install the following:
 
- - zeromq
+ - cmake
  - boost
- - lz4
+ - zlib
+ - zeromq
 
 ## Compiling
 
