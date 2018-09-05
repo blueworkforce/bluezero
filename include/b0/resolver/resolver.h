@@ -96,9 +96,9 @@ public:
     void init() override;
 
     /*!
-     * \brief Shutdown this node (set a flag such that Node::shutdownRequested() returns true)
+     * \brief Perform node cleanup
      */
-    void shutdown() override;
+    void cleanup() override;
 
     /*!
      * \brief Retrieve address of the proxy's XPUB socket

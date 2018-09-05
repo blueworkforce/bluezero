@@ -63,6 +63,7 @@ Resolver::Resolver()
 
 Resolver::~Resolver()
 {
+    heartbeat_sweeper_thread_.interrupt();
     pub_proxy_thread_.interrupt();
     //pub_proxy_thread_.join(); // FIXME: this makes the process hang on quit
 }
@@ -96,12 +97,13 @@ void Resolver::init()
     log(info, "Ready.");
 }
 
-void Resolver::shutdown()
+void Resolver::cleanup()
 {
-    Node::shutdown();
+    Node::cleanup();
 
+    // stop auxiliary threads
+    heartbeat_sweeper_thread_.interrupt();
     pub_proxy_thread_.interrupt();
-    pub_proxy_thread_.join();
 }
 
 std::string Resolver::getXPUBSocketAddress() const
@@ -539,25 +541,26 @@ void Resolver::heartbeatSweeper()
 {
     set_thread_name("HBsweep");
 
-    resolver::Client resolv_cli(this);
-    resolv_cli.init();
-
-    try
+    while(!shutdownRequested())
     {
-        while(!shutdownRequested())
+        resolver::Client resolv_cli(this);
+        resolv_cli.init();
+
+        try
         {
-            // send a heartbeat to resolv itself trigger the sweeping:
-            resolv_cli.sendHeartbeat(nullptr);
-            sleepUSec(500000);
-        }
+            while(!shutdownRequested())
+            {
+                // send a heartbeat to resolv itself trigger the sweeping:
+                resolv_cli.sendHeartbeat(nullptr);
+                sleepUSec(500000);
+            }
 
-        resolv_cli.cleanup();
-    }
-    catch(zmq::error_t &err)
-    {
-        // A zmq error happens when the zmq context is terminated
-        // from the main thread.
-        // There's nothing to do in that case.
+            resolv_cli.cleanup();
+        }
+        catch(std::exception &ex)
+        {
+            std::cerr << "b0::resolver::Resolver: HBsweep: " << ex.what() << std::endl;
+        }
     }
 }
 
