@@ -104,14 +104,14 @@ void Node::shutdown()
 
     log(debug, "Shutting down...");
 
-    shutdown_flag_ = true;
+    shutdown_flag_.store(true);
 
     log(debug, "Shutting complete.");
 }
 
 bool Node::shutdownRequested() const
 {
-    return shutdown_flag_ || quit_flag_.load();
+    return shutdown_flag_.load() || quit_flag_.load();
 }
 
 void Node::spinOnce()
@@ -147,6 +147,8 @@ void Node::cleanup()
 {
     if(state_ != NodeState::Ready)
         throw exception::InvalidStateTransition("cleanup", state_);
+
+    shutdown_flag_.store(true);
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
@@ -297,25 +299,28 @@ void Node::heartbeatLoop()
 {
     set_thread_name("HB");
 
-    try
+    while(!shutdownRequested())
     {
-        resolver::Client resolv_cli(this);
-        resolv_cli.setReadTimeout(1000);
-        resolv_cli.init();
-
-        while(!shutdownRequested())
+        try
         {
-            int64_t time_usec;
-            resolv_cli.sendHeartbeat(&time_usec);
-            time_sync_.updateTime(time_usec);
-            sleepUSec(1000000);
-        }
+            resolver::Client resolv_cli(this);
+            resolv_cli.setReadTimeout(1000);
+            resolv_cli.init();
 
-        resolv_cli.cleanup();
-    }
-    catch(zmq::error_t &ex)
-    {
-        // if context is terminated, catch exception and die
+            while(!shutdownRequested())
+            {
+                int64_t time_usec;
+                resolv_cli.sendHeartbeat(&time_usec);
+                time_sync_.updateTime(time_usec);
+                sleepUSec(1000000);
+            }
+
+            resolv_cli.cleanup();
+        }
+        catch(std::exception &ex)
+        {
+            std::cerr << "b0::Node: HB: " << ex.what() << std::endl;
+        }
     }
 }
 

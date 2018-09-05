@@ -288,7 +288,7 @@ private:
     static std::atomic<bool> quit_flag_;
 
     //! Flag set by Node::shutdown()
-    bool shutdown_flag_;
+    std::atomic<bool> shutdown_flag_;
 
     //! Flag to indicate wether the signal (SIGINT) handler has been set up
     static bool sigint_handler_setup_;
