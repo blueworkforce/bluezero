@@ -103,7 +103,8 @@ void Resolver::cleanup()
 
     // stop auxiliary threads
     heartbeat_sweeper_thread_.interrupt();
-    pub_proxy_thread_.interrupt();
+    pub_proxy_thread_.interrupt(); // XXX: this will have no effect; anyway we'll use
+                                   //      each time different port numbers, so, alas.
 }
 
 std::string Resolver::getXPUBSocketAddress() const
