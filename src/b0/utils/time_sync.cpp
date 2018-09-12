@@ -21,7 +21,7 @@ TimeSync::~TimeSync()
 int64_t TimeSync::hardwareTimeUSec() const
 {
     static boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
-    boost::posix_time::ptime t = boost::posix_time::microsec_clock::local_time();
+    boost::posix_time::ptime t = boost::posix_time::microsec_clock::universal_time();
     return (t - epoch).total_microseconds();
 }
 
