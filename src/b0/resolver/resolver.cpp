@@ -57,7 +57,8 @@ int ResolverServiceServer::port() const
 Resolver::Resolver()
     : Node("resolver"),
       resolv_server_(this),
-      graph_pub_(this, "graph", true, false)
+      graph_pub_(this, "graph", true, false),
+      online_monitoring_(true)
 {
 }
 
@@ -421,12 +422,15 @@ void Resolver::handleHeartbeat(const b0::message::resolv::HeartbeatRequest &rq, 
             if(!is_alive && e->name != this->getName())
                 nodes_shutdown.insert(e->name);
         }
-        for(auto node_name : nodes_shutdown)
+        if(online_monitoring_)
         {
-            log(info, "Node '%s' disconnected due to timeout.", node_name);
-            resolver::NodeEntry *e = nodeByName(node_name);
-            onNodeDisconnected(node_name);
-            delete e;
+            for(auto node_name : nodes_shutdown)
+            {
+                log(info, "Node '%s' disconnected due to timeout.", node_name);
+                resolver::NodeEntry *e = nodeByName(node_name);
+                onNodeDisconnected(node_name);
+                delete e;
+            }
         }
     }
     else
@@ -563,6 +567,11 @@ void Resolver::heartbeatSweeper()
             std::cerr << "b0::resolver::Resolver: HBsweep: " << ex.what() << std::endl;
         }
     }
+}
+
+void Resolver::setOnlineMonitoring(bool enabled)
+{
+    online_monitoring_ = enabled;
 }
 
 } // namespace resolver

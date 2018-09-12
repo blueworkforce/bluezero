@@ -283,6 +283,14 @@ public:
      */
     void heartbeatSweeper();
 
+    /*!
+     * \brief Enable or diable online node monitoring.
+     *
+     * When disabled, silent nodes (i.e. node not sending a heartbeat withing the required
+     * time window) will not be regarded as "dead" and will not be purged.
+     */
+    void setOnlineMonitoring(bool enabled);
+
 protected:
     //! The ServiceServer serving the requests for the resolv protocol
     ResolverServiceServer resolv_server_;
@@ -322,6 +330,10 @@ protected:
 
     //! Publisher of the Graph message
     b0::Publisher graph_pub_;
+
+    //! If false, silent nodes (i.e. not sending heartbeats) will not be
+    //! considered as dead and will not be purged.
+    bool online_monitoring_;
 };
 
 } // namespace resolver
