@@ -154,22 +154,22 @@ private:
     int compression_level_;
 
 public:
-    //! (low-level socket option) Get read timeout
+    //! (low-level socket option) Get read timeout (in milliseconds, -1 for no timeout)
     int getReadTimeout() const;
 
-    //! (low-level socket option) Set read timeout
+    //! (low-level socket option) Set read timeout (in milliseconds, -1 for no timeout)
     void setReadTimeout(int timeout);
 
-    //! (low-level socket option) Get write timeout
+    //! (low-level socket option) Get write timeout (in milliseconds, -1 for no timeout)
     int getWriteTimeout() const;
 
-    //! (low-level socket option) Set write timeout
+    //! (low-level socket option) Set write timeout (in milliseconds, -1 for no timeout)
     void setWriteTimeout(int timeout);
 
-    //! (low-level socket option) Get linger period
+    //! (low-level socket option) Get linger period (in milliseconds, -1 for no timeout)
     int getLingerPeriod() const;
 
-    //! (low-level socket option) Set linger period
+    //! (low-level socket option) Set linger period (in milliseconds, -1 for no timeout)
     void setLingerPeriod(int period);
 
     //! (low-level socket option) Get backlog
