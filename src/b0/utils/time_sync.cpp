@@ -1,5 +1,7 @@
 #include <b0/utils/time_sync.h>
+#include <b0/utils/env.h>
 
+#include <boost/format.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -9,6 +11,7 @@ namespace b0
 TimeSync::TimeSync(double max_slope)
 {
     target_offset_ = 0;
+    max_acceptable_offset_ = b0::env::getInt("B0_TIMESYNC_MAX_OFFSET", 5 * 1000 * 1000);
     last_offset_time_ = hardwareTimeUSec();
     last_offset_value_ = 0;
     max_slope_ = 0.5;
@@ -54,6 +57,9 @@ void TimeSync::updateTime(int64_t remoteTime)
         last_offset_value_ = last_offset_value;
         last_offset_time_ = local_time;
         target_offset_ = remoteTime - local_time;
+
+        if(max_acceptable_offset_ > 0 && target_offset_ > max_acceptable_offset_)
+            throw std::runtime_error((boost::format("Clock offset is larger than B0_TIMESYNC_MAX_OFFSET (%ld usec)") % max_acceptable_offset_).str());
     }
 }
 

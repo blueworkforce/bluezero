@@ -99,6 +99,7 @@ private:
      * State variables related to time synchronization
      */
     int64_t target_offset_;
+    int64_t max_acceptable_offset_;
     int64_t last_offset_time_;
     int64_t last_offset_value_;
     double max_slope_;
