@@ -317,6 +317,12 @@ add_executable(
 )
 target_link_libraries(b0_topic_echo ${B0_LIBRARY})
 
+add_executable(
+    b0_topic_publish
+    src/b0_topic_publish/topic_publish.cpp
+)
+target_link_libraries(b0_topic_publish ${B0_LIBRARY})
+
 if(BUILD_GUI)
     find_package(Qt5Core REQUIRED)
     find_package(Qt5Gui REQUIRED)
