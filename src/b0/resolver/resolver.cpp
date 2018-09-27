@@ -257,6 +257,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 
     try
     {
+        std::cout << "b0::resolver::Resolver: XPROXY: starting" << std::endl;
 #ifdef __GNUC__
         zmq::proxy(static_cast<void*>(proxy_in_sock_), static_cast<void*>(proxy_out_sock_), nullptr);
 #else
@@ -265,6 +266,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     }
     catch(zmq::error_t &ex)
     {
+        std::cerr << "b0::resolver::Resolver: XPROXY: " << ex.what() << std::endl;
     }
 }
 
