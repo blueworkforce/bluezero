@@ -3,7 +3,6 @@
 #include <iterator>
 
 #include <boost/thread.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
 
 #include <b0/node.h>
