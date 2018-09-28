@@ -323,6 +323,12 @@ add_executable(
 )
 target_link_libraries(b0_topic_publish ${B0_LIBRARY})
 
+add_executable(
+    b0_service_call
+    src/b0_service_call/service_call.cpp
+)
+target_link_libraries(b0_service_call ${B0_LIBRARY})
+
 if(BUILD_GUI)
     find_package(Qt5Core REQUIRED)
     find_package(Qt5Gui REQUIRED)
