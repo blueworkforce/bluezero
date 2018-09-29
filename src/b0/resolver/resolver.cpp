@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -244,6 +243,7 @@ void Resolver::onNodeServiceUseStop(std::string node_name, std::string service_n
 void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 {
     set_thread_name("XPROXY");
+    b0::logger::LocalLogger logger(this);
 
     zmq::context_t &context_ = *reinterpret_cast<zmq::context_t*>(getContext());
 
@@ -257,7 +257,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 
     try
     {
-        std::cout << "b0::resolver::Resolver: XPROXY: starting" << std::endl;
+        logger.log(b0::logger::LogInterface::info, "XPROXY: starting");
 #ifdef __GNUC__
         zmq::proxy(static_cast<void*>(proxy_in_sock_), static_cast<void*>(proxy_out_sock_), nullptr);
 #else
@@ -266,7 +266,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     }
     catch(zmq::error_t &ex)
     {
-        std::cerr << "b0::resolver::Resolver: XPROXY: " << ex.what() << std::endl;
+        logger.log(b0::logger::LogInterface::fatal, "XPROXY: %s", ex.what());
     }
 }
 
@@ -547,6 +547,7 @@ void Resolver::onGraphChanged()
 void Resolver::heartbeatSweeper()
 {
     set_thread_name("HBsweep");
+    b0::logger::LocalLogger logger(this);
 
     while(!shutdownRequested())
     {
@@ -566,7 +567,7 @@ void Resolver::heartbeatSweeper()
         }
         catch(std::exception &ex)
         {
-            std::cerr << "b0::resolver::Resolver: HBsweep: " << ex.what() << std::endl;
+            logger.log(b0::logger::LogInterface::error, "HBsweep: %s", ex.what());
         }
     }
 }

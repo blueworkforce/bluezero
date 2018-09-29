@@ -9,7 +9,6 @@
 #include <b0/utils/env.h>
 #include <b0/resolver/client.h>
 
-#include <iostream>
 #include <cstdlib>
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp>
@@ -298,6 +297,7 @@ void Node::notifyShutdown()
 void Node::heartbeatLoop()
 {
     set_thread_name("HB");
+    b0::logger::LocalLogger logger(this);
 
     while(!shutdownRequested())
     {
@@ -319,7 +319,7 @@ void Node::heartbeatLoop()
         }
         catch(std::exception &ex)
         {
-            std::cerr << "b0::Node: HB: " << ex.what() << std::endl;
+            logger.log(b0::logger::LogInterface::error, "HB: %s", ex.what());
         }
     }
 }
