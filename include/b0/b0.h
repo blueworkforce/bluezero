@@ -320,4 +320,19 @@
  * Nodes have an implicit connection to the 'resolv' service, however it is not shown in the graph.
  */
 
+namespace b0
+{
+
+/*!
+ * Initialize the B0 library
+ */
+void init(int argc, char **argv);
+
+/*!
+ * Check if the B0 library is initialized
+ */
+bool isInitialized();
+
+} // namespace b0
+
 #endif // B0__B0_H__INCLUDED

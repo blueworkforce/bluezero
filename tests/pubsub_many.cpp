@@ -60,6 +60,8 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     result = 1;
     quit.store(true);
     boost::thread t0(&timeout_thread);

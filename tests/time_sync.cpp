@@ -112,6 +112,8 @@ bool test_clock_tracking(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     if(argc < 2)
     {
         std::cerr << "usage: " << argv[0] << " <test_name>" << std::endl;

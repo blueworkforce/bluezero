@@ -3,6 +3,8 @@
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     b0::resolver::Resolver node;
     node.init();
     int i;

@@ -12,6 +12,11 @@
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0::init(argc, argv);
+
+    /*
      * Create a node named "publisher"
      */
     b0::Node node("publisher");

@@ -21,6 +21,11 @@ void callback(const std::string &msg)
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0::init(argc, argv);
+
+    /*
      * Create a node named "subscriber"
      */
     b0::Node node("subscriber");

@@ -22,6 +22,11 @@ void callback(const std::string &req, std::string &rep)
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0::init(argc, argv);
+
+    /*
      * Create a node named "server"
      *
      * Note: if another node with the same name exists on the network, this node will

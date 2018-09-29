@@ -14,6 +14,11 @@
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0::init(argc, argv);
+
+    /*
      * Create a node named "client"
      */
     b0::Node node("client");

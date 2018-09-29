@@ -35,6 +35,7 @@ protected:
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     TestClientNode node;
     node.init();
     node.run();

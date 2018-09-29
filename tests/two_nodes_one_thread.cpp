@@ -37,6 +37,8 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     boost::thread t0(&timeout_thread);
     boost::thread t1(&resolver_thread);
     boost::this_thread::sleep_for(boost::chrono::seconds{1});

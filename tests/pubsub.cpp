@@ -61,6 +61,8 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     if(argc != 2)
     {
         std::cout << "usage: " << argv[0] << " <use-compression-0-or-1>" << std::endl;

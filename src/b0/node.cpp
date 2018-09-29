@@ -56,6 +56,9 @@ Node::Node(const std::string &nodeName)
 {
     set_thread_name("main");
 
+    if(!::b0::isInitialized())
+        throw std::runtime_error("b0::init() must be called first");
+
     setupSIGINTHandler();
 }
 

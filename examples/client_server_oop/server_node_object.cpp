@@ -31,6 +31,7 @@ protected:
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     TestServerNode node;
     node.init();
     node.spin();

@@ -29,6 +29,8 @@ void test(const T &msg)
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     {
         b0::message::resolv::AnnounceNodeRequest msg;
         msg.node_name = "foo";

@@ -30,6 +30,7 @@ private:
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     TestSubscriberNode node(argc > 1 ? argv[1] : "A");
     node.init();
     node.spin();

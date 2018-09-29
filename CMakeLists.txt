@@ -181,6 +181,7 @@ endif()
 
 set(
     B0_SOURCES
+    src/b0/b0.cpp
     src/b0/node_state.cpp
     src/b0/node.cpp
     src/b0/socket.cpp
