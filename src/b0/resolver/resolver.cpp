@@ -266,7 +266,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     }
     catch(zmq::error_t &ex)
     {
-        logger.log(b0::logger::LogInterface::fatal, "XPROXY: %s", ex.what());
+        logger.log(b0::logger::LogInterface::error, "XPROXY: %s", ex.what());
     }
 }
 
