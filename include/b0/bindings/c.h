@@ -49,6 +49,8 @@ typedef struct b0_service_client b0_service_client;
 struct b0_service_server;
 typedef struct b0_service_server b0_service_server;
 
+B0_EXPORT void b0_init(int *argc, char **argv);
+
 B0_EXPORT void * b0_buffer_new(size_t size);
 B0_EXPORT void b0_buffer_delete(void *buffer);
 

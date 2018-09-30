@@ -28,6 +28,11 @@ void * callback(const void *req, size_t sz, size_t *out_sz)
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0_init(&argc, argv);
+
+    /*
      * Create a node named "server"
      *
      * Note: if another node with the same name exists on the network, this node will

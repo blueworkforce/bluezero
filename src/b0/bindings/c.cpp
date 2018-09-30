@@ -65,6 +65,11 @@ static b0::Node::LogLevel log_level_from_int(int level)
     }
 }
 
+void b0_init(int *argc, char **argv)
+{
+    b0::init(*argc, argv);
+}
+
 void * b0_buffer_new(size_t size)
 {
     return reinterpret_cast<void*>(new char[size]);

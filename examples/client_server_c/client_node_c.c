@@ -12,6 +12,11 @@
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0_init(&argc, argv);
+
+    /*
      * Create a node named "client"
      */
     b0_node *node = b0_node_new("client");

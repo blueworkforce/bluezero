@@ -13,6 +13,11 @@
 int main(int argc, char **argv)
 {
     /*
+     * Initialize B0
+     */
+    b0_init(&argc, argv);
+
+    /*
      * Create a node named "publisher"
      */
     b0_node *node = b0_node_new("publisher");
