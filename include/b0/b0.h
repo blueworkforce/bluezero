@@ -354,6 +354,8 @@ class Global final
 private:
     Global();
 
+    Global(const Global &) = delete;
+
     struct Private;
 
 public:
