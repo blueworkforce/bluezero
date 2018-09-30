@@ -320,18 +320,49 @@
  * Nodes have an implicit connection to the 'resolv' service, however it is not shown in the graph.
  */
 
+#include <string>
+
 namespace b0
 {
 
-/*!
- * Initialize the B0 library
- */
-void init(int argc, char **argv);
+//! \cond HIDDEN_SYMBOLS
+
+class Global final
+{
+private:
+    Global();
+
+    struct Private;
+
+public:
+    static Global & getInstance();
+
+    void init(int &argc, char **argv);
+
+    bool isInitialized() const;
+
+    std::string getRemappedNodeName(const std::string &node_name);
+
+    std::string getRemappedTopicName(const std::string &topic_name);
+
+    std::string getRemappedServiceName(const std::string &service_name);
+
+    bool remapNodeName(const std::string &node_name, std::string &remapped_node_name);
+
+    bool remapTopicName(const std::string &topic_name, std::string &remapped_topic_name);
+
+    bool remapServiceName(const std::string &service_name, std::string &remapped_service_name);
+
+private:
+    std::unique_ptr<Private> private_;
+};
+
+//! \endcond
 
 /*!
- * Check if the B0 library is initialized
+ * Initialize the B0 library (arguments used by B0 will be consumed).
  */
-bool isInitialized();
+void init(int &argc, char **argv);
 
 } // namespace b0
 
