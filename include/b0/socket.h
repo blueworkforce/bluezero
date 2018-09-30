@@ -102,6 +102,9 @@ protected:
     //! This socket bus name
     std::string name_;
 
+    //! This socket bus name prior to any remapping
+    std::string orig_name_;
+
     //! True if this socket is managed (init(), cleanup() are called by the owner Node)
     const bool managed_;
 

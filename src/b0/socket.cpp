@@ -29,6 +29,7 @@ Socket::Socket(Node *node, int type, const std::string &name, bool managed)
     : private_(new Private(node, *reinterpret_cast<zmq::context_t*>(node->getContext()), type)),
       node_(*node),
       name_(name),
+      orig_name_(name),
       managed_(managed)
 {
     setLingerPeriod(5000);

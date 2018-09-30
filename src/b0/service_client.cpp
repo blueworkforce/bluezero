@@ -24,6 +24,9 @@ void ServiceClient::log(LogLevel level, const std::string &message) const
 
 void ServiceClient::init()
 {
+    if(Global::getInstance().remapServiceName(orig_name_, name_))
+        log(info, "Service '%s' remapped to '%s'", orig_name_, name_);
+
     resolve();
     connect();
 

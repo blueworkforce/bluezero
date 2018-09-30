@@ -48,7 +48,8 @@ struct Node::Private2
 Node::Node(const std::string &nodeName)
     : private_(new Private(this, 1)),
       private2_(new Private2(this)),
-      name_(nodeName),
+      name_(Global::getInstance().getRemappedNodeName(nodeName)),
+      orig_name_(nodeName),
       state_(NodeState::Created),
       thread_id_(boost::this_thread::get_id()),
       p_logger_(new logger::Logger(this)),
@@ -81,6 +82,9 @@ void Node::init()
 {
     if(state_ != NodeState::Created)
         throw exception::InvalidStateTransition("init", state_);
+
+    if(Global::getInstance().remapNodeName(orig_name_, name_))
+        log(info, "Node '%s' remapped to '%s'", orig_name_, name_);
 
     log(debug, "Initialization...");
 

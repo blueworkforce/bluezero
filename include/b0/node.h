@@ -267,6 +267,9 @@ private:
     //! Name of this node as it has been assigned by resolver
     std::string name_;
 
+    //! The requested name of this node prior to any remapping
+    std::string orig_name_;
+
     //! State of this node
     NodeState state_;
 
