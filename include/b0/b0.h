@@ -6,6 +6,28 @@
 /*!
  * \mainpage BlueWorkforce Middleware - A brief description
  *
+ * BlueZero (in short, B0) is an open-source library for developing
+ * distributed applications.
+ *
+ * The building blocks of B0 are the \b nodes, which can talk to each other by
+ * sending \b messages over \b sockets. Multiple nodes can exist in the same thread,
+ * or in multiple threads, or in multiple processes, or distributed across
+ * multiple machines.
+ *
+ * A message is any sequence of bytes, and it is guaranteed to be delivered atomically.
+ *
+ * A socket is an abstraction for connecting nodes to each other, and sending messages.
+ *
+ * The two principal paradigms of communication are the \b client-server, and the \b publish-subscribe.
+ *
+ * In the client-server pattern, a client node sends one request to a server node, addressed by
+ * name (i.e. the service name), and receives back one reply from the server node. The
+ * communication in this pattern is synchronous.
+ *
+ * In the publish-subscribe pattern, a publisher node sends data to a channel addressed by name
+ * (i.e. the topic name), and any node which is interested in that data, can subscribe
+ * to that topic in order to receive it. The communication in this pattern is asynchronous.
+ *
  * \section api API Design
  *
  * The main class used to create a node is b0::Node.
@@ -22,7 +44,7 @@
  * resolver node, and it will initialize each of its publishers, subscribers,
  * clients and servers.
  *
- * Any publishers, subscribers, service client and servers must be constructed prior to calling b0::Node::init().
+ * Any publishers, subscribers, service client and servers must be constructed prior to calling b0::Node::init(), although there is a way to dynamically create such sockets afterwards.
  *
  * The two ways of interconnecting nodes are:
  * - \b services, like clients and servers (functionality is provided by classes b0::ServiceClient and b0::ServiceServer)
