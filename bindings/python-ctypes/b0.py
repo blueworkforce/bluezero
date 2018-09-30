@@ -30,6 +30,7 @@ def _(n, ret, *args):
     # wrapped CFUNCTYPE: (performs string encoding/decoding)
     globals()[n] = lambda *args2: _dec(globals()['_' + n](*[_enc(arg, t) for t, arg in zip(args, args2)]), ret)
 
+_("b0_init", ct.c_void_p, ct.POINTER(ct.c_int), ct.POINTER(ct.c_char_p))
 _("b0_buffer_new", ct.c_void_p, ct.c_size_t)
 _("b0_buffer_delete", None, ct.c_void_p)
 _("b0_node_new", ct.c_void_p, str)
@@ -87,6 +88,11 @@ _("b0_service_server_spin_once", None, ct.c_void_p)
 _("b0_service_server_get_service_name", str, ct.c_void_p)
 _("b0_service_server_log", None, ct.c_void_p, ct.c_int, str)
 _("b0_service_server_set_option", ct.c_void_p, ct.c_int, ct.c_int)
+
+def init():
+    argc = 1
+    argv = ['b0python']
+    b0_init(argc, argv)
 
 class Node:
     def __init__(self, name='node'):

@@ -3,6 +3,13 @@ extern "C"
 #include "java.h"
 #include <b0/c.h>
 
+JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0Init(JNIEnv *env, jobject obj)
+{
+    int argc = 1;
+    char *argv[1] = {"b0java"};
+    b0_init(&argc, argv);
+}
+
 JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0NodeNew(JNIEnv *env, jobject obj, jstring name)
 {
     const char *_name=env->GetStringUTFChars(name,0);

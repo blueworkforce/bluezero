@@ -1,5 +1,6 @@
 #include <jni.h>
 
+JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0Init(JNIEnv *env, jobject obj);
 JNIEXPORT jlong JNICALL Java_coppelia_b0RemoteApi_b0NodeNew(JNIEnv *env, jobject obj, jstring name);
 JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0NodeDelete(JNIEnv *env, jobject obj, jlong node);
 JNIEXPORT void JNICALL Java_coppelia_b0RemoteApi_b0NodeInit(JNIEnv *env, jobject obj, jlong node);

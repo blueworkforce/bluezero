@@ -4,6 +4,17 @@ extern "C" {
 #include "lauxlib.h"
 }
 
+#define B0_INIT_COMMAND "b0.init"
+int B0_INIT_CALLBACK(lua_State* L)
+{
+	int argCnt = lua_gettop(L);
+	int retValCnt = 0;
+    int argc = 1;
+    char *argv[1] = {"b0lua"};
+    b0_init(&argc, argv);
+	return(retValCnt);
+}
+
 #define B0_NODE_NEW_COMMAND "b0.node_new"
 int B0_NODE_NEW_CALLBACK(lua_State* L)
 {
@@ -323,6 +334,8 @@ __declspec(dllexport)
 int luaopen_b0(lua_State *L)
 {
 	luaL_dostring(L, "b0={}");
+
+	lua_registerN(L, B0_INIT_COMMAND, B0_INIT_CALLBACK);
 
 	lua_registerN(L, B0_NODE_NEW_COMMAND, B0_NODE_NEW_CALLBACK);
 	lua_registerN(L, B0_NODE_DELETE_COMMAND, B0_NODE_DELETE_CALLBACK);
