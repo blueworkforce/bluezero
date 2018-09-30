@@ -70,17 +70,18 @@ protected:
     bool color_;
 };
 
-//! \cond HIDDEN_SYMBOLS
-
-struct LoggerPrivate;
-
-//! \endcond
-
 /*!
  * \brief A subclass of LocalLogger which also sends log messages remotely, via a ZeroMQ PUB socket
  */
 class Logger : public LocalLogger
 {
+private:
+    //! \cond HIDDEN_SYMBOLS
+
+    struct Private;
+
+    //! \endcond
+
 public:
     using LocalLogger::log;
 
@@ -108,7 +109,7 @@ protected:
     virtual void remoteLog(LogLevel level, const std::string &message) const;
 
 private:
-    mutable std::unique_ptr<LoggerPrivate> private_;
+    mutable std::unique_ptr<Private> private_;
 };
 
 } // namespace logger

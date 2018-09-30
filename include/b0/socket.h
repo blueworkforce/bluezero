@@ -18,12 +18,6 @@ namespace b0
 
 class Node;
 
-//! \cond HIDDEN_SYMBOLS
-
-struct SocketPrivate;
-
-//! \endcond
-
 /*!
  * \brief The Socket class
  *
@@ -34,6 +28,13 @@ struct SocketPrivate;
  */
 class Socket : public logger::LogInterface, public UserData
 {
+private:
+    //! \cond HIDDEN_SYMBOLS
+
+    struct Private;
+
+    //! \endcond
+
 public:
     /*!
      * \brief Construct a Socket
@@ -92,7 +93,7 @@ public:
     bool matchesPattern(const std::string &pattern) const;
 
 private:
-    std::unique_ptr<SocketPrivate> private_;
+    std::unique_ptr<Private> private_;
 
 protected:
     //! The Node owning this Socket

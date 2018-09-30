@@ -25,9 +25,9 @@ std::atomic<bool> Node::quit_flag_(false);
 
 bool Node::sigint_handler_setup_ = false;
 
-struct NodePrivate
+struct Node::Private
 {
-    NodePrivate(Node *node, int io_threads)
+    Private(Node *node, int io_threads)
         : context_(io_threads)
     {
     }
@@ -35,9 +35,9 @@ struct NodePrivate
     zmq::context_t context_;
 };
 
-struct NodePrivate2
+struct Node::Private2
 {
-    NodePrivate2(Node *node)
+    Private2(Node *node)
         : resolv_cli_(node)
     {
     }
@@ -46,8 +46,8 @@ struct NodePrivate2
 };
 
 Node::Node(const std::string &nodeName)
-    : private_(new NodePrivate(this, 1)),
-      private2_(new NodePrivate2(this)),
+    : private_(new Private(this, 1)),
+      private2_(new Private2(this)),
       name_(nodeName),
       state_(NodeState::Created),
       thread_id_(boost::this_thread::get_id()),

@@ -13,9 +13,9 @@
 namespace b0
 {
 
-struct SocketPrivate
+struct Socket::Private
 {
-    SocketPrivate(Node *node, zmq::context_t &context, int type)
+    Private(Node *node, zmq::context_t &context, int type)
         : type_(type),
           socket_(context, type)
     {
@@ -26,7 +26,7 @@ struct SocketPrivate
 };
 
 Socket::Socket(Node *node, int type, const std::string &name, bool managed)
-    : private_(new SocketPrivate(node, *reinterpret_cast<zmq::context_t*>(node->getContext()), type)),
+    : private_(new Private(node, *reinterpret_cast<zmq::context_t*>(node->getContext()), type)),
       node_(*node),
       name_(name),
       managed_(managed)

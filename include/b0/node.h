@@ -25,13 +25,6 @@ class Logger;
 
 } // namespace logger
 
-//! \cond HIDDEN_SYMBOLS
-
-struct NodePrivate;
-struct NodePrivate2;
-
-//! \endcond
-
 /*!
  * \brief The abstraction for a node in the network.
  *
@@ -40,6 +33,14 @@ struct NodePrivate2;
  */
 class Node : public logger::LogInterface, public UserData
 {
+private:
+    //! \cond HIDDEN_SYMBOLS
+
+    struct Private;
+    struct Private2;
+
+    //! \endcond
+
 public:
     using logger::LogInterface::log;
 
@@ -252,8 +253,8 @@ public:
 	void sleepUSec(int64_t usec);
 
 private:
-    std::unique_ptr<NodePrivate> private_;
-    std::unique_ptr<NodePrivate2> private2_;
+    std::unique_ptr<Private> private_;
+    std::unique_ptr<Private2> private2_;
 
 protected:
     //! Target address of resolver client

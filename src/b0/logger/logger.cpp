@@ -95,9 +95,9 @@ LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level) const
     return {"?????", 1, 0x1e, 0};
 }
 
-struct LoggerPrivate
+struct Logger::Private
 {
-    LoggerPrivate(Node *node)
+    Private(Node *node)
         : pub_(node, "log", false, false)
     {
     }
@@ -107,7 +107,7 @@ struct LoggerPrivate
 
 Logger::Logger(b0::Node *node)
     : LocalLogger(node),
-      private_(new LoggerPrivate(node))
+      private_(new Private(node))
 {
 }
 
