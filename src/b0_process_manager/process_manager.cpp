@@ -88,7 +88,8 @@ public:
         }
         auto c = it->second;
         rep.running = c->running();
-        rep.exit_code = c->exit_code();
+        if(!rep.running)
+            rep.exit_code = c->exit_code();
         rep.success = true;
     }
 
