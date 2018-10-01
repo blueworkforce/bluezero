@@ -42,6 +42,8 @@ private:
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     QApplication app(argc, argv);
 
     b0::Node graphConsoleNode("gui_graph_monitor");

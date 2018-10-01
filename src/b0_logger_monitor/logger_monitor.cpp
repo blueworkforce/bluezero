@@ -44,8 +44,9 @@ private:
 
 } // namespace b0
 
-int main()
+int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     b0::logger::Console console;
     console.init();
     console.spin();

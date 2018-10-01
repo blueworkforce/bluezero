@@ -183,6 +183,8 @@ private:
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
+
     QApplication app(argc, argv);
 
     b0::Node logConsoleNode("gui_logger_monitor");
