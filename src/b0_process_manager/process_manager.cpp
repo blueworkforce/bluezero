@@ -34,49 +34,6 @@ public:
     {
     }
 
-    void announceNode()
-    {
-        Node::announceNode();
-        // hack after announceNode() to get the actual node name and create a
-        // unique service name named after node name:
-        std::string service_name = getName() + "/control";
-        srv_.reset(new b0::ServiceServer(this, service_name, &ProcessManager::handleRequest, this));
-    }
-
-    bool canLaunchProgram(std::string p)
-    {
-        // security measure: only allow certain programs to be launched
-        // current implementation: allow programs contained in current directory
-
-        boost::filesystem::path self_path = boost::dll::program_location().parent_path();
-        std::string sp = self_path.string();
-
-        std::cout << "sp = '" << sp << "'" << std::endl;
-
-        // XXX: why does it wrap the result in "..." ?
-        if(sp[0] == '"' && sp[sp.size() - 1] == '"')
-            sp = sp.substr(1, sp.size() - 2);
-
-        std::cout << "sp = '" << sp << "'" << std::endl;
-
-        // XXX: if this is launched with ./b0_process_manager, sp ends with .
-        if(sp[sp.size() - 1] == '.')
-            sp = sp.substr(0, sp.size() - 1);
-
-        std::cout << "sp = '" << sp << "'" << std::endl;
-
-        // filter attempts to bypass this security measure:
-        if(p.find("/../") != std::string::npos) return false;
-
-        if(!boost::starts_with(p, sp))
-        {
-            std::cout << "error: permission denied: '" << p << "' does not start with '" << sp << "'" << std::endl;
-            return false;
-        }
-
-        return true;
-    }
-
     void handleRequest(const Request &req, Response &rep)
     {
         if(0) {}
@@ -139,6 +96,39 @@ public:
     {
         for(auto &p : children_)
             rep.pids.push_back(p.second->id());
+    }
+
+    void announceNode()
+    {
+        Node::announceNode();
+        // hack after announceNode() to get the actual node name and create a
+        // unique service name named after node name:
+        std::string service_name = getName() + "/control";
+        srv_.reset(new b0::ServiceServer(this, service_name, &ProcessManager::handleRequest, this));
+    }
+
+    bool canLaunchProgram(std::string p)
+    {
+        // security measure: only allow certain programs to be launched
+        // current implementation: allow programs contained in current directory
+
+        boost::filesystem::path self_path = boost::dll::program_location().parent_path();
+        std::string sp = self_path.string();
+
+        // XXX: if this is launched with ./b0_process_manager, sp ends with .
+        if(sp[sp.size() - 1] == '.')
+            sp = sp.substr(0, sp.size() - 1);
+
+        // filter attempts to bypass this security measure:
+        if(p.find("/../") != std::string::npos) return false;
+
+        if(!boost::starts_with(p, sp))
+        {
+            std::cout << "error: permission denied: '" << p << "' does not start with '" << sp << "'" << std::endl;
+            return false;
+        }
+
+        return true;
     }
 
     void cleanup()
