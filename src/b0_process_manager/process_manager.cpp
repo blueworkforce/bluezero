@@ -1,8 +1,5 @@
 #include <memory>
-#include <sstream>
-#include <vector>
 #include <map>
-#include <iostream>
 #include <b0/node.h>
 #include <b0/service_server.h>
 #include <b0/publisher.h>
@@ -72,7 +69,7 @@ public:
         }
         auto c = new bp::child(req.path, req.args);
         children_[c->id()].child_ = std::shared_ptr<bp::child>(c);
-        std::cout << "process " << c->id() << " (" << req.path << ") started" << std::endl;
+        log(info, "Process %d (%s) started.", c->id(), req.path);
         rep.success = true;
         rep.pid = c->id();
     }
@@ -88,11 +85,11 @@ public:
         }
         auto c = it->second.child_;
 #ifdef HAVE_POSIX_SIGNALS
-        std::cout << "sending SIGINT to process " << c->id() << "..." << std::endl;
+        log(info, "Sending SIGINT to process %d...", c->id());
         kill(c->id(), SIGINT);
         it->second.int_requested_ = timeUSec();
 #else
-        std::cout << "terminating process " << c->id() << "..." << std::endl;
+        log(info, "Terminating process %d...", c->id());
         c->terminate();
 #endif
         rep.success = true;
@@ -149,7 +146,7 @@ public:
 
         if(!boost::starts_with(p, sp))
         {
-            std::cout << "error: permission denied: '" << p << "' does not start with '" << sp << "'" << std::endl;
+            log(error, "Permission denied: '%s' does not start with '%s'.", p, sp);
             return false;
         }
 
@@ -167,7 +164,7 @@ public:
                 // after 5s from SIGINT, try with SIGTERM
                 if(it->second.int_requested_ && timeUSec() - it->second.int_requested_ > 5000000)
                 {
-                    std::cout << "escalating to SIGTERM for process " << c->id() << "..." << std::endl;
+                    log(warn, "Escalating to SIGTERM for process %d...", c->id());
                     kill(c->id(), SIGTERM);
                     it->second.term_requested_ = timeUSec();
                 }
@@ -175,7 +172,7 @@ public:
                 // after 5s from SIGTERM, try with SIGKILL
                 if(it->second.term_requested_ && timeUSec() - it->second.term_requested_ > 5000000)
                 {
-                    std::cout << "escalating to SIGKILL for process " << c->id() << "..." << std::endl;
+                    log(warn, "Escalating to SIGKILL for process %d...", c->id());
                     c->terminate();
                 }
 #endif
@@ -185,7 +182,7 @@ public:
             else
             {
                 c->wait();
-                std::cout << "process " << c->id() << " finished with exit code " << c->exit_code() << std::endl;
+                log(info, "Process %d finished with exit code %d.", c->id(), c->exit_code());
                 it = children_.erase(it);
             }
         }
@@ -265,6 +262,8 @@ int main(int argc, char **argv)
 }
 
 #else // HAVE_BOOST_PROCESS
+
+#include <iostream>
 
 int main()
 {
