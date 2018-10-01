@@ -25,6 +25,10 @@ namespace b0
 namespace process_manager
 {
 
+class ProcessManager;
+
+ProcessManager *instance = nullptr;
+
 class ProcessManager : public b0::Node
 {
 public:
@@ -32,10 +36,15 @@ public:
         : Node("process_manager"),
           beacon_pub_(this, "process_manager/beacon")
     {
+        if(instance)
+            throw std::runtime_error("ProcessManager constructed multiple times");
+
+        instance = this;
     }
 
     ~ProcessManager()
     {
+        instance = nullptr;
     }
 
     void handleRequest(const Request &req, Response &rep)
@@ -198,6 +207,17 @@ public:
         sendBeacon();
     }
 
+    void killChildren(int signal)
+    {
+        for(auto it = children_.begin(); it != children_.end(); )
+        {
+            auto c = it->second.child_;
+#ifdef HAVE_POSIX_SIGNALS
+            kill(c->id(), signal);
+#endif
+        }
+    }
+
 protected:
     struct Child
     {
@@ -215,8 +235,28 @@ protected:
 
 } // namespace b0
 
+void signalHandler(int signum)
+{
+    if(b0::process_manager::instance)
+        b0::process_manager::instance->killChildren(signum);
+}
+
+void registerSignalHandlers()
+{
+#ifdef HAVE_POSIX_SIGNALS
+    signal(SIGINT, signalHandler);
+    signal(SIGTERM, signalHandler);
+    signal(SIGKILL, signalHandler);
+    signal(SIGABRT, signalHandler);
+    signal(SIGFPE, signalHandler);
+    signal(SIGILL, signalHandler);
+    signal(SIGSEGV, signalHandler);
+#endif
+}
+
 int main(int argc, char **argv)
 {
+    registerSignalHandlers();
     b0::init(argc, argv);
     b0::process_manager::ProcessManager node;
     node.init();
