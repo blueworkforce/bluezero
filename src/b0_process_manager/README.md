@@ -3,6 +3,13 @@
 Process Manager is a node meant to manage the starting and stopping of other
 subprocesses (typically other nodes).
 
+Ideally, each machine runs a Process Manager node.
+
+Additionally, a Process Manager HUB node is used to simplify the handling of connections
+and requests, as shown in the figure below:
+
+![Example network diagram using multiple Process Managers and a Process Manager HUB](../docs/process_manager.png)
+
 ## Protocol
 
 Following are examples of interacting with the Process Manager node.
