@@ -11,6 +11,7 @@ namespace po = boost::program_options;
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     std::string node_name = "b0_service_call", service_name = "";
     double rate = 0.0;
     po::options_description desc("Allowed options");

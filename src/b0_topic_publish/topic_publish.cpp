@@ -12,6 +12,7 @@ namespace po = boost::program_options;
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     std::string node_name = "b0_topic_publish", topic_name = "";
     double rate = 0.0;
     po::options_description desc("Allowed options");

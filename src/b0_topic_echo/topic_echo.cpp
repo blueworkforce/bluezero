@@ -14,6 +14,7 @@ void callback(const std::string &payload)
 
 int main(int argc, char **argv)
 {
+    b0::init(argc, argv);
     std::string node_name = "b0_topic_echo", topic_name = "";
     po::options_description desc("Allowed options");
     desc.add_options()
