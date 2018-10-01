@@ -330,6 +330,12 @@ add_executable(
 )
 target_link_libraries(b0_service_call ${B0_LIBRARY})
 
+add_executable(
+    b0_process_manager
+    src/b0_process_manager/process_manager.cpp
+)
+target_link_libraries(b0_process_manager ${B0_LIBRARY})
+
 if(BUILD_GUI)
     find_package(Qt5Core REQUIRED)
     find_package(Qt5Gui REQUIRED)
