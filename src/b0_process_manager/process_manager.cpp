@@ -1,3 +1,4 @@
+#include <memory>
 #include <sstream>
 #include <vector>
 #include <map>
@@ -7,6 +8,9 @@
 #include <b0/publisher.h>
 #include "protocol.h"
 #ifdef HAVE_BOOST_PROCESS
+#ifdef HAVE_POSIX_SIGNALS
+#include <signal.h>
+#endif // HAVE_POSIX_SIGNALS
 #include <boost/process.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
@@ -58,8 +62,8 @@ public:
             return;
         }
         auto c = new bp::child(req.path, req.args);
-        children_[c->id()] = c;
-        std::cout << "process " << c->id() << " started" << std::endl;
+        children_[c->id()].child_ = std::shared_ptr<bp::child>(c);
+        std::cout << "process " << c->id() << " (" << req.path << ") started" << std::endl;
         rep.success = true;
         rep.pid = c->id();
     }
@@ -73,7 +77,15 @@ public:
             rep.error_message = "no such pid";
             return;
         }
-        it->second->terminate();
+        auto c = it->second.child_;
+#ifdef HAVE_POSIX_SIGNALS
+        std::cout << "sending SIGINT to process " << c->id() << "..." << std::endl;
+        kill(c->id(), SIGINT);
+        it->second.int_requested_ = timeUSec();
+#else
+        std::cout << "terminating process " << c->id() << "..." << std::endl;
+        c->terminate();
+#endif
         rep.success = true;
     }
 
@@ -86,7 +98,7 @@ public:
             rep.error_message = "no such pid";
             return;
         }
-        auto c = it->second;
+        auto c = it->second.child_;
         rep.running = c->running();
         if(!rep.running)
             rep.exit_code = c->exit_code();
@@ -96,7 +108,10 @@ public:
     void handle_list_active_processes(const ListActiveProcessesRequest &req, ListActiveProcessesResponse &rep)
     {
         for(auto &p : children_)
-            rep.pids.push_back(p.second->id());
+        {
+            auto c = p.second.child_;
+            rep.pids.push_back(c->id());
+        }
     }
 
     void announceNode()
@@ -136,9 +151,26 @@ public:
     {
         for(auto it = children_.begin(); it != children_.end(); )
         {
-            auto c = it->second;
+            auto c = it->second.child_;
             if(c->running())
             {
+#ifdef HAVE_POSIX_SIGNALS
+                // after 5s from SIGINT, try with SIGTERM
+                if(it->second.int_requested_ && timeUSec() - it->second.int_requested_ > 5000000)
+                {
+                    std::cout << "escalating to SIGTERM for process " << c->id() << "..." << std::endl;
+                    kill(c->id(), SIGTERM);
+                    it->second.term_requested_ = timeUSec();
+                }
+
+                // after 5s from SIGTERM, try with SIGKILL
+                if(it->second.term_requested_ && timeUSec() - it->second.term_requested_ > 5000000)
+                {
+                    std::cout << "escalating to SIGKILL for process " << c->id() << "..." << std::endl;
+                    c->terminate();
+                }
+#endif
+
                 ++it;
             }
             else
@@ -146,7 +178,6 @@ public:
                 c->wait();
                 std::cout << "process " << c->id() << " finished with exit code " << c->exit_code() << std::endl;
                 it = children_.erase(it);
-                delete c;
             }
         }
     }
@@ -168,9 +199,16 @@ public:
     }
 
 protected:
+    struct Child
+    {
+        std::shared_ptr<bp::child> child_;
+        int64_t int_requested_ = 0;
+        int64_t term_requested_ = 0;
+    };
+
     std::unique_ptr<b0::ServiceServer> srv_;
     b0::Publisher beacon_pub_;
-    std::map<pid_t, bp::child*> children_;
+    std::map<pid_t, Child> children_;
 };
 
 } // namespace process_manager
