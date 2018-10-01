@@ -83,6 +83,7 @@ public:
 class Request : public b0::message::Message
 {
 public:
+    boost::optional<std::string> host_name; // used by HUB
     boost::optional<StartProcessRequest> start_process;
     boost::optional<StopProcessRequest> stop_process;
     boost::optional<QueryProcessStatusRequest> query_process_status;

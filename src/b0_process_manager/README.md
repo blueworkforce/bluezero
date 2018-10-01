@@ -152,3 +152,21 @@ Response:
 }
 ```
 
+## HUB
+
+HUB is a node which automatically discovers and connects to all Process Manager nodes in the network.
+
+The protocol is the same, just add also a `host_name` field to the request, e.g.:
+
+```
+{
+    "host_name": <target host name>,
+    "start_process": {
+        "path": "<full path to program executable>",
+        "args": ["arg1", "arg2", ...]
+    }
+}
+```
+
+Note: `host_name` must match server's hostname or whatever name has been set with `B0_HOST_ID`.
+
