@@ -23,7 +23,7 @@ Request:
 {
     "start_process": {
         "path": "<full path to program executable>",
-        "args": ["arg1", "arg2", ...]
+        "args": ["<arg1>", "<arg2>", ...]
     }
 }
 ```
@@ -163,7 +163,7 @@ The protocol is the same, just add also a `host_name` field to the request, e.g.
     "host_name": <target host name>,
     "start_process": {
         "path": "<full path to program executable>",
-        "args": ["arg1", "arg2", ...]
+        "args": ["<arg1>", "<arg2>", ...]
     }
 }
 ```
