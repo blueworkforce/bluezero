@@ -13,13 +13,14 @@ namespace po = boost::program_options;
 int main(int argc, char **argv)
 {
     b0::init(argc, argv);
-    std::string node_name = "b0_topic_publish", topic_name = "";
+    std::string node_name = "b0_topic_publish", topic_name = "", content_type = "";
     double rate = 0.0;
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "display help message")
         ("node-name,n", po::value<std::string>(&node_name), "name of node")
         ("topic-name,t", po::value<std::string>(&topic_name), "name of topic")
+        ("content-type,c", po::value<std::string>(&content_type), "content type")
         ("rate,r", po::value<double>(&rate), "publish rate (0 means one-shot)")
     ;
     po::variables_map vm;
@@ -50,7 +51,7 @@ int main(int argc, char **argv)
     node.init();
     while(!node.shutdownRequested())
     {
-        pub.publish(payload);
+        pub.publish(content_type, payload);
         if(rate == 0.0) break;
         boost::this_thread::sleep_for(boost::chrono::microseconds{long(1000000 / rate)});
     }
