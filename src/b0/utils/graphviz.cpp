@@ -2,8 +2,8 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 #include <iostream>
-#include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #ifdef HAVE_BOOST_PROCESS
 #include <boost/process.hpp>
@@ -15,10 +15,27 @@ namespace b0
 namespace graph
 {
 
+static inline char normalize(char c)
+{
+    if(c >= 'a' && c <= 'z') return c;
+    if(c >= 'A' && c <= 'Z') return c;
+    if(c >= '0' && c <= '9') return c;
+    if(c == '_') return c;
+    return '_';
+}
+
+static std::string normalize(const std::string &s)
+{
+    std::stringstream ss;
+    for(int i = 0; i < s.size(); i++)
+        ss << normalize(s[i]);
+    return ss.str();
+}
+
 static std::string id(const std::string &t, const std::string &name)
 {
     boost::format fmt("%s_%s");
-    return (fmt % t % boost::replace_all_copy(name, "-", "_")).str();
+    return (fmt % t % normalize(name)).str();
 }
 
 void toGraphviz(const b0::message::graph::Graph &graph, const std::string &filename, const std::string &outline_color, const std::string &topic_color, const std::string &service_color)
