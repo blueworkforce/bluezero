@@ -66,7 +66,7 @@ Request:
 ```
 {
     "stop_process": {
-        "pid": $1
+        "pid": <pid>
     }
 }
 ```
