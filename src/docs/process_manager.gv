@@ -1,5 +1,5 @@
 digraph G {
-    graph [overlap=scale, splines=true, bgcolor="white"];
+    graph [overlap=false, splines=true, bgcolor="white"];
 
     node [shape=diamond, color=red, fontcolor=red];
     S_resolv [label="resolv"];
@@ -64,8 +64,13 @@ digraph G {
         S_pm3_control -> N_process_manager_hub;
     }
 
+    edge [color=black];
     N_process_manager_1 -> T_process_manager_beacon;
     N_process_manager_2 -> T_process_manager_beacon;
     N_process_manager_3 -> T_process_manager_beacon;
     T_A -> N_subscriber;
+
+    edge [color=black,style=dotted];
+    N_process_manager_2 -> N_publisher;
+    N_process_manager_3 -> N_subscriber;
 }
