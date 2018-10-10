@@ -5,6 +5,7 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QScrollArea>
 #include <QLabel>
 #include <QTimer>
 
@@ -16,8 +17,17 @@ public:
           node_(node)
     {
         setWindowTitle("BlueZero graph console");
+
         imageWidget = new QLabel;
-        setCentralWidget(imageWidget);
+        imageWidget->setBackgroundRole(QPalette::Base);
+        imageWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        imageWidget->setScaledContents(true);
+
+        scrollArea = new QScrollArea;
+        scrollArea->setBackgroundRole(QPalette::Dark);
+        scrollArea->setWidget(imageWidget);
+
+        setCentralWidget(scrollArea);
 
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, [this](){this->node_.spinOnce();});
@@ -32,11 +42,13 @@ public:
         {
             QPixmap img("graph.png");
             imageWidget->setPixmap(img);
+            imageWidget->adjustSize();
         }
     }
 
 private:
     b0::Node &node_;
+    QScrollArea *scrollArea;
     QLabel *imageWidget;
 };
 
