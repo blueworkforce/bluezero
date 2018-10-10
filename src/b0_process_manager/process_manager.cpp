@@ -258,6 +258,7 @@ int main(int argc, char **argv)
     b0::process_manager::ProcessManager node;
     node.init();
     node.spin();
+    node.cleanup();
     return 0;
 }
 
