@@ -228,7 +228,7 @@ void Node::removeSocket(Socket *socket)
     sockets_.erase(socket);
 }
 
-std::string Node::hostname()
+std::string Node::hostname() const
 {
     return b0::env::get("B0_HOST_ID", boost::asio::ip::host_name());
 }

@@ -173,7 +173,7 @@ public:
     /*!
      * \brief Return the public address (IP or hostname) to reach this node on the network
      */
-    virtual std::string hostname();
+    virtual std::string hostname() const;
 
     /*!
      * \brief Return the process id of this node
