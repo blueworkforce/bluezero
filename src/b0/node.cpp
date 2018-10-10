@@ -158,9 +158,7 @@ void Node::cleanup()
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
-    log(debug, "Killing heartbeat thread...");
-    heartbeat_thread_.interrupt();
-    heartbeat_thread_.join();
+    stopHeartbeatThread();
 
     log(debug, "Cleanup sockets...");
     for(auto socket : sockets_)
@@ -186,6 +184,13 @@ void Node::startHeartbeatThread()
 {
     log(trace, "Starting heartbeat thread...");
     heartbeat_thread_ = boost::thread(&Node::heartbeatLoop, this);
+}
+
+void Node::stopHeartbeatThread()
+{
+    log(trace, "Stopping heartbeat thread...");
+    heartbeat_thread_.interrupt();
+    heartbeat_thread_.join();
 }
 
 std::string Node::getName() const

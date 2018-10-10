@@ -142,6 +142,14 @@ void Resolver::notifyShutdown()
 #endif
 }
 
+void Resolver::startHeartbeatThread()
+{
+}
+
+void Resolver::stopHeartbeatThread()
+{
+}
+
 void Resolver::spinOnce()
 {
     try

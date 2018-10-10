@@ -127,6 +127,11 @@ protected:
      */
     virtual void startHeartbeatThread();
 
+    /*!
+     * \brief Stop the heartbeat thread
+     */
+    virtual void stopHeartbeatThread();
+
 public:
     /*!
      * \brief Log a message to the default logger of this node

@@ -121,6 +121,16 @@ public:
     virtual void notifyShutdown() override;
 
     /*!
+     * \brief Hijack startHeartbeatThread step
+     */
+    virtual void startHeartbeatThread() override;
+
+    /*!
+     * \brief Hijack stopHeartbeatThread step
+     */
+    virtual void stopHeartbeatThread() override;
+
+    /*!
      * \brief Catch and print exceptions in spinOnce
      */
     virtual void spinOnce() override;
