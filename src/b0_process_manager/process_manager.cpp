@@ -1,4 +1,3 @@
-#include <memory>
 #include <map>
 #include <b0/node.h>
 #include <b0/service_server.h>
@@ -30,8 +29,9 @@ class ProcessManager : public b0::Node
 {
 public:
     ProcessManager()
-        : Node("process_manager"),
-          beacon_pub_(this, "process_manager/beacon")
+        : Node("process_manager@%h"),
+          beacon_pub_(this, "process_manager/beacon"),
+          srv_(this, "%n/control", &ProcessManager::handleRequest, this)
     {
         if(instance)
             throw std::runtime_error("ProcessManager constructed multiple times");
@@ -120,15 +120,6 @@ public:
         }
     }
 
-    void announceNode()
-    {
-        Node::announceNode();
-        // hack after announceNode() to get the actual node name and create a
-        // unique service name named after node name:
-        std::string service_name = getName() + "/control";
-        srv_.reset(new b0::ServiceServer(this, service_name, &ProcessManager::handleRequest, this));
-    }
-
     bool canLaunchProgram(std::string p)
     {
         // security measure: only allow certain programs to be launched
@@ -193,7 +184,7 @@ public:
         Beacon beacon;
         beacon.host_name = hostname();
         beacon.node_name = getName();
-        beacon.service_name = srv_->getName();
+        beacon.service_name = srv_.getName();
         beacon_pub_.publish(beacon);
     }
 
@@ -223,7 +214,7 @@ protected:
         int64_t term_requested_ = 0;
     };
 
-    std::unique_ptr<b0::ServiceServer> srv_;
+    b0::ServiceServer srv_;
     b0::Publisher beacon_pub_;
     std::map<pid_t, Child> children_;
 };
