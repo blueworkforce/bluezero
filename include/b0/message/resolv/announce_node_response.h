@@ -39,6 +39,9 @@ public:
     //! Address of the XPUB zmq socket
     std::string xpub_sock_addr;
 
+    //! Minimum heartbeat interval (in usec), or 0 if not required
+    int64_t minimum_heartbeat_interval;
+
 public:
     std::string type() const override {return "b0.message.resolv.AnnounceNodeResponse";}
 };
@@ -68,7 +71,8 @@ struct default_codec_t<AnnounceNodeResponse>
         codec.required("ok", &AnnounceNodeResponse::ok);
         codec.required("node_name", &AnnounceNodeResponse::node_name);
         codec.required("xsub_sock_addr", &AnnounceNodeResponse::xsub_sock_addr);
-        codec.optional("xpub_sock_addr", &AnnounceNodeResponse::xpub_sock_addr);
+        codec.required("xpub_sock_addr", &AnnounceNodeResponse::xpub_sock_addr);
+        codec.required("minimum_heartbeat_interval", &AnnounceNodeResponse::minimum_heartbeat_interval);
         return codec;
     }
 };

@@ -53,7 +53,8 @@ Node::Node(const std::string &nodeName)
       state_(NodeState::Created),
       thread_id_(boost::this_thread::get_id()),
       p_logger_(new logger::Logger(this)),
-      shutdown_flag_(false)
+      shutdown_flag_(false),
+      minimum_heartbeat_interval_(0)
 {
     set_thread_name("main");
 
@@ -92,7 +93,8 @@ void Node::init()
 
     announceNode();
 
-    startHeartbeatThread();
+    if(minimum_heartbeat_interval_ > 0)
+        startHeartbeatThread();
 
     log(debug, "Initializing sockets...");
     for(auto socket : sockets_)
@@ -158,7 +160,8 @@ void Node::cleanup()
 
     // stop the heartbeat_thread so that the last zmq socket will be destroyed
     // and we avoid an unclean exit (zmq::error_t: Context was terminated)
-    stopHeartbeatThread();
+    if(minimum_heartbeat_interval_ > 0)
+        stopHeartbeatThread();
 
     log(debug, "Cleanup sockets...");
     for(auto socket : sockets_)
@@ -295,7 +298,7 @@ std::string Node::freeTCPAddress()
 
 void Node::announceNode()
 {
-    private2_->resolv_cli_.announceNode(name_, xpub_sock_addr_, xsub_sock_addr_);
+    private2_->resolv_cli_.announceNode(name_, xpub_sock_addr_, xsub_sock_addr_, minimum_heartbeat_interval_);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
         p_logger->connect(xsub_sock_addr_);

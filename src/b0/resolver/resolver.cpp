@@ -360,6 +360,7 @@ void Resolver::handleAnnounceNode(const b0::message::resolv::AnnounceNodeRequest
     rsp.node_name = e->name;
     rsp.xsub_sock_addr = xsub_proxy_addr_;
     rsp.xpub_sock_addr = xpub_proxy_addr_;
+    rsp.minimum_heartbeat_interval = online_monitoring_ ? 5000000 : 0;
     rsp.ok = true;
     log(info, "New node has joined: '%s'", e->name);
 }

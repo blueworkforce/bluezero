@@ -299,6 +299,9 @@ private:
     //! Flag set by Node::shutdown()
     std::atomic<bool> shutdown_flag_;
 
+    //! Minimum heartbeat send interval (0 means not required to send)
+    int64_t minimum_heartbeat_interval_;
+
     //! Flag to indicate wether the signal (SIGINT) handler has been set up
     static bool sigint_handler_setup_;
 

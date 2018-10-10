@@ -33,7 +33,7 @@ void Client::setAnnounceTimeout(int timeout)
     announce_timeout_ = timeout;
 }
 
-void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr)
+void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr, int64_t &minimum_heartbeat_interval)
 {
     int old_timeout = getReadTimeout();
     setReadTimeout(announce_timeout_);
@@ -66,6 +66,8 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
 
     xsub_sock_addr = rsp.xsub_sock_addr;
     log(trace, "Proxy's XSUB socket address: %s", xsub_sock_addr);
+
+    minimum_heartbeat_interval = rsp.minimum_heartbeat_interval;
 }
 
 void Client::notifyShutdown()
