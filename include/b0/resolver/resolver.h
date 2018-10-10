@@ -294,12 +294,13 @@ public:
     void heartbeatSweeper();
 
     /*!
-     * \brief Enable or diable online node monitoring.
+     * \brief Set the minimum interval at which the heartbeat message must be sent by the nodes
      *
-     * When disabled, silent nodes (i.e. node not sending a heartbeat withing the required
-     * time window) will not be regarded as "dead" and will not be purged.
+     * If the node fails to send a heartmeat message at least once in every interval,
+     * it will be considered as dead.
+     * A value of zero will disable online monitoring.
      */
-    void setOnlineMonitoring(bool enabled);
+    void setMinimumHeartbeatInterval(int64_t interval);
 
 protected:
     //! The ServiceServer serving the requests for the resolv protocol
@@ -341,9 +342,11 @@ protected:
     //! Publisher of the Graph message
     b0::Publisher graph_pub_;
 
-    //! If false, silent nodes (i.e. not sending heartbeats) will not be
-    //! considered as dead and will not be purged.
-    bool online_monitoring_;
+    //! The minimum interval in which the node has to send a heartbeat message.
+    //! If the node fails to send a heartmeat message at least once in every interval,
+    //! it will be considered as dead.
+    //! A value of zero will disable online monitoring.
+    int64_t minimum_heartbeat_interval_resolver_;
 };
 
 } // namespace resolver

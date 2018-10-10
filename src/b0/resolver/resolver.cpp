@@ -57,7 +57,7 @@ Resolver::Resolver()
     : Node("resolver"),
       resolv_server_(this),
       graph_pub_(this, "graph", true, false),
-      online_monitoring_(true)
+      minimum_heartbeat_interval_resolver_(5000000)
 {
 }
 
@@ -88,7 +88,7 @@ void Resolver::init()
     resolv_server_.bind(address("*", resolv_server_.port()));
 
     // run heartbeat sweeper (to detect when nodes go offline):
-    if(online_monitoring_)
+    if(minimum_heartbeat_interval_resolver_ > 0)
         heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartbeatSweeper, this);
 
     // we have to manually call this because graph_pub_ doesn't send graph notify:
@@ -103,7 +103,7 @@ void Resolver::cleanup()
     Node::cleanup();
 
     // stop auxiliary threads
-    if(online_monitoring_)
+    if(minimum_heartbeat_interval_resolver_ > 0)
         heartbeat_sweeper_thread_.interrupt();
     pub_proxy_thread_.interrupt(); // XXX: this will have no effect; anyway we'll use
                                    //      each time different port numbers, so, alas.
@@ -360,7 +360,7 @@ void Resolver::handleAnnounceNode(const b0::message::resolv::AnnounceNodeRequest
     rsp.node_name = e->name;
     rsp.xsub_sock_addr = xsub_proxy_addr_;
     rsp.xpub_sock_addr = xpub_proxy_addr_;
-    rsp.minimum_heartbeat_interval = online_monitoring_ ? 5000000 : 0;
+    rsp.minimum_heartbeat_interval = minimum_heartbeat_interval_resolver_;
     rsp.ok = true;
     log(info, "New node has joined: '%s'", e->name);
 }
@@ -433,11 +433,11 @@ void Resolver::handleHeartbeat(const b0::message::resolv::HeartbeatRequest &rq, 
         for(auto i = nodes_by_name_.begin(); i != nodes_by_name_.end(); ++i)
         {
             resolver::NodeEntry *e = i->second;
-            bool is_alive = (boost::posix_time::second_clock::local_time() - e->last_heartbeat) < boost::posix_time::seconds{5};
+            bool is_alive = (boost::posix_time::second_clock::local_time() - e->last_heartbeat) < boost::posix_time::microseconds{minimum_heartbeat_interval_resolver_};
             if(!is_alive && e->name != this->getName())
                 nodes_shutdown.insert(e->name);
         }
-        if(online_monitoring_)
+        if(minimum_heartbeat_interval_resolver_ > 0)
         {
             for(auto node_name : nodes_shutdown)
             {
@@ -588,9 +588,9 @@ void Resolver::heartbeatSweeper()
     logger.log(trace, "HBsweep: finished");
 }
 
-void Resolver::setOnlineMonitoring(bool enabled)
+void Resolver::setMinimumHeartbeatInterval(int64_t interval)
 {
-    online_monitoring_ = enabled;
+    minimum_heartbeat_interval_resolver_ = interval;
 }
 
 } // namespace resolver
