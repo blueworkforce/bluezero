@@ -23,21 +23,13 @@ class SystemMonitor : public b0::Node
 {
 public:
     SystemMonitor()
-        : Node("system_monitor")
+        : Node("system_monitor"),
+          pub_(this, "system_monitor")
     {
     }
 
     ~SystemMonitor()
     {
-    }
-
-    void announceNode()
-    {
-        Node::announceNode();
-        // hack after announceNode() to get the actual node name and create a
-        // unique service name named after node name:
-        std::string topic_name = getName();
-        pub_.reset(new b0::Publisher(this, topic_name));
     }
 
     void spinOnce()
@@ -47,7 +39,7 @@ public:
         Load load_msg;
         load_msg.load_averages = getLoadAverages();
         load_msg.free_memory = getFreeMemory();
-        pub_->publish(load_msg);
+        pub_.publish(load_msg);
     }
 
     std::vector<float> getLoadAverages()
@@ -110,7 +102,7 @@ public:
     }
 
 protected:
-    std::unique_ptr<b0::Publisher> pub_;
+    b0::Publisher pub_;
 };
 
 } // namespace system_monitor
