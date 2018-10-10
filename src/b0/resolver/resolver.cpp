@@ -252,6 +252,7 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 {
     set_thread_name("XPROXY");
     b0::logger::LocalLogger logger(this);
+    logger.log(trace, "XPROXY: started");
 
     zmq::context_t &context_ = *reinterpret_cast<zmq::context_t*>(getContext());
 
@@ -265,7 +266,6 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
 
     try
     {
-        logger.log(b0::logger::LogInterface::info, "XPROXY: starting");
 #ifdef __GNUC__
         zmq::proxy(static_cast<void*>(proxy_in_sock_), static_cast<void*>(proxy_out_sock_), nullptr);
 #else
@@ -274,8 +274,10 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     }
     catch(zmq::error_t &ex)
     {
-        logger.log(b0::logger::LogInterface::error, "XPROXY: %s", ex.what());
+        logger.log(error, "XPROXY: %s", ex.what());
     }
+
+    logger.log(trace, "XPROXY: finished");
 }
 
 bool Resolver::nodeNameExists(std::string name)
@@ -399,7 +401,7 @@ void Resolver::handleAnnounceService(const b0::message::resolv::AnnounceServiceR
     ne->services.push_back(se);
     //onNodeNewService(...);
     rsp.ok = true;
-    log(info, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name, rq.sock_addr);
+    log(trace, "Node '%s' announced service '%s' (%s)", ne->name, rq.service_name, rq.sock_addr);
 }
 
 void Resolver::handleResolveService(const b0::message::resolv::ResolveServiceRequest &rq, b0::message::resolv::ResolveServiceResponse &rsp)
@@ -556,6 +558,7 @@ void Resolver::heartbeatSweeper()
 {
     set_thread_name("HBsweep");
     b0::logger::LocalLogger logger(this);
+    logger.log(trace, "HBsweep: started");
 
     while(!shutdownRequested())
     {
@@ -578,6 +581,8 @@ void Resolver::heartbeatSweeper()
             logger.log(b0::logger::LogInterface::error, "HBsweep: %s", ex.what());
         }
     }
+
+    logger.log(trace, "HBsweep: finished");
 }
 
 void Resolver::setOnlineMonitoring(bool enabled)

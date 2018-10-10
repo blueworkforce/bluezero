@@ -310,6 +310,7 @@ void Node::heartbeatLoop()
 {
     set_thread_name("HB");
     b0::logger::LocalLogger logger(this);
+    logger.log(trace, "HB: started");
 
     while(!shutdownRequested())
     {
@@ -331,9 +332,11 @@ void Node::heartbeatLoop()
         }
         catch(std::exception &ex)
         {
-            logger.log(b0::logger::LogInterface::error, "HB: %s", ex.what());
+            logger.log(error, "HB: %s", ex.what());
         }
     }
+
+    logger.log(trace, "HB: finished");
 }
 
 int64_t Node::hardwareTimeUSec() const
