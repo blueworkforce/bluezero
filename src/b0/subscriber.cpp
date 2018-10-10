@@ -59,7 +59,7 @@ void Subscriber::log(LogLevel level, const std::string &message) const
 
 void Subscriber::init()
 {
-    if(Global::getInstance().remapTopicName(orig_name_, name_))
+    if(Global::getInstance().remapTopicName(getNode(), orig_name_, name_))
         log(info, "Topic '%s' remapped to '%s'", orig_name_, name_);
 
     if(remote_addr_.empty())

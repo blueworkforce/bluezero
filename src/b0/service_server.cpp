@@ -62,7 +62,7 @@ void ServiceServer::log(LogLevel level, const std::string &message) const
 
 void ServiceServer::init()
 {
-    if(Global::getInstance().remapServiceName(orig_name_, name_))
+    if(Global::getInstance().remapServiceName(getNode(), orig_name_, name_))
         log(info, "Service '%s' remapped to '%s'", orig_name_, name_);
 
     bind();

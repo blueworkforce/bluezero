@@ -1,4 +1,5 @@
 #include <b0/b0.h>
+#include <b0/node.h>
 
 #include <iostream>
 #include <string>
@@ -6,6 +7,7 @@
 #include <map>
 
 #include <boost/format.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 namespace b0
 {
@@ -85,55 +87,76 @@ bool Global::isInitialized() const
     return private_->initialized_;
 }
 
-static std::string getRemappedName(const std::map<std::string, std::string> &map, const std::string &name)
+static bool makeSubstitutions(const b0::Node &node, std::string &name)
 {
-    auto i = map.find(name);
-    return i == map.end() ? name : i->second;
+    bool ret = false;
+
+    if(name.find("%h") != std::string::npos)
+    {
+        boost::replace_all(name, "%h", node.hostname());
+        ret = true;
+    }
+
+    if(name.find("%n") != std::string::npos)
+    {
+        boost::replace_all(name, "%n", node.getName());
+        ret = true;
+    }
+
+    return ret;
 }
 
-static bool remapName(const std::map<std::string, std::string> &map, const std::string &name, std::string &remapped_name)
+static bool remapName(const b0::Node &node, const std::map<std::string, std::string> &map, const std::string &name, std::string &remapped_name)
 {
     auto i = map.find(name);
+    bool ret = false;
     if(i == map.end())
     {
         remapped_name = name;
-        return false;
     }
     else
     {
         remapped_name = i->second;
-        return true;
+        ret = true;
     }
+    return makeSubstitutions(node, remapped_name) || ret;
 }
 
-std::string Global::getRemappedNodeName(const std::string &node_name)
+static std::string getRemappedName(const b0::Node &node, const std::map<std::string, std::string> &map, const std::string &name)
 {
-    return getRemappedName(private_->remap_node_, node_name);
+    std::string ret = name;
+    remapName(node, map, name, ret);
+    return ret;
 }
 
-std::string Global::getRemappedTopicName(const std::string &topic_name)
+std::string Global::getRemappedNodeName(const b0::Node &node, const std::string &node_name)
 {
-    return getRemappedName(private_->remap_topic_, topic_name);
+    return getRemappedName(node, private_->remap_node_, node_name);
 }
 
-std::string Global::getRemappedServiceName(const std::string &service_name)
+std::string Global::getRemappedTopicName(const b0::Node &node, const std::string &topic_name)
 {
-    return getRemappedName(private_->remap_service_, service_name);
+    return getRemappedName(node, private_->remap_topic_, topic_name);
 }
 
-bool Global::remapNodeName(const std::string &node_name, std::string &remapped_node_name)
+std::string Global::getRemappedServiceName(const b0::Node &node, const std::string &service_name)
 {
-    return remapName(private_->remap_node_, node_name, remapped_node_name);
+    return getRemappedName(node, private_->remap_service_, service_name);
 }
 
-bool Global::remapTopicName(const std::string &topic_name, std::string &remapped_topic_name)
+bool Global::remapNodeName(const b0::Node &node, const std::string &node_name, std::string &remapped_node_name)
 {
-    return remapName(private_->remap_topic_, topic_name, remapped_topic_name);
+    return remapName(node, private_->remap_node_, node_name, remapped_node_name);
 }
 
-bool Global::remapServiceName(const std::string &service_name, std::string &remapped_service_name)
+bool Global::remapTopicName(const b0::Node &node, const std::string &topic_name, std::string &remapped_topic_name)
 {
-    return remapName(private_->remap_service_, service_name, remapped_service_name);
+    return remapName(node, private_->remap_topic_, topic_name, remapped_topic_name);
+}
+
+bool Global::remapServiceName(const b0::Node &node, const std::string &service_name, std::string &remapped_service_name)
+{
+    return remapName(node, private_->remap_service_, service_name, remapped_service_name);
 }
 
 void init(int &argc, char **argv)

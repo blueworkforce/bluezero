@@ -349,6 +349,8 @@ namespace b0
 
 //! \cond HIDDEN_SYMBOLS
 
+class Node;
+
 class Global final
 {
 private:
@@ -365,17 +367,17 @@ public:
 
     bool isInitialized() const;
 
-    std::string getRemappedNodeName(const std::string &node_name);
+    std::string getRemappedNodeName(const b0::Node &node, const std::string &node_name);
 
-    std::string getRemappedTopicName(const std::string &topic_name);
+    std::string getRemappedTopicName(const b0::Node &node, const std::string &topic_name);
 
-    std::string getRemappedServiceName(const std::string &service_name);
+    std::string getRemappedServiceName(const b0::Node &node, const std::string &service_name);
 
-    bool remapNodeName(const std::string &node_name, std::string &remapped_node_name);
+    bool remapNodeName(const b0::Node &node, const std::string &node_name, std::string &remapped_node_name);
 
-    bool remapTopicName(const std::string &topic_name, std::string &remapped_topic_name);
+    bool remapTopicName(const b0::Node &node, const std::string &topic_name, std::string &remapped_topic_name);
 
-    bool remapServiceName(const std::string &service_name, std::string &remapped_service_name);
+    bool remapServiceName(const b0::Node &node, const std::string &service_name, std::string &remapped_service_name);
 
 private:
     std::unique_ptr<Private> private_;
