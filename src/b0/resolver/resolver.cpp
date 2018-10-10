@@ -88,7 +88,8 @@ void Resolver::init()
     resolv_server_.bind(address("*", resolv_server_.port()));
 
     // run heartbeat sweeper (to detect when nodes go offline):
-    heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartbeatSweeper, this);
+    if(online_monitoring_)
+        heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartbeatSweeper, this);
 
     // we have to manually call this because graph_pub_ doesn't send graph notify:
     // (has to be disabled because resolver is a special kind of node)
@@ -102,7 +103,8 @@ void Resolver::cleanup()
     Node::cleanup();
 
     // stop auxiliary threads
-    heartbeat_sweeper_thread_.interrupt();
+    if(online_monitoring_)
+        heartbeat_sweeper_thread_.interrupt();
     pub_proxy_thread_.interrupt(); // XXX: this will have no effect; anyway we'll use
                                    //      each time different port numbers, so, alas.
 }

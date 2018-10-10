@@ -37,12 +37,12 @@ int main(int argc, char **argv)
     }
 
     b0::resolver::Resolver node;
-    node.init();
     if(vm.count("disable-online-monitoring"))
     {
         node.setOnlineMonitoring(false);
         node.log(LogInterface::warn, "Online monitoring is disabled");
     }
+    node.init();
     node.spin();
     node.cleanup();
 
