@@ -342,6 +342,12 @@ add_executable(
 )
 target_link_libraries(b0_process_manager_hub ${B0_LIBRARY})
 
+add_executable(
+    b0_system_monitor
+    src/b0_system_monitor/system_monitor.cpp
+)
+target_link_libraries(b0_system_monitor ${B0_LIBRARY})
+
 if(BUILD_GUI)
     find_package(Qt5Core REQUIRED)
     find_package(Qt5Gui REQUIRED)
