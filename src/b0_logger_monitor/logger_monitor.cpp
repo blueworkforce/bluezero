@@ -50,6 +50,7 @@ int main(int argc, char **argv)
     b0::logger::Console console;
     console.init();
     console.spin();
+    console.cleanup();
     return 0;
 }
 
