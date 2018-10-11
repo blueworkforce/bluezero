@@ -328,7 +328,7 @@ void Node::heartbeatLoop()
                 int64_t time_usec;
                 resolv_cli.sendHeartbeat(&time_usec);
                 time_sync_.updateTime(time_usec);
-                sleepUSec(1000000);
+                sleepUSec(minimum_heartbeat_interval_ / 3);
             }
 
             resolv_cli.cleanup();
