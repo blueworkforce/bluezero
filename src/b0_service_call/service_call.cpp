@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     {
         po::store(po::parse_command_line(argc, argv, desc), vm);
     }
-    catch(po::unknown_option &ex)
+    catch(po::error &ex)
     {
         std::cerr << ex.what() << std::endl << desc << std::endl;
         return 1;
