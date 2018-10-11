@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "display help message")
-        ("minimum-heartbeat-interval,o", po::value<int64_t>(&minimum_heartbeat_interval), "set minimum heartbeat interval (0 will disable online monitoring)")
+        ("minimum-heartbeat-interval,o", po::value<int64_t>(&minimum_heartbeat_interval), "set the minimum heartbeat interval, in microseconds (an interval of 0us will disable online monitoring)")
     ;
     po::variables_map vm;
     try
