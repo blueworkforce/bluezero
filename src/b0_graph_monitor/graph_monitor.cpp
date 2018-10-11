@@ -115,6 +115,7 @@ int main(int argc, char **argv)
     b0::graph::Console console;
     console.init();
     console.spin();
+    console.cleanup();
     return 0;
 }
 
