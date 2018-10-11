@@ -203,6 +203,7 @@ set(
     src/b0/message/message_envelope.cpp
     src/b0/message/message.cpp
     src/b0/logger/logger.cpp
+    src/b0/logger/level.cpp
     src/b0/resolver/client.cpp
     src/b0/resolver/resolver.cpp
     src/b0/utils/env.cpp

@@ -49,7 +49,7 @@ public:
     /*!
      * \brief Log a message to the default logger of this node
      */
-    void log(LogLevel level, const std::string &message) const override;
+    void log(logger::Level level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization (resolve name, connect socket, set subscription)

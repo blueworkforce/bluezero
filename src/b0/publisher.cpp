@@ -16,7 +16,7 @@ Publisher::~Publisher()
 {
 }
 
-void Publisher::log(LogLevel level, const std::string &message) const
+void Publisher::log(logger::Level level, const std::string &message) const
 {
     boost::format fmt("Publisher(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
@@ -25,7 +25,7 @@ void Publisher::log(LogLevel level, const std::string &message) const
 void Publisher::init()
 {
     if(Global::getInstance().remapTopicName(getNode(), orig_name_, name_))
-        log(info, "Topic '%s' remapped to '%s'", orig_name_, name_);
+        info("Topic '%s' remapped to '%s'", orig_name_, name_);
 
     if(remote_addr_.empty())
         remote_addr_ = node_.getXSUBSocketAddress();
@@ -60,13 +60,13 @@ void Publisher::publish(const std::string &msg, const std::string &type)
 
 void Publisher::connect()
 {
-    log(trace, "Connecting to %s...", remote_addr_);
+    trace("Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
 }
 
 void Publisher::disconnect()
 {
-    log(trace, "Disconnecting from %s...", remote_addr_);
+    trace("Disconnecting from %s...", remote_addr_);
     Socket::disconnect(remote_addr_);
 }
 

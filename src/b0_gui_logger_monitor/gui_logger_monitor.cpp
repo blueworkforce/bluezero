@@ -58,12 +58,12 @@ public:
             centralWidget->setLayout(layout);
         }
 
-        comboLevel->addItem("TRACE", b0::message::log::LogLevel::trace);
-        comboLevel->addItem("DEBUG", b0::message::log::LogLevel::debug);
-        comboLevel->addItem("INFO",  b0::message::log::LogLevel::info);
-        comboLevel->addItem("WARN",  b0::message::log::LogLevel::warn);
-        comboLevel->addItem("ERROR", b0::message::log::LogLevel::error);
-        comboLevel->addItem("FATAL", b0::message::log::LogLevel::fatal);
+        comboLevel->addItem("trace");
+        comboLevel->addItem("debug");
+        comboLevel->addItem("info");
+        comboLevel->addItem("warn");
+        comboLevel->addItem("error");
+        comboLevel->addItem("fatal");
         comboLevel->setCurrentIndex(0);
         connect(comboLevel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &LogConsoleWindow::comboLevelChanged);
         connect(textNode, &QLineEdit::textChanged, this, &LogConsoleWindow::textNodeChanged);
@@ -117,27 +117,13 @@ public:
         tableWidget->setRowCount(n + 1);
         tableWidget->setItem(n, 0, new QTableWidgetItem(QString::number(node_.timeUSec())));
         tableWidget->setItem(n, 1, new QTableWidgetItem(QString::fromStdString(entry.node_name)));
-        tableWidget->setItem(n, 2, new QTableWidgetItem(levelStr(entry.level)));
+        tableWidget->setItem(n, 2, new QTableWidgetItem(QString::fromStdString(entry.level)));
         tableWidget->setItem(n, 3, new QTableWidgetItem(QString::fromStdString(entry.message)));
-    }
-
-    QString levelStr(b0::message::log::LogLevel level)
-    {
-        switch(level)
-        {
-        case b0::message::log::LogLevel::trace: return "TRACE";
-        case b0::message::log::LogLevel::debug: return "DEBUG";
-        case b0::message::log::LogLevel::info:  return "INFO";
-        case b0::message::log::LogLevel::warn:  return "WARN";
-        case b0::message::log::LogLevel::error: return "ERROR";
-        case b0::message::log::LogLevel::fatal: return "FATAL";
-        default: return "UNKNOWN";
-        }
     }
 
     void comboLevelChanged(int newIndex)
     {
-        filterLevel = (b0::message::log::LogLevel)comboLevel->currentData().toInt();
+        filterLevel = b0::logger::levelInfo(comboLevel->currentText().toStdString()).level;
         refilter();
     }
 
@@ -152,7 +138,7 @@ public:
 
     bool filter(const b0::message::log::LogEntry &entry)
     {
-        if(entry.level < filterLevel) return true;
+        if(b0::logger::levelInfo(entry.level).level < filterLevel) return true;
 
         if(filterNodeNames.empty()) return false;
         else
@@ -178,7 +164,7 @@ private:
     QLineEdit *textNode;
     std::vector<b0::message::log::LogEntry> all_entries_;
     std::vector<std::string> filterNodeNames;
-    b0::message::log::LogLevel filterLevel = b0::message::log::LogLevel::trace;
+    b0::logger::Level filterLevel = b0::logger::Level::trace;
 };
 
 int main(int argc, char **argv)

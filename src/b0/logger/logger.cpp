@@ -10,33 +10,24 @@
 #include <iomanip>
 #include <chrono>
 
+#include <boost/lexical_cast.hpp>
+
 namespace b0
 {
 
 namespace logger
 {
 
-void LogInterface::log_helper(LogLevel level, boost::format &format) const
+void LogInterface::log_helper(Level level, boost::format &format) const
 {
     return log(level, format.str());
 }
-
-LogInterface::LogLevel LocalLogger::defaultOutputLevel_ = LogLevel::warn;
 
 LocalLogger::LocalLogger(b0::Node *node)
     : node_(*node),
       color_(false)
 {
-    std::string log_level = b0::env::get("B0_CONSOLE_LOGLEVEL");
-    if(log_level == "");
-    else if(log_level == "trace") defaultOutputLevel_ = LogLevel::trace;
-    else if(log_level == "debug") defaultOutputLevel_ = LogLevel::debug;
-    else if(log_level == "info")  defaultOutputLevel_ = LogLevel::info;
-    else if(log_level == "warn")  defaultOutputLevel_ = LogLevel::warn;
-    else if(log_level == "error") defaultOutputLevel_ = LogLevel::error;
-    else if(log_level == "fatal") defaultOutputLevel_ = LogLevel::fatal;
-    else throw exception::ArgumentError(log_level, "log level");
-    outputLevel_ = defaultOutputLevel_;
+    outputLevel_ = getConsoleLogLevel();
 
     std::string term = b0::env::get("TERM");
     if(term == "xterm-color" || term == "xterm-256color") color_ = true;
@@ -46,7 +37,7 @@ LocalLogger::~LocalLogger()
 {
 }
 
-void LocalLogger::log(LogLevel level, const std::string &message) const
+void LocalLogger::log(Level level, const std::string &message) const
 {
     if(level < outputLevel_) return;
 
@@ -61,38 +52,13 @@ void LocalLogger::log(LogLevel level, const std::string &message) const
 
     if(!name.empty()) ss << "[" << name << "] ";
 
-    ss << info.levelStr << ": ";
+    ss << info.str << ": ";
 
     ss << message;
 
     if(color_) ss << info.ansiReset();
 
     std::cout << ss.str() << std::endl;
-}
-
-std::string LocalLogger::LevelInfo::ansiEscape() const
-{
-    boost::format fmt("\x1b[%d;%dm");
-    return (fmt % attr % fg).str();
-}
-
-std::string LocalLogger::LevelInfo::ansiReset() const
-{
-    return "\x1b[0m";
-}
-
-LocalLogger::LevelInfo LocalLogger::levelInfo(LogLevel level) const
-{
-    switch(level)
-    {
-        case LogLevel::trace: return {"TRACE", 0, 0x1e, 0}; break;
-        case LogLevel::debug: return {"DEBUG", 1, 0x1e, 0}; break;
-        case LogLevel::info:  return {"INFO",  1, 0x25, 0}; break;
-        case LogLevel::warn:  return {"WARN",  0, 0x21, 0}; break;
-        case LogLevel::error: return {"ERROR", 0, 0x1f, 0}; break;
-        case LogLevel::fatal: return {"FATAL", 7, 0x1f, 0}; break;
-    }
-    return {"?????", 1, 0x1e, 0};
 }
 
 struct Logger::Private
@@ -121,20 +87,20 @@ void Logger::connect(const std::string &addr)
     private_->pub_.init();
 }
 
-void Logger::log(LogLevel level, const std::string &message) const
+void Logger::log(Level level, const std::string &message) const
 {
     LocalLogger::log(level, message);
 
     remoteLog(level, message);
 }
 
-void Logger::remoteLog(LogLevel level, const std::string &message) const
+void Logger::remoteLog(Level level, const std::string &message) const
 {
     std::string name = node_.getName();
 
     b0::message::log::LogEntry e;
     e.node_name = name;
-    e.level = level;
+    e.level = levelInfo(level).str;
     e.message = message;
     e.time_usec = node_.timeUSec();
     private_->pub_.publish(e);

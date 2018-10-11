@@ -54,7 +54,7 @@ ServiceServer::~ServiceServer()
 {
 }
 
-void ServiceServer::log(LogLevel level, const std::string &message) const
+void ServiceServer::log(logger::Level level, const std::string &message) const
 {
     boost::format fmt("ServiceServer(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
@@ -63,7 +63,7 @@ void ServiceServer::log(LogLevel level, const std::string &message) const
 void ServiceServer::init()
 {
     if(Global::getInstance().remapServiceName(getNode(), orig_name_, name_))
-        log(info, "Service '%s' remapped to '%s'", orig_name_, name_);
+        info("Service '%s' remapped to '%s'", orig_name_, name_);
 
     bind();
     announce();
@@ -123,7 +123,7 @@ void ServiceServer::bind()
     bind_addr_ = (fmt % "*" % port).str();
     remote_addr_ = (fmt % host % port).str();
     Socket::bind(bind_addr_);
-    log(debug, "Bound to %s", bind_addr_);
+    debug("Bound to %s", bind_addr_);
 }
 
 void ServiceServer::unbind()
@@ -133,14 +133,14 @@ void ServiceServer::unbind()
 
 void ServiceServer::announce()
 {
-    log(trace, "Announcing %s to resolver...", remote_addr_);
+    trace("Announcing %s to resolver...", remote_addr_);
     node_.announceService(name_, remote_addr_);
 }
 
 void ServiceServer::bind(const std::string &address)
 {
     Socket::bind(address);
-    log(debug, "Bound to additional address %s", address);
+    debug("Bound to additional address %s", address);
 }
 
 } // namespace b0

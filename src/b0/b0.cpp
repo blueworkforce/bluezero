@@ -1,5 +1,7 @@
 #include <b0/b0.h>
+#include <b0/utils/env.h>
 #include <b0/node.h>
+#include <b0/logger/logger.h>
 
 #include <iostream>
 #include <string>
@@ -18,6 +20,7 @@ struct Global::Private
     std::map<std::string, std::string> remap_node_;
     std::map<std::string, std::string> remap_topic_;
     std::map<std::string, std::string> remap_service_;
+    logger::Level consoleLogLevel_ = logger::Level::info;
 };
 
 Global::Global()
@@ -35,6 +38,13 @@ void Global::init(int &argc, char **argv)
 {
     if(private_->initialized_)
         throw std::runtime_error("already initialized");
+
+    // process environment variables:
+    std::string console_loglevel = b0::env::get("B0_CONSOLE_LOGLEVEL");
+    if(console_loglevel != "")
+    {
+        private_->consoleLogLevel_ = logger::levelInfo(console_loglevel).level;
+    }
 
     // process arguments:
     int i = 0;
@@ -62,6 +72,10 @@ void Global::init(int &argc, char **argv)
                     private_->remap_service_[local_name] = external_name;
                 processed_args.push_back(i);
                 processed_args.push_back(i + 1);
+            }
+            else if(opt == "--console-loglevel")
+            {
+                private_->consoleLogLevel_ = logger::levelInfo(arg).level;
             }
         }
     }
@@ -159,6 +173,16 @@ bool Global::remapServiceName(const b0::Node &node, const std::string &service_n
     return remapName(node, private_->remap_service_, service_name, remapped_service_name);
 }
 
+logger::Level Global::getConsoleLogLevel()
+{
+    return private_->consoleLogLevel_;
+}
+
+void Global::setConsoleLogLevel(logger::Level level)
+{
+    private_->consoleLogLevel_ = level;
+}
+
 void init(int &argc, char **argv)
 {
     try
@@ -170,6 +194,16 @@ void init(int &argc, char **argv)
         std::cerr << "Initialization failed: " << ex.what() << std::endl;
         std::exit(100);
     }
+}
+
+logger::Level getConsoleLogLevel()
+{
+    return Global::getInstance().getConsoleLogLevel();
+}
+
+void setConsoleLogLevel(logger::Level level)
+{
+    Global::getInstance().setConsoleLogLevel(level);
 }
 
 } // namespace b0

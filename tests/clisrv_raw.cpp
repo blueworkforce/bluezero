@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <boost/thread.hpp>
 
 #include <b0/resolver/resolver.h>
@@ -21,7 +23,7 @@ void cli_thread()
     std::string rep;
     cli.writeRaw(req);
     cli.readRaw(rep);
-    node.log(b0::Node::LogLevel::info, "server response: %s", rep);
+    std::cout << "server response: " << rep << std::endl;
     exit(rep == "world" ? 0 : 1);
 }
 

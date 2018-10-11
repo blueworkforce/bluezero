@@ -4,9 +4,7 @@
 #include <boost/program_options.hpp>
 
 #include <b0/resolver/resolver.h>
-#include <b0/logger/interface.h>
 
-using LogLevel = b0::logger::LogInterface::LogLevel;
 namespace po = boost::program_options;
 
 int main(int argc, char **argv)
@@ -42,7 +40,7 @@ int main(int argc, char **argv)
     {
         node.setMinimumHeartbeatInterval(minimum_heartbeat_interval);
         if(minimum_heartbeat_interval == 0)
-            node.log(LogLevel::warn, "Online monitoring is disabled");
+            node.warn("Online monitoring is disabled");
     }
     node.init();
     node.spin();

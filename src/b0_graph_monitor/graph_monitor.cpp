@@ -42,7 +42,7 @@ public:
              * FIXME: it would be anyway better to have a timeout, and if a graph
              *        is not received in the first 2 seconds, send an explicit request
              */
-            log(info, "Requesting graph");
+            info("Requesting graph");
             b0::message::graph::Graph graph;
             resolv_cli_.getGraph(graph);
             printOrDisplayGraph("Current graph", graph);
@@ -58,12 +58,12 @@ public:
     {
         if(termHasImageCapability())
         {
-            log(info, message);
+            info(message);
             renderAndDisplayGraph(graph);
         }
         else
         {
-            log(info, "%s: %d nodes", message, graph.nodes.size());
+            info("%s: %d nodes", message, graph.nodes.size());
         }
     }
 

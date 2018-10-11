@@ -16,7 +16,7 @@ ServiceClient::~ServiceClient()
 {
 }
 
-void ServiceClient::log(LogLevel level, const std::string &message) const
+void ServiceClient::log(logger::Level level, const std::string &message) const
 {
     boost::format fmt("ServiceClient(%s): %s");
     Socket::log(level, (fmt % name_ % message).str());
@@ -25,7 +25,7 @@ void ServiceClient::log(LogLevel level, const std::string &message) const
 void ServiceClient::init()
 {
     if(Global::getInstance().remapServiceName(getNode(), orig_name_, name_))
-        log(info, "Service '%s' remapped to '%s'", orig_name_, name_);
+        info("Service '%s' remapped to '%s'", orig_name_, name_);
 
     resolve();
     connect();
@@ -69,24 +69,24 @@ void ServiceClient::resolve()
 {
     if(!remote_addr_.empty())
     {
-        log(debug, "Skipping resolution because remote address (%s) was given", remote_addr_);
+        debug("Skipping resolution because remote address (%s) was given", remote_addr_);
         return;
     }
 
     node_.resolveService(name_, remote_addr_);
 
-    log(trace, "Resolved address: %s", remote_addr_);
+    trace("Resolved address: %s", remote_addr_);
 }
 
 void ServiceClient::connect()
 {
-    log(trace, "Connecting to %s...", remote_addr_);
+    trace("Connecting to %s...", remote_addr_);
     Socket::connect(remote_addr_);
 }
 
 void ServiceClient::disconnect()
 {
-    log(trace, "Disconnecting from %s...", remote_addr_);
+    trace("Disconnecting from %s...", remote_addr_);
     Socket::disconnect(remote_addr_);
 }
 

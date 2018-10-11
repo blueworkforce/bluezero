@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     {
         b0::message::log::LogEntry msg;
         msg.node_name = "foo";
-        msg.level = b0::message::log::LogLevel::warn;
+        msg.level = b0::logger::levelInfo(b0::logger::Level::warn).str;
         msg.message = "Hello \x01\xff world";
         msg.time_usec = (uint64_t(1) << 60) + 5978629785;
         test(msg);

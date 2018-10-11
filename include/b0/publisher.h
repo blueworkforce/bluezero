@@ -38,7 +38,7 @@ public:
     /*!
      * \brief Log a message using node's logger, prepending this publisher informations
      */
-    void log(LogLevel level, const std::string &message) const override;
+    void log(logger::Level level, const std::string &message) const override;
 
     /*!
      * \brief Perform initialization and optionally send graph notify

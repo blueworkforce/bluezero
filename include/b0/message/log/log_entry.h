@@ -5,7 +5,6 @@
 
 #include <b0/b0.h>
 #include <b0/message/message.h>
-#include <b0/logger/interface.h>
 
 namespace b0
 {
@@ -15,8 +14,6 @@ namespace message
 
 namespace log
 {
-
-using LogLevel = ::b0::logger::LogInterface::LogLevel;
 
 /*!
  * \brief A log message sent by node to the 'log' topic
@@ -28,10 +25,7 @@ public:
     std::string node_name;
 
     //! Severity of the message
-    union {
-        LogLevel level;
-        int level_int;
-    };
+    std::string level;
 
     //! Content of the message
     std::string message;
@@ -66,7 +60,7 @@ struct default_codec_t<LogEntry>
     {
         auto codec = codec::object<LogEntry>();
         codec.required("node_name", &LogEntry::node_name);
-        codec.required("level", &LogEntry::level_int);
+        codec.required("level", &LogEntry::level);
         codec.required("message", &LogEntry::message);
         codec.required("time_usec", &LogEntry::time_usec);
         return codec;

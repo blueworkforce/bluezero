@@ -2,6 +2,7 @@
 #define B0__B0_H__INCLUDED
 
 #include <b0/config.h>
+#include <b0/logger/level.h>
 
 /*!
  * \mainpage BlueWorkforce Middleware - A brief description
@@ -379,6 +380,10 @@ public:
 
     bool remapServiceName(const b0::Node &node, const std::string &service_name, std::string &remapped_service_name);
 
+    logger::Level getConsoleLogLevel();
+
+    void setConsoleLogLevel(logger::Level level);
+
 private:
     std::unique_ptr<Private> private_;
 };
@@ -386,9 +391,29 @@ private:
 //! \endcond
 
 /*!
- * Initialize the B0 library (arguments used by B0 will be consumed).
+ * Initialize the B0 library.
+ *
+ * This function will read any relevant environment variables and command line arguments,
+ * and change settings in the global data structure.
+ *
+ * Depending if you want to override those settings or just provide a different default,
+ * you need to alter such settings before or after calling b0::init() respectively.
+ *
+ * This function will consume arguments in argv and change argc accordingly.
  */
 void init(int &argc, char **argv);
+
+/*!
+ * Get the console logging level. This can be changed also by the B0_CONSOLE_LOGLEVEL env var,
+ * by the --console-loglevel= command line option.
+ */
+logger::Level getConsoleLogLevel();
+
+/*!
+ * Set the console logging level. This can be changed also by the B0_CONSOLE_LOGLEVEL env var,
+ * by the --console-loglevel= command line option.
+ */
+void setConsoleLogLevel(logger::Level level);
 
 } // namespace b0
 

@@ -30,7 +30,7 @@ public:
 
     void onBeacon(const Beacon &beacon)
     {
-        //log(trace, "received a beacon from host %s, node %s, srv %s", beacon.host_name, beacon.node_name, beacon.service_name);
+        //trace("received a beacon from host %s, node %s, srv %s", beacon.host_name, beacon.node_name, beacon.service_name);
         auto it = last_active_.find(beacon.host_name);
         if(it == last_active_.end())
         {
@@ -46,14 +46,14 @@ public:
     {
         if(!req.host_name)
         {
-            log(error, "bad request: missing host_name field");
+            error("bad request: missing host_name field");
             return;
         }
 
         auto it = clients_.find(req.host_name.get());
         if(it == clients_.end())
         {
-            log(error, "bad request: unknown host");
+            error("bad request: unknown host");
             return;
         }
 
@@ -64,7 +64,7 @@ public:
     {
         last_active_[beacon.host_name] = timeUSec();
         clients_[beacon.host_name].reset(new b0::ServiceClient(this, beacon.service_name, false));
-        log(info, "added new entry: %s -> %s", beacon.host_name, beacon.service_name);
+        info("added new entry: %s -> %s", beacon.host_name, beacon.service_name);
         clients_[beacon.host_name]->init();
     }
 
@@ -75,7 +75,7 @@ public:
         clients_[host_name]->cleanup();
         clients_.erase(it);
         last_active_.erase(host_name);
-        log(info, "removed entry: %s", host_name);
+        info("removed entry: %s", host_name);
     }
 
     void cleanup()

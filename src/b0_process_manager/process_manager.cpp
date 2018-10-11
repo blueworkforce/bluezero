@@ -55,7 +55,7 @@ public:
 #undef HANDLER
         else
         {
-            log(error, "bad request");
+            error("bad request");
         }
     }
 
@@ -69,7 +69,7 @@ public:
         }
         auto c = new bp::child(req.path, req.args);
         children_[c->id()].child_ = std::shared_ptr<bp::child>(c);
-        log(info, "Process %d (%s) started.", c->id(), req.path);
+        info("Process %d (%s) started.", c->id(), req.path);
         rep.success = true;
         rep.pid = c->id();
     }
@@ -85,11 +85,11 @@ public:
         }
         auto c = it->second.child_;
 #ifdef HAVE_POSIX_SIGNALS
-        log(info, "Sending SIGINT to process %d...", c->id());
+        info("Sending SIGINT to process %d...", c->id());
         kill(c->id(), SIGINT);
         it->second.int_requested_ = timeUSec();
 #else
-        log(info, "Terminating process %d...", c->id());
+        info("Terminating process %d...", c->id());
         c->terminate();
 #endif
         rep.success = true;
@@ -137,7 +137,7 @@ public:
 
         if(!boost::starts_with(p, sp))
         {
-            log(error, "Permission denied: '%s' does not start with '%s'.", p, sp);
+            error("Permission denied: '%s' does not start with '%s'.", p, sp);
             return false;
         }
 
@@ -155,7 +155,7 @@ public:
                 // after 5s from SIGINT, try with SIGTERM
                 if(it->second.int_requested_ && timeUSec() - it->second.int_requested_ > 5000000)
                 {
-                    log(warn, "Escalating to SIGTERM for process %d...", c->id());
+                    warn("Escalating to SIGTERM for process %d...", c->id());
                     kill(c->id(), SIGTERM);
                     it->second.term_requested_ = timeUSec();
                 }
@@ -163,7 +163,7 @@ public:
                 // after 5s from SIGTERM, try with SIGKILL
                 if(it->second.term_requested_ && timeUSec() - it->second.term_requested_ > 5000000)
                 {
-                    log(warn, "Escalating to SIGKILL for process %d...", c->id());
+                    warn("Escalating to SIGKILL for process %d...", c->id());
                     c->terminate();
                 }
 #endif
@@ -173,7 +173,7 @@ public:
             else
             {
                 c->wait();
-                log(info, "Process %d finished with exit code %d.", c->id(), c->exit_code());
+                info("Process %d finished with exit code %d.", c->id(), c->exit_code());
                 it = children_.erase(it);
             }
         }

@@ -34,40 +34,19 @@ public:
     /*!
      * Log a message to the local console logger (i.e. using std::cout)
      */
-    virtual void log(LogLevel level, const std::string &message) const override;
-
-private:
-    struct LevelInfo
-    {
-        std::string levelStr;
-        int attr;
-        int fg;
-        int bg;
-
-        std::string ansiEscape() const;
-
-        std::string ansiReset() const;
-    };
-
-    /*!
-     * \brief Return meta-information for the specified level
-     */
-    virtual LevelInfo levelInfo(LogLevel level) const;
-
-    friend class Console;
+    virtual void log(Level level, const std::string &message) const override;
 
 protected:
     //! The node
     b0::Node &node_;
 
     //! The output log level.
-    LogLevel outputLevel_;
-
-    //! The default output log level, set via B0_CONSOLE_LOGLEVEL environment variable.
-    static LogLevel defaultOutputLevel_;
+    Level outputLevel_;
 
     //! Flag to indicate if terminal supports ANSI escapes sequences for text color
     bool color_;
+
+    friend class Console;
 };
 
 /*!
@@ -100,13 +79,13 @@ public:
      */
     void connect(const std::string &addr);
 
-    void log(LogLevel level, const std::string &message) const override;
+    void log(Level level, const std::string &message) const override;
 
 protected:
     /*!
      * Log a message to the remote logger (i.e. using the log publisher)
      */
-    virtual void remoteLog(LogLevel level, const std::string &message) const;
+    virtual void remoteLog(Level level, const std::string &message) const;
 
 private:
     mutable std::unique_ptr<Private> private_;

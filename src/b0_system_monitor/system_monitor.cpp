@@ -76,7 +76,7 @@ public:
         }
         catch(std::exception &ex)
         {
-            log(error, ex.what());
+            error(ex.what());
         }
     }
 

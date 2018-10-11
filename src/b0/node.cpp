@@ -85,9 +85,9 @@ void Node::init()
         throw exception::InvalidStateTransition("init", state_);
 
     if(Global::getInstance().remapNodeName(*this, orig_name_, name_))
-        log(info, "Node '%s' remapped to '%s'", orig_name_, name_);
+        info("Node '%s' remapped to '%s'", orig_name_, name_);
 
-    log(debug, "Initialization...");
+    debug("Initialization...");
 
     private2_->resolv_cli_.init(); // resolv_cli_ is not managed
 
@@ -96,13 +96,13 @@ void Node::init()
     if(minimum_heartbeat_interval_ > 0)
         startHeartbeatThread();
 
-    log(debug, "Initializing sockets...");
+    debug("Initializing sockets...");
     for(auto socket : sockets_)
         socket->init();
 
     state_ = NodeState::Ready;
 
-    log(debug, "Initialization complete.");
+    debug("Initialization complete.");
 }
 
 void Node::shutdown()
@@ -110,11 +110,11 @@ void Node::shutdown()
     if(state_ != NodeState::Ready)
         throw exception::InvalidStateTransition("shutdown", state_);
 
-    log(debug, "Shutting down...");
+    debug("Shutting down...");
 
     shutdown_flag_.store(true);
 
-    log(debug, "Shutting complete.");
+    debug("Shutting complete.");
 }
 
 bool Node::shutdownRequested() const
@@ -137,7 +137,7 @@ void Node::spin(double spinRate)
     if(state_ != NodeState::Ready)
         throw exception::InvalidStateTransition("spin", state_);
 
-    log(info, "Node spinning...");
+    info("Node spinning...");
 
     while(!shutdownRequested())
     {
@@ -148,7 +148,7 @@ void Node::spin(double spinRate)
         sleepUSec(usec);
     }
 
-    log(info, "spin() finished");
+    info("spin() finished");
 }
 
 void Node::cleanup()
@@ -163,7 +163,7 @@ void Node::cleanup()
     if(minimum_heartbeat_interval_ > 0)
         stopHeartbeatThread();
 
-    log(debug, "Cleanup sockets...");
+    debug("Cleanup sockets...");
     for(auto socket : sockets_)
         socket->cleanup();
 
@@ -175,7 +175,7 @@ void Node::cleanup()
     state_ = NodeState::Terminated;
 }
 
-void Node::log(LogLevel level, const std::string &message) const
+void Node::log(logger::Level level, const std::string &message) const
 {
     if(boost::this_thread::get_id() != thread_id_)
         throw exception::Exception("cannot call Node::log() from another thread");
@@ -185,13 +185,13 @@ void Node::log(LogLevel level, const std::string &message) const
 
 void Node::startHeartbeatThread()
 {
-    log(trace, "Starting heartbeat thread...");
+    trace("Starting heartbeat thread...");
     heartbeat_thread_ = boost::thread(&Node::heartbeatLoop, this);
 }
 
 void Node::stopHeartbeatThread()
 {
-    log(trace, "Stopping heartbeat thread...");
+    trace("Stopping heartbeat thread...");
     heartbeat_thread_.interrupt();
     heartbeat_thread_.join();
 }
@@ -313,7 +313,7 @@ void Node::heartbeatLoop()
 {
     set_thread_name("HB");
     b0::logger::LocalLogger logger(this);
-    logger.log(trace, "HB: started");
+    logger.trace("HB: started");
 
     while(!shutdownRequested())
     {
@@ -335,11 +335,11 @@ void Node::heartbeatLoop()
         }
         catch(std::exception &ex)
         {
-            logger.log(error, "HB: %s", ex.what());
+            logger.error("HB: %s", ex.what());
         }
     }
 
-    logger.log(trace, "HB: finished");
+    logger.trace("HB: finished");
 }
 
 int64_t Node::hardwareTimeUSec() const

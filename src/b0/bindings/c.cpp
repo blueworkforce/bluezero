@@ -44,24 +44,24 @@ extern "C"
 {
 #include <b0/bindings/c.h>
 
-static b0::Node::LogLevel log_level_from_int(int level)
+static b0::logger::Level log_level_from_int(int level)
 {
     switch(level)
     {
     case B0_FATAL:
-        return b0::Node::fatal;
+        return b0::logger::Level::fatal;
     case B0_ERROR:
-        return b0::Node::error;
+        return b0::logger::Level::error;
     case B0_WARN:
-        return b0::Node::warn;
+        return b0::logger::Level::warn;
     case B0_INFO:
-        return b0::Node::info;
+        return b0::logger::Level::info;
     case B0_DEBUG:
-        return b0::Node::debug;
+        return b0::logger::Level::debug;
     case B0_TRACE:
-        return b0::Node::trace;
+        return b0::logger::Level::trace;
     default:
-        return b0::Node::info;
+        return b0::logger::Level::info;
     }
 }
 

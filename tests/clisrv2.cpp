@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <boost/thread.hpp>
 
 #include <b0/resolver/resolver.h>
@@ -20,7 +22,7 @@ void cli_thread()
     std::string req = "foo";
     std::string rep;
     cli.call(req, rep);
-    node.log(b0::Node::LogLevel::info, "server response: %s", rep);
+    std::cout << "server response: " << rep << std::endl;
     exit(rep == "foo_" ? 0 : 1);
 }
 

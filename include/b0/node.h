@@ -136,7 +136,7 @@ public:
     /*!
      * \brief Log a message to the default logger of this node
      */
-    void log(LogLevel level, const std::string &message) const override;
+    void log(logger::Level level, const std::string &message) const override;
 
     /*!
      * \brief Get the name assigned by resolver to this node
