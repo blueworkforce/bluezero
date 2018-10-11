@@ -314,6 +314,18 @@ add_executable(
 target_link_libraries(b0_graph_monitor ${B0_LIBRARY})
 
 add_executable(
+    b0_node_list
+    src/b0_node_list/node_list.cpp
+)
+target_link_libraries(b0_node_list ${B0_LIBRARY})
+
+add_executable(
+    b0_topic_list
+    src/b0_topic_list/topic_list.cpp
+)
+target_link_libraries(b0_topic_list ${B0_LIBRARY})
+
+add_executable(
     b0_topic_echo
     src/b0_topic_echo/topic_echo.cpp
 )
@@ -324,6 +336,12 @@ add_executable(
     src/b0_topic_publish/topic_publish.cpp
 )
 target_link_libraries(b0_topic_publish ${B0_LIBRARY})
+
+add_executable(
+    b0_service_list
+    src/b0_service_list/service_list.cpp
+)
+target_link_libraries(b0_service_list ${B0_LIBRARY})
 
 add_executable(
     b0_service_call
