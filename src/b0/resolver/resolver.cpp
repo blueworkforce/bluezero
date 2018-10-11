@@ -574,7 +574,7 @@ void Resolver::heartbeatSweeper()
             {
                 // send a heartbeat to resolv itself trigger the sweeping:
                 resolv_cli.sendHeartbeat(nullptr);
-                sleepUSec(500000);
+                sleepUSec(minimum_heartbeat_interval_resolver_ / 3);
             }
 
             resolv_cli.cleanup();
