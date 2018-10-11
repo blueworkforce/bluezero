@@ -13,6 +13,37 @@
 
 namespace bp = boost::process;
 
+std::vector<std::string> readSubprocessOutput(const std::string &exe, const std::vector<std::string> &args = {})
+{
+    std::vector<std::string> lines;
+    bp::ipstream output;
+    bp::child c(bp::search_path(exe), args, bp::std_out > output);
+    c.wait();
+    std::string line;
+    while(std::getline(output, line)) lines.push_back(line);
+    output.pipe().close();
+    return lines;
+}
+
+/*
+ * Platform-specific implementation of system monitor has to provide
+ * the following functions:
+ *
+ *  - std::vector<float> getLoadAverages();
+ *  - int getFreeMemory();
+ */
+#ifdef _WIN32
+#include "impl/win32.cpp"
+#elif __APPLE__
+#include "impl/macos.cpp"
+#elif __linux__
+#include "impl/linux.cpp"
+#elif __unix__
+#include "impl/unix.cpp"
+#elif defined(_POSIX_VERSION)
+#include "impl/posix.cpp"
+#endif
+
 namespace b0
 {
 
@@ -36,69 +67,17 @@ public:
     {
         Node::spinOnce();
 
-        Load load_msg;
-        load_msg.load_averages = getLoadAverages();
-        load_msg.free_memory = getFreeMemory();
-        pub_.publish(load_msg);
-    }
-
-    std::vector<float> getLoadAverages()
-    {
-        const int n = 3;
-        std::vector<float> avgs;
-        bp::ipstream output;
-        bp::child c(bp::search_path("uptime"), bp::std_out > output);
-        c.wait();
-        std::string line;
-        if(std::getline(output, line))
+        try
         {
-            boost::match_results<std::string::const_iterator> matches;
-            boost::regex e(".*load averages: ([^ ]+) ([^ ]+) ([^ ]+)");
-            if(boost::regex_match(line, matches, e, boost::match_default | boost::match_partial) && matches.size() == n + 1)
-            {
-                avgs.resize(n);
-                for(int i = 0; i < n; i++)
-                    avgs[i] = boost::lexical_cast<float>(matches[i + 1]);
-            }
-            else log(error, "Could not parse output of 'uptime' program");
+            Load load_msg;
+            load_msg.load_averages = getLoadAverages();
+            load_msg.free_memory = getFreeMemory();
+            pub_.publish(load_msg);
         }
-        else log(error, "Could not read output of 'uptime' program");
-        output.pipe().close();
-        return avgs;
-    }
-
-    int getFreeMemory()
-    {
-        int r = -1, pgsz = 1;
-        bp::ipstream output;
-        bp::child c(bp::search_path("vm_stat"), bp::std_out > output);
-        c.wait();
-        std::string line;
-        if(std::getline(output, line))
+        catch(std::exception &ex)
         {
-            boost::match_results<std::string::const_iterator> matches;
-            boost::regex e("Mach Virtual Memory Statistics: \\(page size of ([0-9]+) bytes\\)");
-            if(boost::regex_match(line, matches, e, boost::match_default | boost::match_partial) && matches.size() == 2)
-            {
-                pgsz = boost::lexical_cast<int>(matches[1]);
-
-                std::map<std::string, int> stats;
-                while(std::getline(output, line))
-                {
-                    std::vector<std::string> pair;
-                    boost::algorithm::split_regex(pair, line, boost::regex(": *"));
-                    stats[pair[0]] = int(boost::lexical_cast<float>(pair[1]));
-                }
-                
-                auto it = stats.find("Pages free");
-                if(it != stats.end())
-                    r = it->second * pgsz;
-            }
-            else log(error, "Could not parse output of 'vm_stat' program");
+            log(error, ex.what());
         }
-        else log(error, "Could not read output of 'vm_stat' program");
-        output.pipe().close();
-        return r;
     }
 
 protected:
