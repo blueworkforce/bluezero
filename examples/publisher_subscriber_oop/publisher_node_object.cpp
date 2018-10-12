@@ -10,6 +10,9 @@ namespace po = boost::program_options;
 /*! \example publisher_subscriber_oop/publisher_node_object.cpp
  * This is an example of creating a node by subclassing b0::Node.
  * Useful for overriding some node's behavior.
+ *
+ * Since b0::Node uses two-phase inizialization, you <b>must not</b> call
+ * b0::Node::init() in the constructor, nor b0::Node::cleanup() in the destructor.
  */
 
 //! \cond HIDDEN_SYMBOLS

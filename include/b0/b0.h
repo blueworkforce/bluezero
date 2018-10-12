@@ -7,7 +7,9 @@
 #include <b0/logger/level.h>
 
 /*!
- * \mainpage BlueWorkforce Middleware - A brief description
+ * \mainpage BlueZero
+ *
+ * \section Introduction
  *
  * BlueZero (in short, B0) is an open-source library for developing
  * distributed applications.
@@ -17,7 +19,7 @@
  * or in multiple threads, or in multiple processes, or distributed across
  * multiple machines.
  *
- * A message is any sequence of bytes, and it is guaranteed to be delivered atomically.
+ * A message can be any sequence of bytes, and it is guaranteed to be delivered atomically.
  *
  * A socket is an abstraction for connecting nodes to each other, and sending messages.
  *
@@ -31,15 +33,22 @@
  * (i.e. the topic name), and any node which is interested in that data, can subscribe
  * to that topic in order to receive it. The communication in this pattern is asynchronous.
  *
- * \section api API Design
+ * \section nodes Nodes
+ *
+ * The main entity in the BlueZero is the node. A node can represent a process running in a
+ * machine. Anyway, there is no such restriction as one-node-per-process, or one-node-per-thread,
+ * so it is possible to have many nodes running in the same process. See also \ref threading.
  *
  * The main class used to create a node is b0::Node.
+ * Node uses two-phase initialization, so you must call b0::Node::init() after the constructor,
+ * and b0::Node::cleanup() before the destructor.
+ * <b>Do not call b0::Node::init() from your node class constructor!</b>
  *
- * A node implements one part of the \ref protocol "protocol", with the other counterpart of the protocol implemented by the \ref resolver_intro "resolver node".
+ * The methods of b0::Node class communicate with the resolver node (see below) to perform some
+ * handshaking and naming assignment and resolution.
  *
- * Node uses two-phase initialization, so you must call b0::Node::init() after the constructor, and b0::Node::cleanup() before the destructor. <b>Do not call b0::Node::init() from your node class constructor!</b>
- *
- * Also, b0::Node::spinOnce() must be called periodically to process incoming messages (or just call b0::Node::spin() once).
+ * b0::Node::spinOnce() must be called periodically to process incoming messages (the method
+ * b0::Node::spin() does exactly this, until node shutdown is requested).
  *
  * \image html node-state-machine.png Node state transtion diagram.
  *
@@ -47,18 +56,40 @@
  * resolver node, and it will initialize each of its publishers, subscribers,
  * clients and servers.
  *
- * Any publishers, subscribers, service client and servers must be constructed prior to calling b0::Node::init(), although there is a way to dynamically create such sockets afterwards.
+ * Any publishers, subscribers, service client and servers must be constructed prior to calling
+ * b0::Node::init(), although there is a way to dynamically create such sockets afterwards (by
+ * setting the `managed` flag to false).
  *
- * The two ways of interconnecting nodes are:
- * - \b services, like clients and servers (functionality is provided by classes b0::ServiceClient and b0::ServiceServer)
- * - \b topics, like in publishers and subscribers (functionality provided by classes b0::Publisher and b0::Subscriber)
+ * \section topics Topics
+ *
+ * When using topics, messages are routed via a transport system using publish / subscribe semantics.
+ * The topic is a name used to identify the content of the messages.
+ * A node that is interested in a certain kind of data will subscribe to the appropriate topic.
+ * There may be multiple concurrent publishers and subscribers for a single topic.
+ * and a single node may publish and/or subscribe to multiple topics. In general, publishers and
+ * subscribers are not aware of each others' existence. The idea is to decouple the production of
+ * information from its consumption. Logically, one can think of a topic as a strongly typed
+ * message bus. Each bus has a name, and anyone can connect to the bus to send or receive
+ * messages as long as they are the right type.
+ *
+ * Note: topic names can be changed at runtime; see \ref remapping.
+ *
+ * \section services Services
+ *
+ * The publish / subscribe model is a very flexible communication paradigm, but its many-to-many,
+ * one-way transport is not appropriate for request / reply interactions, which are often required
+ * in a distributed system. Request / reply is done via services, which are defined by a pair of
+ * message structures: one for the request and one for the reply. A providing node offers a service
+ * under a name and a client uses the service by sending the request message and awaiting the reply.
+ *
+ * Note: service names can be changed at runtime; see \ref remapping.
  *
  * \section threading Threading and thread safety
  *
  * The functions of the library are not thread-safe, and so are the functions of ZeroMQ.
  * Thus, every node must be accessed always from the same thread.
  *
- * \section resolver_intro Resolver node
+ * \section resolver_intro Resolver
  *
  * The most important part of the network is the resolver node.
  *
@@ -67,13 +98,16 @@
  * The resolver node is implemented in b0::resolver::Resolver and will provide following services to other nodes:
  *
  * - node name resolution
- * - socket name resolution
- * - a global XPUB/XSUB proxy
+ * - socket name resolution (for service client / server sockets)
+ * - messages routing (for publisher / subscriber sockets)
  * - liveness monitoring
  * - tracking of connected nodes
+ * - topics / services introspection (see \ref graph)
  * - clock synchronization (see \ref timesync)
  *
  * \b Important: you must have the resolver node running prior to running any node. See \ref remote_nodes for more information about running distributed nodes.
+ *
+ * See also \ref remote_nodes for information about connecting remote nodes.
  *
  * \section examples Examples
  *
