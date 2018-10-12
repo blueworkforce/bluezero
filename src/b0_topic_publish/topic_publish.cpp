@@ -20,7 +20,7 @@ int main(int argc, char **argv)
         ("content-type,c", po::value<std::string>(&content_type), "content type")
         ("rate,r", po::value<double>(&rate), "publish rate (0 means one-shot)")
     ;
-    b0::addPositionalOption("topic-name");
+    b0::setPositionalOption("topic-name");
     b0::init(argc, argv);
 
     std::cin >> std::noskipws;

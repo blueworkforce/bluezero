@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     b0::addOptions()
         ("use-compression,c", po::value<int>(&use_compression)->required(), "use compression")
     ;
-    b0::addPositionalOption("use-compression");
+    b0::setPositionalOption("use-compression");
     b0::init(argc, argv);
 
     boost::thread t0(&timeout_thread);

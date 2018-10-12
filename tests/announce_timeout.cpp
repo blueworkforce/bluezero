@@ -39,8 +39,8 @@ int main(int argc, char **argv)
         ("timeout,t", po::value<int>(&timeout)->required(), "timeout for announce phase")
         ("expect-read-error,e", po::value<int>(&expect_read_error)->required(), "expect read error")
     ;
-    b0::addPositionalOption("timeout");
-    b0::addPositionalOption("expect-read-error");
+    b0::setPositionalOption("timeout");
+    b0::setPositionalOption("expect-read-error");
     b0::init(argc, argv);
 
     boost::thread t0(&timeout_thread);

@@ -275,7 +275,7 @@ boost::program_options::options_description_easy_init addOptions()
     return Global::getInstance().optionsDescription().add_options();
 }
 
-void addPositionalOption(const std::string &option, int max_count)
+void setPositionalOption(const std::string &option, int max_count)
 {
     Global::getInstance().positionalOptionsDescription().add(option.c_str(), max_count);
 }

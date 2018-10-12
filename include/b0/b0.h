@@ -445,7 +445,7 @@ boost::program_options::options_description_easy_init addOptions();
 /*!
  * Convenience method for adding a positional command line option
  */
-void addPositionalOption(const std::string &option, int max_count = 1);
+void setPositionalOption(const std::string &option, int max_count = 1);
 
 /*!
  * Check if the specified command line option is present, and how many times

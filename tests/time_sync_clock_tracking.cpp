@@ -43,9 +43,9 @@ int main(int argc, char **argv)
         ("clock-speed,s", po::value<double>(&speed)->required(), "speed of test clock")
         ("expect-success,e", po::value<bool>(&expected)->required(), "expect success")
     ;
-    b0::addPositionalOption("max-slope");
-    b0::addPositionalOption("clock-speed");
-    b0::addPositionalOption("expect-success");
+    b0::setPositionalOption("max-slope");
+    b0::setPositionalOption("clock-speed");
+    b0::setPositionalOption("expect-success");
     b0::init(argc, argv);
 
     b0::TimeSync c(max_slope);

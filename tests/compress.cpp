@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     b0::addOptions()
         ("algorithm,a", po::value<std::string>(&algo)->required(), "compression algorithm to test")
     ;
-    b0::addPositionalOption("algorithm");
+    b0::setPositionalOption("algorithm");
     b0::init(argc, argv);
 
     size_t size[] = {100, 500, 2000, 8000, 25000, 100000, 1000000, 5000000};

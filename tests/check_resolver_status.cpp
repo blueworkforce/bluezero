@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     b0::addOptions()
         ("run-resolver,r", po::value<int>(&run_resolver)->required(), "run resolver")
     ;
-    b0::addPositionalOption("run-resolver");
+    b0::setPositionalOption("run-resolver");
     b0::init(argc, argv);
 
     boost::thread t0(&timeout_thread);

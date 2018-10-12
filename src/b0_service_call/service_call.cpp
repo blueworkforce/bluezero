@@ -17,7 +17,7 @@ int main(int argc, char **argv)
         ("service-name,s", po::value<std::string>(&service_name), "name of service")
         ("content-type,c", po::value<std::string>(&content_type), "content type")
     ;
-    b0::addPositionalOption("service-name");
+    b0::setPositionalOption("service-name");
     b0::init(argc, argv);
 
     std::cin >> std::noskipws;

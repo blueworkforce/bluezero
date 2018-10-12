@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     b0::addOptions()
         ("enable-conflate,c", po::value<int>(&enable_conflate)->required(), "enable conflate")
     ;
-    b0::addPositionalOption("enable-conflate");
+    b0::setPositionalOption("enable-conflate");
     b0::init(argc, argv);
 
     expect_failure = !enable_conflate;
