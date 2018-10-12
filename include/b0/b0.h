@@ -422,6 +422,23 @@
  *  - `./const -v3 -Tout=z -Nconst=const-3`
  *  - `./operation -o\* -Ta=sum -Tb=z -Tout=result -Noperation=op-mul`
  *  - `./print -Tin=result`
+ *
+ *
+ * \page console_logging Console logging control
+ *
+ * When nodes use the logging methods (b0::Node::log(), or any of the shortcuts b0::Node::trace(),
+ * b0::Node::debug(), b0::Node::info(), b0::Node::warn(), b0::Node::error(), b0::Node::fatal()), a
+ * log entry is sent to the `log` topic, but it is also displayed in the console if the console
+ * logging level is low enough to let the message pass.
+ *
+ * The console logging level can be controlled by the `B0_CONSOLE_LOGLEVEL` environment variable
+ * (e.g. set `B0_CONSOLE_LEVEL=trace`), and can be overridden by the `--console-loglevel` command
+ * line switch (e.g. by passing `--console-loglevel=trace` or in short `-Ltrace` as command line
+ * option).
+ *
+ * Additionally, it can be changed via the b0::setConsoleLogLevel() function. Depending if this is
+ * called before b0::init() or after b0::init(), it can provide a different default (recommended),
+ * or completely override any env var or command line switch setting.
  */
 
 #include <string>
