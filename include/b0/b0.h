@@ -343,6 +343,85 @@
  * An arrow from node to service means a node is offering a service. Vice-versa, an arrow from service to node means a node is using a service.
  *
  * Nodes have an implicit connection to the 'resolv' service, however it is not shown in the graph.
+ *
+ *
+ * \page remapping Remapping: dynamically changing names of nodes and sockets
+ *
+ * Names for nodes, topics and services, are usually specified statically, i.e. as constant
+ * values in the C++ application.
+ *
+ * This works fine for most applications. For example the built-in topic 'log' used by
+ * BlueZero for managing remote loggin, is an example of that, and works fine by using that
+ * static name 'log'.
+ *
+ * There are cases instead where we need for example multiple instances of the same node.
+ * Since BlueZero doesn't allow two nodes in the same network to have the same name, when
+ * starting a second instance of the same node, the name  will be automatically changed by
+ * resolver during the announceNode handshake phase.
+ * This is not a big deal, as the node name is not usually needed for addressing other sockets.
+ *
+ * However, if the node offers a service, it will not be possible to startup the same node
+ * twice, as the second instance of the node will fail to register its own service socket address
+ * with the specified name.
+ *
+ * Another usecase is with topics: topics create a named network connection between two nodes.
+ * If we have a pair of nodes, one with a publisher, and one with a subscriber, those are going to
+ * be connected always via the same named channel (i.e. te topic).
+ * Starting multiple instances of the publisher and subscriber node will keep using the existing
+ * channel, making it impossible to reuse nodes for doing the same task in multiple contexts.
+ *
+ * The common pattern that is used in the above mentioned scenarios, is to make the node name,
+ * topic name, or service name, be based on a command line argument, or on an environment variable,
+ * so that is possible to have a dynamic node, topic or service name.
+ *
+ * This usage pattern is so common that BlueZero already provides a way to do it via command
+ * line options.
+ * The command line options used to do this are:
+ *
+ *  - `--remap-node oldName=newName` or in short `-NoldName=newName`
+ *  - `--remap-topic oldName=newName` or in short `-ToldName=newName`
+ *  - `--remap-service oldName=newName` or in short `-SoldName=newName`
+ *
+ * There exists also a fourth option, to remap any name:
+ *
+ *  - `--remap oldName=newName` or in short `-RoldName=newName`
+ *
+ * which is a shorthand for using all of the three options with the same remapping.
+ *
+ * \section remapping_placeholders Special placeholders
+ *
+ * Another common pattern used for creating unique node names, topic names, or service names,
+ * is to include the hostname in the node name, or to include the node name in the topic or
+ * service name.
+ *
+ * BlueZero allows to easily perform these substitutions as well:
+ *  - the placeholder `%%h` will be replaced with the hostname (`B0_HOST_ID`);
+ *  - the placeholder `%%n` will be replaced with the final node name (i.e. after any remapping and after being re-assigned by resolver in case of name clash).
+ *
+ * So, by assigning a node the name `thenode@%%h`, it will finally get assigned the name
+ * `thenode@thehostname.local` (if `thehostname.local` is the machine's hostname, or has been
+ * set in `B0_HOST_ID`).
+ *
+ * \section remapping_example Example
+ *
+ * Here we consider a simple example wit 3 nodes:
+ *
+ *  - \ref remapping/const.cpp "const" is a node publishing a constant value, specified via the `-v` option, on the `out` topic;
+ *  - \ref remapping/print.cpp "print" is a node printing what it receives on the 'in';
+ *  - \ref remapping/operation.cpp "operation" will perform a mathematical operation, specified via the `-o` option, on the values received on the `a` and `b` topics, and will publish the result on the `out` topic.
+ *
+ * In order to connect these nodes, we have to use remapping. For example we can connect an instance of `const` to an instance of `print`, by remapping `in` to `out` in `print` node (or by remapping `out` to `in` in `const`). Or we can create a more complex scenario, for example for computing the expression `(1+2)*3`:
+ *
+ * \dotfile remapping-example.gv
+ *
+ * The above node graph has been created by starting the nodes:
+ *
+ *  - `./const -v1 -Tout=x -Nconst=const-1`
+ *  - `./const -v2 -Tout=y -Nconst=const-2`
+ *  - `./operation -o+ -Ta=x -Tb=y -Tout=sum -Noperation=op-sum`
+ *  - `./const -v3 -Tout=z -Nconst=const-3`
+ *  - `./operation -o\* -Ta=sum -Tb=z -Tout=result -Noperation=op-mul`
+ *  - `./print -Tin=result`
  */
 
 #include <string>
