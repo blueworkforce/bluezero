@@ -366,21 +366,21 @@ private:
 public:
     static Global & getInstance();
 
-    void addRemap(const std::string &raw_arg);
+    void addRemapings(const std::vector<std::string> &raw_arg);
 
-    void addRemap(const std::string &orig_name, const std::string &new_name);
+    void addNodeRemapings(const std::vector<std::string> &raw_arg);
 
-    void addNodeRemap(const std::string &raw_arg);
+    void addTopicRemapings(const std::vector<std::string> &raw_arg);
 
-    void addNodeRemap(const std::string &orig_name, const std::string &new_name);
+    void addServiceRemapings(const std::vector<std::string> &raw_arg);
 
-    void addTopicRemap(const std::string &raw_arg);
+    void addRemaping(const std::string &orig_name, const std::string &new_name);
 
-    void addTopicRemap(const std::string &orig_name, const std::string &new_name);
+    void addNodeRemaping(const std::string &orig_name, const std::string &new_name);
 
-    void addServiceRemap(const std::string &raw_arg);
+    void addTopicRemaping(const std::string &orig_name, const std::string &new_name);
 
-    void addServiceRemap(const std::string &orig_name, const std::string &new_name);
+    void addServiceRemaping(const std::string &orig_name, const std::string &new_name);
 
     boost::program_options::options_description & optionsDescription();
 

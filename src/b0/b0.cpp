@@ -32,12 +32,13 @@ Global::Global()
     : private_(new Private),
       options_description_("Allowed options")
 {
+    using str_vec = std::vector<std::string>;
     options_description_.add_options()
         ("help,h", "display help message")
-        ("remap,R", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addRemap, this, _1)), "remap any name")
-        ("remap-node,N", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addNodeRemap, this, _1)), "remap a node name")
-        ("remap-topic,T", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addTopicRemap, this, _1)), "remap a topic name")
-        ("remap-service,S", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addServiceRemap, this, _1)), "remap a service name")
+        ("remap,R", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addRemapings, this, _1)), "remap any name")
+        ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, this, _1)), "remap a node name")
+        ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
+        ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
         ("console-loglevel,L", po::value<std::string>()->default_value("info"), "specify the console loglevel")
     ;
 }
@@ -57,48 +58,60 @@ static std::vector<std::string> splitAssignment(const std::string &raw_arg)
     return ret;
 }
 
-void Global::addRemap(const std::string &raw_arg)
+void Global::addRemapings(const std::vector<std::string> &raw_arg)
 {
-    auto x = splitAssignment(raw_arg);
-    addRemap(x[0], x[1]);
+    for(auto &s : raw_arg)
+    {
+        auto x = splitAssignment(s);
+        addRemaping(x[0], x[1]);
+    }
 }
 
-void Global::addRemap(const std::string &orig_name, const std::string &new_name)
+void Global::addNodeRemapings(const std::vector<std::string> &raw_arg)
 {
-    addNodeRemap(orig_name, new_name);
-    addTopicRemap(orig_name, new_name);
-    addServiceRemap(orig_name, new_name);
+    for(auto &s : raw_arg)
+    {
+        auto x = splitAssignment(s);
+        addNodeRemaping(x[0], x[1]);
+    }
 }
 
-void Global::addNodeRemap(const std::string &raw_arg)
+void Global::addTopicRemapings(const std::vector<std::string> &raw_arg)
 {
-    auto x = splitAssignment(raw_arg);
-    addNodeRemap(x[0], x[1]);
+    for(auto &s : raw_arg)
+    {
+        auto x = splitAssignment(s);
+        addTopicRemaping(x[0], x[1]);
+    }
 }
 
-void Global::addNodeRemap(const std::string &orig_name, const std::string &new_name)
+void Global::addServiceRemapings(const std::vector<std::string> &raw_arg)
+{
+    for(auto &s : raw_arg)
+    {
+        auto x = splitAssignment(s);
+        addServiceRemaping(x[0], x[1]);
+    }
+}
+
+void Global::addRemaping(const std::string &orig_name, const std::string &new_name)
+{
+    addNodeRemaping(orig_name, new_name);
+    addTopicRemaping(orig_name, new_name);
+    addServiceRemaping(orig_name, new_name);
+}
+
+void Global::addNodeRemaping(const std::string &orig_name, const std::string &new_name)
 {
     private_->remap_node_[orig_name] = new_name;
 }
 
-void Global::addTopicRemap(const std::string &raw_arg)
-{
-    auto x = splitAssignment(raw_arg);
-    addTopicRemap(x[0], x[1]);
-}
-
-void Global::addTopicRemap(const std::string &orig_name, const std::string &new_name)
+void Global::addTopicRemaping(const std::string &orig_name, const std::string &new_name)
 {
     private_->remap_topic_[orig_name] = new_name;
 }
 
-void Global::addServiceRemap(const std::string &raw_arg)
-{
-    auto x = splitAssignment(raw_arg);
-    addServiceRemap(x[0], x[1]);
-}
-
-void Global::addServiceRemap(const std::string &orig_name, const std::string &new_name)
+void Global::addServiceRemaping(const std::string &orig_name, const std::string &new_name)
 {
     private_->remap_service_[orig_name] = new_name;
 }
