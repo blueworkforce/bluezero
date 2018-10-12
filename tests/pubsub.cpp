@@ -1,10 +1,13 @@
 #include <iostream>
 #include <boost/thread.hpp>
+#include <boost/program_options.hpp>
 
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
+
+namespace po = boost::program_options;
 
 int use_compression;
 
@@ -24,7 +27,10 @@ void pub_thread()
     b0::Node node("pub");
     b0::Publisher pub(&node, "topic1");
     if(use_compression)
+    {
+        node.info("Using compression");
         pub.setCompression("zlib", 9);
+    }
     node.init();
     for(;;)
     {
@@ -61,15 +67,11 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    b0::addOptions()
+        ("use-compression,c", po::value<int>(&use_compression)->required(), "use compression")
+    ;
+    b0::addPositionalOption("use-compression");
     b0::init(argc, argv);
-
-    if(argc != 2)
-    {
-        std::cout << "usage: " << argv[0] << " <use-compression-0-or-1>" << std::endl;
-        exit(1);
-    }
-
-    use_compression = std::atoi(argv[1]);
 
     boost::thread t0(&timeout_thread);
     boost::thread t1(&resolver_thread);

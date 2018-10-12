@@ -2,11 +2,14 @@
 #include <iostream>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/program_options.hpp>
 
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
+
+namespace po = boost::program_options;
 
 void resolver_thread()
 {
@@ -15,8 +18,8 @@ void resolver_thread()
     node.spin();
 }
 
-bool expect_failure;
-bool enable_conflate;
+int expect_failure;
+int enable_conflate;
 
 std::atomic<bool> stop{false};
 
@@ -109,15 +112,12 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    b0::addOptions()
+        ("enable-conflate,c", po::value<int>(&enable_conflate)->required(), "enable conflate")
+    ;
+    b0::addPositionalOption("enable-conflate");
     b0::init(argc, argv);
 
-    if(argc != 2)
-    {
-        std::cerr << "usage: " << argv[0] << " <0 or 1>" << std::endl;
-        exit(2);
-    }
-
-    enable_conflate = argv[1][0] == '1';
     expect_failure = !enable_conflate;
 
     boost::thread t0(&timeout_thread);

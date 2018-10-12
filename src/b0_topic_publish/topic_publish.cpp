@@ -2,8 +2,8 @@
 #include <iostream>
 #include <iterator>
 
-#include <boost/thread.hpp>
 #include <boost/program_options.hpp>
+#include <boost/thread.hpp>
 
 #include <b0/node.h>
 #include <b0/publisher.h>
@@ -12,34 +12,16 @@ namespace po = boost::program_options;
 
 int main(int argc, char **argv)
 {
-    b0::init(argc, argv);
     std::string node_name = "b0_topic_publish", topic_name = "", content_type = "";
     double rate = 0.0;
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h", "display help message")
+    b0::addOptions()
         ("node-name,n", po::value<std::string>(&node_name), "name of node")
         ("topic-name,t", po::value<std::string>(&topic_name), "name of topic")
         ("content-type,c", po::value<std::string>(&content_type), "content type")
         ("rate,r", po::value<double>(&rate), "publish rate (0 means one-shot)")
     ;
-    po::variables_map vm;
-    try
-    {
-        po::store(po::parse_command_line(argc, argv, desc), vm);
-    }
-    catch(po::error &ex)
-    {
-        std::cerr << ex.what() << std::endl << desc << std::endl;
-        return 1;
-    }
-    po::notify(vm);
-
-    if(vm.count("help"))
-    {
-        std::cout << desc << std::endl;
-        return 0;
-    }
+    b0::addPositionalOption("topic-name");
+    b0::init(argc, argv);
 
     std::cin >> std::noskipws;
     std::istream_iterator<char> it(std::cin);

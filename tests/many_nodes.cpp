@@ -65,12 +65,6 @@ int main(int argc, char **argv)
 {
     b0::init(argc, argv);
 
-    if(argc != 1)
-    {
-        std::cout << "usage: " << argv[0] << std::endl;
-        exit(1);
-    }
-
     boost::thread t0(&timeout_thread);
     boost::thread t1(&resolver_thread);
     boost::this_thread::sleep_for(boost::chrono::seconds{1});

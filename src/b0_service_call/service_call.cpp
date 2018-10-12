@@ -11,33 +11,14 @@ namespace po = boost::program_options;
 
 int main(int argc, char **argv)
 {
-    b0::init(argc, argv);
     std::string node_name = "b0_service_call", service_name = "", content_type = "";
-    double rate = 0.0;
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h", "display help message")
+    b0::addOptions()
         ("node-name,n", po::value<std::string>(&node_name), "name of node")
         ("service-name,s", po::value<std::string>(&service_name), "name of service")
         ("content-type,c", po::value<std::string>(&content_type), "content type")
     ;
-    po::variables_map vm;
-    try
-    {
-        po::store(po::parse_command_line(argc, argv, desc), vm);
-    }
-    catch(po::error &ex)
-    {
-        std::cerr << ex.what() << std::endl << desc << std::endl;
-        return 1;
-    }
-    po::notify(vm);
-
-    if(vm.count("help"))
-    {
-        std::cout << desc << std::endl;
-        return 0;
-    }
+    b0::addPositionalOption("service-name");
+    b0::init(argc, argv);
 
     std::cin >> std::noskipws;
     std::istream_iterator<char> it(std::cin);

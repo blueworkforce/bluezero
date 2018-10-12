@@ -1,9 +1,11 @@
-#include <boost/thread.hpp>
-
 #include <iostream>
+#include <boost/thread.hpp>
+#include <boost/program_options.hpp>
 
 #include <b0/node.h>
 #include <b0/exceptions.h>
+
+namespace po = boost::program_options;
 
 int timeout = -1;
 int expect_read_error = 0;
@@ -33,16 +35,13 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
+    b0::addOptions()
+        ("timeout,t", po::value<int>(&timeout)->required(), "timeout for announce phase")
+        ("expect-read-error,e", po::value<int>(&expect_read_error)->required(), "expect read error")
+    ;
+    b0::addPositionalOption("timeout");
+    b0::addPositionalOption("expect-read-error");
     b0::init(argc, argv);
-
-    if(argc != 3)
-    {
-        std::cout << "usage: " << argv[0] << " <timeout> <expect-read-error>" << std::endl;
-        exit(20);
-    }
-
-    timeout = std::atoi(argv[1]);
-    expect_read_error = std::atoi(argv[2]);
 
     boost::thread t0(&timeout_thread);
     boost::thread t1(&node_thread);

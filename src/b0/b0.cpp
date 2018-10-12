@@ -9,10 +9,15 @@
 #include <map>
 
 #include <boost/format.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/program_options.hpp>
 
 namespace b0
 {
+
+namespace po = boost::program_options;
 
 struct Global::Private
 {
@@ -24,14 +29,98 @@ struct Global::Private
 };
 
 Global::Global()
-    : private_(new Private)
+    : private_(new Private),
+      options_description_("Allowed options")
 {
+    options_description_.add_options()
+        ("help,h", "display help message")
+        ("remap,R", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addRemap, this, _1)), "remap any name")
+        ("remap-node,N", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addNodeRemap, this, _1)), "remap a node name")
+        ("remap-topic,T", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addTopicRemap, this, _1)), "remap a topic name")
+        ("remap-service,S", po::value<std::string>()->value_name("oldName=newName")->notifier(boost::bind(&Global::addServiceRemap, this, _1)), "remap a service name")
+        ("console-loglevel,L", po::value<std::string>()->default_value("info"), "specify the console loglevel")
+    ;
 }
 
 Global & Global::getInstance()
 {
     static Global global;
     return global;
+}
+
+static std::vector<std::string> splitAssignment(const std::string &raw_arg)
+{
+    std::vector<std::string> ret;
+    boost::split(ret, raw_arg, boost::is_any_of("="));
+    if(ret.size() != 2)
+        throw std::runtime_error("argument must be origName=newName");
+    return ret;
+}
+
+void Global::addRemap(const std::string &raw_arg)
+{
+    auto x = splitAssignment(raw_arg);
+    addRemap(x[0], x[1]);
+}
+
+void Global::addRemap(const std::string &orig_name, const std::string &new_name)
+{
+    addNodeRemap(orig_name, new_name);
+    addTopicRemap(orig_name, new_name);
+    addServiceRemap(orig_name, new_name);
+}
+
+void Global::addNodeRemap(const std::string &raw_arg)
+{
+    auto x = splitAssignment(raw_arg);
+    addNodeRemap(x[0], x[1]);
+}
+
+void Global::addNodeRemap(const std::string &orig_name, const std::string &new_name)
+{
+    private_->remap_node_[orig_name] = new_name;
+}
+
+void Global::addTopicRemap(const std::string &raw_arg)
+{
+    auto x = splitAssignment(raw_arg);
+    addTopicRemap(x[0], x[1]);
+}
+
+void Global::addTopicRemap(const std::string &orig_name, const std::string &new_name)
+{
+    private_->remap_topic_[orig_name] = new_name;
+}
+
+void Global::addServiceRemap(const std::string &raw_arg)
+{
+    auto x = splitAssignment(raw_arg);
+    addServiceRemap(x[0], x[1]);
+}
+
+void Global::addServiceRemap(const std::string &orig_name, const std::string &new_name)
+{
+    private_->remap_service_[orig_name] = new_name;
+}
+
+po::options_description & Global::optionsDescription()
+{
+    return options_description_;
+}
+
+po::positional_options_description & Global::positionalOptionsDescription()
+{
+    return positional_options_description_;
+}
+
+po::variables_map & Global::options()
+{
+    return variables_map_;
+}
+
+void Global::printUsage(bool toStdErr)
+{
+    (toStdErr ? std::cerr : std::cout) << options_description_ << std::endl;
 }
 
 void Global::init(int &argc, char **argv)
@@ -47,51 +136,31 @@ void Global::init(int &argc, char **argv)
     }
 
     // process arguments:
-    int i = 0;
-    std::vector<int> processed_args;
-    while(++i < argc)
+    try
     {
-        std::string opt(argv[i]);
-        if((i + 1) < argc)
-        {
-            // process options with 1 argument here:
-            std::string arg(argv[i + 1]);
-            if(opt == "--remap" || opt == "-R" || opt == "--remap-node" || opt == "-Rn" || opt == "--remap-topic" || opt == "-Rt" || opt == "--remap-service" || opt == "-Rs")
-            {
-                const std::string sep = "=";
-                size_t pos = arg.find(sep);
-                if(pos == std::string::npos)
-                    throw std::runtime_error((boost::format("%s argument must be a pair of names separated by '%s', e.g.: localname%sexternalname (got: %s)") % opt % sep % sep % arg).str());
-                std::string local_name = arg.substr(0, pos),
-                    external_name = arg.substr(pos + sep.size());
-                if(opt == "--remap" || opt == "-R" || opt == "--remap-node" || opt == "-Rn")
-                    private_->remap_node_[local_name] = external_name;
-                if(opt == "--remap" || opt == "-R" || opt == "--remap-topic" || opt == "-Rt")
-                    private_->remap_topic_[local_name] = external_name;
-                if(opt == "--remap" || opt == "-R" || opt == "--remap-service" || opt == "-Rs")
-                    private_->remap_service_[local_name] = external_name;
-                processed_args.push_back(i);
-                processed_args.push_back(i + 1);
-            }
-            else if(opt == "--console-loglevel")
-            {
-                private_->consoleLogLevel_ = logger::levelInfo(arg).level;
-            }
-        }
+        po::command_line_parser parser(argc, argv);
+        parser.options(options_description_).positional(positional_options_description_);
+        po::parsed_options parsed_options = parser.run();
+        po::store(parsed_options, variables_map_);
+        po::notify(variables_map_);
+    }
+    catch(po::error &ex)
+    {
+        std::cerr << "error: " << ex.what() << std::endl;
+        printUsage(true);
+        std::exit(1);
     }
 
-    // mnove processed arguments to end:
-    int shift = 0;
-    for(int i : processed_args)
+    if(variables_map_.count("help"))
     {
-        char *tmp = argv[i + shift];
-        for(int j = i + shift + 1; j < argc; j++)
-            argv[j - 1] = argv[j];
-        argv[argc - 1] = tmp;
-        shift--;
+        printUsage();
+        std::exit(0);
     }
-    // hide processed arguments:
-    argc -= processed_args.size();
+
+    if(variables_map_.count("console-loglevel"))
+    {
+        private_->consoleLogLevel_ = logger::levelInfo(variables_map_["console-loglevel"].as<std::string>()).level;
+    }
 
     private_->initialized_ = true;
 }
@@ -196,6 +265,31 @@ void init(int &argc, char **argv)
     }
 }
 
+void printUsage(bool toStdErr)
+{
+    Global::getInstance().printUsage(toStdErr);
+}
+
+boost::program_options::options_description_easy_init addOptions()
+{
+    return Global::getInstance().optionsDescription().add_options();
+}
+
+void addPositionalOption(const std::string &option, int max_count)
+{
+    Global::getInstance().positionalOptionsDescription().add(option.c_str(), max_count);
+}
+
+int hasOption(const std::string &option)
+{
+    return Global::getInstance().options().count(option);
+}
+
+const boost::program_options::variable_value & getOption(const std::string &option)
+{
+    return Global::getInstance().options()[option];
+}
+
 logger::Level getConsoleLogLevel()
 {
     return Global::getInstance().getConsoleLogLevel();
@@ -205,6 +299,8 @@ void setConsoleLogLevel(logger::Level level)
 {
     Global::getInstance().setConsoleLogLevel(level);
 }
+
+using boost::program_options::value;
 
 } // namespace b0
 

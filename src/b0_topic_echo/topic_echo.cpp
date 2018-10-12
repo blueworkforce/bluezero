@@ -14,31 +14,13 @@ void callback(const std::string &payload)
 
 int main(int argc, char **argv)
 {
-    b0::init(argc, argv);
     std::string node_name = "b0_topic_echo", topic_name = "";
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h", "display help message")
+    b0::addOptions()
         ("node-name,n", po::value<std::string>(&node_name), "name of node")
         ("topic-name,t", po::value<std::string>(&topic_name), "name of topic")
     ;
-    po::variables_map vm;
-    try
-    {
-        po::store(po::parse_command_line(argc, argv, desc), vm);
-    }
-    catch(po::error &ex)
-    {
-        std::cerr << ex.what() << std::endl << desc << std::endl;
-        return 1;
-    }
-    po::notify(vm);
-
-    if(vm.count("help"))
-    {
-        std::cout << desc << std::endl;
-        return 0;
-    }
+    b0::addPositionalOption("topic-name");
+    b0::init(argc, argv);
 
     b0::Node node(node_name);
     b0::Subscriber sub(&node, topic_name, callback);

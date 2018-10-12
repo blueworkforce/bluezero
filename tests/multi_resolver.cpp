@@ -61,12 +61,6 @@ int main(int argc, char **argv)
 {
     b0::init(argc, argv);
 
-    if(argc != 1)
-    {
-        std::cout << "usage: " << argv[0] << "" << std::endl;
-        exit(1);
-    }
-
     passed[22000] = false;
     passed[24000] = false;
 

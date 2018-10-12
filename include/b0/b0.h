@@ -1,6 +1,8 @@
 #ifndef B0__B0_H__INCLUDED
 #define B0__B0_H__INCLUDED
 
+#include <boost/program_options.hpp>
+
 #include <b0/config.h>
 #include <b0/logger/level.h>
 
@@ -364,6 +366,30 @@ private:
 public:
     static Global & getInstance();
 
+    void addRemap(const std::string &raw_arg);
+
+    void addRemap(const std::string &orig_name, const std::string &new_name);
+
+    void addNodeRemap(const std::string &raw_arg);
+
+    void addNodeRemap(const std::string &orig_name, const std::string &new_name);
+
+    void addTopicRemap(const std::string &raw_arg);
+
+    void addTopicRemap(const std::string &orig_name, const std::string &new_name);
+
+    void addServiceRemap(const std::string &raw_arg);
+
+    void addServiceRemap(const std::string &orig_name, const std::string &new_name);
+
+    boost::program_options::options_description & optionsDescription();
+
+    boost::program_options::positional_options_description & positionalOptionsDescription();
+
+    boost::program_options::variables_map & options();
+
+    void printUsage(bool toStdErr = false);
+
     void init(int &argc, char **argv);
 
     bool isInitialized() const;
@@ -386,6 +412,9 @@ public:
 
 private:
     std::unique_ptr<Private> private_;
+    boost::program_options::options_description options_description_;
+    boost::program_options::positional_options_description positional_options_description_;
+    boost::program_options::variables_map variables_map_;
 };
 
 //! \endcond
@@ -402,6 +431,31 @@ private:
  * This function will consume arguments in argv and change argc accordingly.
  */
 void init(int &argc, char **argv);
+
+/*!
+ * Print a description of command line options
+ */
+void printUsage(bool toStdErr = false);
+
+/*!
+ * Convenience method for adding more command line options
+ */
+boost::program_options::options_description_easy_init addOptions();
+
+/*!
+ * Convenience method for adding a positional command line option
+ */
+void addPositionalOption(const std::string &option, int max_count = 1);
+
+/*!
+ * Check if the specified command line option is present, and how many times
+ */
+int hasOption(const std::string &option);
+
+/*!
+ * Retrieve the value of an option
+ */
+const boost::program_options::variable_value & getOption(const std::string &option);
 
 /*!
  * Get the console logging level. This can be changed also by the B0_CONSOLE_LOGLEVEL env var,
