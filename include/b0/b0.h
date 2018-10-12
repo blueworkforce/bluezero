@@ -350,11 +350,10 @@
  * Names for nodes, topics and services, are usually specified statically, i.e. as constant
  * values in the C++ application.
  *
- * This works fine for most applications. For example the built-in topic 'log' used by
- * BlueZero for managing remote loggin, is an example of that, and works fine by using that
- * static name 'log'.
+ * This works fine for most applications. For example the built-in topic `log` used by
+ * BlueZero for implementing remote logging, is an example of that.
  *
- * There are cases instead where we need for example multiple instances of the same node.
+ * There are cases instead where we need multiple instances of the same node.
  * Since BlueZero doesn't allow two nodes in the same network to have the same name, when
  * starting a second instance of the same node, the name  will be automatically changed by
  * resolver during the announceNode handshake phase.
@@ -366,13 +365,14 @@
  *
  * Another usecase is with topics: topics create a named network connection between two nodes.
  * If we have a pair of nodes, one with a publisher, and one with a subscriber, those are going to
- * be connected always via the same named channel (i.e. te topic).
+ * be connected always via the same named channel (i.e. the topic).
  * Starting multiple instances of the publisher and subscriber node will keep using the existing
- * channel, making it impossible to reuse nodes for doing the same task in multiple contexts.
+ * channel, making it impossible to reuse nodes for doing the same task in different contexts
+ * (e.g. an image processing node that can re-used multiple times).
  *
  * The common pattern that is used in the above mentioned scenarios, is to make the node name,
- * topic name, or service name, be based on a command line argument, or on an environment variable,
- * so that is possible to have a dynamic node, topic or service name.
+ * topic name, or service name, to be based on a command line argument, or on an environment variable,
+ * so that is possible to have a dynamic node name, topic name or service name.
  *
  * This usage pattern is so common that BlueZero already provides a way to do it via command
  * line options.
@@ -404,10 +404,10 @@
  *
  * \section remapping_example Example
  *
- * Here we consider a simple example wit 3 nodes:
+ * Here we consider a simple example with 3 nodes:
  *
  *  - \ref remapping/const.cpp "const" is a node publishing a constant value, specified via the `-v` option, on the `out` topic;
- *  - \ref remapping/print.cpp "print" is a node printing what it receives on the 'in';
+ *  - \ref remapping/print.cpp "print" is a node printing what it receives on the `in` topic;
  *  - \ref remapping/operation.cpp "operation" will perform a mathematical operation, specified via the `-o` option, on the values received on the `a` and `b` topics, and will publish the result on the `out` topic.
  *
  * In order to connect these nodes, we have to use remapping. For example we can connect an instance of `const` to an instance of `print`, by remapping `in` to `out` in `print` node (or by remapping `out` to `in` in `const`). Or we can create a more complex scenario, for example for computing the expression `(1+2)*3`:
