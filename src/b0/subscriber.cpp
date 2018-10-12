@@ -60,7 +60,7 @@ void Subscriber::log(logger::Level level, const std::string &message) const
 void Subscriber::init()
 {
     if(Global::getInstance().remapTopicName(getNode(), orig_name_, name_))
-        info("Topic '%s' remapped to '%s'", orig_name_, name_);
+        info("Topic name '%s' remapped to '%s'", orig_name_, name_);
 
     if(remote_addr_.empty())
         remote_addr_ = node_.getXPUBSocketAddress();

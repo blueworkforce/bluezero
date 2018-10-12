@@ -85,7 +85,7 @@ void Node::init()
         throw exception::InvalidStateTransition("init", state_);
 
     if(Global::getInstance().remapNodeName(*this, orig_name_, name_))
-        info("Node '%s' remapped to '%s'", orig_name_, name_);
+        info("Node name '%s' remapped to '%s'", orig_name_, name_);
 
     debug("Initialization...");
 
