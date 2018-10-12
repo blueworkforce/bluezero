@@ -33,11 +33,22 @@ enum class Level : int
  */
 struct LevelInfo
 {
+    //! \brief The string representation of this level
     std::string str;
+
+    //! \brief The level enumeration of this level
     Level level;
+
+    //! \brief The numerical value of this level
     int value;
+
+    //! \brief Ansi attrib to apply console style
     int attr;
+
+    //! \brief Ansi foreground color to apply console style
     int fg;
+
+    //! \brief Ansi background color to apply console style
     int bg;
 
     //! \brief Ansi escape to apply console style
