@@ -2,9 +2,6 @@
 #include <b0/subscriber.h>
 
 #include <iostream>
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
 
 /*! \example publisher_subscriber_oop/subscriber_node_object.cpp
  * This is an example of creating a node by subclassing b0::Node.
@@ -16,9 +13,9 @@ namespace po = boost::program_options;
 class TestSubscriberNode : public b0::Node
 {
 public:
-    TestSubscriberNode(std::string topic)
+    TestSubscriberNode()
         : Node("subscriber"),
-          sub_(this, topic, &TestSubscriberNode::on, this)
+          sub_(this, "A", &TestSubscriberNode::on, this)
     {
     }
 
@@ -33,11 +30,8 @@ private:
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("topic", po::value<std::string>()->default_value("A"), "topic name")
-    ;
     b0::init(argc, argv);
-    TestSubscriberNode node(b0::getOption("topic").as<std::string>());
+    TestSubscriberNode node;
     node.init();
     node.spin();
     node.cleanup();

@@ -3,9 +3,6 @@
 
 #include <iostream>
 #include <boost/lexical_cast.hpp>
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
 
 /*! \example publisher_subscriber_oop/publisher_node_object.cpp
  * This is an example of creating a node by subclassing b0::Node.
@@ -20,9 +17,9 @@ namespace po = boost::program_options;
 class TestPublisherNode : public b0::Node
 {
 public:
-    TestPublisherNode(std::string topic)
+    TestPublisherNode()
         : Node("publisher"),
-          pub_(this, topic)
+          pub_(this, "A")
     {
     }
 
@@ -42,11 +39,8 @@ private:
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("topic", po::value<std::string>()->default_value("A"), "topic name")
-    ;
     b0::init(argc, argv);
-    TestPublisherNode node(b0::getOption("topic").as<std::string>());
+    TestPublisherNode node;
     node.init();
     node.spin();
     node.cleanup();
