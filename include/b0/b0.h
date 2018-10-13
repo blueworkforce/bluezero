@@ -86,8 +86,10 @@
  *
  * \section threading Threading and thread safety
  *
- * The functions of the library are not thread-safe, and so are the functions of ZeroMQ.
- * Thus, every node must be accessed always from the same thread.
+ * The functions of the library are generally not thread-safe (unless stated otherwise).
+ *
+ * Thus, every node's non-thread-safe methods must be accessed always from the same thread which
+ * created the node.
  *
  * \section resolver_intro Resolver
  *

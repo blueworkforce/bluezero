@@ -75,22 +75,30 @@ public:
 
     /*!
      * \brief Return this computer's clock time in microseconds
+     *
+     * This method is thread-safe.
      */
     virtual int64_t hardwareTimeUSec() const;
 
     /*!
      * \brief Return the adjusted time in microseconds. See \ref timesync for details.
+     *
+     * This method is thread-safe.
      */
     virtual int64_t timeUSec();
 
     /*!
      * Compute a smoothed offset with a linear velocity profile
      * with a slope never greater (in absolute value) than max_slope
+     *
+     * This method is thread-safe.
      */
     virtual int64_t constantRateAdjustedOffset();
 
     /*!
      * Update the time offset with a time from remote server (in microseconds)
+     *
+     * This method is thread-safe.
      */
     virtual void updateTime(int64_t remoteTime);
 

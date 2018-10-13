@@ -250,16 +250,22 @@ protected:
 public:
     /*!
      * \brief Return this computer's clock time in microseconds
+     *
+     * This method is thread-safe.
      */
     int64_t hardwareTimeUSec() const;
 
     /*!
      * \brief Return the adjusted time in microseconds. See \ref timesync for details.
+     *
+     * This method is thread-safe.
      */
     int64_t timeUSec();
 
 	/*!
 	 * \brief Sleep for the specified amount of microseconds
+     *
+     * This method is thread-safe.
 	 */
 	void sleepUSec(int64_t usec);
 
