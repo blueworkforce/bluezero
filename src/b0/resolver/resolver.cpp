@@ -590,7 +590,8 @@ void Resolver::heartbeatSweeper()
         }
         catch(std::exception &ex)
         {
-            logger.error("HBsweep: %s", ex.what());
+            if(getState() == Ready)
+                logger.error("HBsweep: %s", ex.what());
         }
     }
 
