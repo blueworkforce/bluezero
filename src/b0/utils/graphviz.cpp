@@ -59,16 +59,21 @@ void toGraphviz(const b0::message::graph::Graph &graph, const std::string &filen
         nodes.insert(x.node_name);
         services.insert(x.other_name);
     }
+
     f << "digraph G {" << std::endl;
-    f << "    graph [overlap=false, splines=true, bgcolor=\"transparent\"];";
-    f << "    node [shape=box, color=" << outline_color << ", fontcolor=" << outline_color << "];";
-    for(auto x : nodes) f << id("N", x) << " [label=\"" << x << "\"];";
+    f << "    graph [overlap=false, splines=true, bgcolor=\"transparent\"];" << std::endl;
     f << std::endl;
-    f << "    node [shape=ellipse, color=" << topic_color << "];";
-    for(auto x : topics) f << id("T", x) << " [label=\"" << x << "\", fontcolor=" << topic_color << "];";
+    f << "    node [shape=box, color=" << outline_color << ", fontcolor=" << outline_color << "];" << std::endl;
+    for(auto x : nodes)
+        f << id("N", x) << " [label=\"" << x << "\"];" << std::endl;
     f << std::endl;
-    f << "    node [shape=diamond, color=" << service_color << "];";
-    for(auto x : services) f << id("S", x) << " [label=\"" << x << "\", fontcolor=" << service_color << "];";
+    f << "    node [shape=ellipse, color=" << topic_color << "];" << std::endl;
+    for(auto x : topics)
+        f << id("T", x) << " [label=\"" << x << "\", fontcolor=" << topic_color << "];" << std::endl;
+    f << std::endl;
+    f << "    node [shape=diamond, color=" << service_color << "];" << std::endl;
+    for(auto x : services)
+        f << id("S", x) << " [label=\"" << x << "\", fontcolor=" << service_color << "];" << std::endl;
     f << std::endl;
     f << "    edge [color=" << outline_color << "];" << std::endl;
     for(auto x : graph.node_topic)
