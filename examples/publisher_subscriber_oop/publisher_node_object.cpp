@@ -26,19 +26,14 @@ public:
     {
     }
 
-    void run()
+    void spinOnce() override
     {
-        int i = 0;
-        while(!shutdownRequested())
-        {
-            spinOnce();
+        static int i = 0;
+        b0::Node::spinOnce();
 
-            std::string msg = (boost::format("msg-%d") % i++).str();
-            std::cout << "Sending: " << msg << std::endl;
-            pub_.publish(msg);
-
-            sleepUSec(1000000);
-        }
+        std::string msg = (boost::format("msg-%d") % i++).str();
+        std::cout << "Sending: " << msg << std::endl;
+        pub_.publish(msg);
     }
 
 private:
@@ -53,7 +48,7 @@ int main(int argc, char **argv)
     b0::init(argc, argv);
     TestPublisherNode node(b0::getOption("topic").as<std::string>());
     node.init();
-    node.run();
+    node.spin();
     node.cleanup();
     return 0;
 }

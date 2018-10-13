@@ -9,6 +9,26 @@
 
 //! \cond HIDDEN_SYMBOLS
 
+/*
+ * This callback will be called continuously by the b0::Node::spin() method
+ */
+void callback(b0::Publisher &pubA, b0::Publisher &pubB)
+{
+    static int i = 0;
+
+    /*
+     * Publish some data on "A"
+     */
+    std::string msg1 = (boost::format("meow-%d") % i++).str();
+    pubA.publish(msg1);
+
+    /*
+     * Publish some data on "B"
+     */
+    std::string msg2 = (boost::format("woof-%d") % i++).str();
+    pubB.publish(msg2);
+}
+
 int main(int argc, char **argv)
 {
     /*
@@ -34,31 +54,10 @@ int main(int argc, char **argv)
      */
     node.init();
 
-    int i = 0;
-    while(!node.shutdownRequested())
-    {
-        /*
-         * Process messages from node's sockets
-         */
-        node.spinOnce();
-
-        /*
-         * Publish some data on "A"
-         */
-        std::string msg1 = (boost::format("meow-%d") % i++).str();
-        pubA.publish(msg1);
-
-        /*
-         * Publish some data on "B"
-         */
-        std::string msg2 = (boost::format("woof-%d") % i++).str();
-        pubB.publish(msg2);
-
-        /*
-         * Wait some time (simulate I/O wait...)
-         */
-        node.sleepUSec(500000);
-    }
+    /*
+     * Spin the node (continuously process messages, and call callback() to send messages)
+     */
+    node.spin([&]() { callback(pubA, pubB); });
 
     /*
      * Perform cleanup (stop threads, notify resolver that this node has quit, ...)

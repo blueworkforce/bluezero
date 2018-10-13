@@ -111,11 +111,14 @@ public:
     virtual void spinOnce();
 
     /*!
-     * \brief Run the spin loop (continuously call spinOnce(), at the specified rate, and call cleanup() at the end)
+     * \brief Run the spin loop
      *
+     * This will continuously call spinOnce() and the specified callback, at the specified rate.
+     *
+     * \param callback a callback to be called each time after spinOnce()
      * \param spinRate the approximate frequency (in Hz) at which spinOnce() will be called
      */
-    virtual void spin(double spinRate = 10.0);
+    virtual void spin(boost::function<void(void)> callback = {}, double spinRate = 10.0);
 
     /*!
      * \brief Node cleanup: stop all threads, send a shutdown notification to resolver, and so on...

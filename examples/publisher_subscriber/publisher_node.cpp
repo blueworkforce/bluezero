@@ -9,6 +9,25 @@
 
 //! \cond HIDDEN_SYMBOLS
 
+/*
+ * This callback will be called continuously by the b0::Node::spin() method
+ */
+void callback(b0::Publisher &pub)
+{
+    static int i = 0;
+
+    /*
+     * Create a message to send
+     */
+    std::string msg = (boost::format("msg-%d") % i++).str();
+
+    /*
+     * Send the message on the "A" topic
+     */
+    std::cout << "Sending: " << msg << std::endl;
+    pub.publish(msg);
+}
+
 int main(int argc, char **argv)
 {
     /*
@@ -31,30 +50,10 @@ int main(int argc, char **argv)
      */
     node.init();
 
-    int i = 0;
-    while(!node.shutdownRequested())
-    {
-        /*
-         * Process messages from node's sockets
-         */
-        node.spinOnce();
-
-        /*
-         * Create a message to send
-         */
-        std::string msg = (boost::format("msg-%d") % i++).str();
-
-        /*
-         * Send the message on the "A" topic
-         */
-        std::cout << "Sending: " << msg << std::endl;
-        pub.publish(msg);
-
-        /*
-         * Wait some time
-         */
-        node.sleepUSec(500000);
-    }
+    /*
+     * Spin the node (continuously process messages, and call callback() to send a message)
+     */
+    node.spin([&]() { callback(pub); });
 
     /*
      * Perform cleanup (stop threads, notify resolver that this node has quit, ...)

@@ -135,7 +135,7 @@ void Node::spinOnce()
         socket->spinOnce();
 }
 
-void Node::spin(double spinRate)
+void Node::spin(boost::function<void(void)> callback, double spinRate)
 {
     NodeState state = state_.load();
     if(state != NodeState::Ready)
@@ -146,6 +146,10 @@ void Node::spin(double spinRate)
     while(!shutdownRequested())
     {
         spinOnce();
+
+        if(!callback.empty())
+            callback();
+
         // FIXME: use sleep_until to effectively spin at spinRate Hz...
         // FIXME: ...i.e.: compensate for the time elapsed in spinOnce()
         long usec = 1000000. / spinRate;
