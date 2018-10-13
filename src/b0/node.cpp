@@ -21,10 +21,6 @@
 namespace b0
 {
 
-std::atomic<bool> Node::quit_flag_(false);
-
-bool Node::sigint_handler_setup_ = false;
-
 struct Node::Private
 {
     Private(Node *node, int io_threads)
@@ -60,8 +56,6 @@ Node::Node(const std::string &nodeName)
 
     if(!Global::getInstance().isInitialized())
         throw std::runtime_error("b0::init() must be called first");
-
-    setupSIGINTHandler();
 }
 
 Node::~Node()
@@ -121,7 +115,7 @@ void Node::shutdown()
 
 bool Node::shutdownRequested() const
 {
-    return shutdown_flag_.load() || quit_flag_.load();
+    return shutdown_flag_.load() || quitRequested();
 }
 
 void Node::spinOnce()
@@ -365,26 +359,6 @@ int64_t Node::timeUSec()
 void Node::sleepUSec(int64_t usec)
 {
 	boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
-}
-
-void Node::signalHandler(int s)
-{
-    quit_flag_.store(true);
-}
-
-void Node::setupSIGINTHandler()
-{
-    if(sigint_handler_setup_) return;
-
-#ifdef HAVE_POSIX_SIGNALS
-    struct sigaction sa;
-    std::memset(&sa, 0, sizeof(sa));
-    sa.sa_handler = &Node::signalHandler;
-    sigfillset(&sa.sa_mask);
-    sigaction(SIGINT, &sa, NULL);
-#endif
-
-    sigint_handler_setup_ = true;
 }
 
 } // namespace b0

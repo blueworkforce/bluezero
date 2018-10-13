@@ -542,11 +542,16 @@ public:
 
     void setConsoleLogLevel(logger::Level level);
 
+    bool quitRequested();
+
+    void quit();
+
 private:
     std::unique_ptr<Private> private_;
     boost::program_options::options_description options_description_;
     boost::program_options::positional_options_description positional_options_description_;
     boost::program_options::variables_map variables_map_;
+    std::atomic<bool> quit_flag_;
 };
 
 //! \endcond
@@ -600,6 +605,23 @@ logger::Level getConsoleLogLevel();
  * by the --console-loglevel= command line option.
  */
 void setConsoleLogLevel(logger::Level level);
+
+/*!
+ * Return wether quit has requested (by b0::quit() method or by pressing CTRL-C)
+ *
+ * This function is thread safe
+ */
+bool quitRequested();
+
+/*!
+ * Shutdown all nodes.
+ *
+ * This will cause all nodes to exit their spin loop cleanly, equivalent to calling
+ * b0::Node::shutdown() on all nodes.
+ *
+ * This function is thread safe
+ */
+void quit();
 
 } // namespace b0
 

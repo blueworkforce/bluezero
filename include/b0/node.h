@@ -308,26 +308,14 @@ private:
     //! Address of the proxy's XPUB socket
     std::string xpub_sock_addr_;
 
-    //! Flag set by the signal (SIGINT) handler
-    static std::atomic<bool> quit_flag_;
-
     //! Flag set by Node::shutdown()
     std::atomic<bool> shutdown_flag_;
 
     //! Minimum heartbeat send interval (0 means not required to send)
     int64_t minimum_heartbeat_interval_;
 
-    //! Flag to indicate wether the signal (SIGINT) handler has been set up
-    static bool sigint_handler_setup_;
-
     //! Time synchronization object
     TimeSync time_sync_;
-
-    //! Signal (SIGINT) handler
-    static void signalHandler(int s);
-
-    //! Routine to set up the signal (SIGINT) handler
-    static void setupSIGINTHandler();
 
 public:
     friend class Socket;

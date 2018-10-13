@@ -15,6 +15,10 @@
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/program_options.hpp>
 
+#ifdef HAVE_POSIX_SIGNALS
+#include <signal.h>
+#endif
+
 namespace b0
 {
 
@@ -29,9 +33,26 @@ struct Global::Private
     logger::Level consoleLogLevel_ = logger::Level::info;
 };
 
+static void signalHandler(int sig)
+{
+    quit();
+}
+
+static void setupSignalHandler()
+{
+#ifdef HAVE_POSIX_SIGNALS
+    struct sigaction sa;
+    std::memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = signalHandler;
+    sigfillset(&sa.sa_mask);
+    sigaction(SIGINT, &sa, NULL);
+#endif
+}
+
 Global::Global()
     : private_(new Private),
-      options_description_("Allowed options")
+      options_description_("Allowed options"),
+      quit_flag_(false)
 {
     using str_vec = std::vector<std::string>;
     options_description_.add_options()
@@ -148,6 +169,8 @@ void Global::init(int &argc, char **argv)
 {
     if(private_->initialized_)
         throw std::runtime_error("already initialized");
+
+    setupSignalHandler();
 
     // process environment variables:
     std::string console_loglevel = b0::env::get("B0_CONSOLE_LOGLEVEL");
@@ -273,6 +296,16 @@ void Global::setConsoleLogLevel(logger::Level level)
     private_->consoleLogLevel_ = level;
 }
 
+bool Global::quitRequested()
+{
+    return quit_flag_.load();
+}
+
+void Global::quit()
+{
+    quit_flag_.store(true);
+}
+
 void init(int &argc, char **argv)
 {
     try
@@ -319,6 +352,16 @@ logger::Level getConsoleLogLevel()
 void setConsoleLogLevel(logger::Level level)
 {
     Global::getInstance().setConsoleLogLevel(level);
+}
+
+bool quitRequested()
+{
+    return Global::getInstance().quitRequested();
+}
+
+void quit()
+{
+    Global::getInstance().quit();
 }
 
 using boost::program_options::value;
