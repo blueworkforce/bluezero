@@ -276,7 +276,8 @@ void Resolver::pubProxy(int xsub_proxy_port, int xpub_proxy_port)
     }
     catch(zmq::error_t &ex)
     {
-        logger.error("XPROXY: %s", ex.what());
+        if(getState() == Ready)
+            logger.error("XPROXY: %s", ex.what());
     }
 
     logger.trace("XPROXY: finished");
