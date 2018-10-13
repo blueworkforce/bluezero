@@ -87,11 +87,15 @@ public:
      * If you need to perform additional cleanup, when overriding this method
      * in your subclass, remember to first call this Node::shutdown() (unless you know
      * what you are doing).
+     *
+     * This method is thread-safe.
      */
     virtual void shutdown();
 
     /*!
      * \brief Return wether shutdown has requested (by Node::shutdown() method or by pressing CTRL-C)
+     *
+     * This method is thread-safe.
      */
     bool shutdownRequested() const;
 
