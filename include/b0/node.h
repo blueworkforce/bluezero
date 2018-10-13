@@ -145,6 +145,8 @@ public:
 
     /*!
      * \brief Get the state of this node
+     *
+     * This method is thread-safe.
      */
     NodeState getState() const;
 
@@ -276,7 +278,7 @@ private:
     std::string orig_name_;
 
     //! State of this node
-    NodeState state_;
+    std::atomic<NodeState> state_;
 
     //! Id of the thread in which this node has been created
     boost::thread::id thread_id_;

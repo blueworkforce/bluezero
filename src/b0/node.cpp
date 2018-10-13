@@ -81,8 +81,9 @@ void Node::setResolverAddress(const std::string &addr)
 
 void Node::init()
 {
-    if(state_ != NodeState::Created)
-        throw exception::InvalidStateTransition("init", state_);
+    NodeState state = state_.load();
+    if(state != NodeState::Created)
+        throw exception::InvalidStateTransition("init", state);
 
     if(Global::getInstance().remapNodeName(*this, orig_name_, name_))
         info("Node name '%s' remapped to '%s'", orig_name_, name_);
@@ -100,15 +101,16 @@ void Node::init()
     for(auto socket : sockets_)
         socket->init();
 
-    state_ = NodeState::Ready;
+    state_.store(NodeState::Ready);
 
     debug("Initialization complete.");
 }
 
 void Node::shutdown()
 {
-    if(state_ != NodeState::Ready)
-        throw exception::InvalidStateTransition("shutdown", state_);
+    NodeState state = state_.load();
+    if(state != NodeState::Ready)
+        throw exception::InvalidStateTransition("shutdown", state);
 
     debug("Shutting down...");
 
@@ -124,8 +126,9 @@ bool Node::shutdownRequested() const
 
 void Node::spinOnce()
 {
-    if(state_ != NodeState::Ready)
-        throw exception::InvalidStateTransition("spinOnce", state_);
+    NodeState state = state_.load();
+    if(state != NodeState::Ready)
+        throw exception::InvalidStateTransition("spinOnce", state);
 
     // spin sockets:
     for(auto socket : sockets_)
@@ -134,8 +137,9 @@ void Node::spinOnce()
 
 void Node::spin(double spinRate)
 {
-    if(state_ != NodeState::Ready)
-        throw exception::InvalidStateTransition("spin", state_);
+    NodeState state = state_.load();
+    if(state != NodeState::Ready)
+        throw exception::InvalidStateTransition("spin", state);
 
     info("Node spinning...");
 
@@ -153,8 +157,9 @@ void Node::spin(double spinRate)
 
 void Node::cleanup()
 {
-    if(state_ != NodeState::Ready)
-        throw exception::InvalidStateTransition("cleanup", state_);
+    NodeState state = state_.load();
+    if(state != NodeState::Ready)
+        throw exception::InvalidStateTransition("cleanup", state);
 
     shutdown_flag_.store(true);
 
@@ -172,7 +177,7 @@ void Node::cleanup()
 
     private2_->resolv_cli_.cleanup(); // resolv_cli_ is not managed
 
-    state_ = NodeState::Terminated;
+    state_.store(NodeState::Terminated);
 }
 
 void Node::log(logger::Level level, const std::string &message) const
@@ -205,7 +210,7 @@ std::string Node::getName() const
 
 NodeState Node::getState() const
 {
-    return state_;
+    return state_.load();
 }
 
 void * Node::getContext()
@@ -225,7 +230,8 @@ std::string Node::getXSUBSocketAddress() const
 
 void Node::addSocket(Socket *socket)
 {
-    if(state_ != NodeState::Created)
+    NodeState state = state_.load();
+    if(state != NodeState::Created)
         throw exception::Exception("Cannot create a socket with an already initialized node");
 
     sockets_.insert(socket);
