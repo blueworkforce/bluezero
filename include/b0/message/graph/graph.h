@@ -6,6 +6,7 @@
 
 #include <b0/b0.h>
 #include <b0/message/message.h>
+#include <b0/message/graph/graph_node.h>
 #include <b0/message/graph/graph_link.h>
 
 namespace b0
@@ -26,7 +27,7 @@ class Graph : public Message
 {
 public:
     //! List of node names
-    std::vector<std::string> nodes;
+    std::vector<GraphNode> nodes;
 
     //! List of topic links
     std::vector<GraphLink> node_topic;

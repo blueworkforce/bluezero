@@ -48,9 +48,15 @@ int main(int argc, char **argv)
 
     {
         b0::message::graph::Graph g1;
-        g1.nodes.push_back("a");
-        g1.nodes.push_back("b");
-        g1.nodes.push_back("c");
+        b0::message::graph::GraphNode n1;
+        n1.node_name = "a";
+        g1.nodes.push_back(n1);
+        b0::message::graph::GraphNode n2;
+        n2.node_name = "b";
+        g1.nodes.push_back(n2);
+        b0::message::graph::GraphNode n3;
+        n3.node_name = "c";
+        g1.nodes.push_back(n3);
         b0::message::graph::GraphLink l1;
         l1.node_name = "a";
         l1.other_name = "t";

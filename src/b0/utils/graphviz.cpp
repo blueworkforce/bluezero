@@ -47,7 +47,7 @@ void toGraphviz(const b0::message::graph::Graph &graph, const std::string &filen
     std::set<std::string> services;
     for(auto x : graph.nodes)
     {
-        nodes.insert(x);
+        nodes.insert(x.node_name);
     }
     for(auto x : graph.node_topic)
     {

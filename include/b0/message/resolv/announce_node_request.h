@@ -27,6 +27,12 @@ namespace resolv
 class AnnounceNodeRequest : public Message
 {
 public:
+    //! The hostname
+    std::string host_id;
+
+    //! The process id containing the node
+    int process_id;
+
     //! The name of the node
     std::string node_name;
 
@@ -56,6 +62,8 @@ struct default_codec_t<AnnounceNodeRequest>
     static codec::object_t<AnnounceNodeRequest> codec()
     {
         auto codec = codec::object<AnnounceNodeRequest>();
+        codec.required("host_id", &AnnounceNodeRequest::host_id);
+        codec.required("process_id", &AnnounceNodeRequest::process_id);
         codec.required("node_name", &AnnounceNodeRequest::node_name);
         return codec;
     }

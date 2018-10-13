@@ -123,6 +123,8 @@ void Resolver::announceNode()
 {
     // directly route this call to the handler, otherwise it will cause a deadlock
     b0::message::resolv::AnnounceNodeRequest rq;
+    rq.host_id = hostname();
+    rq.process_id = pid();
     rq.node_name = getName();
     b0::message::resolv::AnnounceNodeResponse rsp;
     handleAnnounceNode(rq, rsp);
@@ -353,6 +355,8 @@ void Resolver::handleAnnounceNode(const b0::message::resolv::AnnounceNodeRequest
     trace("Received a AnnounceNodeRequest");
     std::string nodeName = makeUniqueNodeName(rq.node_name);
     resolver::NodeEntry *e = new resolver::NodeEntry;
+    e->host_id = rq.host_id;
+    e->process_id = rq.process_id;
     e->name = nodeName;
     heartbeat(e);
     nodes_by_name_[nodeName] = e;
@@ -515,7 +519,11 @@ void Resolver::getGraph(b0::message::graph::Graph &graph)
 {
     for(auto x : nodes_by_name_)
     {
-        graph.nodes.push_back(x.first);
+        b0::message::graph::GraphNode n;
+        n.host_id = x.second->host_id;
+        n.process_id = x.second->process_id;
+        n.node_name = x.second->name;
+        graph.nodes.push_back(n);
     }
     for(auto x : node_publishes_topic_)
     {

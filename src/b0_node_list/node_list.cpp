@@ -2,6 +2,7 @@
 #include <iostream>
 #include <b0/node.h>
 #include <b0/resolver/client.h>
+#include <b0/message/graph/graph_node.h>
 
 int main(int argc, char **argv)
 {
@@ -14,10 +15,12 @@ int main(int argc, char **argv)
     resolv_cli.getGraph(graph);
     std::set<std::string> nodes;
     for(auto &n : graph.nodes)
-        if(n != node.getName())
-            nodes.insert(n);
-    for(auto &n : nodes)
-        std::cout << n << std::endl;
+    {
+        if(n.node_name == node.getName()) continue;
+        if(nodes.find(n.node_name) != nodes.end()) continue;
+        nodes.insert(n.node_name);
+        std::cout << n.node_name << std::endl;
+    }
     resolv_cli.cleanup();
     node.cleanup();
     return 0;

@@ -33,7 +33,7 @@ void Client::setAnnounceTimeout(int timeout)
     announce_timeout_ = timeout;
 }
 
-void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr, int64_t &minimum_heartbeat_interval)
+void Client::announceNode(const std::string &host_id, int process_id, std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr, int64_t &minimum_heartbeat_interval)
 {
     int old_timeout = getReadTimeout();
     setReadTimeout(announce_timeout_);
@@ -42,6 +42,8 @@ void Client::announceNode(std::string &node_name, std::string &xpub_sock_addr, s
     b0::message::resolv::Request rq0;
     rq0.announce_node.emplace();
     b0::message::resolv::AnnounceNodeRequest &rq = *rq0.announce_node;
+    rq.host_id = host_id;
+    rq.process_id = process_id;
     rq.node_name = node_name;
 
     b0::message::resolv::Response rsp0;

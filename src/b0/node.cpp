@@ -308,7 +308,7 @@ std::string Node::freeTCPAddress()
 
 void Node::announceNode()
 {
-    private2_->resolv_cli_.announceNode(name_, xpub_sock_addr_, xsub_sock_addr_, minimum_heartbeat_interval_);
+    private2_->resolv_cli_.announceNode(hostname(), pid(), name_, xpub_sock_addr_, xsub_sock_addr_, minimum_heartbeat_interval_);
 
     if(logger::Logger *p_logger = dynamic_cast<logger::Logger*>(p_logger_))
         p_logger->connect(xsub_sock_addr_);

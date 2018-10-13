@@ -44,7 +44,7 @@ public:
     /*!
      * \brief Announce this node to resolver
      */
-    virtual void announceNode(std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr, int64_t &minimum_heartbeat_interval);
+    virtual void announceNode(const std::string &host_id, int process_id, std::string &node_name, std::string &xpub_sock_addr, std::string &xsub_sock_addr, int64_t &minimum_heartbeat_interval);
 
     /*!
      * \brief Notify resolver of this node shutdown
