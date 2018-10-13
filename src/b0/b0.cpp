@@ -12,6 +12,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string_regex.hpp>
 #include <boost/program_options.hpp>
 
 namespace b0
@@ -52,9 +53,16 @@ Global & Global::getInstance()
 static std::vector<std::string> splitAssignment(const std::string &raw_arg)
 {
     std::vector<std::string> ret;
-    boost::split(ret, raw_arg, boost::is_any_of("="));
+    // split by a '=' not preceded by '\':
+    boost::split_regex(ret, raw_arg, boost::regex("(?<!\\\\)="));
     if(ret.size() != 2)
         throw std::runtime_error("argument must be origName=newName");
+    // process escapes:
+    for(std::string &s : ret)
+    {
+        boost::replace_all(s, "\\=", "=");
+        boost::replace_all(s, "\\\\", "\\");
+    }
     return ret;
 }
 
