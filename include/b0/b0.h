@@ -414,7 +414,7 @@
  *
  * This usage pattern is so common that BlueZero already provides a way to do it via command
  * line options.
- * The command line options used to do this are:
+ * The command line options (passed when launching a node) used to do this are:
  *
  *  - `--remap-node oldName=newName` or in short `-NoldName=newName`
  *  - `--remap-topic oldName=newName` or in short `-ToldName=newName`
