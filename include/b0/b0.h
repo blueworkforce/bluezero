@@ -6,6 +6,8 @@
 #include <b0/config.h>
 #include <b0/logger/level.h>
 
+//! \file
+
 /*!
  * \mainpage BlueZero
  *

@@ -5,6 +5,8 @@
 
 #include <string>
 
+//! \file
+
 namespace b0
 {
 
