@@ -570,7 +570,7 @@ private:
  * Depending if you want to override those settings or just provide a different default,
  * you need to alter such settings before or after calling b0::init() respectively.
  *
- * This function will consume arguments in argv and change argc accordingly.
+ * This function will validate command line arguments and terminate the process in case of error.
  */
 void init(int &argc, char **argv);
 
