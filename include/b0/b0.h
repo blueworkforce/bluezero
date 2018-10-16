@@ -580,7 +580,7 @@ void printUsage(bool toStdErr = false);
 boost::program_options::options_description_easy_init addOptions();
 
 /*!
- * Convenience method for adding a positional command line option
+ * Convenience method for adding a positional command line option (the option must have been previously added with b0::hasOption())
  */
 void setPositionalOption(const std::string &option, int max_count = 1);
 
