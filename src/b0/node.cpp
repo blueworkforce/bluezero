@@ -50,7 +50,8 @@ Node::Node(const std::string &nodeName)
       thread_id_(boost::this_thread::get_id()),
       p_logger_(new logger::Logger(this)),
       shutdown_flag_(false),
-      minimum_heartbeat_interval_(0)
+      minimum_heartbeat_interval_(0),
+      spin_rate_(-1)
 {
     set_thread_name("main");
 
@@ -134,6 +135,9 @@ void Node::spin(boost::function<void(void)> callback, double spinRate)
     NodeState state = state_.load();
     if(state != NodeState::Ready)
         throw exception::InvalidStateTransition("spin", state);
+
+    if(spinRate <= 0)
+        spinRate = getSpinRate();
 
     info("Node spinning...");
 
@@ -359,6 +363,16 @@ int64_t Node::timeUSec()
 void Node::sleepUSec(int64_t usec)
 {
 	boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
+}
+
+void Node::setSpinRate(double rate)
+{
+    spin_rate_ = rate;
+}
+
+double Node::getSpinRate()
+{
+    return spin_rate_ > 0 ? spin_rate_ : b0::getSpinRate();
 }
 
 } // namespace b0

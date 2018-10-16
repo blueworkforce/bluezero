@@ -52,7 +52,8 @@ static void setupSignalHandler()
 Global::Global()
     : private_(new Private),
       options_description_("Allowed options"),
-      quit_flag_(false)
+      quit_flag_(false),
+      spin_rate_(10.0)
 {
     using str_vec = std::vector<std::string>;
     options_description_.add_options()
@@ -62,6 +63,7 @@ Global::Global()
         ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
         ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
         ("console-loglevel,L", po::value<std::string>()->default_value("info"), "specify the console loglevel")
+        ("spin-rate,F", po::value<double>()->default_value(10.0), "specify the default spin rate")
     ;
 }
 
@@ -206,6 +208,11 @@ void Global::init(int &argc, char **argv)
         private_->consoleLogLevel_ = logger::levelInfo(variables_map_["console-loglevel"].as<std::string>()).level;
     }
 
+    if(variables_map_.count("spin-rate"))
+    {
+        spin_rate_ = variables_map_["spin-rate"].as<double>();
+    }
+
     private_->initialized_ = true;
 }
 
@@ -296,6 +303,18 @@ void Global::setConsoleLogLevel(logger::Level level)
     private_->consoleLogLevel_ = level;
 }
 
+double Global::getSpinRate()
+{
+    return spin_rate_;
+}
+
+void Global::setSpinRate(double rate)
+{
+    if(rate <= 0)
+        throw std::range_error("Spin rate must be positive");
+    spin_rate_ = rate;
+}
+
 bool Global::quitRequested()
 {
     return quit_flag_.load();
@@ -352,6 +371,16 @@ logger::Level getConsoleLogLevel()
 void setConsoleLogLevel(logger::Level level)
 {
     Global::getInstance().setConsoleLogLevel(level);
+}
+
+double getSpinRate()
+{
+    return Global::getInstance().getSpinRate();
+}
+
+void setSpinRate(double rate)
+{
+    Global::getInstance().setSpinRate(rate);
 }
 
 bool quitRequested()

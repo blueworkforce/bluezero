@@ -115,10 +115,13 @@ public:
      *
      * This will continuously call spinOnce() and the specified callback, at the specified rate.
      *
+     * If the spinRate parameter is not specified, the value returned by b0::Node::getSpinRate()
+     * will be used.
+     *
      * \param callback a callback to be called each time after spinOnce()
      * \param spinRate the approximate frequency (in Hz) at which spinOnce() will be called
      */
-    virtual void spin(boost::function<void(void)> callback = {}, double spinRate = 10.0);
+    virtual void spin(boost::function<void(void)> callback = {}, double spinRate = -1);
 
     /*!
      * \brief Node cleanup: stop all threads, send a shutdown notification to resolver, and so on...
@@ -272,6 +275,19 @@ public:
 	 */
 	void sleepUSec(int64_t usec);
 
+    /*!
+     * \brief Set the default spin rate
+     */
+    void setSpinRate(double rate);
+
+    /*!
+     * \brief Get the default spin rate
+     *
+     * If a spin rate has been previously specified with b0::Node::setSpinRate(), that
+     * will be returned, otherwise it will return the value from b0::getSpinRate().
+     */
+    double getSpinRate();
+
 private:
     std::unique_ptr<Private> private_;
     std::unique_ptr<Private2> private2_;
@@ -316,6 +332,9 @@ private:
 
     //! Time synchronization object
     TimeSync time_sync_;
+
+    //! Node's default spin rate
+    double spin_rate_;
 
 public:
     friend class Socket;

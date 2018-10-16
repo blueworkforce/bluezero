@@ -542,6 +542,10 @@ public:
 
     void setConsoleLogLevel(logger::Level level);
 
+    double getSpinRate();
+
+    void setSpinRate(double rate);
+
     bool quitRequested();
 
     void quit();
@@ -552,6 +556,7 @@ private:
     boost::program_options::positional_options_description positional_options_description_;
     boost::program_options::variables_map variables_map_;
     std::atomic<bool> quit_flag_;
+    double spin_rate_;
 };
 
 //! \endcond
@@ -605,6 +610,16 @@ logger::Level getConsoleLogLevel();
  * by the --console-loglevel= command line option.
  */
 void setConsoleLogLevel(logger::Level level);
+
+/*!
+ * Get the default spin rate (can be changed by the --spin-rate= command line option)
+ */
+double getSpinRate();
+
+/*!
+ * Set the default spin rate (can be changed by the --spin-rate= command line option)
+ */
+void setSpinRate(double rate);
 
 /*!
  * Return wether quit has requested (by b0::quit() method or by pressing CTRL-C)
