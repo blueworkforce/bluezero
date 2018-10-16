@@ -1,10 +1,13 @@
 #!/bin/sh
+DEST=v2
 set -x
 set -e
 git checkout gh-pages
-rm *.html *.png *.css *.js ; rm -rf search
-cp -r docs/* .
+git fetch --all
+git reset --hard origin/gh-pages
+rm -rf ${DEST} && mkdir ${DEST}
+cp -r docs/* ${DEST}/
 git add .
 git commit --amend -m 'update docs'
 git push -f
-git checkout master
+git checkout devel
