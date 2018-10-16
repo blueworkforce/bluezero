@@ -12,7 +12,7 @@ Go to https://github.com/blueworkforce/bluezero/releases to download a source ta
 
 ## Documentation
 
-See the generated [`docs/index.html`](https://blueworkforce.github.io/bluezero/) for the documentation.
+See the generated [`docs/index.html`](https://blueworkforce.github.io/bluezero/v2/) for the documentation.
 
 ## License
 
