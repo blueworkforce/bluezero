@@ -1,4 +1,4 @@
-# BlueZero git repository
+# BlueZero v1
 
 BlueZero (in short, "B0") is a cross-platform middleware which provides tools for interconnecting pieces of software running in multiple threads, processes or machines.
 
@@ -59,15 +59,15 @@ Install the following:
 ## Compiling
 
 ```bash
-git clone https://github.com/BlueWorkforce/bluezero
+git clone --recursive https://github.com/BlueWorkforce/bluezero
 cd bluezero
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_GUI=ON -DBUILD_EXAMPLES=ON ..
 make
 ```
 
-Optionally, generate the documentation (requires [Doxygen](http://www.doxygen.org) and [Graphviz](http://www.graphviz.org) installed):
+Optionally, generate the documentation (requires [Doxygen](http://www.doxygen.org), [Graphviz](http://www.graphviz.org) and [mscgen](http://www.mcternan.me.uk/mscgen/) installed):
 ```
 make doc
 ```
