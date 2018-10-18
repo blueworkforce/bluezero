@@ -59,7 +59,7 @@ Install the following:
 ## Compiling
 
 ```bash
-git clone --recursive https://github.com/BlueWorkforce/bluezero
+git clone --branch v1 --recursive https://github.com/BlueWorkforce/bluezero
 cd bluezero
 mkdir build
 cd build
