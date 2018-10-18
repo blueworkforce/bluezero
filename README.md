@@ -70,9 +70,8 @@ Install the following:
 ## Compiling
 
 ```bash
-git clone --recursive https://github.com/BlueWorkforce/bluezero
+git clone --branch v2 --recursive https://github.com/BlueWorkforce/bluezero
 cd bluezero
-git checkout v2
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_GUI=ON -DBUILD_EXAMPLES=ON ..
