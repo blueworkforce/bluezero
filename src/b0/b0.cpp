@@ -338,6 +338,13 @@ void init(int &argc, char **argv)
     }
 }
 
+void init()
+{
+    int argc = 0;
+    char *argv[] = {};
+    init(argc, argv);
+}
+
 void printUsage(bool toStdErr)
 {
     Global::getInstance().printUsage(toStdErr);

@@ -577,6 +577,11 @@ private:
 void init(int &argc, char **argv);
 
 /*!
+ * Initialize the B0 library, without command line arguments.
+ */
+void init();
+
+/*!
  * Print a description of command line options
  */
 void printUsage(bool toStdErr = false);
