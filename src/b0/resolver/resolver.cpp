@@ -91,7 +91,8 @@ void Resolver::init()
     if(minimum_heartbeat_interval_resolver_ > 0)
         heartbeat_sweeper_thread_ = boost::thread(&Resolver::heartbeatSweeper, this);
 
-    // we have to manually call this because graph_pub_ doesn't send graph notify:
+    // we have to manually notify that 'resolver' is publishing on the 'graph' topic,
+    // because the graph_pub_ socket doesn't send graph notify:
     // (has to be disabled because resolver is a special kind of node)
     onNodeTopicPublishStart(getName(), graph_pub_.getTopicName());
 
