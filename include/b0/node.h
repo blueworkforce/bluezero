@@ -268,12 +268,12 @@ public:
      */
     int64_t timeUSec();
 
-	/*!
-	 * \brief Sleep for the specified amount of microseconds
+    /*!
+     * \brief Sleep for the specified amount of microseconds
      *
      * This method is thread-safe.
-	 */
-	void sleepUSec(int64_t usec);
+     */
+    void sleepUSec(int64_t usec);
 
     /*!
      * \brief Set the default spin rate

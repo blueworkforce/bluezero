@@ -362,7 +362,7 @@ int64_t Node::timeUSec()
 
 void Node::sleepUSec(int64_t usec)
 {
-	boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
+    boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
 }
 
 void Node::setSpinRate(double rate)

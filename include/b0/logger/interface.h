@@ -101,7 +101,7 @@ public:
 protected:
     //! \cond HIDDEN_SYMBOLS
 
-	virtual void log_helper(Level level, boost::format &format) const;
+    virtual void log_helper(Level level, boost::format &format) const;
 
     template<class T, class... Args>
     void log_helper(Level level, boost::format &format, T &&t, Args&&... args) const
