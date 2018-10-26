@@ -65,7 +65,7 @@ void set_thread_name(const char *threadName)
     dbg_set_thread_name(threadName);
 #endif
     std::string this_thread_id = boost::lexical_cast<std::string>(boost::this_thread::get_id());
-    thread_name[this_thread_id] = std::string(threadName); 
+    thread_name[this_thread_id] = std::string(threadName);
 }
 
 std::string get_thread_name()
