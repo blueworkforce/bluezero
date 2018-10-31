@@ -6,3 +6,4 @@
 *.pyc
 .*.swp
 /docs
+compile_commands.json
