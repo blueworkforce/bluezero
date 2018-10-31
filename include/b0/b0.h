@@ -477,6 +477,44 @@
  * Additionally, it can be changed via the b0::setConsoleLogLevel() function. Depending if this is
  * called before b0::init() or after b0::init(), it can provide a different default (recommended),
  * or completely override any env var or command line switch setting.
+ *
+ *
+ * \page cmdline_args Parsing command line arguments
+ *
+ * The BlueZero library handles the parsing of command line options.
+ *
+ * Nodes can specify additional options to parse, calling b0::addOptions() before b0::init(),
+ * using the `boost::program_options` interface.
+ *
+ * The user-specified options will be listed in the help page, among with standard BlueZero
+ * command-line options.
+ *
+ * An option can be marked as positional using b0::setPositionalOption().
+ *
+ * Option values can be read, after calling b0::init(), using the function b0::hasOption() and
+ * b0::getOption().
+ *
+ * Example:
+ *
+ * \include examples/cmdline_args/args.cpp
+ *
+ * Running the program with the `-h` option produces the help page, which includes both
+ * standard BlueZero node options, and the custom options:
+ *
+ * ```
+ * Allowed options:
+ *   -h [ --help ]                         display help message
+ *   -R [ --remap ] oldName=newName        remap any name
+ *   -N [ --remap-node ] oldName=newName   remap a node name
+ *   -T [ --remap-topic ] oldName=newName  remap a topic name
+ *   -S [ --remap-service ] oldName=newName
+ *                                         remap a service name
+ *   -L [ --console-loglevel ] arg (=info) specify the console loglevel
+ *   -F [ --spin-rate ] arg (=10)          specify the default spin rate
+ *   -n [ --fancy-name ] arg               a string arg
+ *   -x [ --lucky-number ] arg (=23)       an int arg with default
+ *   -f [ --file ] arg                     file arg
+ * ```
  */
 
 #include <string>
@@ -588,21 +626,29 @@ void printUsage(bool toStdErr = false);
 
 /*!
  * Convenience method for adding more command line options
+ *
+ * See also \ref cmdline_args.
  */
 boost::program_options::options_description_easy_init addOptions();
 
 /*!
  * Convenience method for adding a positional command line option (the option must have been previously added with b0::hasOption())
+ *
+ * See also \ref cmdline_args.
  */
 void setPositionalOption(const std::string &option, int max_count = 1);
 
 /*!
  * Check if the specified command line option is present, and how many times
+ *
+ * See also \ref cmdline_args.
  */
 int hasOption(const std::string &option);
 
 /*!
  * Retrieve the value of an option
+ *
+ * See also \ref cmdline_args.
  */
 const boost::program_options::variable_value & getOption(const std::string &option);
 
