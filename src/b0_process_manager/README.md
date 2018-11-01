@@ -6,7 +6,8 @@ subprocesses (typically other nodes).
 Ideally, each machine runs a Process Manager node.
 
 Additionally, a Process Manager HUB node is used to simplify the handling of connections
-and requests, as shown in the figure below:
+and requests, as shown in the figure below (dotted arrow line indicates a node which spawns
+another node as a subprocess):
 
 ![Example network diagram using multiple Process Managers and a Process Manager HUB](../docs/process_manager.png)
 
