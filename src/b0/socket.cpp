@@ -60,8 +60,6 @@ void Socket::log(LogLevel level, std::string message) const
 {
     if(boost::lexical_cast<std::string>(boost::this_thread::get_id()) == node_.threadID())
         node_.log(level, message);
-    else
-        std::cout << "[Skipped logger because in another thread]: " << message << std::endl;
 }
 
 void Socket::setRemoteAddress(std::string addr)
