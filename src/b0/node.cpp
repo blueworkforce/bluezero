@@ -108,14 +108,14 @@ void Node::shutdown()
 
     log(debug, "Shutting down...");
 
-    shutdown_flag_ = true;
+    shutdown_flag_.store(true);
 
     log(debug, "Shutting complete.");
 }
 
 bool Node::shutdownRequested() const
 {
-    return shutdown_flag_ || quit_flag_.load();
+    return shutdown_flag_.load() || quit_flag_.load();
 }
 
 void Node::spinOnce()
@@ -311,26 +311,34 @@ void Node::notifyShutdown()
 void Node::heartbeatLoop()
 {
     set_thread_name("HB");
+    b0::logger::LocalLogger logger(this);
+    logger.log(trace, "HB: started");
 
-    try
+    while(!shutdownRequested())
     {
-        resolver::Client resolv_cli(this);
-        resolv_cli.init();
-
-        while(!shutdownRequested())
+        try
         {
-            int64_t time_usec;
-            resolv_cli.sendHeartbeat(&time_usec);
-            time_sync_.updateTime(time_usec);
-            boost::this_thread::sleep_for(boost::chrono::seconds{1});
-        }
+            resolver::Client resolv_cli(this);
+            resolv_cli.setReadTimeout(1000);
+            resolv_cli.init();
 
-        resolv_cli.cleanup();
+            while(!shutdownRequested())
+            {
+                int64_t time_usec;
+                resolv_cli.sendHeartbeat(&time_usec);
+                time_sync_.updateTime(time_usec);
+                boost::this_thread::sleep_for(boost::chrono::seconds{1});
+            }
+
+            resolv_cli.cleanup();
+        }
+        catch(std::exception &ex)
+        {
+            logger.log(error, "HB: %s", ex.what());
+        }
     }
-    catch(zmq::error_t &ex)
-    {
-        // if context is terminated, catch exception and die
-    }
+
+    logger.log(trace, "HB: finished");
 }
 
 int64_t Node::hardwareTimeUSec() const
