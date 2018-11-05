@@ -328,7 +328,7 @@ void Node::heartbeatLoop()
         try
         {
             resolver::Client resolv_cli(this);
-            resolv_cli.setReadTimeout(1000);
+            resolv_cli.setReadTimeout(minimum_heartbeat_interval_ / 3000);
             resolv_cli.init();
 
             while(!shutdownRequested())
