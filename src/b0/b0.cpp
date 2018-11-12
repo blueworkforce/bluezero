@@ -55,16 +55,6 @@ Global::Global()
       quit_flag_(false),
       spin_rate_(10.0)
 {
-    using str_vec = std::vector<std::string>;
-    options_description_.add_options()
-        ("help,h", "display help message")
-        ("remap,R", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addRemapings, this, _1)), "remap any name")
-        ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, this, _1)), "remap a node name")
-        ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
-        ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
-        ("console-loglevel,L", po::value<std::string>()->default_value("info"), "specify the console loglevel")
-        ("spin-rate,F", po::value<double>()->default_value(10.0), "specify the default spin rate")
-    ;
 }
 
 Global & Global::getInstance()
@@ -182,6 +172,16 @@ void Global::init(int &argc, char **argv)
     }
 
     // process arguments:
+    using str_vec = std::vector<std::string>;
+    options_description_.add_options()
+        ("help,h", "display help message")
+        ("remap,R", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addRemapings, this, _1)), "remap any name")
+        ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, this, _1)), "remap a node name")
+        ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
+        ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
+        ("console-loglevel,L", po::value<std::string>()->default_value(private_->consoleLogLevel_), "specify the console loglevel")
+        ("spin-rate,F", po::value<double>()->default_value(spin_rate_), "specify the default spin rate")
+    ;
     try
     {
         po::command_line_parser parser(argc, argv);
