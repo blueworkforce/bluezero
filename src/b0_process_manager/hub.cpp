@@ -78,7 +78,7 @@ public:
         info("removed entry: %s", host_name);
     }
 
-    void cleanup()
+    void removeInactive()
     {
         std::vector<std::string> removed;
         for(auto it = last_active_.begin(); it != last_active_.end(); ++it)
@@ -94,7 +94,7 @@ public:
     void spinOnce()
     {
         Node::spinOnce();
-        cleanup();
+        removeInactive();
     }
 
 protected:
