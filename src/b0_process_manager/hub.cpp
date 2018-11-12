@@ -136,6 +136,7 @@ protected:
 
 int main(int argc, char **argv)
 {
+    b0::setSpinRate(2.0);
     b0::init(argc, argv);
     b0::process_manager::HUB node;
     node.init();
