@@ -5,6 +5,7 @@
 #include <b0/node.h>
 #include <b0/service_client.h>
 #include <b0/service_server.h>
+#include <b0/publisher.h>
 #include <b0/subscriber.h>
 #include "protocol.h"
 
@@ -20,7 +21,8 @@ public:
     HUB()
         : Node("process_manager_hub"),
           srv_(this, "process_manager_hub/control", &HUB::handleRequest, this),
-          beacon_sub_(this, "process_manager/beacon", &HUB::onBeacon, this)
+          beacon_sub_(this, "process_manager/beacon", &HUB::onBeacon, this),
+          active_nodes_pub_(this, "process_manager_hub/active_nodes")
     {
     }
 
@@ -93,10 +95,26 @@ public:
             remove(x);
     }
 
+    void broadcastActive()
+    {
+        ActiveNodes msg;
+        for(auto it = clients_.begin(); it != clients_.end(); ++it)
+        {
+            NodeActivity act;
+            act.host_name = it->first;
+            //TODO: act.node_name = ...;
+            //TODO: act.service_name = ...;
+            act.last_active = it->second.last_active_;
+            msg.nodes.push_back(act);
+        }
+        active_nodes_pub_.publish(msg);
+    }
+
     void spinOnce()
     {
         Node::spinOnce();
         removeInactive();
+        broadcastActive();
     }
 
 protected:
@@ -109,6 +127,7 @@ protected:
     std::map<std::string, Client> clients_;
     b0::ServiceServer srv_;
     b0::Subscriber beacon_sub_;
+    b0::Publisher active_nodes_pub_;
 };
 
 } // namespace process_manager

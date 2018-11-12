@@ -113,6 +113,25 @@ public:
     std::string type() const override {return "b0::process_manager::Beacon";}
 };
 
+class NodeActivity : public b0::message::Message
+{
+public:
+    std::string host_name;
+    std::string node_name;
+    std::string service_name;
+    int64_t last_active;
+
+    std::string type() const override {return "b0::process_manager::NodeActivity";}
+};
+
+class ActiveNodes : public b0::message::Message
+{
+public:
+    std::vector<NodeActivity> nodes;
+
+    std::string type() const override {return "b0::process_manager::ActiveNodes";}
+};
+
 } // namespace process_manager
 
 } // namespace b0
@@ -232,6 +251,27 @@ struct default_codec_t<b0::process_manager::Beacon> {
         codec.required("host_name", &b0::process_manager::Beacon::host_name);
         codec.required("node_name", &b0::process_manager::Beacon::node_name);
         codec.required("service_name", &b0::process_manager::Beacon::service_name);
+        return codec;
+    }
+};
+
+template <>
+struct default_codec_t<b0::process_manager::NodeActivity> {
+    static codec::object_t<b0::process_manager::NodeActivity> codec() {
+        auto codec = codec::object<b0::process_manager::NodeActivity>();
+        codec.required("host_name", &b0::process_manager::NodeActivity::host_name);
+        codec.required("node_name", &b0::process_manager::NodeActivity::node_name);
+        codec.required("service_name", &b0::process_manager::NodeActivity::service_name);
+        codec.required("last_active", &b0::process_manager::NodeActivity::last_active);
+        return codec;
+    }
+};
+
+template <>
+struct default_codec_t<b0::process_manager::ActiveNodes> {
+    static codec::object_t<b0::process_manager::ActiveNodes> codec() {
+        auto codec = codec::object<b0::process_manager::ActiveNodes>();
+        codec.required("nodes", &b0::process_manager::ActiveNodes::nodes);
         return codec;
     }
 };
