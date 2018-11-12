@@ -179,7 +179,7 @@ void Global::init(int &argc, char **argv)
         ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, this, _1)), "remap a node name")
         ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
         ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
-        ("console-loglevel,L", po::value<std::string>()->default_value(private_->consoleLogLevel_), "specify the console loglevel")
+        ("console-loglevel,L", po::value<std::string>()->default_value(logger::levelInfo(private_->consoleLogLevel_).str), "specify the console loglevel")
         ("spin-rate,F", po::value<double>()->default_value(spin_rate_), "specify the default spin rate")
     ;
     try
