@@ -30,15 +30,16 @@ public:
 
     void onBeacon(const Beacon &beacon)
     {
-        //trace("received a beacon from host %s, node %s, srv %s", beacon.host_name, beacon.node_name, beacon.service_name);
-        auto it = last_active_.find(beacon.host_name);
-        if(it == last_active_.end())
+        auto it = clients_.find(beacon.host_name);
+        if(it == clients_.end())
         {
             add(beacon);
+            return;
         }
         else
         {
-            it->second = timeUSec();
+            auto &client = it->second;
+            client.last_active_ = timeUSec();
         }
     }
 
@@ -57,33 +58,34 @@ public:
             return;
         }
 
-        it->second->call(req, rep);
+        auto &client = it->second;
+        client.cli_->call(req, rep);
     }
 
     void add(const Beacon &beacon)
     {
-        last_active_[beacon.host_name] = timeUSec();
-        clients_[beacon.host_name].reset(new b0::ServiceClient(this, beacon.service_name, false));
+        clients_[beacon.host_name].last_active_ = timeUSec();
+        clients_[beacon.host_name].cli_.reset(new b0::ServiceClient(this, beacon.service_name, false));
         info("added new entry: %s -> %s", beacon.host_name, beacon.service_name);
-        clients_[beacon.host_name]->init();
+        clients_[beacon.host_name].cli_->init();
     }
 
     void remove(const std::string &host_name)
     {
         auto it = clients_.find(host_name);
         if(it == clients_.end()) return;
-        clients_[host_name]->cleanup();
+        clients_[host_name].cli_->cleanup();
         clients_.erase(it);
-        last_active_.erase(host_name);
         info("removed entry: %s", host_name);
     }
 
     void removeInactive()
     {
         std::vector<std::string> removed;
-        for(auto it = last_active_.begin(); it != last_active_.end(); ++it)
+        for(auto it = clients_.begin(); it != clients_.end(); ++it)
         {
-            int64_t diff = timeUSec() - it->second;
+            auto &client = it->second;
+            int64_t diff = timeUSec() - client.last_active_;
             if(diff > 1000000)
                 removed.push_back(it->first);
         }
@@ -98,8 +100,13 @@ public:
     }
 
 protected:
-    std::map<std::string, std::unique_ptr<b0::ServiceClient> > clients_;
-    std::map<std::string, int64_t > last_active_;
+    struct Client
+    {
+        std::unique_ptr<b0::ServiceClient> cli_;
+        int64_t last_active_;
+    };
+
+    std::map<std::string, Client> clients_;
     b0::ServiceServer srv_;
     b0::Subscriber beacon_sub_;
 };
