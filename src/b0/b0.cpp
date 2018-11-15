@@ -40,6 +40,8 @@ struct Global::Private
 
 static void signalHandler(int sig)
 {
+    if(sig == SIGINT)  std::cout << " (SIGINT)" << std::endl;
+    if(sig == SIGTERM) std::cout << " (SIGTERM)" << std::endl;
     quit();
 }
 
