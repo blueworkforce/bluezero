@@ -10,7 +10,7 @@ namespace po = boost::program_options;
 int main(int argc, char **argv)
 {
     b0::addOptions()
-        ("minimum-heartbeat-interval,o", po::value<int64_t>()->default_value(5000000), "set the minimum heartbeat interval, in microseconds (an interval of 0us will disable online monitoring)")
+        ("minimum-heartbeat-interval,o", po::value<int64_t>()->default_value(30000000), "set the minimum heartbeat interval, in microseconds (an interval of 0us will disable online monitoring)")
     ;
     b0::init(argc, argv);
 
