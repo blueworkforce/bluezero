@@ -344,6 +344,7 @@ void Node::heartbeatLoop()
         catch(std::exception &ex)
         {
             logger.error("HB: %s", ex.what());
+            sleepUSec(minimum_heartbeat_interval_ / 3);
         }
     }
 
