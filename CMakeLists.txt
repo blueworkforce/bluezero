@@ -385,6 +385,24 @@ if(BUILD_GUI)
         src/b0_gui_graph_monitor/gui_graph_monitor.cpp
     )
     target_link_libraries(b0_gui_graph_monitor ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
+
+    add_executable(
+        b0_gui_process_manager
+        src/b0_gui_process_manager/main.cpp
+        src/b0_gui_process_manager/b0node.cpp
+        src/b0_gui_process_manager/nodesview.cpp
+        src/b0_gui_process_manager/mainwindow.cpp
+        src/b0_gui_process_manager/startnodedialog.cpp
+        src/b0_gui_process_manager/mainwindow.ui
+        src/b0_gui_process_manager/startnodedialog.ui
+    )
+    target_include_directories(
+        b0_gui_process_manager
+        PRIVATE
+        src
+        src/b0_gui_process_manager
+    )
+    target_link_libraries(b0_gui_process_manager ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
 endif()
 
 #install(
