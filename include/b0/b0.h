@@ -592,11 +592,6 @@ public:
 
 private:
     std::unique_ptr<Private> private_;
-    boost::program_options::options_description options_description_;
-    boost::program_options::positional_options_description positional_options_description_;
-    boost::program_options::variables_map variables_map_;
-    std::atomic<bool> quit_flag_;
-    double spin_rate_;
 };
 
 //! \endcond

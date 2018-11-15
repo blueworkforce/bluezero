@@ -26,11 +26,16 @@ namespace po = boost::program_options;
 
 struct Global::Private
 {
-    bool initialized_ = false;
+    bool initialized_{false};
     std::map<std::string, std::string> remap_node_;
     std::map<std::string, std::string> remap_topic_;
     std::map<std::string, std::string> remap_service_;
-    logger::Level consoleLogLevel_ = logger::Level::info;
+    logger::Level console_log_level_{logger::Level::info};
+    boost::program_options::options_description options_description_{"Allowed options"};
+    boost::program_options::positional_options_description positional_options_description_;
+    boost::program_options::variables_map variables_map_;
+    std::atomic<bool> quit_flag_{false};
+    double spin_rate_{10.0};
 };
 
 static void signalHandler(int sig)
@@ -51,10 +56,7 @@ static void setupSignalHandler()
 }
 
 Global::Global()
-    : private_(new Private),
-      options_description_("Allowed options"),
-      quit_flag_(false),
-      spin_rate_(10.0)
+    : private_(new Private)
 {
 }
 
@@ -140,22 +142,22 @@ void Global::addServiceRemaping(const std::string &orig_name, const std::string 
 
 po::options_description & Global::optionsDescription()
 {
-    return options_description_;
+    return private_->options_description_;
 }
 
 po::positional_options_description & Global::positionalOptionsDescription()
 {
-    return positional_options_description_;
+    return private_->positional_options_description_;
 }
 
 po::variables_map & Global::options()
 {
-    return variables_map_;
+    return private_->variables_map_;
 }
 
 void Global::printUsage(bool toStdErr)
 {
-    (toStdErr ? std::cerr : std::cout) << options_description_ << std::endl;
+    (toStdErr ? std::cerr : std::cout) << private_->options_description_ << std::endl;
 }
 
 void Global::init(int &argc, char **argv)
@@ -169,27 +171,27 @@ void Global::init(int &argc, char **argv)
     std::string console_loglevel = b0::env::get("B0_CONSOLE_LOGLEVEL");
     if(console_loglevel != "")
     {
-        private_->consoleLogLevel_ = logger::levelInfo(console_loglevel).level;
+        private_->console_log_level_ = logger::levelInfo(console_loglevel).level;
     }
 
     // process arguments:
     using str_vec = std::vector<std::string>;
-    options_description_.add_options()
+    private_->options_description_.add_options()
         ("help,h", "display help message")
         ("remap,R", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addRemapings, this, _1)), "remap any name")
         ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, this, _1)), "remap a node name")
         ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
         ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
-        ("console-loglevel,L", po::value<std::string>()->default_value(logger::levelInfo(private_->consoleLogLevel_).str), "specify the console loglevel")
-        ("spin-rate,F", po::value<double>()->default_value(spin_rate_), "specify the default spin rate")
+        ("console-loglevel,L", po::value<std::string>()->default_value(logger::levelInfo(private_->console_log_level_).str), "specify the console loglevel")
+        ("spin-rate,F", po::value<double>()->default_value(private_->spin_rate_), "specify the default spin rate")
     ;
     try
     {
         po::command_line_parser parser(argc, argv);
-        parser.options(options_description_).positional(positional_options_description_);
+        parser.options(private_->options_description_).positional(private_->positional_options_description_);
         po::parsed_options parsed_options = parser.run();
-        po::store(parsed_options, variables_map_);
-        po::notify(variables_map_);
+        po::store(parsed_options, private_->variables_map_);
+        po::notify(private_->variables_map_);
     }
     catch(po::error &ex)
     {
@@ -198,20 +200,20 @@ void Global::init(int &argc, char **argv)
         std::exit(1);
     }
 
-    if(variables_map_.count("help"))
+    if(private_->variables_map_.count("help"))
     {
         printUsage();
         std::exit(0);
     }
 
-    if(variables_map_.count("console-loglevel"))
+    if(private_->variables_map_.count("console-loglevel"))
     {
-        private_->consoleLogLevel_ = logger::levelInfo(variables_map_["console-loglevel"].as<std::string>()).level;
+        private_->console_log_level_ = logger::levelInfo(private_->variables_map_["console-loglevel"].as<std::string>()).level;
     }
 
-    if(variables_map_.count("spin-rate"))
+    if(private_->variables_map_.count("spin-rate"))
     {
-        spin_rate_ = variables_map_["spin-rate"].as<double>();
+        private_->spin_rate_ = private_->variables_map_["spin-rate"].as<double>();
     }
 
     private_->initialized_ = true;
@@ -296,34 +298,34 @@ bool Global::remapServiceName(const b0::Node &node, const std::string &service_n
 
 logger::Level Global::getConsoleLogLevel()
 {
-    return private_->consoleLogLevel_;
+    return private_->console_log_level_;
 }
 
 void Global::setConsoleLogLevel(logger::Level level)
 {
-    private_->consoleLogLevel_ = level;
+    private_->console_log_level_ = level;
 }
 
 double Global::getSpinRate()
 {
-    return spin_rate_;
+    return private_->spin_rate_;
 }
 
 void Global::setSpinRate(double rate)
 {
     if(rate <= 0)
         throw std::range_error("Spin rate must be positive");
-    spin_rate_ = rate;
+    private_->spin_rate_ = rate;
 }
 
 bool Global::quitRequested()
 {
-    return quit_flag_.load();
+    return private_->quit_flag_.load();
 }
 
 void Global::quit()
 {
-    quit_flag_.store(true);
+    private_->quit_flag_.store(true);
 }
 
 void init(int &argc, char **argv)
