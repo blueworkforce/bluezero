@@ -22,7 +22,7 @@ std::string LevelInfo::ansiReset() const
 }
 
 static const LevelInfo levelInfo_[] = {
-    {"trace", Level::trace,  0, 0, 0x1e, 0},
+    {"trace", Level::trace, 10, 1, 0x1e, 0},
     {"debug", Level::debug, 10, 1, 0x1e, 0},
     {"info",  Level::info,  20, 1, 0x25, 0},
     {"warn",  Level::warn,  30, 0, 0x21, 0},
