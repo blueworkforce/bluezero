@@ -46,6 +46,7 @@ static void setupSignalHandler()
     sa.sa_handler = signalHandler;
     sigfillset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);
 #endif
 }
 
