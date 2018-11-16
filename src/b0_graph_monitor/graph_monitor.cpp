@@ -69,15 +69,20 @@ public:
 
     void renderAndDisplayGraph(const b0::message::graph::Graph &graph)
     {
-        toGraphviz(graph, "graph.gv", "white", "cyan", "red");
+        GraphvizOutputOptions outputOpts;
+        outputOpts.setOutlineColor("white");
+        outputOpts.setTopicColor("cyan");
+        outputOpts.setServiceColor("red");
+        toGraphviz(graph, "graph.gv", outputOpts);
 
-        if(renderGraphviz("graph.gv", "graph.png") == 0)
+        GraphvizRenderOptions renderOpts;
+        if(renderGraphviz("graph.gv", "graph.png", renderOpts) == 0)
         {
             displayInlineImage("graph.png");
         }
         else
         {
-            std::cerr << "failed to execute neato" << std::endl;
+            std::cerr << "failed to execute " << renderOpts.program << std::endl;
             return;
         }
     }
