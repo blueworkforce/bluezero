@@ -33,19 +33,26 @@ public:
     {
         Node::init();
 
-        if(false)
+        init_time_ = hardwareTimeUSec();
+
+        resolv_cli_.init();
+    }
+
+    void spinOnce() override
+    {
+        Node::spinOnce();
+
+        if(!graph_received_ && (hardwareTimeUSec() - init_time_) > 2000000)
         {
-            /*
-             * requesting the initial graph is not really needed, as the
-             * initialization of this node will cause a change in the graph
-             *
-             * FIXME: it would be anyway better to have a timeout, and if a graph
-             *        is not received in the first 2 seconds, send an explicit request
-             */
+            // if a graph has not been received within first few seconds
+            // manually request it via resolv service:
             info("Requesting graph");
+
             b0::message::graph::Graph graph;
             resolv_cli_.getGraph(graph);
             printOrDisplayGraph("Current graph", graph);
+
+            graph_received_ = true;
         }
     }
 
@@ -56,6 +63,8 @@ public:
 
     void printOrDisplayGraph(std::string message, const b0::message::graph::Graph &graph)
     {
+        graph_received_ = true;
+
         if(termHasImageCapability())
         {
             info(message);
@@ -109,6 +118,8 @@ public:
 protected:
     b0::resolver::Client resolv_cli_;
     b0::Subscriber sub_;
+    int64_t init_time_;
+    bool graph_received_{false};
 };
 
 } // namespace graph
