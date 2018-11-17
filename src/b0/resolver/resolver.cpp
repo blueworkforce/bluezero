@@ -326,16 +326,20 @@ void Resolver::heartbeat(resolver::NodeEntry *node_entry)
 
 void Resolver::handle(const b0::message::resolv::Request &rq, b0::message::resolv::Response &rsp)
 {
-#define MAP_METHOD(m, f) \
-    if(rq.f) { rsp.f.emplace(); handle##m(*rq.f, *rsp.f); }
-    MAP_METHOD(AnnounceNode, announce_node)
-    MAP_METHOD(ShutdownNode, shutdown_node)
-    MAP_METHOD(AnnounceService, announce_service)
-    MAP_METHOD(ResolveService, resolve_service)
-    MAP_METHOD(Heartbeat, heartbeat)
-    MAP_METHOD(NodeTopic, node_topic)
-    MAP_METHOD(NodeService, node_service)
-    MAP_METHOD(GetGraph, get_graph)
+#define MAP_METHOD(m, f, t) \
+    if(rq.f) { \
+        if(t) trace("Received a " #m "Request"); \
+        rsp.f.emplace(); \
+        handle##m(*rq.f, *rsp.f); \
+    }
+    MAP_METHOD(AnnounceNode, announce_node, 1)
+    MAP_METHOD(ShutdownNode, shutdown_node, 1)
+    MAP_METHOD(AnnounceService, announce_service, 1)
+    MAP_METHOD(ResolveService, resolve_service, 1)
+    MAP_METHOD(Heartbeat, heartbeat, 0)
+    MAP_METHOD(NodeTopic, node_topic, 1)
+    MAP_METHOD(NodeService, node_service, 1)
+    MAP_METHOD(GetGraph, get_graph, 1)
 #undef MAP_METHOD
 }
 
@@ -353,7 +357,6 @@ std::string Resolver::makeUniqueNodeName(std::string nodeName)
 
 void Resolver::handleAnnounceNode(const b0::message::resolv::AnnounceNodeRequest &rq, b0::message::resolv::AnnounceNodeResponse &rsp)
 {
-    trace("Received a AnnounceNodeRequest");
     std::string nodeName = makeUniqueNodeName(rq.node_name);
     resolver::NodeEntry *e = new resolver::NodeEntry;
     e->host_id = rq.host_id;
