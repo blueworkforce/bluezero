@@ -30,10 +30,14 @@ void B0Node::onGraphChanged(const b0::message::graph::Graph &msg)
 
 void B0Node::onActiveNodesChanged(const b0::process_manager::ActiveNodes &msg)
 {
-    QStringList activeNodes;
+    QSet<QString> activeNodes;
     for(auto x : msg.nodes)
-        activeNodes << QString::fromStdString(x.host_name);
-    Q_EMIT activeNodesChanged(activeNodes);
+        activeNodes.insert(QString::fromStdString(x.host_name));
+    if(activeNodes != activeNodes_)
+    {
+        activeNodes_ = activeNodes;
+        Q_EMIT activeNodesChanged(activeNodes);
+    }
 }
 
 void B0Node::run(int argc, char **argv)

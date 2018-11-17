@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QSet>
 #include <b0/b0.h>
 #include <b0/node.h>
 #include <b0/subscriber.h>
@@ -24,7 +25,7 @@ private:
 Q_SIGNALS:
     void finished();
     void graphChanged(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node);
-    void activeNodesChanged(QStringList activeNodes);
+    void activeNodesChanged(QSet<QString> activeNodes);
 
 public Q_SLOTS:
     void run(int argc, char **argv);
@@ -36,6 +37,7 @@ private:
     std::unique_ptr<b0::Subscriber> graph_sub_;
     std::unique_ptr<b0::Subscriber> active_nodes_sub_;
     std::unique_ptr<b0::ServiceClient> pm_cli_;
+    QSet<QString> activeNodes_;
 };
 
 #endif // B0NODE_H__INCLUDED
