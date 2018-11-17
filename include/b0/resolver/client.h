@@ -50,7 +50,7 @@ public:
      * \brief Notify resolver of this node shutdown
      */
     virtual void notifyShutdown();
-    
+
     /*!
      * \brief Send a heartbeat to resolver
      */
