@@ -26,7 +26,7 @@ public:
     using LogInterface::log;
 
     //! Constructor
-    LocalLogger(b0::Node *node);
+    LocalLogger(b0::Node *node = nullptr);
 
     //! Destructor
     virtual ~LocalLogger();
@@ -38,7 +38,7 @@ public:
 
 protected:
     //! The node
-    b0::Node &node_;
+    b0::Node *node_;
 
     //! The output log level.
     Level outputLevel_;

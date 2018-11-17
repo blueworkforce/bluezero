@@ -24,7 +24,7 @@ void LogInterface::log_helper(Level level, boost::format &format) const
 }
 
 LocalLogger::LocalLogger(b0::Node *node)
-    : node_(*node),
+    : node_(node),
       color_(false)
 {
     outputLevel_ = getConsoleLogLevel();
@@ -42,7 +42,6 @@ void LocalLogger::log(Level level, const std::string &message) const
     if(level < outputLevel_) return;
 
     LevelInfo info = levelInfo(level);
-    std::string name = node_.getName();
     std::stringstream ss;
     if(color_) ss << info.ansiEscape();
 
@@ -50,7 +49,11 @@ void LocalLogger::log(Level level, const std::string &message) const
     std::time_t time = std::chrono::system_clock::to_time_t(now);
     ss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S ");
 
-    if(!name.empty()) ss << "[" << name << "] ";
+    if(node_)
+    {
+        std::string name = node_->getName();
+        if(!name.empty()) ss << "[" << name << "] ";
+    }
 
     ss << info.str << ": ";
 
@@ -96,13 +99,17 @@ void Logger::log(Level level, const std::string &message) const
 
 void Logger::remoteLog(Level level, const std::string &message) const
 {
-    std::string name = node_.getName();
-
     b0::message::log::LogEntry e;
-    e.node_name = name;
+
+    if(node_)
+    {
+        e.node_name = node_->getName();
+        e.time_usec = node_->timeUSec();
+    }
+
     e.level = levelInfo(level).str;
     e.message = message;
-    e.time_usec = node_.timeUSec();
+
     private_->pub_.publish(e);
 }
 
