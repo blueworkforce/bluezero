@@ -47,8 +47,8 @@ void B0Node::run(int argc, char **argv)
     b0::init(argc, argv);
 
     node_.reset(new b0::Node("b0_gui_process_manager"));
-    graph_sub_.reset(new b0::Subscriber(node_.get(), "graph", &B0Node::onGraphChanged));
-    active_nodes_sub_.reset(new b0::Subscriber(node_.get(), "process_manager_hub/active_nodes", &B0Node::onActiveNodesChanged));
+    graph_sub_.reset(new b0::Subscriber(node_.get(), "graph", static_cast<b0::Subscriber::CallbackMsg<b0::message::graph::Graph> >(boost::bind(&B0Node::onGraphChanged, this, _1))));
+    active_nodes_sub_.reset(new b0::Subscriber(node_.get(), "process_manager_hub/active_nodes", static_cast<b0::Subscriber::CallbackMsg<b0::process_manager::ActiveNodes> >(boost::bind(&B0Node::onActiveNodesChanged, this, _1))));
     pm_cli_.reset(new b0::ServiceClient(node_.get(), "process_manager_hub/control"));
 
     node_->init();
