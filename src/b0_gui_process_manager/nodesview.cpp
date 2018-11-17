@@ -6,7 +6,6 @@
 #include <QProcess>
 #include <QContextMenuEvent>
 #include <QApplication>
-#include "startnodedialog.h"
 
 AbstractItem::AbstractItem(NodesView *nodeView)
     : nodesView_(nodeView)
@@ -231,7 +230,8 @@ AbstractSocket * Connection::socket() const
 }
 
 NodesView::NodesView(QWidget *parent)
-    : QGraphicsView(parent)
+    : QGraphicsView(parent),
+      startNodeDialog_(new StartNodeDialog)
 {
     contextMenu_ = new QMenu();
     actionStartNode_ = contextMenu_->addAction("Start new node...", this, &NodesView::onMenuStartNode);
@@ -244,6 +244,7 @@ NodesView::NodesView(QWidget *parent)
     setRenderHint(QPainter::TextAntialiasing, true);
     setMinimumSize(600, 400);
 
+#if 0
     auto n1 = addNode(QPointF(40, 50), "node-with-long-name-1");
     auto n2 = addNode(QPointF(40, 210), "node-2");
     auto n3 = addNode(QPointF(240, 210), "node-4");
@@ -256,6 +257,7 @@ NodesView::NodesView(QWidget *parent)
     centerOn(t1);
 
     arrangeItems();
+#endif
 }
 
 Node * NodesView::addNode(const QPointF &pos, const QString &text)
@@ -389,10 +391,51 @@ void NodesView::contextMenuEvent(QContextMenuEvent *event)
     contextMenu_->popup(event->globalPos());
 }
 
+void NodesView::setGraph(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node)
+{
+    QMap<QString, Node*> nodeByNameMap;
+    QMap<QString, Topic*> topicByNameMap;
+    QMap<QString, Service*> serviceByNameMap;
+    scene()->clear();
+    auto node = [&](const QString &n) {
+        auto it = nodeByNameMap.find(n);
+        if(it != nodeByNameMap.end()) return it.value();
+        Node *obj = addNode({}, n);
+        nodeByNameMap[n] = obj;
+        return obj;
+    };
+    auto topic = [&](const QString &n) {
+        auto it = topicByNameMap.find(n);
+        if(it != topicByNameMap.end()) return it.value();
+        Topic *t = addTopic({}, n);
+        topicByNameMap[n] = t;
+        return t;
+    };
+    auto service = [&](const QString &n) {
+        auto it = serviceByNameMap.find(n);
+        if(it != serviceByNameMap.end()) return it.value();
+        Service *s = addService({}, n);
+        serviceByNameMap[n] = s;
+        return s;
+    };
+    for(auto k : node_topic.keys())
+        addConnection(node(k), topic(node_topic.value(k)), Direction::Out);
+    for(auto k : topic_node.keys())
+        addConnection(node(topic_node.value(k)), topic(k), Direction::In);
+    for(auto k : node_service.keys())
+        addConnection(node(k), service(node_service.value(k)), Direction::Out);
+    for(auto k : service_node.keys())
+        addConnection(node(service_node.value(k)), service(k), Direction::In);
+    arrangeItems();
+}
+
+void NodesView::setActiveNodes(QSet<QString> active_nodes)
+{
+}
+
 void NodesView::onMenuStartNode()
 {
-    StartNodeDialog dlg;
-    dlg.exec();
+    startNodeDialog_->exec();
 }
 
 void NodesView::onMenuStopNode()

@@ -8,6 +8,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    qRegisterMetaType<QMap<QString,QString> >("QMap<QString,QString>");
+
     QThread *thread = new QThread();
     B0Node *node = new B0Node();
     node->moveToThread(thread);
@@ -19,16 +21,10 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     QObject::connect(node, &B0Node::activeNodesChanged, [=](QSet<QString> activeNodes) {
-        qDebug() << "activeNodesChanged...";
-        qDebug() << activeNodes;
+        //qDebug() << "activeNodesChanged...";
+        //qDebug() << activeNodes;
     });
-    QObject::connect(node, &B0Node::graphChanged, [=](QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node) {
-        qDebug() << "graphChanged...";
-        qDebug() << node_topic;
-        qDebug() << topic_node;
-        qDebug() << node_service;
-        qDebug() << service_node;
-    });
+    QObject::connect(node, &B0Node::graphChanged, w.nodesView_, &NodesView::setGraph);
     w.show();
 
     return a.exec();
