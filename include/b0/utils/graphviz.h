@@ -57,7 +57,7 @@ struct GraphvizRenderOptions
         return *this;
     }
 
-    inline GraphvizRenderOptions & setClusterHosts(const std::string &p)
+    inline GraphvizRenderOptions & setProgram(const std::string &p)
     {
         program = p;
         return *this;
