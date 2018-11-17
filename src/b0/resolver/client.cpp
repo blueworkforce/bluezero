@@ -185,10 +185,12 @@ void Client::getGraph(b0::message::graph::Graph &graph)
     b0::message::resolv::Request rq0;
     rq0.get_graph.emplace();
     b0::message::graph::GetGraphRequest &rq = *rq0.get_graph;
+
     b0::message::resolv::Response rsp0;
     rsp0.get_graph.emplace();
     b0::message::graph::GetGraphResponse &rsp = *rsp0.get_graph;
     call(rq0, rsp0);
+
     graph = rsp.graph;
 }
 
