@@ -38,6 +38,7 @@
  - [!] Removed passing topic name as cmdline arg in examples (there's remapping for that).
  - Allow to set node's default spin rate via cmdline args.
  - Remove read timeout in heartbeat loop.
+ - Optional cluster nodes by machine in graph view.
 
 ## v1.4.6 (2018-09-13)
 
