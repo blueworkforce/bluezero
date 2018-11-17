@@ -1,15 +1,11 @@
 #include "b0node.h"
 
-#include <QDebug>
-
 B0Node::B0Node()
 {
 }
 
 void B0Node::onGraphChanged(const b0::message::graph::Graph &msg)
 {
-    qDebug() << "onGraphChanged" << msg.nodes.size();
-
     QMap<QString, QString> node_topic, topic_node, node_service, service_node;
     for(auto x : msg.node_topic)
     {
@@ -34,8 +30,6 @@ void B0Node::onGraphChanged(const b0::message::graph::Graph &msg)
 
 void B0Node::onActiveNodesChanged(const b0::process_manager::ActiveNodes &msg)
 {
-    qDebug() << "onActiveNodesChanged" << msg.nodes.size();
-
     QStringList activeNodes;
     for(auto x : msg.nodes)
         activeNodes << QString::fromStdString(x.host_name);
