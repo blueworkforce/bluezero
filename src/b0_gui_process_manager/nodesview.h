@@ -109,9 +109,9 @@ class NodesView : public QGraphicsView
 public:
     NodesView(QWidget *parent = nullptr);
 
-    Node * addNode(const QPointF &pos, const QString &text);
-    Topic * addTopic(const QPointF &pos, const QString &text);
-    Service * addService(const QPointF &pos, const QString &text);
+    Node * addNode(const QString &text);
+    Topic * addTopic(const QString &text);
+    Service * addService(const QString &text);
     Connection * addConnection(Node *node, AbstractSocket *socket, Direction dir);
 
     void raiseItem(QGraphicsItem *item);

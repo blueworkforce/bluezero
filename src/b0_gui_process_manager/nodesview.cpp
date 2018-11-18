@@ -245,42 +245,43 @@ NodesView::NodesView(QWidget *parent)
     setMinimumSize(600, 400);
 
 #if 0
-    auto n1 = addNode(QPointF(40, 50), "node-with-long-name-1");
-    auto n2 = addNode(QPointF(40, 210), "node-2");
-    auto n3 = addNode(QPointF(240, 210), "node-4");
-    auto t1 = addTopic(QPointF(60, 130), "topic");
-    auto s1 = addService(QPointF(220, 130), "srv");
+    auto n1 = addNode("node-with-long-name-1");
+    auto n2 = addNode("node-2");
+    auto n3 = addNode("node-4");
+    auto t1 = addTopic("topic");
+    auto s1 = addService("srv");
+    n1->setPos(40, 50);
+    n2->setPos(40, 210);
+    n3->setPos(240, 210);
+    t1->setPos(60, 130);
+    s1->setPos(220, 130);
     addConnection(n1, t1, Direction::In);
     addConnection(n2, t1, Direction::Out);
     addConnection(n1, s1, Direction::Out);
     addConnection(n3, s1, Direction::Out);
     centerOn(t1);
-
     arrangeItems();
 #endif
 }
 
-Node * NodesView::addNode(const QPointF &pos, const QString &text)
+Node * NodesView::addNode(const QString &text)
 {
     Node *node = new Node(this, text);
     scene()->addItem(node);
-    node->setPos(pos);
     return node;
 }
 
-Topic * NodesView::addTopic(const QPointF &pos, const QString &text)
+Topic * NodesView::addTopic(const QString &text)
 {
     Topic *topic = new Topic(this, text);
     scene()->addItem(topic);
-    topic->setPos(pos);
     return topic;
 }
 
-Service * NodesView::addService(const QPointF &pos, const QString &text)
+Service * NodesView::addService(const QString &text)
 {
     Service *service = new Service(this, text);
     scene()->addItem(service);
-    service->setPos(pos);
     return service;
 }
 
