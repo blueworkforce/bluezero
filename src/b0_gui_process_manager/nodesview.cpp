@@ -425,6 +425,11 @@ void NodesView::setGraph(QMap<QString, QString> node_topic, QMap<QString, QStrin
 
 void NodesView::setActiveNodes(QSet<QString> active_nodes)
 {
+    QString oldSel = startNodeDialog_->comboHost->currentText();
+    startNodeDialog_->comboHost->clear();
+    for(auto s : active_nodes)
+        startNodeDialog_->comboHost->addItem(s);
+    startNodeDialog_->comboHost->setCurrentText(oldSel);
 }
 
 void NodesView::onMenuStartNode()
