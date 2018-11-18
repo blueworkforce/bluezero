@@ -31,8 +31,8 @@ AbstractVertex::AbstractVertex(NodesView *nodeView, const QString &text, const Q
 
 AbstractVertex::~AbstractVertex()
 {
-    for(Connection *conn : connections_)
-        delete conn;
+    while(!connections_.isEmpty())
+        delete connections_[0];
 }
 
 QPainterPath AbstractVertex::shape() const
