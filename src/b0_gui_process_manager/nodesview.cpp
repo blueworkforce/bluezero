@@ -392,33 +392,26 @@ void NodesView::contextMenuEvent(QContextMenuEvent *event)
     contextMenu_->popup(event->globalPos());
 }
 
+template<typename T>
+inline T * getOrCreate(QMap<QString, T*> &map, const QString &name, T * (NodesView::*fnCreate)(const QString&), NodesView *nv)
+{
+    auto it = map.find(name);
+    if(it != map.end()) return it.value();
+    T *obj = (nv->*fnCreate)(name);
+    map[name] = obj;
+    return obj;
+}
+
 void NodesView::setGraph(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node)
 {
+    using std::placeholders::_1;
     QMap<QString, Node*> nodeByNameMap;
     QMap<QString, Topic*> topicByNameMap;
     QMap<QString, Service*> serviceByNameMap;
     scene()->clear();
-    auto node = [&](const QString &n) {
-        auto it = nodeByNameMap.find(n);
-        if(it != nodeByNameMap.end()) return it.value();
-        Node *obj = addNode({}, n);
-        nodeByNameMap[n] = obj;
-        return obj;
-    };
-    auto topic = [&](const QString &n) {
-        auto it = topicByNameMap.find(n);
-        if(it != topicByNameMap.end()) return it.value();
-        Topic *t = addTopic({}, n);
-        topicByNameMap[n] = t;
-        return t;
-    };
-    auto service = [&](const QString &n) {
-        auto it = serviceByNameMap.find(n);
-        if(it != serviceByNameMap.end()) return it.value();
-        Service *s = addService({}, n);
-        serviceByNameMap[n] = s;
-        return s;
-    };
+    auto node = [&](const QString &n) {return getOrCreate(nodeByNameMap, n, &NodesView::addNode, this);};
+    auto topic = [&](const QString &n) {return getOrCreate(topicByNameMap, n, &NodesView::addTopic, this);};
+    auto service = [&](const QString &n) {return getOrCreate(serviceByNameMap, n, &NodesView::addService, this);};
     for(auto k : node_topic.keys())
         addConnection(node(k), topic(node_topic.value(k)), Direction::Out);
     for(auto k : topic_node.keys())
