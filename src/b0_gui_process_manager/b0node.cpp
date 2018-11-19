@@ -91,11 +91,11 @@ void B0Node::stopNode(QString host, int pid)
     }
 
     // ...or at target Process Manager layer:
-    if(!resp.start_process->success)
+    if(!resp.stop_process->success)
     {
         QString errMsg;
-        if(resp.start_process->error_message)
-            errMsg = QString::fromStdString(*resp.start_process->error_message);
+        if(resp.stop_process->error_message)
+            errMsg = QString::fromStdString(*resp.stop_process->error_message);
         Q_EMIT stopNodeResult(false, errMsg);
         return;
     }
