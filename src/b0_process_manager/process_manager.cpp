@@ -9,6 +9,7 @@
 #endif // HAVE_POSIX_SIGNALS
 #include <boost/process.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/dll.hpp>
@@ -63,6 +64,7 @@ public:
     {
         if(!canLaunchProgram(req.path))
         {
+            error("Failed to launch %s: permission denied.", req.path);
             rep.success = false;
             rep.error_message = "permission denied";
             return;
@@ -79,8 +81,9 @@ public:
         auto it = children_.find(req.pid);
         if(it == children_.end())
         {
+            error("Failed to stop PID %d which is not managed by this process manager.", req.pid);
             rep.success = false;
-            rep.error_message = "no such pid";
+            rep.error_message = (boost::format("PID %d is not managed by this process manager (%s)") % req.pid % getName()).str();
             return;
         }
         auto c = it->second.child_;

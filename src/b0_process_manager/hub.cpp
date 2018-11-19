@@ -56,12 +56,12 @@ public:
             return;
         }
 
-        rsp.success = true;
         auto &client = it->second;
         Request req1(req);
         Response rsp1;
         client.cli_->call(req1, rsp1);
         rsp = rsp1;
+        rsp.success = true;
     }
 
     void add(const Beacon &beacon)
