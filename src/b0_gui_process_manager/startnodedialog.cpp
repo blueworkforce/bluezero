@@ -67,6 +67,11 @@ void StartNodeDialog::on_btnLaunch_clicked()
     Q_EMIT startNode(comboHost->currentText(), comboProgram->currentText(), args);
 }
 
+void StartNodeDialog::on_btnCancel_clicked()
+{
+    reject();
+}
+
 void StartNodeDialog::displayStartNodeResult(bool ok, int pid, QString error)
 {
     btnLaunch->setEnabled(true);

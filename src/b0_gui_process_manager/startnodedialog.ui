@@ -79,7 +79,7 @@
   <widget class="QPushButton" name="btnLaunch">
    <property name="geometry">
     <rect>
-     <x>86</x>
+     <x>276</x>
      <y>267</y>
      <width>80</width>
      <height>24</height>
@@ -87,6 +87,9 @@
    </property>
    <property name="text">
     <string>Launch</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="lblArguments">
@@ -129,6 +132,19 @@
    </property>
    <property name="editable">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCancel">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>267</y>
+     <width>80</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
    </property>
   </widget>
  </widget>

@@ -26,6 +26,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void on_btnLaunch_clicked();
+    void on_btnCancel_clicked();
 
 private:
     QPoint pos_;
