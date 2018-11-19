@@ -50,8 +50,8 @@
   <widget class="QComboBox" name="comboHost">
    <property name="geometry">
     <rect>
-     <x>86</x>
-     <y>9</y>
+     <x>87</x>
+     <y>10</y>
      <width>361</width>
      <height>24</height>
     </rect>
@@ -74,22 +74,6 @@
    </property>
    <property name="text">
     <string>Program:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="editProgram">
-   <property name="geometry">
-    <rect>
-     <x>86</x>
-     <y>39</y>
-     <width>361</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-     <horstretch>1</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
    </property>
   </widget>
   <widget class="QPushButton" name="btnLaunch">
@@ -121,11 +105,30 @@
   <widget class="QTextEdit" name="editArguments">
    <property name="geometry">
     <rect>
-     <x>86</x>
-     <y>69</y>
+     <x>87</x>
+     <y>70</y>
      <width>361</width>
      <height>192</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboProgram">
+   <property name="geometry">
+    <rect>
+     <x>87</x>
+     <y>40</y>
+     <width>361</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>1</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="editable">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
