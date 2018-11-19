@@ -393,37 +393,37 @@ void NodesView::contextMenuEvent(QContextMenuEvent *event)
 }
 
 template<typename T>
-inline T * getOrCreate(QMap<QString, T*> &map, const QString &name, T * (NodesView::*fnCreate)(const QString&), NodesView *nv)
+inline T * getOrCreate(QMap<std::string, T*> &map, const std::string &name, T * (NodesView::*fnCreate)(const QString&), NodesView *nv)
 {
     auto it = map.find(name);
     if(it != map.end()) return it.value();
-    T *obj = (nv->*fnCreate)(name);
+    T *obj = (nv->*fnCreate)(QString::fromStdString(name));
     map[name] = obj;
     return obj;
 }
 
 void NodesView::setGraph(b0::message::graph::Graph msg)
 {
-    using std::placeholders::_1;
-    QMap<QString, Node*> nodeByNameMap;
-    QMap<QString, Topic*> topicByNameMap;
-    QMap<QString, Service*> serviceByNameMap;
+    QMap<std::string, Node*> nodeByNameMap;
+    QMap<std::string, Topic*> topicByNameMap;
+    QMap<std::string, Service*> serviceByNameMap;
+    auto node = [&](const std::string &n)
+        {return getOrCreate(nodeByNameMap, n, &NodesView::addNode, this);};
+    auto topic = [&](const std::string &n)
+        {return getOrCreate(topicByNameMap, n, &NodesView::addTopic, this);};
+    auto service = [&](const std::string &n)
+        {return getOrCreate(serviceByNameMap, n, &NodesView::addService, this);};
+    auto dir = [&](const b0::message::graph::GraphLink &l)
+        {return l.reversed ? Direction::In : Direction::Out;};
+
     scene()->clear();
-    auto node = [&](const QString &n) {return getOrCreate(nodeByNameMap, n, &NodesView::addNode, this);};
-    auto topic = [&](const QString &n) {return getOrCreate(topicByNameMap, n, &NodesView::addTopic, this);};
-    auto service = [&](const QString &n) {return getOrCreate(serviceByNameMap, n, &NodesView::addService, this);};
-    for(auto graphLink : msg.node_topic)
-    {
-        Node *n = node(QString::fromStdString(graphLink.node_name));
-        Topic *t = topic(QString::fromStdString(graphLink.other_name));
-        addConnection(n, t, graphLink.reversed ? Direction::In : Direction::Out);
-    }
-    for(auto graphLink : msg.node_service)
-    {
-        Node *n = node(QString::fromStdString(graphLink.node_name));
-        Service *s = service(QString::fromStdString(graphLink.other_name));
-        addConnection(n, s, graphLink.reversed ? Direction::In : Direction::Out);
-    }
+
+    for(auto l : msg.node_topic)
+        addConnection(node(l.node_name), topic(l.other_name), dir(l));
+
+    for(auto l : msg.node_service)
+        addConnection(node(l.node_name), service(l.other_name), dir(l));
+
     arrangeItems();
 }
 
