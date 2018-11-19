@@ -389,32 +389,41 @@ void NodesView::toGraphviz(QTextStream &stream, QMap<QString, AbstractVertex *> 
 
 void NodesView::contextMenuEvent(QContextMenuEvent *event)
 {
-    auto selection = scene()->selectedItems();
+    Node *targetNode = nullptr;
 
-    Node *selectedNode = nullptr;
+#if 0
+    auto selection = scene()->selectedItems();
 
     if(selection.size() == 1)
     {
         if(auto node = dynamic_cast<Node *>(selection[0]))
         {
-            selectedNode = node;
+            targetNode = node;
         }
     }
+#else
+    if(auto node = dynamic_cast<Node *>(scene()->itemAt(mapToScene(event->pos()), transform())))
+    {
+        targetNode = node;
+    }
+#endif
 
-    actionStartNode_->setEnabled(!selectedNode);
-    actionStopNode_->setEnabled(selectedNode);
+    actionStartNode_->setEnabled(!targetNode);
+    actionStopNode_->setEnabled(targetNode);
 
     for(int i = 0; i < 4; i++)
-        actionInfo_[i]->setVisible(selectedNode);
+        actionInfo_[i]->setVisible(targetNode);
 
-    if(selectedNode)
+    if(targetNode)
     {
         actionInfo_[1]->setText("Node info:");
-        actionInfo_[2]->setText(QStringLiteral("    host: %1").arg(selectedNode->host()));
-        actionInfo_[3]->setText(QStringLiteral("    pid: %1").arg(selectedNode->pid()));
+        actionInfo_[2]->setText(QStringLiteral("    host: %1").arg(targetNode->host()));
+        actionInfo_[3]->setText(QStringLiteral("    pid: %1").arg(targetNode->pid()));
     }
 
     startNodeDialog_->setPos(event->pos());
+
+    event->accept();
 
     contextMenu_->popup(event->globalPos());
 }
