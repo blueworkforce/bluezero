@@ -6,6 +6,7 @@
 StartNodeDialog::StartNodeDialog(QWidget *parent) :
     QDialog(parent)
 {
+    setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint);
     setupUi(this);
 }
 
