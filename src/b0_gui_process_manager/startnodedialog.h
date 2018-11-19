@@ -16,6 +16,8 @@ public:
     explicit StartNodeDialog(QWidget *parent = nullptr);
     ~StartNodeDialog();
 
+    inline void setPos(QPoint pos) { pos_ = pos; }
+
 Q_SIGNALS:
     void startNode(QString host, QString program, QStringList args);
 
@@ -24,6 +26,9 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void on_btnLaunch_clicked();
+
+private:
+    QPoint pos_;
 
     friend class MainWindow;
 };

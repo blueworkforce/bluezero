@@ -389,6 +389,8 @@ void NodesView::contextMenuEvent(QContextMenuEvent *event)
             actionStopNode_->setEnabled(false);
     }
 
+    startNodeDialog_->setPos(event->pos());
+
     contextMenu_->popup(event->globalPos());
 }
 
