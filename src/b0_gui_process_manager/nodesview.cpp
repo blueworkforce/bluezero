@@ -47,11 +47,17 @@ QRectF AbstractVertex::boundingRect() const
 
 void AbstractVertex::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
-    QColor norm(color_), sel(color_);
-    norm.setAlpha(50);
-    sel.setAlpha(120);
-    painter->fillPath(path_, isSelected() ? sel : norm);
-    painter->setPen(QPen(outlineColor_));
+    int s = isSelected();
+    QColor c(QColor::fromHsv(
+        color_.hsvHue(),
+        qMax(0, color_.hsvSaturation() - s * 100),
+        qMin(255, color_.value() + s * 100)
+    ));
+    c.setAlpha(200 + 55 * s);
+    QColor o(outlineColor_);
+    o.setAlpha(200 + 55 * s);
+    painter->fillPath(path_, c);
+    painter->setPen(QPen(o, 1 + s));
     painter->drawPath(path_);
     QFontMetrics fm(scene()->font());
     int w = fm.horizontalAdvance(text_);
