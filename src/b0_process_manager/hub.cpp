@@ -45,23 +45,23 @@ public:
         }
     }
 
-    void handleRequest(const Request &req, Response &rep)
+    void handleRequest(const HUBRequest &req, HUBResponse &rsp)
     {
-        if(!req.host_name)
-        {
-            error("bad request: missing host_name field");
-            return;
-        }
-
-        auto it = clients_.find(req.host_name.get());
+        auto it = clients_.find(req.host_name);
         if(it == clients_.end())
         {
             error("bad request: unknown host");
+            rsp.success = false;
+            rsp.error_message = "unknown host";
             return;
         }
 
+        rsp.success = true;
         auto &client = it->second;
-        client.cli_->call(req, rep);
+        Request req1(req);
+        Response rsp1;
+        client.cli_->call(req1, rsp1);
+        rsp = rsp1;
     }
 
     void add(const Beacon &beacon)

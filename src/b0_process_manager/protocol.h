@@ -83,7 +83,6 @@ public:
 class Request : public b0::message::Message
 {
 public:
-    boost::optional<std::string> host_name; // used by HUB
     boost::optional<StartProcessRequest> start_process;
     boost::optional<StopProcessRequest> stop_process;
     boost::optional<QueryProcessStatusRequest> query_process_status;
@@ -101,6 +100,24 @@ public:
     boost::optional<ListActiveProcessesResponse> list_active_processes;
 
     std::string type() const override {return "b0::process_manager::Response";}
+};
+
+class HUBRequest : public Request
+{
+public:
+    std::string host_name;
+};
+
+class HUBResponse : public Response
+{
+public:
+    bool success;
+    boost::optional<std::string> error_message;
+
+    inline void operator=(const Response &rhs)
+    {
+        Response::operator=(rhs);
+    }
 };
 
 class Beacon : public b0::message::Message
@@ -191,6 +208,19 @@ struct default_codec_t<b0::process_manager::Request> {
 };
 
 template <>
+struct default_codec_t<b0::process_manager::HUBRequest> {
+    static codec::object_t<b0::process_manager::HUBRequest> codec() {
+        auto codec = codec::object<b0::process_manager::HUBRequest>();
+        codec.required("host_name", &b0::process_manager::HUBRequest::host_name);
+        codec.optional("start_process", &b0::process_manager::HUBRequest::start_process);
+        codec.optional("stop_process", &b0::process_manager::HUBRequest::stop_process);
+        codec.optional("query_process_status", &b0::process_manager::HUBRequest::query_process_status);
+        codec.optional("list_active_processes", &b0::process_manager::HUBRequest::list_active_processes);
+        return codec;
+    }
+};
+
+template <>
 struct default_codec_t<b0::process_manager::StartProcessResponse> {
     static codec::object_t<b0::process_manager::StartProcessResponse> codec() {
         auto codec = codec::object<b0::process_manager::StartProcessResponse>();
@@ -240,6 +270,20 @@ struct default_codec_t<b0::process_manager::Response> {
         codec.optional("stop_process", &b0::process_manager::Response::stop_process);
         codec.optional("query_process_status", &b0::process_manager::Response::query_process_status);
         codec.optional("list_active_processes", &b0::process_manager::Response::list_active_processes);
+        return codec;
+    }
+};
+
+template <>
+struct default_codec_t<b0::process_manager::HUBResponse> {
+    static codec::object_t<b0::process_manager::HUBResponse> codec() {
+        auto codec = codec::object<b0::process_manager::HUBResponse>();
+        codec.required("success", &b0::process_manager::HUBResponse::success);
+        codec.optional("error_message", &b0::process_manager::HUBResponse::error_message);
+        codec.optional("start_process", &b0::process_manager::HUBResponse::start_process);
+        codec.optional("stop_process", &b0::process_manager::HUBResponse::stop_process);
+        codec.optional("query_process_status", &b0::process_manager::HUBResponse::query_process_status);
+        codec.optional("list_active_processes", &b0::process_manager::HUBResponse::list_active_processes);
         return codec;
     }
 };
