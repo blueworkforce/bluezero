@@ -13,9 +13,14 @@ MainWindow::MainWindow(B0Node *node, QWidget *parent)
     connect(nodesView_->startNodeDialog_, &StartNodeDialog::startNode, node_, &B0Node::startNode, Qt::QueuedConnection);
     connect(node_, &B0Node::startNodeResult, nodesView_->startNodeDialog_, &StartNodeDialog::displayStartNodeResult, Qt::QueuedConnection);
     connect(nodesView_, &NodesView::stopNode, node_, &B0Node::stopNode, Qt::QueuedConnection);
-    connect(node_, &B0Node::stopNodeResult, [=](bool ok, const  QString &error_message) {
+    connect(node_, &B0Node::stopNodeResult, [=](bool ok, const QString &error_message) {
         if(!ok)
-            QMessageBox::critical(this, "Error", "Failed to stop node");
+        {
+            QString errMsg("Failed to stop node");
+            if(error_message.isEmpty()) errMsg += ".";
+            else errMsg += ":\n\n" + error_message;
+            QMessageBox::critical(this, "Error", errMsg);
+        }
     });
 
     resize(800, 600);
