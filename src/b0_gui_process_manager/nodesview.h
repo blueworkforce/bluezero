@@ -135,6 +135,8 @@ private:
     QAction *actionStartNode_;
     QAction *actionStopNode_;
     StartNodeDialog *startNodeDialog_;
+
+    friend class MainWindow;
 };
 
 #endif // NODESVIEW_H

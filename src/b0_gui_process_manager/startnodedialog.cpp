@@ -15,6 +15,8 @@ StartNodeDialog::~StartNodeDialog()
 
 void StartNodeDialog::on_btnLaunch_clicked()
 {
+    btnLaunch->setEnabled(false);
+
     QString s(editArguments->toPlainText());
     QString cur;
     QStringList args;
@@ -56,5 +58,23 @@ void StartNodeDialog::on_btnLaunch_clicked()
     {
         args << cur;
     }
-    qDebug() << comboHost->currentText() << editProgram->text() << args;
+
+    bool ok = false;
+    int pid = -1;
+    QString error;
+
+    Q_EMIT startNode(comboHost->currentText(), comboProgram->currentText(), args);
 }
+
+void StartNodeDialog::displayStartNodeResult(bool ok, int pid, QString error)
+{
+    if(!ok)
+    {
+        QMessageBox msgBox;
+        QString errMsg = QString("Failed to launch node:\n\n%1").arg(error);
+        QMessageBox::critical(this, "Error", errMsg, QMessageBox::Ok, QMessageBox::Ok);
+    }
+
+    btnLaunch->setEnabled(true);
+}
+

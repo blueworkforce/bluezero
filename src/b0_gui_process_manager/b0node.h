@@ -26,11 +26,13 @@ Q_SIGNALS:
     void finished();
     void graphChanged(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node);
     void activeNodesChanged(QSet<QString> activeNodes);
+    void startNodeResult(bool ok, int pid, QString error);
+    void stopNodeResult(bool ok, QString error);
 
 public Q_SLOTS:
     void run(int argc, char **argv);
-    void startNode(const QString &host, const QString &program, const QStringList &args, bool *success, int *pid, QString *error);
-    void stopNode(const QString &host, int pid, bool *success, QString *error);
+    void startNode(QString host, QString program, QStringList args);
+    void stopNode(QString host, int pid);
 
 private:
     std::unique_ptr<b0::Node> node_;

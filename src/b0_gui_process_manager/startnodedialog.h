@@ -16,8 +16,16 @@ public:
     explicit StartNodeDialog(QWidget *parent = nullptr);
     ~StartNodeDialog();
 
+Q_SIGNALS:
+    void startNode(QString host, QString program, QStringList args);
+
+public Q_SLOTS:
+    void displayStartNodeResult(bool ok, int pid, QString error);
+
 private Q_SLOTS:
     void on_btnLaunch_clicked();
+
+    friend class MainWindow;
 };
 
 #endif // STARTNODEDIALOG_H

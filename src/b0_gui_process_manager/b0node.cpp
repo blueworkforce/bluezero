@@ -1,5 +1,7 @@
 #include "b0node.h"
 
+#include <QDebug>
+
 B0Node::B0Node()
 {
 }
@@ -56,32 +58,74 @@ void B0Node::run(int argc, char **argv)
     Q_EMIT finished();
 }
 
-void B0Node::startNode(const QString &host, const QString &program, const QStringList &args, bool *success, int *pid, QString *error)
+void B0Node::startNode(QString host, QString program, QStringList args)
 {
-    b0::process_manager::Request req;
+    b0::process_manager::HUBRequest req;
     req.host_name = host.toStdString();
     req.start_process.emplace();
     req.start_process->path = program.toStdString();
     for(auto arg : args)
         req.start_process->args.push_back(arg.toStdString());
-    b0::process_manager::Response resp;
+
+    b0::process_manager::HUBResponse resp;
+
     pm_cli_->call(req, resp);
-    *success = resp.start_process->success;
-    if(*success)
-        *pid = *resp.start_process->pid;
-    else if(resp.start_process->error_message)
-        *error = QString::fromStdString(*resp.start_process->error_message);
+
+    // error can happen at HUB layer...
+    if(!resp.success)
+    {
+        QString errMsg;
+        if(resp.error_message)
+            errMsg = QString::fromStdString(*resp.error_message);
+        Q_EMIT startNodeResult(false, -1, errMsg);
+        return;
+    }
+
+    // ...or at target Process Manager layer:
+    if(!resp.start_process->success)
+    {
+        QString errMsg;
+        if(resp.start_process->error_message)
+            errMsg = QString::fromStdString(*resp.start_process->error_message);
+        Q_EMIT startNodeResult(false, -1, errMsg);
+        return;
+    }
+
+    // or not happen at all:
+    Q_EMIT startNodeResult(true, *resp.start_process->pid, "");
 }
 
-void B0Node::stopNode(const QString &host, int pid, bool *success, QString *error)
+void B0Node::stopNode(QString host, int pid)
 {
-    b0::process_manager::Request req;
+    b0::process_manager::HUBRequest req;
     req.host_name = host.toStdString();
     req.stop_process.emplace();
     req.stop_process->pid = pid;
-    b0::process_manager::Response resp;
+
+    b0::process_manager::HUBResponse resp;
+
     pm_cli_->call(req, resp);
-    *success = resp.stop_process->success;
-    if(!*success && resp.stop_process->error_message)
-        *error = QString::fromStdString(*resp.stop_process->error_message);
+
+    // error can happen at HUB layer...
+    if(!resp.success)
+    {
+        QString errMsg;
+        if(resp.error_message)
+            errMsg = QString::fromStdString(*resp.error_message);
+        Q_EMIT stopNodeResult(false, errMsg);
+        return;
+    }
+
+    // ...or at target Process Manager layer:
+    if(!resp.start_process->success)
+    {
+        QString errMsg;
+        if(resp.start_process->error_message)
+            errMsg = QString::fromStdString(*resp.start_process->error_message);
+        Q_EMIT stopNodeResult(false, errMsg);
+        return;
+    }
+
+    // or not happen at all:
+    Q_EMIT stopNodeResult(true, "");
 }
