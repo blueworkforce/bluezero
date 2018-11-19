@@ -56,6 +56,15 @@ class Node : public AbstractVertex
 {
 public:
     Node(NodesView *nodeView, const QString &text);
+
+    inline QString host() const { return host_; }
+    inline int pid() const { return pid_; }
+
+    inline void setInfo(const QString &host, int pid) { host_ = host; pid_ = pid; }
+
+private:
+    QString host_;
+    int pid_;
 };
 
 class AbstractSocket : public AbstractVertex
@@ -131,11 +140,15 @@ private Q_SLOTS:
     void onMenuStopNode();
     void onMenuArrangeItems();
 
+Q_SIGNALS:
+    void stopNode(const QString &host, int pid);
+
 private:
     QGraphicsScene *scene_;
     QMenu *contextMenu_;
     QAction *actionStartNode_;
     QAction *actionStopNode_;
+    QAction *actionInfo_[4];
     StartNodeDialog *startNodeDialog_;
     b0::message::graph::Graph graph_;
 

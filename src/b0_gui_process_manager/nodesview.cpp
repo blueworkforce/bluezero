@@ -236,6 +236,11 @@ NodesView::NodesView(QWidget *parent)
     contextMenu_ = new QMenu();
     actionStartNode_ = contextMenu_->addAction("Start new node...", this, &NodesView::onMenuStartNode);
     actionStopNode_ = contextMenu_->addAction("Stop selected node", this, &NodesView::onMenuStopNode);
+    for(int i = 0; i < 4; i++)
+    {
+        actionInfo_[i] = i ? contextMenu_->addAction("") : contextMenu_->addSeparator();
+        actionInfo_[i]->setEnabled(false);
+    }
     contextMenu_->addSeparator();
     contextMenu_->addAction("Arrange items", this, &NodesView::onMenuArrangeItems);
 
@@ -380,13 +385,27 @@ void NodesView::contextMenuEvent(QContextMenuEvent *event)
 {
     auto selection = scene()->selectedItems();
 
-    actionStartNode_->setEnabled(selection.isEmpty());
+    Node *selectedNode = nullptr;
 
-    actionStopNode_->setEnabled(selection.size() == 1);
-    for(auto item : selection)
+    if(selection.size() == 1)
     {
-        if(!dynamic_cast<Node *>(item))
-            actionStopNode_->setEnabled(false);
+        if(auto node = dynamic_cast<Node *>(selection[0]))
+        {
+            selectedNode = node;
+        }
+    }
+
+    actionStartNode_->setEnabled(!selectedNode);
+    actionStopNode_->setEnabled(selectedNode);
+
+    for(int i = 0; i < 4; i++)
+        actionInfo_[i]->setVisible(selectedNode);
+
+    if(selectedNode)
+    {
+        actionInfo_[1]->setText("Node info:");
+        actionInfo_[2]->setText(QStringLiteral("    host: %1").arg(selectedNode->host()));
+        actionInfo_[3]->setText(QStringLiteral("    pid: %1").arg(selectedNode->pid()));
     }
 
     startNodeDialog_->setPos(event->pos());
@@ -417,16 +436,28 @@ void NodesView::setGraph(b0::message::graph::Graph msg)
         {return getOrCreate(topicByNameMap, n, &NodesView::addTopic, this);};
     auto service = [&](const std::string &n)
         {return getOrCreate(serviceByNameMap, n, &NodesView::addService, this);};
-    auto dir = [&](const b0::message::graph::GraphLink &l)
-        {return l.reversed ? Direction::In : Direction::Out;};
 
     scene()->clear();
 
+    for(auto i : msg.nodes)
+    {
+        Node *n = node(i.node_name);
+        n->setInfo(QString::fromStdString(i.host_id), i.process_id);
+    }
+
     for(auto l : msg.node_topic)
-        addConnection(node(l.node_name), topic(l.other_name), dir(l));
+    {
+        Node *n = node(l.node_name);
+        Topic *t = topic(l.other_name);
+        addConnection(n, t, l.reversed ? Direction::In : Direction::Out);
+    }
 
     for(auto l : msg.node_service)
-        addConnection(node(l.node_name), service(l.other_name), dir(l));
+    {
+        Node *n = node(l.node_name);
+        Service *s = service(l.other_name);
+        addConnection(n, s, l.reversed ? Direction::In : Direction::Out);
+    }
 
     arrangeItems();
 }
@@ -447,6 +478,14 @@ void NodesView::onMenuStartNode()
 
 void NodesView::onMenuStopNode()
 {
+    auto selection = scene()->selectedItems();
+
+    if(selection.size() != 1) return;
+
+    if(auto node = dynamic_cast<Node *>(selection[0]))
+    {
+        Q_EMIT stopNode(node->host(), node->pid());
+    }
 }
 
 void NodesView::onMenuArrangeItems()
