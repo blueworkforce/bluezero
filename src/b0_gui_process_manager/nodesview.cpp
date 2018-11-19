@@ -404,6 +404,8 @@ inline T * getOrCreate(QMap<std::string, T*> &map, const std::string &name, T * 
 
 void NodesView::setGraph(b0::message::graph::Graph msg)
 {
+    graph_ = msg;
+
     QMap<std::string, Node*> nodeByNameMap;
     QMap<std::string, Topic*> topicByNameMap;
     QMap<std::string, Service*> serviceByNameMap;

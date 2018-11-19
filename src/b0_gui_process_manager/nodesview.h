@@ -137,6 +137,7 @@ private:
     QAction *actionStartNode_;
     QAction *actionStopNode_;
     StartNodeDialog *startNodeDialog_;
+    b0::message::graph::Graph graph_;
 
     friend class MainWindow;
 };
