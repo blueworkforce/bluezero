@@ -69,13 +69,17 @@ void StartNodeDialog::on_btnLaunch_clicked()
 
 void StartNodeDialog::displayStartNodeResult(bool ok, int pid, QString error)
 {
-    if(!ok)
+    btnLaunch->setEnabled(true);
+
+    if(ok)
+    {
+        accept();
+    }
+    else
     {
         QMessageBox msgBox;
         QString errMsg = QString("Failed to launch node:\n\n%1").arg(error);
         QMessageBox::critical(this, "Error", errMsg, QMessageBox::Ok, QMessageBox::Ok);
     }
-
-    btnLaunch->setEnabled(true);
 }
 
