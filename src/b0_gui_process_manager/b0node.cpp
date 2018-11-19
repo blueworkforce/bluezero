@@ -8,38 +8,12 @@ B0Node::B0Node()
 
 void B0Node::onGraphChanged(const b0::message::graph::Graph &msg)
 {
-    QMap<QString, QString> node_topic, topic_node, node_service, service_node;
-    for(auto x : msg.node_topic)
-    {
-        QString node(QString::fromStdString(x.node_name));
-        QString topic(QString::fromStdString(x.other_name));
-        if(x.reversed)
-            topic_node[topic] = node;
-        else
-            node_topic[node] = topic;
-    }
-    for(auto x : msg.node_service)
-    {
-        QString node(QString::fromStdString(x.node_name));
-        QString service(QString::fromStdString(x.other_name));
-        if(x.reversed)
-            service_node[service] = node;
-        else
-            node_service[node] = service;
-    }
-    Q_EMIT graphChanged(node_topic, topic_node, node_service, service_node);
+    Q_EMIT graphChanged(msg);
 }
 
 void B0Node::onActiveNodesChanged(const b0::process_manager::ActiveNodes &msg)
 {
-    QSet<QString> activeNodes;
-    for(auto x : msg.nodes)
-        activeNodes.insert(QString::fromStdString(x.host_name));
-    if(activeNodes != activeNodes_)
-    {
-        activeNodes_ = activeNodes;
-        Q_EMIT activeNodesChanged(activeNodes);
-    }
+    Q_EMIT activeNodesChanged(msg);
 }
 
 void B0Node::run(int argc, char **argv)

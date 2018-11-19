@@ -402,7 +402,7 @@ inline T * getOrCreate(QMap<QString, T*> &map, const QString &name, T * (NodesVi
     return obj;
 }
 
-void NodesView::setGraph(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node)
+void NodesView::setGraph(b0::message::graph::Graph msg)
 {
     using std::placeholders::_1;
     QMap<QString, Node*> nodeByNameMap;
@@ -412,23 +412,27 @@ void NodesView::setGraph(QMap<QString, QString> node_topic, QMap<QString, QStrin
     auto node = [&](const QString &n) {return getOrCreate(nodeByNameMap, n, &NodesView::addNode, this);};
     auto topic = [&](const QString &n) {return getOrCreate(topicByNameMap, n, &NodesView::addTopic, this);};
     auto service = [&](const QString &n) {return getOrCreate(serviceByNameMap, n, &NodesView::addService, this);};
-    for(auto k : node_topic.keys())
-        addConnection(node(k), topic(node_topic.value(k)), Direction::Out);
-    for(auto k : topic_node.keys())
-        addConnection(node(topic_node.value(k)), topic(k), Direction::In);
-    for(auto k : node_service.keys())
-        addConnection(node(k), service(node_service.value(k)), Direction::Out);
-    for(auto k : service_node.keys())
-        addConnection(node(service_node.value(k)), service(k), Direction::In);
+    for(auto graphLink : msg.node_topic)
+    {
+        Node *n = node(QString::fromStdString(graphLink.node_name));
+        Topic *t = topic(QString::fromStdString(graphLink.other_name));
+        addConnection(n, t, graphLink.reversed ? Direction::In : Direction::Out);
+    }
+    for(auto graphLink : msg.node_service)
+    {
+        Node *n = node(QString::fromStdString(graphLink.node_name));
+        Service *s = service(QString::fromStdString(graphLink.other_name));
+        addConnection(n, s, graphLink.reversed ? Direction::In : Direction::Out);
+    }
     arrangeItems();
 }
 
-void NodesView::setActiveNodes(QSet<QString> active_nodes)
+void NodesView::setActiveNodes(b0::process_manager::ActiveNodes msg)
 {
     QString oldSel = startNodeDialog_->comboHost->currentText();
     startNodeDialog_->comboHost->clear();
-    for(auto s : active_nodes)
-        startNodeDialog_->comboHost->addItem(s);
+    for(auto nodeActivity : msg.nodes)
+        startNodeDialog_->comboHost->addItem(QString::fromStdString(nodeActivity.host_name));
     startNodeDialog_->comboHost->setCurrentText(oldSel);
 }
 

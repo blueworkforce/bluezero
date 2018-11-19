@@ -8,8 +8,8 @@
 #include <b0/node.h>
 #include <b0/subscriber.h>
 #include <b0/service_client.h>
-#include <b0_process_manager/protocol.h>
 #include <b0/message/graph/graph.h>
+#include <b0_process_manager/protocol.h>
 
 class B0Node : public QObject
 {
@@ -24,8 +24,8 @@ private:
 
 Q_SIGNALS:
     void finished();
-    void graphChanged(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node);
-    void activeNodesChanged(QSet<QString> activeNodes);
+    void graphChanged(b0::message::graph::Graph msg);
+    void activeNodesChanged(b0::process_manager::ActiveNodes msg);
     void startNodeResult(bool ok, int pid, QString error);
     void stopNodeResult(bool ok, QString error);
 

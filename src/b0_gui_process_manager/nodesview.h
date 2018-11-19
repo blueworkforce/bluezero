@@ -7,6 +7,8 @@
 #include <QGraphicsItem>
 #include <QTextStream>
 #include <QMenu>
+#include <b0/message/graph/graph.h>
+#include <b0_process_manager/protocol.h>
 #include "startnodedialog.h"
 
 class NodesView;
@@ -121,8 +123,8 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
 
 public Q_SLOTS:
-    void setGraph(QMap<QString, QString> node_topic, QMap<QString, QString> topic_node, QMap<QString, QString> node_service, QMap<QString, QString> service_node);
-    void setActiveNodes(QSet<QString> active_nodes);
+    void setGraph(b0::message::graph::Graph msg);
+    void setActiveNodes(b0::process_manager::ActiveNodes msg);
 
 private Q_SLOTS:
     void onMenuStartNode();

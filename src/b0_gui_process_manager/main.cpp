@@ -3,6 +3,8 @@
 #include <QApplication>
 #include <QThread>
 #include <QDebug>
+#include <b0/message/graph/graph.h>
+#include <b0_process_manager/protocol.h>
 
 class B0NodeWorker : public QObject
 {
@@ -29,8 +31,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    qRegisterMetaType<QSet<QString> >("QSet<QString>");
-    qRegisterMetaType<QMap<QString,QString> >("QMap<QString,QString>");
+    qRegisterMetaType<b0::message::graph::Graph>("b0::message::graph::Graph");
+    qRegisterMetaType<b0::process_manager::ActiveNodes>("b0::process_manager::ActiveNodes");
 
     QThread *thread = new QThread();
     B0NodeWorker *worker = new B0NodeWorker(thread);
