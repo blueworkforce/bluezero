@@ -17,6 +17,8 @@ MainWindow::MainWindow(B0Node *node, QWidget *parent)
         if(!ok)
             QMessageBox::critical(this, "Error", "Failed to stop node");
     });
+
+    resize(800, 600);
 }
 
 MainWindow::~MainWindow()
