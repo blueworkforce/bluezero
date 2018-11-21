@@ -16,9 +16,9 @@ void B0Node::onActiveNodesChanged(const b0::process_manager::ActiveNodes &msg)
     Q_EMIT activeNodesChanged(msg);
 }
 
-void B0Node::run(int argc, char **argv)
+void B0Node::run()
 {
-    b0::init(argc, argv);
+    b0::init();
 
     node_.reset(new b0::Node("b0_gui_process_manager"));
     graph_sub_.reset(new b0::Subscriber(node_.get(), "graph", static_cast<b0::Subscriber::CallbackMsg<b0::message::graph::Graph> >(boost::bind(&B0Node::onGraphChanged, this, _1))));

@@ -30,7 +30,7 @@ Q_SIGNALS:
     void stopNodeResult(bool ok, QString error);
 
 public Q_SLOTS:
-    void run(int argc, char **argv);
+    void run();
     void startNode(QString host, QString program, QStringList args);
     void stopNode(QString host, int pid);
 

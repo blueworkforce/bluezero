@@ -14,9 +14,7 @@ public:
     B0NodeWorker(QThread *thread)
     {
         B0Node *node = &node_;
-        int argc = 1;
-        char *argv[] = {"foo"};
-        QObject::connect(thread, &QThread::started, [=]() {node->run(argc, (char**)argv);});
+        QObject::connect(thread, &QThread::started, [=]() {node->run();});
         QObject::connect(node, &B0Node::finished, thread, &QThread::quit);
         QObject::connect(node, &B0Node::finished, node, &B0Node::deleteLater);
         QObject::connect(thread, &QThread::finished, thread, &QThread::deleteLater);
