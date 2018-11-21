@@ -157,10 +157,10 @@ void Socket::readRaw(std::string &msg)
 
 void Socket::readRaw(std::string &msg, std::string &type)
 {
-    std::vector<b0::message::MessagePart> parts;
-    readRaw(parts);
-    msg = parts[0].payload;
-    type = parts[0].content_type;
+    b0::message::MessageEnvelope env;
+    readRaw(env);
+    msg = env.parts[0].payload;
+    type = env.parts[0].content_type;
 }
 
 bool Socket::poll(long timeout)
@@ -201,13 +201,14 @@ void Socket::writeRaw(const std::string &msg, const std::string &type)
 {
     zmq::socket_t &socket_ = private_->socket_;
 
-    std::vector<b0::message::MessagePart> parts;
-    parts.resize(1);
-    parts[0].payload = msg;
-    parts[0].content_type = type;
-    parts[0].compression_algorithm = compression_algorithm_;
-    parts[0].compression_level = compression_level_;
-    writeRaw(parts);
+    b0::message::MessageEnvelope env;
+    env.parts.resize(1);
+    env.parts[0].payload = msg;
+    env.parts[0].content_type = type;
+    env.parts[0].compression_algorithm = compression_algorithm_;
+    env.parts[0].compression_level = compression_level_;
+    env.header0 = name_;
+    writeRaw(env);
 }
 
 void Socket::setCompression(const std::string &algorithm, int level)
