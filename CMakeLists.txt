@@ -13,6 +13,7 @@ else()
     set(BUILD_STATIC_LIB_DEFAULT OFF)
 endif()
 option(BUILD_STATIC_LIB "Build static library" ${BUILD_STATIC_LIB_DEFAULT})
+option(BUILD_TOOLS "Build the tools (topic and service introspection, process manager...)" ON)
 option(BUILD_EXAMPLES "Build the examples" ON)
 option(BUILD_TESTS "Build the testcases" ON)
 option(BUILD_GUI "Build gui programs" OFF)
@@ -303,71 +304,73 @@ add_executable(
 )
 target_link_libraries(b0_resolver ${B0_LIBRARY})
 
-add_executable(
-    b0_logger_monitor
-    src/b0_logger_monitor/logger_monitor.cpp
-)
-target_link_libraries(b0_logger_monitor ${B0_LIBRARY})
+if(BUILD_TOOLS)
+    add_executable(
+        b0_logger_monitor
+        src/b0_logger_monitor/logger_monitor.cpp
+    )
+    target_link_libraries(b0_logger_monitor ${B0_LIBRARY})
 
-add_executable(
-    b0_graph_monitor
-    src/b0_graph_monitor/graph_monitor.cpp
-)
-target_link_libraries(b0_graph_monitor ${B0_LIBRARY})
+    add_executable(
+        b0_graph_monitor
+        src/b0_graph_monitor/graph_monitor.cpp
+    )
+    target_link_libraries(b0_graph_monitor ${B0_LIBRARY})
 
-add_executable(
-    b0_node_list
-    src/b0_node_list/node_list.cpp
-)
-target_link_libraries(b0_node_list ${B0_LIBRARY})
+    add_executable(
+        b0_node_list
+        src/b0_node_list/node_list.cpp
+    )
+    target_link_libraries(b0_node_list ${B0_LIBRARY})
 
-add_executable(
-    b0_topic_list
-    src/b0_topic_list/topic_list.cpp
-)
-target_link_libraries(b0_topic_list ${B0_LIBRARY})
+    add_executable(
+        b0_topic_list
+        src/b0_topic_list/topic_list.cpp
+    )
+    target_link_libraries(b0_topic_list ${B0_LIBRARY})
 
-add_executable(
-    b0_topic_echo
-    src/b0_topic_echo/topic_echo.cpp
-)
-target_link_libraries(b0_topic_echo ${B0_LIBRARY})
+    add_executable(
+        b0_topic_echo
+        src/b0_topic_echo/topic_echo.cpp
+    )
+    target_link_libraries(b0_topic_echo ${B0_LIBRARY})
 
-add_executable(
-    b0_topic_publish
-    src/b0_topic_publish/topic_publish.cpp
-)
-target_link_libraries(b0_topic_publish ${B0_LIBRARY})
+    add_executable(
+        b0_topic_publish
+        src/b0_topic_publish/topic_publish.cpp
+    )
+    target_link_libraries(b0_topic_publish ${B0_LIBRARY})
 
-add_executable(
-    b0_service_list
-    src/b0_service_list/service_list.cpp
-)
-target_link_libraries(b0_service_list ${B0_LIBRARY})
+    add_executable(
+        b0_service_list
+        src/b0_service_list/service_list.cpp
+    )
+    target_link_libraries(b0_service_list ${B0_LIBRARY})
 
-add_executable(
-    b0_service_call
-    src/b0_service_call/service_call.cpp
-)
-target_link_libraries(b0_service_call ${B0_LIBRARY})
+    add_executable(
+        b0_service_call
+        src/b0_service_call/service_call.cpp
+    )
+    target_link_libraries(b0_service_call ${B0_LIBRARY})
 
-add_executable(
-    b0_process_manager
-    src/b0_process_manager/process_manager.cpp
-)
-target_link_libraries(b0_process_manager ${B0_LIBRARY})
+    add_executable(
+        b0_process_manager
+        src/b0_process_manager/process_manager.cpp
+    )
+    target_link_libraries(b0_process_manager ${B0_LIBRARY})
 
-add_executable(
-    b0_process_manager_hub
-    src/b0_process_manager/hub.cpp
-)
-target_link_libraries(b0_process_manager_hub ${B0_LIBRARY})
+    add_executable(
+        b0_process_manager_hub
+        src/b0_process_manager/hub.cpp
+    )
+    target_link_libraries(b0_process_manager_hub ${B0_LIBRARY})
 
-add_executable(
-    b0_system_monitor
-    src/b0_system_monitor/system_monitor.cpp
-)
-target_link_libraries(b0_system_monitor ${B0_LIBRARY})
+    add_executable(
+        b0_system_monitor
+        src/b0_system_monitor/system_monitor.cpp
+    )
+    target_link_libraries(b0_system_monitor ${B0_LIBRARY})
+endif(BUILD_TOOLS)
 
 if(BUILD_GUI)
     find_package(Qt5Core REQUIRED)
