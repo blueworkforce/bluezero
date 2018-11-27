@@ -64,8 +64,8 @@ Global::Global()
 
 Global & Global::getInstance()
 {
-    static Global global;
-    return global;
+    static Global *global = new Global;
+    return *global;
 }
 
 static std::vector<std::string> splitAssignment(const std::string &raw_arg)
