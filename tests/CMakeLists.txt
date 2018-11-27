@@ -101,3 +101,7 @@ add_test(many_nodes many_nodes)
 add_executable(resolver_shutdown resolver_shutdown.cpp)
 target_link_libraries(resolver_shutdown ${B0_LIBRARY})
 add_test(resolver_shutdown resolver_shutdown)
+
+add_executable(c_clisrv_timeout c_clisrv_timeout.c)
+target_link_libraries(c_clisrv_timeout ${B0_LIBRARY})
+add_test(c_clisrv_timeout c_clisrv_timeout)
