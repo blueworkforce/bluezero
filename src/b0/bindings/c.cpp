@@ -9,6 +9,31 @@ extern "C"
 #include <b0/bindings/c.h>
 }
 
+#define B0_EXCEPTIONS_CATCH(name) catch(b0::exception::Exception &name)
+#define B0_SUCCESS 1
+#define B0_FAILURE 0
+#define B0_EXCEPTIONS_WRAPPER_BEGIN()      \
+    try                                    \
+    {                                      \
+        ((void)0)
+#define B0_EXCEPTIONS_WRAPPER_BEGIN_RET()  \
+    try                                    \
+    {                                      \
+        ((void)0)
+#define B0_EXCEPTIONS_WRAPPER_END()        \
+        return B0_SUCCESS;                 \
+    }                                      \
+    B0_EXCEPTIONS_CATCH(ex)                \
+    {                                      \
+        return B0_FAILURE;                 \
+    }
+#define B0_EXCEPTIONS_WRAPPER_END_RET(ret) \
+    }                                      \
+    B0_EXCEPTIONS_CATCH(ex)                \
+    {                                      \
+        return ret;                        \
+    }
+
 static void b0_socket_set_option(b0::Socket *psock, int option, int value)
 {
     switch(option)
@@ -40,10 +65,6 @@ static void b0_socket_set_option(b0::Socket *psock, int option, int value)
     }
 }
 
-extern "C"
-{
-#include <b0/bindings/c.h>
-
 static b0::logger::Level log_level_from_int(int level)
 {
     switch(level)
@@ -65,9 +86,13 @@ static b0::logger::Level log_level_from_int(int level)
     }
 }
 
-void b0_init(int *argc, char **argv)
+extern "C"
 {
+int b0_init(int *argc, char **argv)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     b0::init(*argc, argv);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 void * b0_buffer_new(size_t size)
@@ -90,14 +115,18 @@ void b0_node_delete(b0_node *node)
     delete reinterpret_cast<b0::Node*>(node);
 }
 
-void b0_node_init(b0_node *node)
+int b0_node_init(b0_node *node)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Node*>(node)->init();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_node_shutdown(b0_node *node)
+int b0_node_shutdown(b0_node *node)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Node*>(node)->shutdown();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 int b0_node_shutdown_requested(b0_node *node)
@@ -105,19 +134,25 @@ int b0_node_shutdown_requested(b0_node *node)
     return reinterpret_cast<b0::Node*>(node)->shutdownRequested();
 }
 
-void b0_node_spin_once(b0_node *node)
+int b0_node_spin_once(b0_node *node)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Node*>(node)->spinOnce();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_node_spin(b0_node *node)
+int b0_node_spin(b0_node *node)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Node*>(node)->spin();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_node_cleanup(b0_node *node)
+int b0_node_cleanup(b0_node *node)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Node*>(node)->cleanup();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 const char * b0_node_get_name(b0_node *node)
@@ -150,9 +185,11 @@ void b0_node_sleep_usec(b0_node *node, int64_t usec)
     reinterpret_cast<b0::Node*>(node)->sleepUSec(usec);
 }
 
-void b0_node_log(b0_node *node, int level, const char *message)
+int b0_node_log(b0_node *node, int level, const char *message)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Node*>(node)->log(log_level_from_int(level), message);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 b0_publisher * b0_publisher_new_ex(b0_node *node, const char *topic_name, int managed, int notify_graph)
@@ -170,19 +207,25 @@ void b0_publisher_delete(b0_publisher *pub)
     delete reinterpret_cast<b0::Publisher*>(pub);
 }
 
-void b0_publisher_init(b0_publisher *pub)
+int b0_publisher_init(b0_publisher *pub)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Publisher*>(pub)->init();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_publisher_cleanup(b0_publisher *pub)
+int b0_publisher_cleanup(b0_publisher *pub)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Publisher*>(pub)->cleanup();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_publisher_spin_once(b0_publisher *pub)
+int b0_publisher_spin_once(b0_publisher *pub)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Publisher*>(pub)->spinOnce();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 const char * b0_publisher_get_topic_name(b0_publisher *pub)
@@ -190,20 +233,26 @@ const char * b0_publisher_get_topic_name(b0_publisher *pub)
     return reinterpret_cast<b0::Publisher*>(pub)->getTopicName().c_str();
 }
 
-void b0_publisher_publish(b0_publisher *pub, const void *data, size_t size)
+int b0_publisher_publish(b0_publisher *pub, const void *data, size_t size)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     std::string msg((const char *)data, size);
     reinterpret_cast<b0::Publisher*>(pub)->publish(msg);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_publisher_log(b0_publisher *pub, int level, const char *message)
+int b0_publisher_log(b0_publisher *pub, int level, const char *message)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Publisher*>(pub)->log(log_level_from_int(level), message);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_publisher_set_option(b0_publisher *pub, int option, int value)
+int b0_publisher_set_option(b0_publisher *pub, int option, int value)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     b0_socket_set_option(reinterpret_cast<b0::Publisher*>(pub), option, value);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 void b0_subscriber_callback_wrapper(const std::string &msg, void (*callback)(const void *, size_t))
@@ -229,19 +278,25 @@ void b0_subscriber_delete(b0_subscriber *sub)
     delete reinterpret_cast<b0::Subscriber*>(sub);
 }
 
-void b0_subscriber_init(b0_subscriber *sub)
+int b0_subscriber_init(b0_subscriber *sub)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Subscriber*>(sub)->init();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_subscriber_cleanup(b0_subscriber *sub)
+int b0_subscriber_cleanup(b0_subscriber *sub)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Subscriber*>(sub)->cleanup();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_subscriber_spin_once(b0_subscriber *sub)
+int b0_subscriber_spin_once(b0_subscriber *sub)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Subscriber*>(sub)->spinOnce();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 const char * b0_subscriber_get_topic_name(b0_subscriber *sub)
@@ -249,9 +304,11 @@ const char * b0_subscriber_get_topic_name(b0_subscriber *sub)
     return reinterpret_cast<b0::Subscriber*>(sub)->getTopicName().c_str();
 }
 
-void b0_subscriber_log(b0_subscriber *sub, int level, const char *message)
+int b0_subscriber_log(b0_subscriber *sub, int level, const char *message)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::Subscriber*>(sub)->log(log_level_from_int(level), message);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 int b0_subscriber_poll(b0_subscriber *sub, long timeout)
@@ -261,17 +318,22 @@ int b0_subscriber_poll(b0_subscriber *sub, long timeout)
 
 void * b0_subscriber_read(b0_subscriber *sub, size_t *size)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN_RET();
     std::string msg;
     reinterpret_cast<b0::Subscriber*>(sub)->readRaw(msg);
     void *ret = b0_buffer_new(msg.size());
+    if(!ret) return NULL;
     memcpy(ret, msg.data(), msg.size());
     if(size) *size = msg.size();
     return ret;
+    B0_EXCEPTIONS_WRAPPER_END_RET(NULL);
 }
 
-void b0_subscriber_set_option(b0_subscriber *sub, int option, int value)
+int b0_subscriber_set_option(b0_subscriber *sub, int option, int value)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     b0_socket_set_option(reinterpret_cast<b0::Subscriber*>(sub), option, value);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 b0_service_client * b0_service_client_new_ex(b0_node *node, const char *service_name, int managed, int notify_graph)
@@ -289,19 +351,25 @@ void b0_service_client_delete(b0_service_client *cli)
     delete reinterpret_cast<b0::ServiceClient*>(cli);
 }
 
-void b0_service_client_init(b0_service_client *cli)
+int b0_service_client_init(b0_service_client *cli)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceClient*>(cli)->init();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_service_client_cleanup(b0_service_client *cli)
+int b0_service_client_cleanup(b0_service_client *cli)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceClient*>(cli)->cleanup();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_service_client_spin_once(b0_service_client *cli)
+int b0_service_client_spin_once(b0_service_client *cli)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceClient*>(cli)->spinOnce();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 const char * b0_service_client_get_service_name(b0_service_client *cli)
@@ -311,23 +379,30 @@ const char * b0_service_client_get_service_name(b0_service_client *cli)
 
 void * b0_service_client_call(b0_service_client *cli, const void *data, size_t size, size_t *out_size)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN_RET();
     std::string req((const char *)data, size);
     std::string rep;
     reinterpret_cast<b0::ServiceClient*>(cli)->call(req, rep);
     void *ret = b0_buffer_new(rep.size());
+    if(!ret) return NULL;
     memcpy(ret, rep.data(), rep.size());
     *out_size = rep.size();
     return ret;
+    B0_EXCEPTIONS_WRAPPER_END_RET(NULL);
 }
 
-void b0_service_client_log(b0_service_client *cli, int level, const char *message)
+int b0_service_client_log(b0_service_client *cli, int level, const char *message)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceClient*>(cli)->log(log_level_from_int(level), message);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_service_client_set_option(b0_service_client *cli, int option, int value)
+int b0_service_client_set_option(b0_service_client *cli, int option, int value)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     b0_socket_set_option(reinterpret_cast<b0::ServiceClient*>(cli), option, value);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 void b0_service_server_callback_wrapper(const std::string &req, std::string &rep, void * (*callback)(const void *, size_t, size_t *))
@@ -356,19 +431,25 @@ void b0_service_server_delete(b0_service_server *srv)
     delete reinterpret_cast<b0::ServiceServer*>(srv);
 }
 
-void b0_service_server_init(b0_service_server *srv)
+int b0_service_server_init(b0_service_server *srv)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceServer*>(srv)->init();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_service_server_cleanup(b0_service_server *srv)
+int b0_service_server_cleanup(b0_service_server *srv)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceServer*>(srv)->cleanup();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_service_server_spin_once(b0_service_server *srv)
+int b0_service_server_spin_once(b0_service_server *srv)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceServer*>(srv)->spinOnce();
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 const char * b0_service_server_get_service_name(b0_service_server *srv)
@@ -376,9 +457,11 @@ const char * b0_service_server_get_service_name(b0_service_server *srv)
     return reinterpret_cast<b0::ServiceServer*>(srv)->getServiceName().c_str();
 }
 
-void b0_service_server_log(b0_service_server *srv, int level, const char *message)
+int b0_service_server_log(b0_service_server *srv, int level, const char *message)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceServer*>(srv)->log(log_level_from_int(level), message);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 int b0_service_server_poll(b0_service_server *srv, long timeout)
@@ -388,22 +471,29 @@ int b0_service_server_poll(b0_service_server *srv, long timeout)
 
 void * b0_service_server_read(b0_service_server *srv, size_t *size)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN_RET();
     std::string msg;
     reinterpret_cast<b0::ServiceServer*>(srv)->readRaw(msg);
     void *ret = b0_buffer_new(msg.size());
+    if(!ret) return NULL;
     memcpy(ret, msg.data(), msg.size());
     if(size) *size = msg.size();
     return ret;
+    B0_EXCEPTIONS_WRAPPER_END_RET(NULL);
 }
 
-void b0_service_server_write(b0_service_server *srv, const void *msg, size_t size)
+int b0_service_server_write(b0_service_server *srv, const void *msg, size_t size)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     reinterpret_cast<b0::ServiceServer*>(srv)->writeRaw(std::string(reinterpret_cast<const char *>(msg), size));
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
-void b0_service_server_set_option(b0_service_server *srv, int option, int value)
+int b0_service_server_set_option(b0_service_server *srv, int option, int value)
 {
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
     b0_socket_set_option(reinterpret_cast<b0::ServiceServer*>(srv), option, value);
+    B0_EXCEPTIONS_WRAPPER_END();
 }
 
 }
