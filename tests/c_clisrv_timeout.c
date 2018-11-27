@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-//#include <sys/wait.h>
 #include <b0/bindings/c.h>
 
 pid_t resolver_pid = -1;
@@ -20,10 +19,6 @@ void start_resolver()
     }
     else if(resolver_pid > 0)
     {
-        //printf("waiting for child...\n");
-        //int status;
-        //waitpid(pid, &status, 0);
-        //printf("child finished\n");
         sleep(2);
     }
     else
