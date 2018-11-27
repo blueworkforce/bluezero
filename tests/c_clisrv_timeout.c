@@ -7,6 +7,10 @@
 #include <b0/bindings/c.h>
 
 pid_t resolver_pid = -1;
+pid_t server_pid = -1;
+pid_t client_pid = -1;
+const char *service_name = "test_service";
+int server_wait = 0;
 
 void start_resolver()
 {
@@ -14,7 +18,7 @@ void start_resolver()
 
     if(resolver_pid == -1)
     {
-        fprintf(stderr, "error: fork failed\n");
+        fprintf(stderr, "error: start_resolver: fork failed\n");
         exit(1);
     }
     else if(resolver_pid > 0)
@@ -31,7 +35,6 @@ void start_resolver()
         execve("b0_resolver", argv, envp);
         exit(1); // exec() never returns
     }
-
 }
 
 void kill_resolver(int sig)
@@ -42,14 +45,13 @@ void kill_resolver(int sig)
 
 void * server_callback(const void *req, size_t sz, size_t *out_sz)
 {
-    printf("Received: %s\n", (const char*)req);
+    printf("server: Received: %s\n", (const char*)req);
 
-    int wait = 10;
-    printf("Waiting %d seconds...\n", wait);
-    sleep(wait);
+    printf("server: Waiting %d seconds...\n", server_wait);
+    sleep(server_wait);
 
     const char *repmsg = "hi";
-    printf("Sending: %s\n", repmsg);
+    printf("server: Sending: %s\n", repmsg);
 
     *out_sz = strlen(repmsg);
     void *rep = b0_buffer_new(*out_sz);
@@ -57,63 +59,108 @@ void * server_callback(const void *req, size_t sz, size_t *out_sz)
     return rep;
 }
 
+void start_server()
+{
+    server_pid = fork();
+
+    if(server_pid == -1)
+    {
+        fprintf(stderr, "error: start_server: fork failed\n");
+        exit(1);
+    }
+    else if(server_pid == 0)
+    {
+        b0_node *server_node = b0_node_new("server");
+        b0_service_server *srv = b0_service_server_new(server_node, service_name, &server_callback);
+        b0_node_init(server_node);
+        b0_node_spin(server_node);
+        b0_node_cleanup(server_node);
+        b0_service_server_delete(srv);
+        b0_node_delete(server_node);
+    }
+}
+
+void kill_server(int sig)
+{
+    if(server_pid > 0)
+        kill(server_pid, SIGKILL);
+}
+
+void start_client()
+{
+    client_pid = fork();
+
+    if(client_pid == -1)
+    {
+        fprintf(stderr, "error: start_client: fork failed\n");
+        exit(1);
+    }
+    else if(client_pid == 0)
+    {
+        b0_node *client_node = b0_node_new("client");
+        b0_service_client *cli = b0_service_client_new(client_node, service_name);
+        b0_service_client_set_option(cli, B0_SOCK_OPT_READTIMEOUT, 2000);
+        b0_node_init(client_node);
+
+        const char *req = "hello";
+        printf("client: Sending: %s\n", req);
+        char *rep;
+        size_t rep_sz;
+        rep = b0_service_client_call(cli, req, strlen(req) + 1, &rep_sz);
+        if(rep)
+        {
+            printf("client: Received: %s\n", rep);
+            b0_buffer_delete(rep);
+        }
+        else
+        {
+            printf("client: Service call failed (timeout?)\n");
+        }
+
+        b0_node_cleanup(client_node);
+        b0_service_client_delete(cli);
+        b0_node_delete(client_node);
+    }
+}
+
+void kill_client(int sig)
+{
+    if(client_pid > 0)
+        kill(client_pid, SIGKILL);
+}
+
+void kill_all(int sig)
+{
+    kill_server(sig);
+    kill_client(sig);
+    kill_resolver(sig);
+}
+
 int main(int argc, char **argv)
 {
-    signal(SIGTERM, (void (*)(int))kill_resolver);
-    signal(SIGINT, (void (*)(int))kill_resolver);
-    signal(SIGABRT, (void (*)(int))kill_resolver);
+    signal(SIGTERM, (void (*)(int))kill_all);
+    signal(SIGINT, (void (*)(int))kill_all);
+    signal(SIGABRT, (void (*)(int))kill_all);
+
+    const char *wait_str = getenv("SERVER_WAIT");
+    if(wait_str) server_wait = atoi(wait_str);
 
     start_resolver();
 
     b0_init(&argc, argv);
 
-    const char *service_name = "test_service";
+    start_server();
+    sleep(2);
 
-    b0_node *server_node = b0_node_new("server");
-    b0_service_server *srv = b0_service_server_new(server_node, service_name, &server_callback);
-    b0_node_init(server_node);
-
-    b0_node *client_node = b0_node_new("client");
-    b0_service_client *cli = b0_service_client_new(client_node, service_name);
-    b0_service_client_set_option(cli, B0_SOCK_OPT_READTIMEOUT, 2000);
-    b0_node_init(client_node);
-
-    while(!b0_node_shutdown_requested(server_node) &&
-          !b0_node_shutdown_requested(client_node))
-    {
-        b0_node_spin_once(server_node);
-        b0_node_spin_once(client_node);
-        b0_node_sleep_usec(server_node, 10000);
-
-        const char *req = "hello";
-        printf("Sending: %s\n", req);
-        char *rep;
-        size_t rep_sz;
-        // call will block, server will never process request:
-        rep = b0_service_client_call(cli, req, strlen(req) + 1, &rep_sz);
-        if(rep)
-        {
-            printf("Received: %s\n", rep);
-            b0_buffer_delete(rep);
-        }
-        else
-        {
-            printf("Service call failed (timeout?)\n");
-        }
-        break;
-    }
-
-    b0_node_cleanup(server_node);
-    b0_node_cleanup(client_node);
-
-    b0_service_server_delete(srv);
-    b0_service_client_delete(cli);
-    b0_node_delete(server_node);
-    b0_node_delete(client_node);
-
-    kill_resolver(SIGTERM);
+    start_client();
 
     int status;
+    waitpid(client_pid, &status, 0);
+
+    kill_server(SIGTERM);
+    waitpid(server_pid, &status, 0);
+
+    kill_resolver(SIGTERM);
     waitpid(resolver_pid, &status, 0);
 
     return 0;
