@@ -2,15 +2,12 @@
 #include <b0/publisher.h>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/program_options.hpp>
 
 /*! \example remapping/const.cpp
  * This node outputs a constant value on its topic
  */
 
 //! \cond HIDDEN_SYMBOLS
-
-namespace po = boost::program_options;
 
 class Const : public b0::Node
 {
@@ -34,11 +31,9 @@ private:
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("value,v", po::value<int>()->default_value(0), "the value to publish")
-    ;
+    b0::addOptionInt("value,v", "the value to publish");
     b0::init(argc, argv);
-    Const node(b0::getOption("value").as<int>());
+    Const node(b0::getOptionInt("value"));
     node.init();
     node.spin();
     node.cleanup();

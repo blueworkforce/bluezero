@@ -112,9 +112,7 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("enable-conflate,c", po::value<int>(&enable_conflate)->required(), "enable conflate")
-    ;
+    b0::addOptionInt("enable-conflate,c", "enable conflate", &enable_conflate, true);
     b0::setPositionalOption("enable-conflate");
     b0::init(argc, argv);
 

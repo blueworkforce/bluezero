@@ -2,12 +2,9 @@
 
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/program_options.hpp>
 
 #include <iostream>
 #include <string>
-
-namespace po = boost::program_options;
 
 // unit-test for the time sync algorithm
 // (does not cover time synchronization between nodes)

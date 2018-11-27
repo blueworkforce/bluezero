@@ -2,12 +2,9 @@
 
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/program_options.hpp>
 
 #include <iostream>
 #include <string>
-
-namespace po = boost::program_options;
 
 // unit-test for the time sync algorithm
 // (does not cover time synchronization between nodes)
@@ -37,12 +34,10 @@ int main(int argc, char **argv)
     double max_slope = 0;
     int64_t offset = sec(0);
     double speed = 0;
-    bool expected = false;
-    b0::addOptions()
-        ("max-slope,m", po::value<double>(&max_slope)->required(), "max slope")
-        ("clock-speed,s", po::value<double>(&speed)->required(), "speed of test clock")
-        ("expect-success,e", po::value<bool>(&expected)->required(), "expect success")
-    ;
+    int expected = 0;
+    b0::addOptionDouble("max-slope,m", "max slope", &max_slope, true);
+    b0::addOptionDouble("clock-speed,s", "speed of test clock", &speed, true);
+    b0::addOptionInt("expect-success,e", "expect success", &expected, true);
     b0::setPositionalOption("max-slope");
     b0::setPositionalOption("clock-speed");
     b0::setPositionalOption("expect-success");
@@ -65,6 +60,6 @@ int main(int argc, char **argv)
 
     // if it will be able to track the clock, the final offset will be constant at approximately (1 - speed) seconds
     int64_t error_bound = sec((1 - speed) * 1.05 /* 5% tolerance */);
-    return !!(expected ^ (std::abs(error) < std::abs(error_bound)));
+    return !!(!!expected ^ (std::abs(error) < std::abs(error_bound)));
 }
 

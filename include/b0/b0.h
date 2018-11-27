@@ -1,8 +1,6 @@
 #ifndef B0__B0_H__INCLUDED
 #define B0__B0_H__INCLUDED
 
-#include <boost/program_options.hpp>
-
 #include <b0/config.h>
 #include <b0/logger/level.h>
 
@@ -483,8 +481,7 @@
  *
  * The BlueZero library handles the parsing of command line options.
  *
- * Nodes can specify additional options to parse, calling b0::addOptions() before b0::init(),
- * using the `boost::program_options` interface.
+ * Nodes can specify additional options to parse, calling b0::addOption() before b0::init().
  *
  * The user-specified options will be listed in the help page, among with standard BlueZero
  * command-line options.
@@ -554,13 +551,29 @@ public:
 
     void addServiceRemaping(const std::string &orig_name, const std::string &new_name);
 
-    boost::program_options::options_description & optionsDescription();
-
-    boost::program_options::positional_options_description & positionalOptionsDescription();
-
-    boost::program_options::variables_map & options();
-
     void printUsage(bool toStdErr = false);
+
+    void addOption(const std::string &name, const std::string &description);
+
+    void addOptionString(const std::string &name, const std::string &description, std::string *ptr, bool required, const std::string &default_value);
+
+    void addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value);
+
+    void addOptionInt64(const std::string &name, const std::string &description, int64_t *ptr, bool required, int64_t default_value);
+
+    void addOptionDouble(const std::string &name, const std::string &description, double *ptr, bool required, double default_value);
+
+    void setPositionalOption(const std::string &option, int max_count);
+
+    int hasOption(const std::string &option);
+
+    std::string getOptionString(const std::string &option);
+
+    int getOptionInt(const std::string &option);
+
+    int64_t getOptionInt64(const std::string &option);
+
+    double getOptionDouble(const std::string &option);
 
     void init(int &argc, char **argv);
 
@@ -620,14 +633,57 @@ void init();
 void printUsage(bool toStdErr = false);
 
 /*!
- * Convenience method for adding more command line options
+ * Declare a named command line option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
  *
  * See also \ref cmdline_args.
  */
-boost::program_options::options_description_easy_init addOptions();
+void addOption(const std::string &name, const std::string &description);
 
 /*!
- * Convenience method for adding a positional command line option (the option must have been previously added with b0::hasOption())
+ * Declare a named command line string option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionString(const std::string &name, const std::string &description, std::string *ptr = nullptr, bool required = false, const std::string &default_value = "");
+
+/*!
+ * Declare a named command line int option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionInt(const std::string &name, const std::string &description, int *ptr = nullptr, bool required = false, int default_value = 0);
+
+/*!
+ * Declare a named command line int64_t option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionInt64(const std::string &name, const std::string &description, int64_t *ptr = nullptr, bool required = false, int64_t default_value = 0);
+
+/*!
+ * Declare a named command line double option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionDouble(const std::string &name, const std::string &description, double *ptr = nullptr, bool required = false, double default_value = 0.0);
+
+/*!
+ * Convenience method for adding a positional command line option (the option must have been previously added with b0::addOption())
  *
  * See also \ref cmdline_args.
  */
@@ -641,11 +697,32 @@ void setPositionalOption(const std::string &option, int max_count = 1);
 int hasOption(const std::string &option);
 
 /*!
- * Retrieve the value of an option
+ * Retrieve the value of a string option
  *
  * See also \ref cmdline_args.
  */
-const boost::program_options::variable_value & getOption(const std::string &option);
+std::string getOptionString(const std::string &option);
+
+/*!
+ * Retrieve the value of an int option
+ *
+ * See also \ref cmdline_args.
+ */
+int getOptionInt(const std::string &option);
+
+/*!
+ * Retrieve the value of an int64_t option
+ *
+ * See also \ref cmdline_args.
+ */
+int64_t getOptionInt64(const std::string &option);
+
+/*!
+ * Retrieve the value of a double option
+ *
+ * See also \ref cmdline_args.
+ */
+double getOptionDouble(const std::string &option);
 
 /*!
  * Get the console logging level. This can be changed also by the B0_CONSOLE_LOGLEVEL env var,

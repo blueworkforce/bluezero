@@ -2,24 +2,19 @@
 #include <iostream>
 #include <iterator>
 
-#include <boost/program_options.hpp>
 #include <boost/thread.hpp>
 
 #include <b0/node.h>
 #include <b0/publisher.h>
 
-namespace po = boost::program_options;
-
 int main(int argc, char **argv)
 {
     std::string node_name = "b0_topic_publish", topic_name = "", content_type = "";
     double rate = 0.0;
-    b0::addOptions()
-        ("node-name,n", po::value<std::string>(&node_name), "name of node")
-        ("topic-name,t", po::value<std::string>(&topic_name), "name of topic")
-        ("content-type,c", po::value<std::string>(&content_type), "content type")
-        ("rate,r", po::value<double>(&rate), "publish rate (0 means one-shot)")
-    ;
+    b0::addOptionString("node-name,n", "name of node", &node_name);
+    b0::addOptionString("topic-name,t", "name of topic", &topic_name);
+    b0::addOptionString("content-type,c", "content type", &content_type);
+    b0::addOptionDouble("rate,r", "publish rate (0 means one-shot)", &rate);
     b0::setPositionalOption("topic-name");
     b0::init(argc, argv);
 

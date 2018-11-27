@@ -3,15 +3,12 @@
 #include <b0/subscriber.h>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/program_options.hpp>
 
 /*! \example remapping/operation.cpp
  * This node performs a mathematical operation on the data received on its two topics
  */
 
 //! \cond HIDDEN_SYMBOLS
-
-namespace po = boost::program_options;
 
 class Operation : public b0::Node
 {
@@ -65,11 +62,9 @@ private:
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("operator,o", po::value<std::string>()->default_value("+"), "the mathematical operator")
-    ;
+    b0::addOptionString("operator,o", "the mathematical operator", nullptr, true);
     b0::init(argc, argv);
-    Operation node(b0::getOption("operator").as<std::string>()[0]);
+    Operation node(b0::getOptionString("operator")[0]);
     node.init();
     node.spin();
     node.cleanup();

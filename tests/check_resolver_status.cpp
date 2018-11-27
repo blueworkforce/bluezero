@@ -1,14 +1,11 @@
 #include <iostream>
 #include <boost/thread.hpp>
-#include <boost/program_options.hpp>
 
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/exceptions.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
-
-namespace po = boost::program_options;
 
 int run_resolver = 0;
 
@@ -48,9 +45,7 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("run-resolver,r", po::value<int>(&run_resolver)->required(), "run resolver")
-    ;
+    b0::addOptionInt("run-resolver,r", "run resolver", &run_resolver, true);
     b0::setPositionalOption("run-resolver");
     b0::init(argc, argv);
 

@@ -1,13 +1,10 @@
 #include <iostream>
 #include <boost/thread.hpp>
-#include <boost/program_options.hpp>
 
 #include <b0/resolver/resolver.h>
 #include <b0/node.h>
 #include <b0/publisher.h>
 #include <b0/subscriber.h>
-
-namespace po = boost::program_options;
 
 int use_compression;
 
@@ -67,9 +64,7 @@ void timeout_thread()
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("use-compression,c", po::value<int>(&use_compression)->required(), "use compression")
-    ;
+    b0::addOptionInt("use-compression,c", "use compression", &use_compression, true);
     b0::setPositionalOption("use-compression");
     b0::init(argc, argv);
 

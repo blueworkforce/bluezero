@@ -1,11 +1,8 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
-#include <boost/program_options.hpp>
 
 #include <b0/compress/compress.h>
-
-namespace po = boost::program_options;
 
 std::string generatePayload(size_t size)
 {
@@ -20,9 +17,7 @@ std::string generatePayload(size_t size)
 int main(int argc, char **argv)
 {
     std::string algo;
-    b0::addOptions()
-        ("algorithm,a", po::value<std::string>(&algo)->required(), "compression algorithm to test")
-    ;
+    b0::addOptionString("algorithm,a", "compression algorithm to test", &algo, true);
     b0::setPositionalOption("algorithm");
     b0::init(argc, argv);
 

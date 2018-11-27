@@ -6,17 +6,11 @@
 
 #include <b0/node.h>
 
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
-
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("fancy-name,n", po::value<std::string>(), "a string arg")
-        ("lucky-number,x", po::value<int>()->default_value(23), "an int arg with default")
-        ("file,f", po::value<std::string>(), "file arg")
-    ;
+    b0::addOptionString("fancy-name,n", "a string arg");
+    b0::addOptionInt("lucky-number,x", "an int arg with default", nullptr, false, 23);
+    b0::addOptionString("file,f", "file arg");
     b0::setPositionalOption("file");
     b0::init(argc, argv);
 
@@ -24,7 +18,7 @@ int main(int argc, char **argv)
 
     if(b0::hasOption("fancy-name"))
     {
-        std::string n = b0::getOption("fancy-name").as<std::string>();
+        std::string n = b0::getOptionString("fancy-name");
         // do something with n
     }
 

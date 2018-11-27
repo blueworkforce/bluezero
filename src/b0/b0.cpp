@@ -142,24 +142,76 @@ void Global::addServiceRemaping(const std::string &orig_name, const std::string 
     private_->remap_service_[orig_name] = new_name;
 }
 
-po::options_description & Global::optionsDescription()
-{
-    return private_->options_description_;
-}
-
-po::positional_options_description & Global::positionalOptionsDescription()
-{
-    return private_->positional_options_description_;
-}
-
-po::variables_map & Global::options()
-{
-    return private_->variables_map_;
-}
-
 void Global::printUsage(bool toStdErr)
 {
     (toStdErr ? std::cerr : std::cout) << private_->options_description_ << std::endl;
+}
+
+void Global::addOption(const std::string &name, const std::string &description)
+{
+    private_->options_description_.add_options()(name.c_str(), description.c_str());
+}
+
+void Global::addOptionString(const std::string &name, const std::string &description, std::string *ptr, bool required, const std::string &default_value)
+{
+    auto value = boost::program_options::value<std::string>(ptr);
+    if(required) value->required();
+    else value->default_value(ptr ? *ptr : default_value);
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value)
+{
+    auto value = boost::program_options::value<int>(ptr);
+    if(required) value->required();
+    else value->default_value(ptr ? *ptr : default_value);
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::addOptionInt64(const std::string &name, const std::string &description, int64_t *ptr, bool required, int64_t default_value)
+{
+    auto value = boost::program_options::value<int64_t>(ptr);
+    if(required) value->required();
+    else value->default_value(ptr ? *ptr : default_value);
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::addOptionDouble(const std::string &name, const std::string &description, double *ptr, bool required, double default_value)
+{
+    auto value = boost::program_options::value<double>(ptr);
+    if(required) value->required();
+    else value->default_value(ptr ? *ptr : default_value);
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::setPositionalOption(const std::string &option, int max_count)
+{
+    private_->positional_options_description_.add(option.c_str(), max_count);
+}
+
+int Global::hasOption(const std::string &option)
+{
+    return private_->variables_map_.count(option);
+}
+
+std::string Global::getOptionString(const std::string &option)
+{
+    return private_->variables_map_[option].as<std::string>();
+}
+
+int Global::getOptionInt(const std::string &option)
+{
+    return private_->variables_map_[option].as<int>();
+}
+
+int64_t Global::getOptionInt64(const std::string &option)
+{
+    return private_->variables_map_[option].as<int64_t>();
+}
+
+double Global::getOptionDouble(const std::string &option)
+{
+    return private_->variables_map_[option].as<double>();
 }
 
 void Global::init(int &argc, char **argv)
@@ -355,24 +407,59 @@ void printUsage(bool toStdErr)
     Global::getInstance().printUsage(toStdErr);
 }
 
-boost::program_options::options_description_easy_init addOptions()
+void addOption(const std::string &name, const std::string &description)
 {
-    return Global::getInstance().optionsDescription().add_options();
+    Global::getInstance().addOption(name, description);
+}
+
+void addOptionString(const std::string &name, const std::string &description, std::string *ptr, bool required, const std::string &default_value)
+{
+    Global::getInstance().addOptionString(name, description, ptr, required, default_value);
+}
+
+void addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value)
+{
+    Global::getInstance().addOptionInt(name, description, ptr, required, default_value);
+}
+
+void addOptionInt64(const std::string &name, const std::string &description, int64_t *ptr, bool required, int64_t default_value)
+{
+    Global::getInstance().addOptionInt64(name, description, ptr, required, default_value);
+}
+
+void addOptionDouble(const std::string &name, const std::string &description, double *ptr, bool required, double default_value)
+{
+    Global::getInstance().addOptionDouble(name, description, ptr, required, default_value);
 }
 
 void setPositionalOption(const std::string &option, int max_count)
 {
-    Global::getInstance().positionalOptionsDescription().add(option.c_str(), max_count);
+    Global::getInstance().setPositionalOption(option, max_count);
 }
 
 int hasOption(const std::string &option)
 {
-    return Global::getInstance().options().count(option);
+    return Global::getInstance().hasOption(option);
 }
 
-const boost::program_options::variable_value & getOption(const std::string &option)
+std::string getOptionString(const std::string &option)
 {
-    return Global::getInstance().options()[option];
+    return Global::getInstance().getOptionString(option);
+}
+
+int getOptionInt(const std::string &option)
+{
+    return Global::getInstance().getOptionInt(option);
+}
+
+int64_t getOptionInt64(const std::string &option)
+{
+    return Global::getInstance().getOptionInt64(option);
+}
+
+double getOptionDouble(const std::string &option)
+{
+    return Global::getInstance().getOptionDouble(option);
 }
 
 logger::Level getConsoleLogLevel()

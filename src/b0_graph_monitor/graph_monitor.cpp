@@ -128,9 +128,7 @@ protected:
 
 int main(int argc, char **argv)
 {
-    b0::addOptions()
-        ("cluster,c", "Group (cluster) nodes by host")
-    ;
+    b0::addOption("cluster,c", "Group (cluster) nodes by host");
     b0::init(argc, argv);
     b0::graph::Console console;
     console.init();
