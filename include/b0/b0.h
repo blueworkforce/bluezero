@@ -515,6 +515,7 @@
  */
 
 #include <string>
+#include <vector>
 
 namespace b0
 {
@@ -557,6 +558,8 @@ public:
 
     void addOptionString(const std::string &name, const std::string &description, std::string *ptr, bool required, const std::string &default_value);
 
+    void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value);
+
     void addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value);
 
     void addOptionInt64(const std::string &name, const std::string &description, int64_t *ptr, bool required, int64_t default_value);
@@ -568,6 +571,8 @@ public:
     int hasOption(const std::string &option);
 
     std::string getOptionString(const std::string &option);
+
+    std::vector<std::string> getOptionStringVector(const std::string &option);
 
     int getOptionInt(const std::string &option);
 
@@ -653,6 +658,16 @@ void addOption(const std::string &name, const std::string &description);
 void addOptionString(const std::string &name, const std::string &description, std::string *ptr = nullptr, bool required = false, const std::string &default_value = "");
 
 /*!
+ * Declare a named command line string vector option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr = nullptr, bool required = false, const std::vector<std::string> &default_value = {});
+
+/*!
  * Declare a named command line int option.
  *
  * Use the form "long,l" to declare a long option name (--long) together with
@@ -702,6 +717,13 @@ int hasOption(const std::string &option);
  * See also \ref cmdline_args.
  */
 std::string getOptionString(const std::string &option);
+
+/*!
+ * Retrieve the value of a string vector option
+ *
+ * See also \ref cmdline_args.
+ */
+std::vector<std::string> getOptionStringVector(const std::string &option);
 
 /*!
  * Retrieve the value of an int option

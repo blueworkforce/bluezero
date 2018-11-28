@@ -190,6 +190,14 @@ void Global::addOptionString(const std::string &name, const std::string &descrip
     private_->options_description_.add_options()(name.c_str(), value, description.c_str());
 }
 
+void Global::addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value)
+{
+    auto value = boost::program_options::value<std::vector<std::string> >(ptr)->multitoken();
+    if(required) value->required();
+    //else value->default_value(ptr ? *ptr : default_value);
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
 void Global::addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value)
 {
     auto value = boost::program_options::value<int>(ptr);
@@ -227,6 +235,11 @@ int Global::hasOption(const std::string &option)
 std::string Global::getOptionString(const std::string &option)
 {
     return private_->variables_map_[option].as<std::string>();
+}
+
+std::vector<std::string> Global::getOptionStringVector(const std::string &option)
+{
+    return private_->variables_map_[option].as<std::vector<std::string> >();
 }
 
 int Global::getOptionInt(const std::string &option)
@@ -447,6 +460,11 @@ void addOptionString(const std::string &name, const std::string &description, st
     Global::getInstance().addOptionString(name, description, ptr, required, default_value);
 }
 
+void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value)
+{
+    Global::getInstance().addOptionStringVector(name, description, ptr, required, default_value);
+}
+
 void addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value)
 {
     Global::getInstance().addOptionInt(name, description, ptr, required, default_value);
@@ -475,6 +493,11 @@ int hasOption(const std::string &option)
 std::string getOptionString(const std::string &option)
 {
     return Global::getInstance().getOptionString(option);
+}
+
+std::vector<std::string> getOptionStringVector(const std::string &option)
+{
+    return Global::getInstance().getOptionStringVector(option);
 }
 
 int getOptionInt(const std::string &option)
