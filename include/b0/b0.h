@@ -551,7 +551,7 @@ public:
 
     void addServiceRemaping(const std::string &orig_name, const std::string &new_name);
 
-    void printUsage(bool toStdErr = false);
+    void printUsage(const std::string &argv0, bool toStdErr = false);
 
     void addOption(const std::string &name, const std::string &description);
 
@@ -630,7 +630,7 @@ void init();
 /*!
  * Print a description of command line options
  */
-void printUsage(bool toStdErr = false);
+void printUsage(const std::string &argv0, bool toStdErr = false);
 
 /*!
  * Declare a named command line option.

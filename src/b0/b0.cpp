@@ -14,6 +14,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
 
 #ifdef HAVE_POSIX_SIGNALS
 #include <signal.h>
@@ -142,9 +143,38 @@ void Global::addServiceRemaping(const std::string &orig_name, const std::string 
     private_->remap_service_[orig_name] = new_name;
 }
 
-void Global::printUsage(bool toStdErr)
+void Global::printUsage(const std::string &argv0, bool toStdErr)
 {
-    (toStdErr ? std::cerr : std::cout) << private_->options_description_ << std::endl;
+    std::ostream &os = toStdErr ? std::cerr : std::cout;
+
+    os << "Usage:" << std::endl;
+
+    boost::filesystem::path p(argv0);
+    os << "  " << p.filename().string();
+
+    os << " [options]";
+
+    std::string last = "";
+    int rep = 0;
+    for(int i = 0; i < private_->positional_options_description_.max_total_count(); i++)
+    {
+        const std::string &n = private_->positional_options_description_.name_for_position(i);
+        if(!rep && n == last)
+        {
+            rep++;
+            os << " ...";
+        }
+        else if(n != last)
+        {
+            os << " " << n;
+            last = n;
+            rep = 0;
+        }
+    }
+    os << std::endl << std::endl;
+
+    os << "Options:" << std::endl;
+    os << private_->options_description_ << std::endl;
 }
 
 void Global::addOption(const std::string &name, const std::string &description)
@@ -250,13 +280,13 @@ void Global::init(int &argc, char **argv)
     catch(po::error &ex)
     {
         std::cerr << "error: " << ex.what() << std::endl;
-        printUsage(true);
+        printUsage(argv[0], true);
         std::exit(1);
     }
 
     if(private_->variables_map_.count("help"))
     {
-        printUsage();
+        printUsage(argv[0]);
         std::exit(0);
     }
 
@@ -402,9 +432,9 @@ void init()
     init(argc, argv);
 }
 
-void printUsage(bool toStdErr)
+void printUsage(const std::string &argv0, bool toStdErr)
 {
-    Global::getInstance().printUsage(toStdErr);
+    Global::getInstance().printUsage(argv0, toStdErr);
 }
 
 void addOption(const std::string &name, const std::string &description)
