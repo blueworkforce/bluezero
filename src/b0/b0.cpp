@@ -159,12 +159,12 @@ void Global::printUsage(const std::string &argv0, bool toStdErr)
     for(int i = 0; i < private_->positional_options_description_.max_total_count(); i++)
     {
         const std::string &n = private_->positional_options_description_.name_for_position(i);
-        if(!rep && n == last)
+        if(n == last)
         {
-            rep++;
-            os << " ...";
+            if(!rep) os << " ...";
+            if(rep++ > 1000) break;
         }
-        else if(n != last)
+        else
         {
             os << " " << n;
             last = n;
@@ -173,7 +173,6 @@ void Global::printUsage(const std::string &argv0, bool toStdErr)
     }
     os << std::endl << std::endl;
 
-    os << "Options:" << std::endl;
     os << private_->options_description_ << std::endl;
 }
 
