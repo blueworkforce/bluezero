@@ -4,7 +4,9 @@
 
 //! \cond HIDDEN_SYMBOLS
 
-#include <b0/node.h>
+#include <b0/b0.h>
+#include <iostream>
+using std::cout; using std::endl;
 
 int main(int argc, char **argv)
 {
@@ -14,17 +16,12 @@ int main(int argc, char **argv)
     b0::setPositionalOption("file");
     b0::init(argc, argv);
 
-    b0::Node node;
-
-    if(b0::hasOption("fancy-name"))
+    cout << "file = " << b0::getOptionString("file") << endl;
+    if(b0::hasOption("lucky-number"))
     {
-        std::string n = b0::getOptionString("fancy-name");
-        // do something with n
+        int x = b0::getOptionInt("lucky-number");
+        cout << "lucky number = " << x << endl;
     }
-
-    node.init();
-    node.spin();
-    node.cleanup();
 
     return 0;
 }
