@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
     b0::addOptionString("fancy-name,n", "a string arg");
     b0::addOptionInt("lucky-number,x", "an int arg with default", nullptr, false, 23);
-    b0::addOptionString("file,f", "file arg");
+    b0::addOptionString("file,f", "file arg", nullptr, true);
     b0::setPositionalOption("file");
     b0::init(argc, argv);
 
