@@ -190,14 +190,6 @@ void Global::addOptionString(const std::string &name, const std::string &descrip
     private_->options_description_.add_options()(name.c_str(), value, description.c_str());
 }
 
-void Global::addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value)
-{
-    auto value = boost::program_options::value<std::vector<std::string> >(ptr)->multitoken();
-    if(required) value->required();
-    //else value->default_value(ptr ? *ptr : default_value);
-    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
-}
-
 void Global::addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value)
 {
     auto value = boost::program_options::value<int>(ptr);
@@ -222,6 +214,34 @@ void Global::addOptionDouble(const std::string &name, const std::string &descrip
     private_->options_description_.add_options()(name.c_str(), value, description.c_str());
 }
 
+void Global::addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value)
+{
+    auto value = boost::program_options::value<std::vector<std::string> >(ptr);
+    if(required) value->required();
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::addOptionIntVector(const std::string &name, const std::string &description, std::vector<int> *ptr, bool required, const std::vector<int> &default_value)
+{
+    auto value = boost::program_options::value<std::vector<int> >(ptr);
+    if(required) value->required();
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::addOptionInt64Vector(const std::string &name, const std::string &description, std::vector<int64_t> *ptr, bool required, const std::vector<int64_t> &default_value)
+{
+    auto value = boost::program_options::value<std::vector<int64_t> >(ptr);
+    if(required) value->required();
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
+void Global::addOptionDoubleVector(const std::string &name, const std::string &description, std::vector<double> *ptr, bool required, const std::vector<double> &default_value)
+{
+    auto value = boost::program_options::value<std::vector<double> >(ptr);
+    if(required) value->required();
+    private_->options_description_.add_options()(name.c_str(), value, description.c_str());
+}
+
 void Global::setPositionalOption(const std::string &option, int max_count)
 {
     private_->positional_options_description_.add(option.c_str(), max_count);
@@ -237,11 +257,6 @@ std::string Global::getOptionString(const std::string &option)
     return private_->variables_map_[option].as<std::string>();
 }
 
-std::vector<std::string> Global::getOptionStringVector(const std::string &option)
-{
-    return private_->variables_map_[option].as<std::vector<std::string> >();
-}
-
 int Global::getOptionInt(const std::string &option)
 {
     return private_->variables_map_[option].as<int>();
@@ -255,6 +270,26 @@ int64_t Global::getOptionInt64(const std::string &option)
 double Global::getOptionDouble(const std::string &option)
 {
     return private_->variables_map_[option].as<double>();
+}
+
+std::vector<std::string> Global::getOptionStringVector(const std::string &option)
+{
+    return private_->variables_map_[option].as<std::vector<std::string> >();
+}
+
+std::vector<int> Global::getOptionIntVector(const std::string &option)
+{
+    return private_->variables_map_[option].as<std::vector<int> >();
+}
+
+std::vector<int64_t> Global::getOptionInt64Vector(const std::string &option)
+{
+    return private_->variables_map_[option].as<std::vector<int64_t> >();
+}
+
+std::vector<double> Global::getOptionDoubleVector(const std::string &option)
+{
+    return private_->variables_map_[option].as<std::vector<double> >();
 }
 
 void Global::init(int &argc, char **argv)
@@ -460,11 +495,6 @@ void addOptionString(const std::string &name, const std::string &description, st
     Global::getInstance().addOptionString(name, description, ptr, required, default_value);
 }
 
-void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value)
-{
-    Global::getInstance().addOptionStringVector(name, description, ptr, required, default_value);
-}
-
 void addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value)
 {
     Global::getInstance().addOptionInt(name, description, ptr, required, default_value);
@@ -478,6 +508,26 @@ void addOptionInt64(const std::string &name, const std::string &description, int
 void addOptionDouble(const std::string &name, const std::string &description, double *ptr, bool required, double default_value)
 {
     Global::getInstance().addOptionDouble(name, description, ptr, required, default_value);
+}
+
+void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value)
+{
+    Global::getInstance().addOptionStringVector(name, description, ptr, required, default_value);
+}
+
+void addOptionIntVector(const std::string &name, const std::string &description, std::vector<int> *ptr, bool required, const std::vector<int> &default_value)
+{
+    Global::getInstance().addOptionIntVector(name, description, ptr, required, default_value);
+}
+
+void addOptionInt64Vector(const std::string &name, const std::string &description, std::vector<int64_t> *ptr, bool required, const std::vector<int64_t> &default_value)
+{
+    Global::getInstance().addOptionInt64Vector(name, description, ptr, required, default_value);
+}
+
+void addOptionDoubleVector(const std::string &name, const std::string &description, std::vector<double> *ptr, bool required, const std::vector<double> &default_value)
+{
+    Global::getInstance().addOptionDoubleVector(name, description, ptr, required, default_value);
 }
 
 void setPositionalOption(const std::string &option, int max_count)
@@ -495,11 +545,6 @@ std::string getOptionString(const std::string &option)
     return Global::getInstance().getOptionString(option);
 }
 
-std::vector<std::string> getOptionStringVector(const std::string &option)
-{
-    return Global::getInstance().getOptionStringVector(option);
-}
-
 int getOptionInt(const std::string &option)
 {
     return Global::getInstance().getOptionInt(option);
@@ -513,6 +558,26 @@ int64_t getOptionInt64(const std::string &option)
 double getOptionDouble(const std::string &option)
 {
     return Global::getInstance().getOptionDouble(option);
+}
+
+std::vector<std::string> getOptionStringVector(const std::string &option)
+{
+    return Global::getInstance().getOptionStringVector(option);
+}
+
+std::vector<int> getOptionIntVector(const std::string &option)
+{
+    return Global::getInstance().getOptionIntVector(option);
+}
+
+std::vector<int64_t> getOptionInt64Vector(const std::string &option)
+{
+    return Global::getInstance().getOptionInt64Vector(option);
+}
+
+std::vector<double> getOptionDoubleVector(const std::string &option)
+{
+    return Global::getInstance().getOptionDoubleVector(option);
 }
 
 logger::Level getConsoleLogLevel()

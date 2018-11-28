@@ -558,13 +558,19 @@ public:
 
     void addOptionString(const std::string &name, const std::string &description, std::string *ptr, bool required, const std::string &default_value);
 
-    void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value);
-
     void addOptionInt(const std::string &name, const std::string &description, int *ptr, bool required, int default_value);
 
     void addOptionInt64(const std::string &name, const std::string &description, int64_t *ptr, bool required, int64_t default_value);
 
     void addOptionDouble(const std::string &name, const std::string &description, double *ptr, bool required, double default_value);
+
+    void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr, bool required, const std::vector<std::string> &default_value);
+
+    void addOptionIntVector(const std::string &name, const std::string &description, std::vector<int> *ptr, bool required, const std::vector<int> &default_value);
+
+    void addOptionInt64Vector(const std::string &name, const std::string &description, std::vector<int64_t> *ptr, bool required, const std::vector<int64_t> &default_value);
+
+    void addOptionDoubleVector(const std::string &name, const std::string &description, std::vector<double> *ptr, bool required, const std::vector<double> &default_value);
 
     void setPositionalOption(const std::string &option, int max_count);
 
@@ -572,13 +578,19 @@ public:
 
     std::string getOptionString(const std::string &option);
 
-    std::vector<std::string> getOptionStringVector(const std::string &option);
-
     int getOptionInt(const std::string &option);
 
     int64_t getOptionInt64(const std::string &option);
 
     double getOptionDouble(const std::string &option);
+
+    std::vector<std::string> getOptionStringVector(const std::string &option);
+
+    std::vector<int> getOptionIntVector(const std::string &option);
+
+    std::vector<int64_t> getOptionInt64Vector(const std::string &option);
+
+    std::vector<double> getOptionDoubleVector(const std::string &option);
 
     void init(int &argc, char **argv);
 
@@ -658,16 +670,6 @@ void addOption(const std::string &name, const std::string &description);
 void addOptionString(const std::string &name, const std::string &description, std::string *ptr = nullptr, bool required = false, const std::string &default_value = "");
 
 /*!
- * Declare a named command line string vector option.
- *
- * Use the form "long,l" to declare a long option name (--long) together with
- * a short option name (-l) for the same option.
- *
- * See also \ref cmdline_args.
- */
-void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr = nullptr, bool required = false, const std::vector<std::string> &default_value = {});
-
-/*!
  * Declare a named command line int option.
  *
  * Use the form "long,l" to declare a long option name (--long) together with
@@ -698,6 +700,46 @@ void addOptionInt64(const std::string &name, const std::string &description, int
 void addOptionDouble(const std::string &name, const std::string &description, double *ptr = nullptr, bool required = false, double default_value = 0.0);
 
 /*!
+ * Declare a named command line string vector option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionStringVector(const std::string &name, const std::string &description, std::vector<std::string> *ptr = nullptr, bool required = false, const std::vector<std::string> &default_value = {});
+
+/*!
+ * Declare a named command line int vector option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionIntVector(const std::string &name, const std::string &description, std::vector<int> *ptr = nullptr, bool required = false, const std::vector<int> &default_value = {});
+
+/*!
+ * Declare a named command line int64_t vector option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionInt64Vector(const std::string &name, const std::string &description, std::vector<int64_t> *ptr = nullptr, bool required = false, const std::vector<int64_t> &default_value = {});
+
+/*!
+ * Declare a named command line double vector option.
+ *
+ * Use the form "long,l" to declare a long option name (--long) together with
+ * a short option name (-l) for the same option.
+ *
+ * See also \ref cmdline_args.
+ */
+void addOptionDoubleVector(const std::string &name, const std::string &description, std::vector<double> *ptr = nullptr, bool required = false, const std::vector<double> &default_value = {});
+
+/*!
  * Convenience method for adding a positional command line option (the option must have been previously added with b0::addOption())
  *
  * See also \ref cmdline_args.
@@ -719,13 +761,6 @@ int hasOption(const std::string &option);
 std::string getOptionString(const std::string &option);
 
 /*!
- * Retrieve the value of a string vector option
- *
- * See also \ref cmdline_args.
- */
-std::vector<std::string> getOptionStringVector(const std::string &option);
-
-/*!
  * Retrieve the value of an int option
  *
  * See also \ref cmdline_args.
@@ -745,6 +780,34 @@ int64_t getOptionInt64(const std::string &option);
  * See also \ref cmdline_args.
  */
 double getOptionDouble(const std::string &option);
+
+/*!
+ * Retrieve the value of a string vector option
+ *
+ * See also \ref cmdline_args.
+ */
+std::vector<std::string> getOptionStringVector(const std::string &option);
+
+/*!
+ * Retrieve the value of a int vector option
+ *
+ * See also \ref cmdline_args.
+ */
+std::vector<int> getOptionIntVector(const std::string &option);
+
+/*!
+ * Retrieve the value of a int64_t vector option
+ *
+ * See also \ref cmdline_args.
+ */
+std::vector<int64_t> getOptionInt64Vector(const std::string &option);
+
+/*!
+ * Retrieve the value of a double vector option
+ *
+ * See also \ref cmdline_args.
+ */
+std::vector<double> getOptionDoubleVector(const std::string &option);
 
 /*!
  * Get the console logging level. This can be changed also by the B0_CONSOLE_LOGLEVEL env var,
