@@ -142,12 +142,11 @@ int main(int argc, char **argv)
     signal(SIGINT, (void (*)(int))kill_all);
     signal(SIGABRT, (void (*)(int))kill_all);
 
-    const char *wait_str = getenv("SERVER_WAIT");
-    if(wait_str) server_wait = atoi(wait_str);
+    b0_add_option_int("server-wait,w", "server wait in seconds", 1, 0);
+    b0_init(&argc, argv);
+    b0_get_option_int("server-wait", &server_wait);
 
     start_resolver();
-
-    b0_init(&argc, argv);
 
     start_server();
     sleep(2);
