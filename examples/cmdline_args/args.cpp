@@ -11,7 +11,7 @@ using std::cout; using std::endl;
 int main(int argc, char **argv)
 {
     b0::addOptionString("fancy-name,n", "a string arg");
-    b0::addOptionInt("lucky-number,x", "an int arg with default", nullptr, false, 23);
+    b0::addOptionIntVector("lucky-number,x", "an int arg that can appear multiple times");
     b0::addOptionStringVector("file,f", "file arg", nullptr, true);
     b0::setPositionalOption("file", -1);
     b0::init(argc, argv);
@@ -21,8 +21,10 @@ int main(int argc, char **argv)
 
     if(b0::hasOption("lucky-number"))
     {
-        int x = b0::getOptionInt("lucky-number");
-        cout << "lucky number = " << x << endl;
+        cout << "your lucky numbers are:";
+        for(auto x : b0::getOptionIntVector("lucky-number"))
+            cout << " " << x;
+        cout << endl;
     }
 
     return 0;
