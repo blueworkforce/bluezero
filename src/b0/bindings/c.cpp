@@ -86,12 +86,239 @@ static b0::logger::Level log_level_from_int(int level)
     }
 }
 
+static int log_level_to_int(b0::logger::Level level)
+{
+    switch(level)
+    {
+    case b0::logger::Level::fatal:
+        return B0_FATAL;
+    case b0::logger::Level::error:
+        return B0_ERROR;
+    case b0::logger::Level::warn:
+        return B0_WARN;
+    case b0::logger::Level::info:
+        return B0_INFO;
+    case b0::logger::Level::debug:
+        return B0_DEBUG;
+    case b0::logger::Level::trace:
+        return B0_TRACE;
+    default:
+        return B0_INFO;
+    }
+}
+
 extern "C"
 {
 int b0_init(int *argc, char **argv)
 {
     B0_EXCEPTIONS_WRAPPER_BEGIN();
     b0::init(*argc, argv);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option(const char *name, const char *descr)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::addOption(name, descr);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_string(const char *name, const char *descr, int required, const char *def)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::addOptionString(name, descr, nullptr, required, def);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_int(const char *name, const char *descr, int required, int def)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::addOptionInt(name, descr, nullptr, required, def);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_int64(const char *name, const char *descr, int required, int64_t def)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::addOptionInt64(name, descr, nullptr, required, def);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_double(const char *name, const char *descr, int required, double def)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::addOptionDouble(name, descr, nullptr, required, def);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_string_vector(const char *name, const char *descr, int required, const char **def, int def_count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<std::string> v;
+    for(int i = 0; i < def_count; i++) v.push_back(std::string(def[i]));
+    b0::addOptionStringVector(name, descr, nullptr, required, v);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_int_vector(const char *name, const char *descr, int required, int *def, int def_count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<int> v;
+    for(int i = 0; i < def_count; i++) v.push_back(def[i]);
+    b0::addOptionIntVector(name, descr, nullptr, required, v);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_int64_vector(const char *name, const char *descr, int required, int64_t *def, int def_count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<int64_t> v;
+    for(int i = 0; i < def_count; i++) v.push_back(def[i]);
+    b0::addOptionInt64Vector(name, descr, nullptr, required, v);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_add_option_double_vector(const char *name, const char *descr, int required, double *def, int def_count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<double> v;
+    for(int i = 0; i < def_count; i++) v.push_back(def[i]);
+    b0::addOptionDoubleVector(name, descr, nullptr, required, v);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_set_positional_option(const char *name, int max_count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::setPositionalOption(name, max_count);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_has_option(const char *name)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    return b0::hasOption(name);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_string(const char *name, char **out)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::string s = b0::getOptionString(name);
+    *out = (char*)b0_buffer_new(sizeof(char) * s.length() + 1);
+    strcpy(*out, s.c_str());
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_int(const char *name, int *out)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    *out = b0::getOptionInt(name);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_int64(const char *name, int64_t *out)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    *out = b0::getOptionInt64(name);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_double(const char *name, double *out)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    *out = b0::getOptionDouble(name);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_string_vector(const char *name, char ***out, int *count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<std::string> v = b0::getOptionStringVector(name);
+
+    size_t total_size = 0;
+    total_size += sizeof(char*) * v.size();
+    for(auto s : v) total_size += 1 + s.length();
+
+    *out = (char**)b0_buffer_new(total_size);
+    *count = v.size();
+    char *p = (char *)(*out)[v.size()];
+    for(int i = 0; i < v.size(); i++)
+    {
+        strcpy(p, v[i].c_str());
+        *out[i] = p;
+        p += v[i].length() + 1;
+    }
+
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_int_vector(const char *name, int **out, int *count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<int> v = b0::getOptionIntVector(name);
+    *out = (int*)b0_buffer_new(sizeof(int) * v.size());
+    *count = v.size();
+    for(int i = 0; i < v.size(); i++)
+        *out[i] = v[i];
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_int64_vector(const char *name, int64_t **out, int *count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<int64_t> v = b0::getOptionInt64Vector(name);
+    *out = (int64_t*)b0_buffer_new(sizeof(int64_t) * v.size());
+    *count = v.size();
+    for(int i = 0; i < v.size(); i++)
+        *out[i] = v[i];
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_option_double_vector(const char *name, double **out, int *count)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    std::vector<double> v = b0::getOptionDoubleVector(name);
+    *out = (double*)b0_buffer_new(sizeof(double) * v.size());
+    *count = v.size();
+    for(int i = 0; i < v.size(); i++)
+        *out[i] = v[i];
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_get_console_log_level()
+{
+    return log_level_to_int(b0::getConsoleLogLevel());
+}
+
+int b0_set_console_log_level(int level)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::setConsoleLogLevel(log_level_from_int(level));
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+double b0_get_spin_rate()
+{
+    return b0::getSpinRate();
+}
+
+int b0_set_spin_rate(double rate)
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::setSpinRate(rate);
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
+int b0_quit_requested()
+{
+    return b0::quitRequested();
+}
+
+int b0_quit()
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    b0::quit();
     B0_EXCEPTIONS_WRAPPER_END();
 }
 
