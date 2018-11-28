@@ -242,11 +242,11 @@ int b0_get_option_string_vector(const char *name, char ***out, int *count)
 
     *out = (char**)b0_buffer_new(total_size);
     *count = v.size();
-    char *p = (char *)(*out)[v.size()];
+    char *p = (char *)(*out) + sizeof(char*) * v.size();
     for(int i = 0; i < v.size(); i++)
     {
         strcpy(p, v[i].c_str());
-        *out[i] = p;
+        (*out)[i] = p;
         p += v[i].length() + 1;
     }
 
