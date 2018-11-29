@@ -63,6 +63,10 @@ add_test(time_sync_clock_tracking_1 time_sync_clock_tracking 0.5 0.6 1)
 add_test(time_sync_clock_tracking_2 time_sync_clock_tracking 0.5 1.5 1)
 add_test(time_sync_clock_tracking_3 time_sync_clock_tracking 0.5 1.66 0)
 
+add_executable(effective_spin_rate effective_spin_rate.cpp)
+target_link_libraries(effective_spin_rate ${B0_LIBRARY})
+add_test(effective_spin_rate effective_spin_rate)
+
 add_executable(compress compress.cpp)
 target_link_libraries(compress ${B0_LIBRARY})
 add_test(compress-zlib compress zlib)
