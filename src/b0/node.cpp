@@ -143,19 +143,32 @@ void Node::spin(boost::function<void(void)> callback, double spinRate)
 
     while(!shutdownRequested())
     {
+        int64_t sleep_period = 1000000. / spinRate;
+
+        auto checkSpinRate = [=](const char *what, int64_t last_time, int64_t current_time = -1)
+        {
+            if(current_time == -1)
+                current_time = hardwareTimeUSec();
+            if(current_time - last_time > sleep_period)
+                warn("%s took more than %ldusec. Failing to achieve desired "
+                        "spin rate of %fHz!", what, sleep_period, spinRate);
+            return current_time;
+        };
+
         int64_t t0 = hardwareTimeUSec();
 
         spinOnce();
 
+        int64_t t1 = checkSpinRate("spinOnce()", t0);
+
         if(!callback.empty())
             callback();
 
-        int64_t t1 = hardwareTimeUSec();
-
-        int64_t sleep_period = 1000000. / spinRate;
+        int64_t t2 = checkSpinRate("spin()'s callback", t1);
 
         // compensate for time spent in spin and callbacks:
-        sleep_period -= t1 - t0;
+        sleep_period -= t2 - t0;
+        checkSpinRate("spinOnce() together with spin()'s callback", t0, t2);
 
         responsiveSleepUSec(sleep_period);
     }
