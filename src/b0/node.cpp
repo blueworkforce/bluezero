@@ -143,15 +143,21 @@ void Node::spin(boost::function<void(void)> callback, double spinRate)
 
     while(!shutdownRequested())
     {
+        int64_t t0 = hardwareTimeUSec();
+
         spinOnce();
 
         if(!callback.empty())
             callback();
 
-        // FIXME: use sleep_until to effectively spin at spinRate Hz...
-        // FIXME: ...i.e.: compensate for the time elapsed in spinOnce()
-        long usec = 1000000. / spinRate;
-        sleepUSec(usec);
+        int64_t t1 = hardwareTimeUSec();
+
+        int64_t sleep_period = 1000000. / spinRate;
+
+        // compensate for time spent in spin and callbacks:
+        sleep_period -= t1 - t0;
+
+        responsiveSleepUSec(sleep_period);
     }
 
     info("spin() finished");
@@ -364,6 +370,20 @@ int64_t Node::timeUSec()
 void Node::sleepUSec(int64_t usec)
 {
     boost::this_thread::sleep_for(boost::chrono::microseconds{usec});
+}
+
+void Node::responsiveSleepUSec(int64_t usec)
+{
+    int64_t until = hardwareTimeUSec() + usec;
+    int64_t max_sleep = 100000; // 100ms
+    while(1)
+    {
+        if(shutdownRequested()) return;
+        int64_t remaining = until - hardwareTimeUSec();
+        int64_t sleep = std::min(max_sleep, remaining);
+        boost::this_thread::sleep_for(boost::chrono::microseconds{sleep});
+        if(remaining <= max_sleep) break;
+    }
 }
 
 void Node::setSpinRate(double rate)

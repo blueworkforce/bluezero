@@ -276,6 +276,13 @@ public:
     void sleepUSec(int64_t usec);
 
     /*!
+     * \brief Sleep for the specified amount of microseconds, but be responsive of shutdown event
+     *
+     * This method is thread-safe.
+     */
+    void responsiveSleepUSec(int64_t usec);
+
+    /*!
      * \brief Set the default spin rate
      */
     void setSpinRate(double rate);
