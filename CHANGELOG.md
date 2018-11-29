@@ -34,7 +34,9 @@
  - [!] Changed logger interface (LogLevel enum).
  - Add convenience log methods to `b0::Node`.
  - Document which methods are thread-safe.
- - [!] Add callback argument to `b0::Node::spin()`.
+ - [!] Changed `b0::Node::spin()` signature (added callback argument).
+ - Improved timing accuracy of `b0::Node::spin()` and responsiveness to shutdown event.
+ - Added detection of effective spinRate  in `b0::Node::spin()`.
  - [!] Removed passing topic name as cmdline arg in examples (there's remapping for that).
  - Allow to set node's default spin rate via cmdline args.
  - Remove read timeout in heartbeat loop.
