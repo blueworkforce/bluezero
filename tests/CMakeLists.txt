@@ -94,6 +94,10 @@ add_executable(json json.cpp)
 target_link_libraries(json ${B0_LIBRARY})
 add_test(json json)
 
+add_executable(args_parse args.cpp)
+target_link_libraries(args_parse ${B0_LIBRARY})
+add_test(args args_parse -a 1 -a 2 -a 3 -n 4 w x y z)
+
 add_executable(multi_resolver multi_resolver.cpp)
 target_link_libraries(multi_resolver ${B0_LIBRARY})
 add_test(multi_resolver multi_resolver)
