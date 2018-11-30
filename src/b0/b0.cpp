@@ -476,8 +476,8 @@ void init(int &argc, char **argv)
 
 void init()
 {
-    int argc = 0;
-    char *argv[] = {};
+    int argc = 1;
+    char *argv[1] = {const_cast<char*>("<unknown program>")};
     init(argc, argv);
 }
 
