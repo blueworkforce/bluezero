@@ -41,8 +41,10 @@ struct Global::Private
 
 static void signalHandler(int sig)
 {
+#ifdef HAVE_POSIX_SIGNALS
     if(sig == SIGINT)  std::cout << " (SIGINT)" << std::endl;
     if(sig == SIGTERM) std::cout << " (SIGTERM)" << std::endl;
+#endif
     quit();
 }
 
