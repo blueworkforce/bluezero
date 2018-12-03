@@ -263,12 +263,33 @@
  *
  * \section protocol_intro Introduction
  *
- * The transport of messages exchanged between BlueZero nodes and the resolver node is
- * implemented with ZeroMQ.
+ * The transport of messages exchanged between BlueZero nodes is implemented with ZeroMQ.
+ * REQ/REP sockets are used for b0::ServiceClient and b0::ServiceServer sockets, and PUB/SUB
+ * sockets are run through an XSUB/XPUB proxy and used for b0::Publisher and b0::Subscriber sockets.
  *
- * The messages are defined using Google Protocol Buffers.
+ * \subsection protocol_serialization Serialization
  *
- * Message payloads (used by BlueZero sockets) are wrapped in a b0::message::MessageEnvelope message.
+ * Messages are wrapped in a b0::message::MessageEnvelope message, which contains the
+ * target socket name, followed by a series of headers (HTTP-like), followed by a blank
+ * line, followed by a payload of arbitrary length and format.
+ *
+ * The headers specify the number of payloads, the length of each payload, and optionally
+ * the content type of each payload, and the compression algorithm used.
+ *
+ * BlueZero is agnostic to message payload. Payloads can be plain text strings with
+ * arbitrary encodings such as ASCII or UTF8, or some higher level serialization
+ * mechanism can be used, such as JSON, BSON, MsgPack, or Protocol Buffers.
+ *
+ * BlueZero uses JSON (via the spotify-json library) to serialize messages used for
+ * core functionality, such as node announcement, name resolution, and heartbeat sending.
+ *
+ * The messages exchanged via the 'resolv' service are instance of the class
+ * b0::message::resolv::Request and b0::message::resolv::Response. These classes have
+ * several optional fields of which only one is set, for the corresponding request/response type.
+ *
+ * See \ref node_startup for an actual example of how a BlueZero core message is serialized.
+ *
+ * \subsection protocol_topology Topology
  *
  * The network architecture is mostly centralized: every node will talk to the resolver node, except
  * for services which use dedicated sockets, and topics which use a XPUB/XSUB proxy.
@@ -289,6 +310,46 @@
  * name clash) and important info for node communication, such as the XPUB/XSUB addresses.
  *
  * \mscfile node-startup.msc
+ *
+ * Example request:
+ *
+ * ```
+ * resolv
+ * Content-length: 91
+ * Part-count: 1
+ * Content-length-0: 91
+ * Content-type-0: b0.message.resolv.Request
+ *
+ * {
+ *     "announce_node":
+ *     {
+ *         "host_id": "10.0.25.67",
+ *         "process_id": 27489,
+ *         "node_name": "robot_status_publisher"
+ *     }
+ * }
+ * ```
+ *
+ * Example response:
+ *
+ * ```
+ * resolv
+ * Content-length: 190
+ * Part-count: 1
+ * Content-length-0: 190
+ * Content-type-0: b0.message.resolv.Response
+ *
+ * {
+ *     "announce_node":
+ *     {
+ *         "ok": true,
+ *         "node_name": "robot_status_publisher",
+ *         "xsub_sock_addr": "tcp://10.0.25.38:61060",
+ *         "xpub_sock_addr": "tcp://10.0.25.38:61061",
+ *         "minimum_heartbeat_interval": 30000000
+ *     }
+ * }
+ * ```
  *
  * \subsection node_startup_topics Topics
  *
