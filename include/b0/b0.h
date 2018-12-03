@@ -653,6 +653,8 @@ public:
 
     std::vector<double> getOptionDoubleVector(const std::string &option);
 
+    void init(const std::vector<std::string> &argv);
+
     void init(int &argc, char **argv);
 
     bool isInitialized() const;
@@ -683,6 +685,8 @@ public:
 
 private:
     std::unique_ptr<Private> private_;
+
+    friend Private;
 };
 
 //! \endcond
@@ -698,12 +702,20 @@ private:
  *
  * This function will validate command line arguments and terminate the process in case of error.
  */
-void init(int &argc, char **argv);
+void init(const std::vector<std::string> &argv = {});
 
 /*!
- * Initialize the B0 library, without command line arguments.
+ * Initialize the B0 library.
+ *
+ * This function will read any relevant environment variables and command line arguments,
+ * and change settings in the global data structure.
+ *
+ * Depending if you want to override those settings or just provide a different default,
+ * you need to alter such settings before or after calling b0::init() respectively.
+ *
+ * This function will validate command line arguments and terminate the process in case of error.
  */
-void init();
+void init(int &argc, char **argv);
 
 /*!
  * Print a description of command line options

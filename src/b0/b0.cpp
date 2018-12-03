@@ -23,22 +23,6 @@
 namespace b0
 {
 
-namespace po = boost::program_options;
-
-struct Global::Private
-{
-    bool initialized_{false};
-    std::map<std::string, std::string> remap_node_;
-    std::map<std::string, std::string> remap_topic_;
-    std::map<std::string, std::string> remap_service_;
-    logger::Level console_log_level_{logger::Level::info};
-    boost::program_options::options_description options_description_{"Allowed options"};
-    boost::program_options::positional_options_description positional_options_description_;
-    boost::program_options::variables_map variables_map_;
-    std::atomic<bool> quit_flag_{false};
-    double spin_rate_{10.0};
-};
-
 static void signalHandler(int sig)
 {
 #ifdef HAVE_POSIX_SIGNALS
@@ -59,6 +43,80 @@ static void setupSignalHandler()
     sigaction(SIGTERM, &sa, NULL);
 #endif
 }
+
+namespace po = boost::program_options;
+
+struct Global::Private
+{
+    bool initialized_{false};
+    std::map<std::string, std::string> remap_node_;
+    std::map<std::string, std::string> remap_topic_;
+    std::map<std::string, std::string> remap_service_;
+    logger::Level console_log_level_{logger::Level::info};
+    boost::program_options::options_description options_description_{"Allowed options"};
+    boost::program_options::positional_options_description positional_options_description_;
+    boost::program_options::variables_map variables_map_;
+    std::atomic<bool> quit_flag_{false};
+    double spin_rate_{10.0};
+
+    void init(Global &g, po::command_line_parser &parser, const std::string &argv0)
+    {
+        if(initialized_)
+            throw std::runtime_error("already initialized");
+
+        setupSignalHandler();
+
+        // process environment variables:
+        std::string console_loglevel = b0::env::get("B0_CONSOLE_LOGLEVEL");
+        if(console_loglevel != "")
+        {
+            console_log_level_ = logger::levelInfo(console_loglevel).level;
+        }
+
+        // process arguments:
+        using str_vec = std::vector<std::string>;
+        options_description_.add_options()
+            ("help,h", "display help message")
+            ("remap,R", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addRemapings, &g, _1)), "remap any name")
+            ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, &g, _1)), "remap a node name")
+            ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, &g, _1)), "remap a topic name")
+            ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, &g, _1)), "remap a service name")
+            ("console-loglevel,L", po::value<std::string>()->default_value(logger::levelInfo(console_log_level_).str), "specify the console loglevel")
+            ("spin-rate,F", po::value<double>()->default_value(spin_rate_), "specify the default spin rate")
+        ;
+        try
+        {
+            parser.options(options_description_).positional(positional_options_description_);
+            po::parsed_options parsed_options = parser.run();
+            po::store(parsed_options, variables_map_);
+            po::notify(variables_map_);
+        }
+        catch(po::error &ex)
+        {
+            std::cerr << "error: " << ex.what() << std::endl;
+            g.printUsage(argv0, true);
+            std::exit(1);
+        }
+
+        if(variables_map_.count("help"))
+        {
+            g.printUsage(argv0);
+            std::exit(0);
+        }
+
+        if(variables_map_.count("console-loglevel"))
+        {
+            console_log_level_ = logger::levelInfo(variables_map_["console-loglevel"].as<std::string>()).level;
+        }
+
+        if(variables_map_.count("spin-rate"))
+        {
+            spin_rate_ = variables_map_["spin-rate"].as<double>();
+        }
+
+        initialized_ = true;
+    }
+};
 
 Global::Global()
     : private_(new Private)
@@ -293,63 +351,16 @@ std::vector<double> Global::getOptionDoubleVector(const std::string &option)
     return private_->variables_map_[option].as<std::vector<double> >();
 }
 
+void Global::init(const std::vector<std::string> &argv)
+{
+    po::command_line_parser parser(argv);
+    private_->init(*this, parser, argv.size() ? argv[0] : "?");
+}
+
 void Global::init(int &argc, char **argv)
 {
-    if(private_->initialized_)
-        throw std::runtime_error("already initialized");
-
-    setupSignalHandler();
-
-    // process environment variables:
-    std::string console_loglevel = b0::env::get("B0_CONSOLE_LOGLEVEL");
-    if(console_loglevel != "")
-    {
-        private_->console_log_level_ = logger::levelInfo(console_loglevel).level;
-    }
-
-    // process arguments:
-    using str_vec = std::vector<std::string>;
-    private_->options_description_.add_options()
-        ("help,h", "display help message")
-        ("remap,R", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addRemapings, this, _1)), "remap any name")
-        ("remap-node,N", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addNodeRemapings, this, _1)), "remap a node name")
-        ("remap-topic,T", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addTopicRemapings, this, _1)), "remap a topic name")
-        ("remap-service,S", po::value<str_vec>()->value_name("oldName=newName")->multitoken()->notifier(boost::bind(&Global::addServiceRemapings, this, _1)), "remap a service name")
-        ("console-loglevel,L", po::value<std::string>()->default_value(logger::levelInfo(private_->console_log_level_).str), "specify the console loglevel")
-        ("spin-rate,F", po::value<double>()->default_value(private_->spin_rate_), "specify the default spin rate")
-    ;
-    try
-    {
-        po::command_line_parser parser(argc, argv);
-        parser.options(private_->options_description_).positional(private_->positional_options_description_);
-        po::parsed_options parsed_options = parser.run();
-        po::store(parsed_options, private_->variables_map_);
-        po::notify(private_->variables_map_);
-    }
-    catch(po::error &ex)
-    {
-        std::cerr << "error: " << ex.what() << std::endl;
-        printUsage(argv[0], true);
-        std::exit(1);
-    }
-
-    if(private_->variables_map_.count("help"))
-    {
-        printUsage(argv[0]);
-        std::exit(0);
-    }
-
-    if(private_->variables_map_.count("console-loglevel"))
-    {
-        private_->console_log_level_ = logger::levelInfo(private_->variables_map_["console-loglevel"].as<std::string>()).level;
-    }
-
-    if(private_->variables_map_.count("spin-rate"))
-    {
-        private_->spin_rate_ = private_->variables_map_["spin-rate"].as<double>();
-    }
-
-    private_->initialized_ = true;
+    po::command_line_parser parser(argc, argv);
+    private_->init(*this, parser, argc ? argv[0] : "?");
 }
 
 bool Global::isInitialized() const
@@ -461,6 +472,19 @@ void Global::quit()
     private_->quit_flag_.store(true);
 }
 
+void init(const std::vector<std::string> &argv)
+{
+    try
+    {
+        Global::getInstance().init(argv);
+    }
+    catch(std::exception &ex)
+    {
+        std::cerr << "Initialization failed: " << ex.what() << std::endl;
+        std::exit(100);
+    }
+}
+
 void init(int &argc, char **argv)
 {
     try
@@ -472,13 +496,6 @@ void init(int &argc, char **argv)
         std::cerr << "Initialization failed: " << ex.what() << std::endl;
         std::exit(100);
     }
-}
-
-void init()
-{
-    int argc = 1;
-    char *argv[1] = {const_cast<char*>("<unknown program>")};
-    init(argc, argv);
 }
 
 void printUsage(const std::string &argv0, bool toStdErr)
