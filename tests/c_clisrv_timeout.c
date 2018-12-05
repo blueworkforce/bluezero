@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <b0/bindings/c.h>
 
 pid_t resolver_pid = -1;
