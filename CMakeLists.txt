@@ -358,6 +358,9 @@ if(BUILD_TOOLS)
         src/b0_process_manager/process_manager.cpp
     )
     target_link_libraries(b0_process_manager ${B0_LIBRARY})
+    if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+        target_link_libraries(b0_process_manager dl)
+    endif()
 
     add_executable(
         b0_process_manager_hub
