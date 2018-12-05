@@ -7,6 +7,10 @@
 #include <QContextMenuEvent>
 #include <QApplication>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+#define horizontalAdvance width
+#endif
+
 AbstractItem::AbstractItem(NodesView *nodeView)
     : nodesView_(nodeView)
 {
