@@ -64,14 +64,19 @@ class TimeSync
 public:
     /*!
      * \brief TimeSync constructor
-     * \param max_slope Indicates the maximum correction speed (in adjusted seconds per real second). Always keep this strictly greater than 0 and strictly less than 1.
      */
-    TimeSync(double max_slope = 0.5);
+    TimeSync();
 
     /*!
      * \brief TimeSync destructor
      */
     virtual ~TimeSync();
+
+    /*!
+     * Set the maximum time synchronization slope
+     * \param max_slope Indicates the maximum correction speed (in adjusted seconds per real second). Always keep this strictly greater than 0 and strictly less than 1.
+     */
+    void setMaxSlope(double max_slope);
 
     /*!
      * \brief Return this computer's clock time in microseconds

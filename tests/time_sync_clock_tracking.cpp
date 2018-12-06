@@ -17,7 +17,7 @@ namespace b0
 class TimeSync_TEST : public TimeSync
 {
 public:
-    TimeSync_TEST(int64_t offset, double speed, double max_slope) : TimeSync(max_slope), t0_(TimeSync::hardwareTimeUSec()), offset_(offset), speed_(speed) {}
+    TimeSync_TEST(int64_t offset, double speed) : t0_(TimeSync::hardwareTimeUSec()), offset_(offset), speed_(speed) {}
     int64_t hardwareTimeUSec() const {return offset_ + speed_ * (TimeSync::hardwareTimeUSec() - t0_) + t0_;}
 protected:
     int64_t t0_;
@@ -43,8 +43,10 @@ int main(int argc, char **argv)
     b0::setPositionalOption("expect-success");
     b0::init(argc, argv);
 
-    b0::TimeSync c(max_slope);
-    b0::TimeSync_TEST s(offset, speed, max_slope);
+    b0::TimeSync c;
+    c.setMaxSlope(max_slope);
+    b0::TimeSync_TEST s(offset, speed);
+    s.setMaxSlope(max_slope);
 
     int64_t test_end_time = c.hardwareTimeUSec() + sec(5);
     int64_t error = 0;

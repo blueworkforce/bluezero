@@ -380,6 +380,11 @@ int64_t Node::timeUSec()
     return time_sync_.timeUSec();
 }
 
+void Node::setTimesyncMaxSlope(double max_slope)
+{
+    time_sync_.setMaxSlope(max_slope);
+}
+
 void Node::sleepUSec(int64_t usec)
 {
     boost::this_thread::sleep_for(boost::chrono::microseconds{usec});

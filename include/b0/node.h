@@ -295,6 +295,11 @@ public:
      */
     double getSpinRate();
 
+    /*!
+     * \brief Set time synchronization maximum slope
+     */
+    void setTimesyncMaxSlope(double max_slope);
+
 private:
     std::unique_ptr<Private> private_;
     std::unique_ptr<Private2> private2_;
