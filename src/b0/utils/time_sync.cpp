@@ -8,17 +8,27 @@
 namespace b0
 {
 
-TimeSync::TimeSync(double max_slope)
+TimeSync::TimeSync()
 {
     target_offset_ = 0;
     max_acceptable_offset_ = b0::env::getInt("B0_TIMESYNC_MAX_OFFSET", 5 * 1000 * 1000);
     last_offset_time_ = hardwareTimeUSec();
     last_offset_value_ = 0;
-    max_slope_ = 0.5;
+    max_slope_ = b0::env::getDouble("B0_TIMESYNC_MAX_SLOPE", 0.05);
 }
 
 TimeSync::~TimeSync()
 {
+}
+
+void TimeSync::setMaxSlope(double max_slope)
+{
+    if(max_slope <= 0)
+        throw std::runtime_error("max_slope must be strictly positive");
+    if(max_slope > 1)
+        throw std::runtime_error("max_slope must not be greater than one");
+
+    max_slope_ = max_slope;
 }
 
 int64_t TimeSync::hardwareTimeUSec() const

@@ -17,7 +17,7 @@ namespace b0
 class TimeSync_TEST : public TimeSync
 {
 public:
-    TimeSync_TEST(int64_t offset, double speed, double max_slope) : TimeSync(max_slope), t0_(TimeSync::hardwareTimeUSec()), offset_(offset), speed_(speed) {}
+    TimeSync_TEST(int64_t offset, double speed) : t0_(TimeSync::hardwareTimeUSec()), offset_(offset), speed_(speed) {}
     int64_t hardwareTimeUSec() const {return offset_ + speed_ * (TimeSync::hardwareTimeUSec() - t0_) + t0_;}
 protected:
     int64_t t0_;
@@ -56,8 +56,10 @@ bool test_offset_recover(int argc, char **argv)
     double max_slope = 0.5;
     int64_t offset = sec(5);
     double speed = 1.0;
-    b0::TimeSync c(max_slope);
-    b0::TimeSync_TEST s(offset, speed, max_slope);
+    b0::TimeSync c;
+    c.setMaxSlope(max_slope);
+    b0::TimeSync_TEST s(offset, speed);
+    s.setMaxSlope(max_slope);
 
     int64_t test_end_time = offset * 1.2 / max_slope + c.hardwareTimeUSec(); // run for the required time to adjust clock + 20%
     int64_t error = 0;
@@ -86,8 +88,10 @@ bool test_clock_tracking(int argc, char **argv)
     int64_t offset = sec(0);
     double speed = boost::lexical_cast<double>(argv[2]);
     bool expected = boost::lexical_cast<bool>(argv[3]);
-    b0::TimeSync c(max_slope);
-    b0::TimeSync_TEST s(offset, speed, max_slope);
+    b0::TimeSync c;
+    c.setMaxSlope(max_slope);
+    b0::TimeSync_TEST s(offset, speed);
+    s.setMaxSlope(max_slope);
 
     int64_t test_end_time = c.hardwareTimeUSec() + sec(5);
     int64_t error = 0;

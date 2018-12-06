@@ -245,6 +245,11 @@ public:
      */
     int64_t timeUSec();
 
+    /*!
+     * \brief Set time synchronization maximum slope
+     */
+    void setTimesyncMaxSlope(double max_slope);
+
 private:
     std::unique_ptr<NodePrivate> private_;
     std::unique_ptr<NodePrivate2> private2_;

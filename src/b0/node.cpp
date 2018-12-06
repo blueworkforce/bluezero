@@ -351,6 +351,11 @@ int64_t Node::timeUSec()
     return time_sync_.timeUSec();
 }
 
+void Node::setTimesyncMaxSlope(double max_slope)
+{
+    time_sync_.setMaxSlope(max_slope);
+}
+
 void Node::signalHandler(int s)
 {
     quit_flag_.store(true);
