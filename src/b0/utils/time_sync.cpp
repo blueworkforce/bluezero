@@ -11,7 +11,7 @@ TimeSync::TimeSync(double max_slope)
     target_offset_ = 0;
     last_offset_time_ = hardwareTimeUSec();
     last_offset_value_ = 0;
-    max_slope_ = 0.5;
+    max_slope_ = 0.008;
 }
 
 TimeSync::~TimeSync()
