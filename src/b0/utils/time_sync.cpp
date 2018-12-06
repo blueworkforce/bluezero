@@ -14,7 +14,7 @@ TimeSync::TimeSync()
     max_acceptable_offset_ = b0::env::getInt("B0_TIMESYNC_MAX_OFFSET", 5 * 1000 * 1000);
     last_offset_time_ = hardwareTimeUSec();
     last_offset_value_ = 0;
-    max_slope_ = b0::env::getDouble("B0_TIMESYNC_MAX_SLOPE", 0.05);
+    setMaxSlope(b0::env::getDouble("B0_TIMESYNC_MAX_SLOPE", 0.05));
 }
 
 TimeSync::~TimeSync()
