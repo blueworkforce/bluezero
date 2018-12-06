@@ -36,6 +36,14 @@ int getInt(const std::string &var, int def)
     return ret;
 }
 
+double getDouble(const std::string &var, double def)
+{
+    double ret = def;
+    std::string val = get(var);
+    if(val != "") ret = std::atof(val.c_str());
+    return ret;
+}
+
 } // namespace env
 
 } // namespace b0

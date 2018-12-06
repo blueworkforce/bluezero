@@ -15,6 +15,8 @@ bool getBool(const std::string &var, bool def = false);
 
 int getInt(const std::string &var, int def = 0);
 
+double getDouble(const std::string &var, double def = 0);
+
 } // namespace env
 
 } // namespace b0
