@@ -33,7 +33,7 @@ Install the following apt packages:
 
  - libprotobuf-dev
  - protobuf-compiler
- - libzmq-dev
+ - libzmq3-dev
  - libboost-all-dev
 
 ### Ubuntu 14
