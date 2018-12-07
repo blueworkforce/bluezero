@@ -36,7 +36,7 @@ See [LICENSE.md](LICENSE.md).
 
 Install the following apt packages:
 
- - libzmq-dev
+ - libzmq3-dev
  - libboost-all-dev
 
 ### Ubuntu 14
