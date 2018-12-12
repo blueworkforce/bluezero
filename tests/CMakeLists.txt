@@ -53,6 +53,10 @@ add_executable(clisrv_badname clisrv_badname.cpp)
 target_link_libraries(clisrv_badname ${B0_LIBRARY})
 add_test(clisrv_badname clisrv_badname)
 
+add_executable(clisrv_retry clisrv_retry.cpp)
+target_link_libraries(clisrv_retry ${B0_LIBRARY})
+add_test(clisrv_retry clisrv_retry)
+
 add_executable(time_sync_offset_recover time_sync_offset_recover.cpp)
 target_link_libraries(time_sync_offset_recover ${B0_LIBRARY})
 add_test(time_sync_offset_recover time_sync_offset_recover)
