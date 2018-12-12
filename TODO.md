@@ -1,3 +1,4 @@
+ - sending command to nodes (via service socket)
  - testing of delayed timesync messages + fix
  - distributed testcases (multiproc, multibox)
  - param protocol
