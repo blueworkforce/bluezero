@@ -498,6 +498,11 @@ void init(int &argc, char **argv)
     }
 }
 
+bool isInitialized()
+{
+    return Global::getInstance().isInitialized();
+}
+
 void printUsage(const std::string &argv0, bool toStdErr)
 {
     Global::getInstance().printUsage(argv0, toStdErr);

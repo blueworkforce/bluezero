@@ -719,6 +719,11 @@ void init(const std::vector<std::string> &argv = {});
 void init(int &argc, char **argv);
 
 /*!
+ * Check wether BlueZero is already initialized
+ */
+bool isInitialized();
+
+/*!
  * Print a description of command line options
  */
 void printUsage(const std::string &argv0, bool toStdErr = false);

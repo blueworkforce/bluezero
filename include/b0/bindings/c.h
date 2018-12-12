@@ -50,6 +50,7 @@ struct b0_service_server;
 typedef struct b0_service_server b0_service_server;
 
 B0_EXPORT int b0_init(int *argc, char **argv);
+B0_EXPORT int b0_is_initialized();
 B0_EXPORT int b0_add_option(const char *name, const char *descr);
 B0_EXPORT int b0_add_option_string(const char *name, const char *descr, int required, const char *def);
 B0_EXPORT int b0_add_option_int(const char *name, const char *descr, int required, int def);

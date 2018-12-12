@@ -116,6 +116,13 @@ int b0_init(int *argc, char **argv)
     B0_EXCEPTIONS_WRAPPER_END();
 }
 
+int b0_is_initialized()
+{
+    B0_EXCEPTIONS_WRAPPER_BEGIN();
+    return b0::isInitialized();
+    B0_EXCEPTIONS_WRAPPER_END();
+}
+
 int b0_add_option(const char *name, const char *descr)
 {
     B0_EXCEPTIONS_WRAPPER_BEGIN();
