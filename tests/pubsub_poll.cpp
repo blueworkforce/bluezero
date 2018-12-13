@@ -21,28 +21,33 @@ void pub_thread()
     node.init();
     node.sleepUSec(1000000);
     std::string m("foo");
-    for(;;) pub.publish(m);
+    bool p = true;
+    for(;;)
+    {
+        if(p)
+        {
+            std::cout << "pub: publish message: " << m << std::endl;
+            p = false;
+        }
+        pub.publish(m);
+    }
 }
 
 void sub_thread()
 {
     b0::Node node("sub");
-    b0::Subscriber sub(&node, "topic1");
+    b0::Subscriber sub(&node, "topic1", b0::Subscriber::CallbackRaw{});
     node.init();
-    while(1)
+    for(;;) if(sub.poll(500))
     {
-        if(sub.poll())
-        {
-            std::string m;
-            sub.readRaw(m);
-            std::cout << "sub: got message: " << m << std::endl;
-            exit(m == "foo" ? 0 : 1);
-        }
-        else
-        {
-            std::cout << "sub: waiting" << std::endl;
-            node.sleepUSec(500000);
-        }
+        std::string m;
+        sub.readRaw(m);
+        std::cout << "sub: got message: " << m << std::endl;
+        exit(m == "foo" ? 0 : 1);
+    }
+    else
+    {
+        std::cout << "sub: waiting" << std::endl;
     }
 }
 
