@@ -38,6 +38,10 @@ private:
 public:
     /*!
      * \brief Construct a Socket
+     *
+     * If managed is false, this socket will be unmanaged, meaning that the node
+     * will not call init() and cleanup(), and those methods must be called manually
+     * at the appropriate time.
      */
     Socket(Node *node, int type, const std::string &name, bool managed = true);
 
