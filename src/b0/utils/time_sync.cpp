@@ -68,8 +68,8 @@ void TimeSync::updateTime(int64_t remoteTime)
         last_offset_time_ = local_time;
         target_offset_ = remoteTime - local_time;
 
-        if(max_acceptable_offset_ > 0 && target_offset_ > max_acceptable_offset_)
-            throw std::runtime_error((boost::format("Clock offset is larger than B0_TIMESYNC_MAX_OFFSET (%ld usec)") % max_acceptable_offset_).str());
+        if(max_acceptable_offset_ > 0 && abs(target_offset_) > max_acceptable_offset_)
+            throw std::runtime_error((boost::format("Clock offset (%ld usec) is larger in absolute value than B0_TIMESYNC_MAX_OFFSET (%ld usec)") % target_offset_ % max_acceptable_offset_).str());
     }
 }
 
