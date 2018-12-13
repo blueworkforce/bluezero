@@ -6,3 +6,4 @@
  - latched topics
  - document how to integrate b0::Node in other applications (i.e. a member variable for the node), describe insertion points (spin vs spinonce)
  - fully distributed / decentralized (see also https://github.com/zeromq/zyre as a possible backend)
+ - re-add optional protobuf support
