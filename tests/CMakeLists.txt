@@ -37,6 +37,10 @@ add_executable(pubsub_many pubsub_many.cpp)
 target_link_libraries(pubsub_many ${B0_LIBRARY})
 add_test(pubsub_many pubsub_many)
 
+add_executable(pubsub_poll pubsub_poll.cpp)
+target_link_libraries(pubsub_poll ${B0_LIBRARY})
+add_test(pubsub_poll pubsub_poll)
+
 add_executable(clisrv clisrv.cpp)
 target_link_libraries(clisrv ${B0_LIBRARY})
 add_test(clisrv clisrv)
