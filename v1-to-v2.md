@@ -27,6 +27,8 @@ Solution: cast the `callback` argument to the correct type, choosing one from:
 
 Example: `static_cast<b0::Subscriber::CallbackRaw>(callback)`.
 
+Note: for specifying no callback (i.e. empty callback) there is an overload of Subscriber and ServiceServer constructors without the callback argument.
+
 ## Other API changes
 
 `b0::Node::spin()` now accepts a callback method as first argument.
