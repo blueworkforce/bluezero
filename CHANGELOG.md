@@ -6,6 +6,7 @@
  - [!] New JSON-based protocol, inspired by JSONRPC.
  - Proof-of-concept pure-python implementation of a node.
  - Drop protobuf internally, switch to spotify-json for message serialization.
+ - Protobuf-specialized sockets are still supprted via `<b0/protobuf/xxx.h>` classes.
  - Drop use of ZMQ multipart messages.
  - Own multipart message support.
  - Fix *conflate* bug.
