@@ -120,8 +120,8 @@ add_test(resolver_shutdown resolver_shutdown)
 
 add_executable(c_clisrv_timeout c_clisrv_timeout.c)
 target_link_libraries(c_clisrv_timeout ${B0_LIBRARY})
-add_test(c_clisrv_timeout_1 c_clisrv_timeout -w 0 -f 0)
-add_test(c_clisrv_timeout_2 c_clisrv_timeout -w 10 -f 1)
+#add_test(c_clisrv_timeout_1 c_clisrv_timeout -w 0 -f 0)
+#add_test(c_clisrv_timeout_2 c_clisrv_timeout -w 10 -f 1)
 
 if(ENABLE_PROTOBUF)
     protobuf_generate_cpp(PROTO_TEST_SRCS PROTO_TEST_HDRS test_protobuf.proto)
