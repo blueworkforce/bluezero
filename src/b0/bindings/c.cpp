@@ -4,10 +4,7 @@
 #include <b0/subscriber.h>
 #include <b0/service_client.h>
 #include <b0/service_server.h>
-extern "C"
-{
 #include <b0/bindings/c.h>
-}
 
 #define B0_EXCEPTIONS_CATCH(name) catch(b0::exception::Exception &name)
 #define B0_SUCCESS 1
