@@ -1,6 +1,10 @@
 #ifndef B0__C_H__INCLUDED
 #define B0__C_H__INCLUDED
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stddef.h>
 #include <inttypes.h>
 
@@ -142,5 +146,9 @@ B0_EXPORT int b0_service_server_poll(b0_service_server *srv, long timeout);
 B0_EXPORT void * b0_service_server_read(b0_service_server *srv, size_t *size);
 B0_EXPORT int b0_service_server_write(b0_service_server *srv, const void *msg, size_t size);
 B0_EXPORT int b0_service_server_set_option(b0_service_server *srv, int option, int value);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // B0__C_H__INCLUDED
