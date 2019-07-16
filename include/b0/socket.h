@@ -8,6 +8,7 @@
 
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include <iostream>
 
 namespace b0
 {
