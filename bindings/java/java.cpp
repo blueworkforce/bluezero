@@ -96,8 +96,8 @@ JNIEXPORT jint JNICALL Java_coppelia_b0RemoteApi_b0SubscriberPoll(JNIEnv *env, j
 
 JNIEXPORT jbyteArray JNICALL Java_coppelia_b0RemoteApi_b0SubscriberRead(JNIEnv *env, jobject obj, jlong sub)
 {
-    jsize l;
-    void* data=b0_subscriber_read((b0_subscriber*)sub,(size_t*)&l);
+    size_t l;
+    void* data=b0_subscriber_read((b0_subscriber*)sub,&l);
     jbyteArray jarray=env->NewByteArray(l);
     env->SetByteArrayRegion(jarray,0,l,(jbyte*)data);
     b0_buffer_delete(data);
@@ -128,10 +128,10 @@ JNIEXPORT jbyteArray JNICALL Java_coppelia_b0RemoteApi_b0ServiceClientCall(JNIEn
 {
     jbyte* inBufferPtr = env->GetByteArrayElements(data, 0);
     jsize inL = env->GetArrayLength(data);
-    jsize outL;
+    size_t outL;
     void* outData =
     b0_service_client_call((b0_service_client*)cli,inBufferPtr,inL,
-    (size_t*)&outL);
+    &outL);
     jbyteArray jarray = env->NewByteArray(outL);
     env->SetByteArrayRegion(jarray, 0, outL, (jbyte*)outData);
     b0_buffer_delete(outData);
